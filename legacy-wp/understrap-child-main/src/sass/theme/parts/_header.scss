@@ -1,0 +1,185 @@
+
+
+
+.yugotour-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    
+    // --- "ON TOP" LOGIC ---
+    // 9999 ensures it stays above Gutenberg blocks, 
+    // popups, and the red brutalist image blocks.
+    z-index: 9999 !important; 
+    
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    // Crucial: allow the logo to "spill out" over the page content
+    overflow: visible !important; 
+
+    &.nav-hidden {
+        transform: translateY(calc(-100% - 40px));
+    }
+}
+
+
+
+.yugotour-nav {
+    height: 3.4vh;
+    min-height: 42px;
+    background-image: url('../images/texture-cream.webp');
+    background-size: cover;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    position: relative; // Absolute anchor for the logo
+    display: flex;
+    align-items: center;
+    overflow: visible !important;
+	box-shadow: inset 0 10px 12px -10px rgba(0, 0, 0, 0.2);
+	//border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+    .container-fluid {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end; // Pushes links/menu to the right
+        
+		// Mobile-first: start with 15px or 20px
+        padding-left: 0px; 
+        padding-right: 20px; 
+
+        // Scale up to 30px only on Desktop
+        @media (min-width: 992px) {
+            padding-left: 0; 
+            padding-right: 30px;
+		}
+	}	
+    }
+
+    // --- 1. THE LOGO (Independent of Container) ---
+    .yugo-logo-link {
+        position: absolute;
+        top: 0;
+        left: 15px; // Strictly 15px from the viewport left
+        @media (min-width: 992px) { left: 25px; }
+		z-index: 1040;
+        line-height: 0;
+
+img {
+    width: 92px;
+    @media (min-width: 992px) { width: 96px; }
+    height: auto;
+    display: block;
+    
+    // THE FIX: Explicitly define brightness(1) here
+    filter: brightness(1) drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+    
+    transform: translateY(0);
+    transition: filter 300ms ease-in-out; 
+
+    &:hover {
+        // Now it can smoothly transition from 1 to 1.3
+        filter: brightness(1.3) drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+    }
+}
+    }
+
+    // --- 2. THE LINKS (Wider Spacing) ---
+    .desktop-links a {
+        margin-right: 50px; // Increased horizontal air
+        font-family: $font-family-grotesk;
+        color: $yugo-red !important;
+        text-transform: none;
+        text-decoration: none;
+        font-size: 1.1rem;
+        position: relative;
+        font-weight: 300;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: -2px; left: 0;
+            background-color: $yugo-red;
+            transition: width 0.3s ease;
+        }
+        &:hover::after { width: 100%; }
+    }
+
+    // --- 3. THE MENU (Tightened to Icon) ---
+.menu-trigger {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    position: relative; // Anchor for the shared underline
+    text-decoration: none;
+
+    // --- 1. THE SHARED UNDERLINE ---
+    &::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px; // Sits below the text and the icon
+        left: 0;
+        background-color: $yugo-red;
+        transition: width 0.3s ease-in-out;
+    }
+
+    &:hover::after {
+        width: 100%; // Spans the entire trigger unit
+    }
+
+    .menu-text {
+        margin-right: 8px;
+        font-family: $font-family-grotesk;
+        color: $yugo-red !important;
+        font-size: 1.1rem;
+        font-weight: 300;
+        line-height: 1;
+
+        @media (max-width: 991px) {
+            font-size: 1.3rem; // 12% larger on mobile
+        }
+    }
+
+    // --- 2. THE HAMBURGER & MORPH ---
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px; 
+        width: 22px;
+        height: 20px;
+        position: relative;
+
+        span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: $yugo-red;
+            border-radius: 5px; // Rounded caps for the "ink" look
+            transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
+            transform-origin: center;
+
+            @media (max-width: 991px) {
+                width: 24px; // 10% larger on mobile
+            }
+        }
+    }
+
+    // --- 3. THE ACTIVE "X" STATE ---
+    &.is-active {
+        .hamburger {
+            span:first-child {
+                transform: translateY(4.25px) rotate(45deg);
+            }
+            span:last-child {
+                transform: translateY(-4.25px) rotate(-45deg);
+            }
+        }
+    }
+}
+
+

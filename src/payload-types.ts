@@ -112,10 +112,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-settings': SiteSetting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -292,6 +294,8 @@ export interface Media {
     };
     [k: string]: unknown;
   } | null;
+  _key?: string | null;
+  prefix?: string | null;
   folder?: (number | null) | FolderInterface;
   updatedAt: string;
   createdAt: string;
@@ -306,6 +310,7 @@ export interface Media {
   focalY?: number | null;
   sizes?: {
     thumbnail?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -314,6 +319,7 @@ export interface Media {
       filename?: string | null;
     };
     square?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -322,6 +328,7 @@ export interface Media {
       filename?: string | null;
     };
     small?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -330,6 +337,7 @@ export interface Media {
       filename?: string | null;
     };
     medium?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -338,6 +346,7 @@ export interface Media {
       filename?: string | null;
     };
     large?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -346,6 +355,7 @@ export interface Media {
       filename?: string | null;
     };
     xlarge?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -354,6 +364,7 @@ export interface Media {
       filename?: string | null;
     };
     og?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -1226,6 +1237,8 @@ export interface PostsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   caption?: T;
+  _key?: T;
+  prefix?: T;
   folder?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1244,6 +1257,7 @@ export interface MediaSelect<T extends boolean = true> {
         thumbnail?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1254,6 +1268,7 @@ export interface MediaSelect<T extends boolean = true> {
         square?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1264,6 +1279,7 @@ export interface MediaSelect<T extends boolean = true> {
         small?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1274,6 +1290,7 @@ export interface MediaSelect<T extends boolean = true> {
         medium?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1284,6 +1301,7 @@ export interface MediaSelect<T extends boolean = true> {
         large?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1294,6 +1312,7 @@ export interface MediaSelect<T extends boolean = true> {
         xlarge?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1304,6 +1323,7 @@ export interface MediaSelect<T extends boolean = true> {
         og?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -1690,6 +1710,45 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Global links, contact info, and social profiles used across the header, footer, and megamenu.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  belgrade?: {
+    instagram?: string | null;
+    facebook?: string | null;
+    tripadvisor?: string | null;
+    googleReviews?: string | null;
+    address?: string | null;
+    phone?: string | null;
+    email?: string | null;
+  };
+  sarajevo?: {
+    instagram?: string | null;
+    facebook?: string | null;
+    tripadvisor?: string | null;
+    googleReviews?: string | null;
+    address?: string | null;
+    phone?: string | null;
+    email?: string | null;
+  };
+  site?: {
+    /**
+     * Recommended: 32×32 .ico or 64×64 .png
+     */
+    favicon?: (number | null) | Media;
+    /**
+     * The video that plays inside the vintage TV on the homepage.
+     */
+    youtubeVideoUrl?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1730,6 +1789,43 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  belgrade?:
+    | T
+    | {
+        instagram?: T;
+        facebook?: T;
+        tripadvisor?: T;
+        googleReviews?: T;
+        address?: T;
+        phone?: T;
+        email?: T;
+      };
+  sarajevo?:
+    | T
+    | {
+        instagram?: T;
+        facebook?: T;
+        tripadvisor?: T;
+        googleReviews?: T;
+        address?: T;
+        phone?: T;
+        email?: T;
+      };
+  site?:
+    | T
+    | {
+        favicon?: T;
+        youtubeVideoUrl?: T;
       };
   updatedAt?: T;
   createdAt?: T;

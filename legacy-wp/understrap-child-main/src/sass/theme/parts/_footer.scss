@@ -1,0 +1,197 @@
+
+
+// Target Chrome/Safari specifically to make the reserved track invisible
+//html.modal-active::-webkit-scrollbar {
+//    width: 15px; // Standard width
+//}
+
+html.modal-active::-webkit-scrollbar-track {
+    // Make the track match the modal background
+    background: transparent; 
+}
+
+html.modal-active::-webkit-scrollbar-thumb {
+    // Make the 'handle' disappear
+    background: transparent;
+}
+
+body.modal-active {
+    // Ensure the body doesn't have a background color that conflicts
+    background: transparent !important;
+	overflow: hidden !important;
+    height: 100vh !important;
+    // We use 'fixed' to stop the underlying page from moving AT ALL...
+    position: fixed;
+    width: 100%;
+	
+	}
+
+
+
+
+//FOOTER DEFINITIONS
+
+$yugo-cream: #FCF9EB;
+$yugo-black: #212121;
+
+.yugo-main-footer {
+    background: url('../images/texture-red.webp') center center / cover no-repeat; 
+    padding: 40px 0 0;
+    position: relative;
+    overflow: hidden;
+    font-family: $font-family-fakt;
+
+
+    // --- TYPOGRAPHY ---
+    p, a, span, .address-block, .footer-bottom p {
+        color: $yugo-cream !important;
+        text-decoration: none !important;
+        font-size: 1.0rem !important; 
+        line-height: 1.4;
+        margin: 0;
+
+        // "Large Text" shift now happens at 402px
+        @media (min-width: 402px) {
+            font-size: 1.1rem !important;
+        }
+    }
+
+    .phone-no {
+        display: inline-block !important;
+        white-space: nowrap !important;
+    }
+
+    h5 {
+        font-weight: bold !important;
+        font-size: 0.8rem;
+		letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.35) !important;
+        margin: 0 0 1.6rem 0; 
+        line-height: 1;
+
+        @media (min-width: 402px) {
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+    }
+
+    // --- GRID LAYOUT ---
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr; 
+        gap: 40px 20px;
+        align-items: start;
+
+        @media (min-width: 992px) {
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+    }
+
+    // --- COLUMN ALIGNMENT TUNING ---
+    
+    // Mobile-Only Shove for Navigate
+    @media (max-width: 991px) {
+        .navigate-col {
+            margin-top: 71px; // Aligns with logo baseline on mobile
+        }
+    }
+
+    // Restore Desktop Alignments
+    @media (min-width: 992px) {
+        .brand-col { 
+            margin-top: 55px; 
+        }
+        .navigate-col, .content-col { 
+            margin-top: 120px; // Both synced back to original height
+        }
+    }
+    // -----------------------------------
+
+    .footer-logo {
+        width: 165px;
+        margin-bottom: 2rem;
+        @media (min-width: 992px) {
+            width: 190px;
+            margin-top: -16px;
+            margin-bottom: 2.2rem;
+        }
+    }
+
+    ul.footer-links {
+        list-style: none !important;
+        padding: 0;
+        margin: 0;
+        li { 
+            margin-bottom: 1.2rem;
+            @media (min-width: 992px) { margin-bottom: 1.55rem; }
+        }
+        a {
+            transition: border-color 0.2s ease-in-out;
+            border-bottom: 1.5px solid transparent;
+            &:hover { border-bottom: 1.5px solid $yugo-cream !important; }
+        }
+    }
+
+    .address-spacer { margin-top: 1.8rem; }
+
+    // --- ASSETS & ICONS ---
+    .qr-desktop {
+        width: 105px; 
+        mix-blend-mode: multiply;
+        margin-top: 20px;
+    }
+
+    .custom-icon { width: 2rem; height: auto; }
+    
+    .review-icons, .icons {
+        display: flex;
+        gap: 15px;
+        margin: 8px 0 15px;
+        align-items: center;
+        i { font-size: 1.8rem; }
+        @media (min-width: 992px) { 
+            gap: 22px; 
+            i { font-size: 2.1rem; }
+        }
+    }
+
+    .jugotura-stamp {
+        position: absolute;
+        right: 0;
+        bottom: 20px;
+        width: 280px;
+        transform: translateX(15%);
+        opacity: 0.6;
+        @media (min-width: 992px) {
+            width: 360px;
+            transform: translateX(12%);
+            opacity: 1;
+        }
+    }
+
+    .footer-bottom {
+        margin-top: 40px;
+        padding-bottom: 30px;
+        p { color: rgba(0, 0, 0, 0.35) !important; }
+    }
+
+    // --- GAP REMOVAL ---
+    .footer-black-bar {
+        height: 30px;
+        background: $yugo-black;
+        width: 100%;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: -10px; 
+    }
+}
+
+#wrapper-footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    background-color: $yugo-black; 
+}

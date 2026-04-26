@@ -1,0 +1,20 @@
+@keyframes yugo-flicker {
+  0%   { opacity: 0.91; }
+  50%  { opacity: 0.94; } // Subtle analog "buzz"
+  100% { opacity: 0.89; }
+}
+
+@keyframes yugo-jitter {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-0.6px, -0.2px); }
+  20%  { transform: translate(0.4px, 0.3px); }
+  30%  { transform: translate(-0.2px, -0.4px); }
+  40%  { transform: translate(0.3px, 0.5px); }
+  50%  { transform: translate(-0.4px, 0.4px); }
+  60%  { transform: translate(0.4px, -0.3px); }
+  70%  { transform: translate(-0.4px, 0.2px); }
+  80%  { transform: translate(0.3px, -0.4px); }
+  90%  { transform: translate(-0.6px, 0.3px); }
+  100% { transform: translate(0, 0); }
+}
+

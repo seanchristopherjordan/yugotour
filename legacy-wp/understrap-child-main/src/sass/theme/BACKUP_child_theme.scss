@@ -1,0 +1,996 @@
+@media (max-width: 767px) {
+    .container, 
+    .container-fluid {
+        // Bootstrap default is usually 15px; shifting to 17px 
+        // to give that extra 2px "breathing room" on each side.
+        padding-right: 17px !important;
+        padding-left: 17px !important;
+    }
+}
+
+// =============================================================================
+// YUGOTOUR TAKEOVER MODAL & HEADER 
+// =============================================================================
+
+
+// =============================================================================
+// GLOBAL ANIMATIONS
+// =============================================================================
+@keyframes yugo-flicker {
+  0%   { opacity: 0.91; }
+  50%  { opacity: 0.94; } // Subtle analog "buzz"
+  100% { opacity: 0.89; }
+}
+
+@keyframes yugo-jitter {
+  0%   { transform: translate(0, 0); }
+  10%  { transform: translate(-0.6px, -0.2px); }
+  20%  { transform: translate(0.4px, 0.3px); }
+  30%  { transform: translate(-0.2px, -0.4px); }
+  40%  { transform: translate(0.3px, 0.5px); }
+  50%  { transform: translate(-0.4px, 0.4px); }
+  60%  { transform: translate(0.4px, -0.3px); }
+  70%  { transform: translate(-0.4px, 0.2px); }
+  80%  { transform: translate(0.3px, -0.4px); }
+  90%  { transform: translate(-0.6px, 0.3px); }
+  100% { transform: translate(0, 0); }
+}
+
+body {
+    // Force the dark charcoal across the board
+    color: #212121 !important; 
+}
+
+// Ensure headers don't override back to #000
+h1, h2, h3, h4, h5, h6, p, li, span {
+    color: #212121;
+}
+
+
+// MOBILE & TABLET
+@media (max-width: 991px) {
+    .modal-image-split {
+        display: none !important;
+    }
+
+    .modal-nav-body {
+        width: 100% !important;
+        text-align: left; 
+        padding: 4rem 2rem;
+    }
+}
+
+// DESKTOP
+@media (min-width: 992px) {
+    .modal-content-wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .modal-image-split {
+        display: block;
+        width: 50%;
+    }
+    
+    .modal-nav-body {
+        width: 50%;
+    }
+}
+
+.yugo-takeover-modal {
+    position: fixed;
+    top: 0; left: 0;
+    // FIX 2: Changed from 100vw to 100% to stop mobile overflow/jumps
+    width: 100%; 
+    height: 100vh;
+	overflow: hidden;
+    overflow-x: hidden;
+    background: url('../images/texture-blue.webp') center/cover no-repeat;
+    z-index: 10000;
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 600ms ease, visibility 600ms ease;
+
+    &.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-image-split {
+        position: relative;
+        width: 50%;
+        height: 100vh; 
+        background-color: #000;
+        overflow: hidden;
+
+        .active-preview-img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            pointer-events: none; 
+            transition: opacity 600ms ease-in-out;
+        }
+
+        .default-bg {
+            background-image: url('../images/menu-default.webp');
+            z-index: 1;
+            opacity: 1; 
+        }
+
+        .hover-layer {
+            z-index: 2;
+            opacity: 0; 
+
+            &.is-active {
+                opacity: 1;
+                z-index: 3; 
+            }
+        }
+    }
+
+    .modal-content-wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+		max-width: 100%;
+        overflow: hidden;
+    }
+
+    // --- HEADER PERSISTENCE ---
+    .modal-header-mimic {
+        position: absolute;
+        top: 0; right: 0;
+        height: 3.4vh;
+        min-height: 42px;
+		overflow: hidden !important;
+        display: flex;
+        align-items: center;
+		justify-content: flex-end;
+        // FIX 3: Locked to 20px to match .container-fluid exactly
+        padding-right: 20px; 
+		z-index: 10010;
+        
+        @media (min-width: 992px) {
+            padding-right: 30px; // Match desktop header padding
+        }
+    }
+
+    // Restore the nested trigger logic for the modal state
+    .menu-trigger {
+        height: 24px;
+		background: none; border: none; display: flex; align-items: center;
+        align-items: center;
+		
+        .menu-text {
+            color: #fdfaf0 !important; 
+            margin-right: 8px;
+            font-family: $font-family-grotesk;
+            font-weight: 300; 
+            font-size: 1.1rem;
+            @media (max-width: 991px) { font-size: 1.3rem; }
+        }
+
+        .hamburger {
+            height: 20px;
+			overflow: visible;
+			display: flex; flex-direction: column; gap: 6px;
+            span {
+                background: #fdfaf0 !important;
+                width: 20px; height: 2.5px; border-radius: 5px;
+                transition: transform 0.3s ease;
+            }
+        }
+
+        &.is-active .hamburger {
+            span:first-child { transform: translateY(4.25px) rotate(45deg); }
+            span:last-child { transform: translateY(-4.25px) rotate(-45deg); }
+        }
+    }
+}
+
+ // --- BOTTOM ALIGNED CONTENT ---
+.modal-nav-body {
+	margin-top: auto;	
+    
+    /* RESPONSIVE PADDING:
+       - Min: 20px (Mobile)
+       - Scaler: 6vw (Grows with the screen)
+       - Max: 80px (Big Desktop)
+    */
+    padding-left: clamp(32px, 6vw, 94px);
+    
+    /* Keeping top/right/bottom padding static or adjusted */
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    display: flex;
+    flex-direction: column;
+
+    .main-links {
+        list-style: none; 
+        padding: 0; 
+        margin: 0 0 50px 0;
+
+        li {
+            /* LOOSER LEADING: 25% increase in vertical gap */
+            margin-bottom: 1.3rem; 
+            line-height: 1.0;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        a {
+            font-family: "Job Clarendon", serif;
+            font-weight: 700;
+            /* RESPONSIVE FONT SIZE:
+               - Min: 2.6rem (Perfect for 15" Laptop)
+               - Scaler: 4vw (Shrinks faster as screen narrows)
+               - Max: 5.5rem (Full size for 24" Monitor)
+            */
+            //font-size: clamp(3.4rem, 2rem + 3.5vw, 4.6rem);  
+            font-size: clamp(3.4rem, 1rem + 3.5vw, 5.5rem); 
+			color: #FCF9EB;
+            text-decoration: none;
+			white-space: nowrap;
+			letter-spacing: 0.03rem; 
+            transition: color 300ms ease;
+            text-transform: lowercase;
+
+            &:hover { 
+                color: $yugo-red; 
+            }
+        }
+    }
+
+
+// --- THE BASEMENT: LINKS + CITIES + ICONS ---
+
+// 1. Shared variables for pixel-perfect leading
+$secondary-gap-v: 1.5rem; // The vertical "Leading"
+$secondary-gap-h: 40px;  // The horizontal "Spine"
+$fakt-size: 1.2rem;
+// 1. Define a fixed "Spine" width for the first column
+$col-width: 140px; 
+$gap-h: 1px; 
+$tight-leading: 0.5rem; // Tight gap for City -> Icons
+$row-leading: 1.4rem;   // Gap for Link -> Link and Link -> City
+
+
+.secondary-links-grid {
+    display: grid;
+    grid-template-columns: $col-width $col-width; 
+    column-gap: $gap-h;
+    row-gap: $row-leading;
+    margin-bottom: $row-leading; // The exact gap between FAQs and Belgrade
+    overflow: hidden; // Prevent any internal text from pushing the box wider
+
+    a {
+        font-family: $font-family-fakt;
+        font-size: $fakt-size;
+        color: #fdfaf0;
+        line-height: 1.4;
+		text-decoration: none;
+        text-transform: none; // Kill all-caps
+        &:hover { color: $yugo-red; }
+		transition: color 0.2s; 
+    }
+}
+
+.social-footer {
+    display: flex;
+    gap: $gap-h;
+
+    .social-group {
+        flex: 0 0 $col-width;
+
+        span {
+            display: block; 
+            font-family: $font-family-fakt;
+            font-size: 1.2rem; // Match Contact/Blog size
+            line-height: 1.2;      // Match Contact/Blog leading
+            color: #a6b0b1; 
+            text-transform: none;  // Kill all-caps
+            margin-bottom: 0.2rem;
+        }
+
+        .icons {
+            display: flex; 
+            gap: 25px;
+			}
+			
+            a i { 
+                color: #a6b0b1; 
+                font-size: 2.4rem; 
+                text-decoration: none;
+                transition: color 0.2s;                
+                &:hover { color: $yugo-red; opacity: 1; }
+            }
+        }
+    }
+}
+
+
+
+
+.yugotour-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    
+    // --- "ON TOP" LOGIC ---
+    // 9999 ensures it stays above Gutenberg blocks, 
+    // popups, and the red brutalist image blocks.
+    z-index: 9999 !important; 
+    
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    // Crucial: allow the logo to "spill out" over the page content
+    overflow: visible !important; 
+
+    &.nav-hidden {
+        transform: translateY(calc(-100% - 40px));
+    }
+}
+
+.yugotour-nav {
+    height: 3.4vh;
+    min-height: 42px;
+    background-image: url('../images/texture-cream.webp');
+    background-size: cover;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    position: relative; // Absolute anchor for the logo
+    display: flex;
+    align-items: center;
+    overflow: visible !important;
+	box-shadow: inset 0 10px 12px -10px rgba(0, 0, 0, 0.2);
+	//border-top: 1px solid rgba(0, 0, 0, 0.2);
+
+    .container-fluid {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end; // Pushes links/menu to the right
+        
+		// Mobile-first: start with 15px or 20px
+        padding-left: 0px; 
+        padding-right: 20px; 
+
+        // Scale up to 30px only on Desktop
+        @media (min-width: 992px) {
+            padding-left: 0; 
+            padding-right: 30px;
+		}
+	}	
+    }
+
+    // --- 1. THE LOGO (Independent of Container) ---
+    .yugo-logo-link {
+        position: absolute;
+        top: 0;
+        left: 15px; // Strictly 15px from the viewport left
+        @media (min-width: 992px) { left: 25px; }
+		z-index: 1040;
+        line-height: 0;
+
+        img {
+            width: 90px;
+            @media (min-width: 992px) { width: 96px; }
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.24));
+            // Ensure it sits on top of the bar
+            transform: translateY(0); 
+        }
+    }
+
+    // --- 2. THE LINKS (Wider Spacing) ---
+    .desktop-links a {
+        margin-right: 50px; // Increased horizontal air
+        font-family: $font-family-grotesk;
+        color: $yugo-red !important;
+        text-transform: none;
+        text-decoration: none;
+        font-size: 1.1rem;
+        position: relative;
+        font-weight: 300;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: -2px; left: 0;
+            background-color: $yugo-red;
+            transition: width 0.3s ease;
+        }
+        &:hover::after { width: 100%; }
+    }
+
+    // --- 3. THE MENU (Tightened to Icon) ---
+.menu-trigger {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0;
+    position: relative; // Anchor for the shared underline
+    text-decoration: none;
+
+    // --- 1. THE SHARED UNDERLINE ---
+    &::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -4px; // Sits below the text and the icon
+        left: 0;
+        background-color: $yugo-red;
+        transition: width 0.3s ease-in-out;
+    }
+
+    &:hover::after {
+        width: 100%; // Spans the entire trigger unit
+    }
+
+    .menu-text {
+        margin-right: 8px;
+        font-family: $font-family-grotesk;
+        color: $yugo-red !important;
+        font-size: 1.1rem;
+        font-weight: 300;
+        line-height: 1;
+
+        @media (max-width: 991px) {
+            font-size: 1.3rem; // 12% larger on mobile
+        }
+    }
+
+    // --- 2. THE HAMBURGER & MORPH ---
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px; 
+        width: 22px;
+        height: 20px;
+        position: relative;
+
+        span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: $yugo-red;
+            border-radius: 5px; // Rounded caps for the "ink" look
+            transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
+            transform-origin: center;
+
+            @media (max-width: 991px) {
+                width: 24px; // 10% larger on mobile
+            }
+        }
+    }
+
+    // --- 3. THE ACTIVE "X" STATE ---
+    &.is-active {
+        .hamburger {
+            span:first-child {
+                transform: translateY(4.25px) rotate(45deg);
+            }
+            span:last-child {
+                transform: translateY(-4.25px) rotate(-45deg);
+            }
+        }
+    }
+}
+
+
+
+
+
+//HERE BE FOOTER CODE
+
+html {
+    // 1. Keep the gutter for stability
+    scrollbar-gutter: stable !important;
+    // 2. Set the background of the 'html' to match your texture/dark blue
+    // This ensures the "gap" isn't white
+    background-color: #1e4562; // Use your darkest blue from the texture
+}
+
+// Target Chrome/Safari specifically to make the reserved track invisible
+html.modal-active::-webkit-scrollbar {
+    width: 15px; // Standard width
+}
+
+html.modal-active::-webkit-scrollbar-track {
+    // Make the track match the modal background
+    background: transparent; 
+}
+
+html.modal-active::-webkit-scrollbar-thumb {
+    // Make the 'handle' disappear
+    background: transparent;
+}
+
+body.modal-active {
+    // Ensure the body doesn't have a background color that conflicts
+    background: transparent !important;
+	overflow: hidden !important;
+    height: 100vh !important;
+    // We use 'fixed' to stop the underlying page from moving AT ALL...
+    position: fixed;
+    width: 100%;
+	
+	}
+
+
+
+
+//FOOTER DEFINITIONS
+
+$yugo-cream: #FCF9EB;
+$yugo-black: #212121;
+
+.yugo-main-footer {
+    background: url('../images/texture-red.webp') center center / cover no-repeat; 
+    padding: 40px 0 0;
+    position: relative;
+    overflow: hidden;
+    font-family: $font-family-fakt;
+
+
+    // --- TYPOGRAPHY ---
+    p, a, span, .address-block, .footer-bottom p {
+        color: $yugo-cream !important;
+        text-decoration: none !important;
+        font-size: 1.0rem !important; 
+        line-height: 1.4;
+        margin: 0;
+
+        // "Large Text" shift now happens at 402px
+        @media (min-width: 402px) {
+            font-size: 1.1rem !important;
+        }
+    }
+
+    .phone-no {
+        display: inline-block !important;
+        white-space: nowrap !important;
+    }
+
+    h5 {
+        font-weight: bold !important;
+        font-size: 0.8rem;
+		letter-spacing: 1px;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.35) !important;
+        margin: 0 0 1.6rem 0; 
+        line-height: 1;
+
+        @media (min-width: 402px) {
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+    }
+
+    // --- GRID LAYOUT ---
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr; 
+        gap: 40px 20px;
+        align-items: start;
+
+        @media (min-width: 992px) {
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+    }
+
+    // --- COLUMN ALIGNMENT TUNING ---
+    
+    // Mobile-Only Shove for Navigate
+    @media (max-width: 991px) {
+        .navigate-col {
+            margin-top: 71px; // Aligns with logo baseline on mobile
+        }
+    }
+
+    // Restore Desktop Alignments
+    @media (min-width: 992px) {
+        .brand-col { 
+            margin-top: 55px; 
+        }
+        .navigate-col, .content-col { 
+            margin-top: 120px; // Both synced back to original height
+        }
+    }
+    // ---------------------------------
+
+    .footer-logo {
+        width: 165px;
+        margin-bottom: 2rem;
+        @media (min-width: 992px) {
+            width: 190px;
+            margin-top: -16px;
+            margin-bottom: 2.2rem;
+        }
+    }
+
+    ul.footer-links {
+        list-style: none !important;
+        padding: 0;
+        margin: 0;
+        li { 
+            margin-bottom: 1.2rem;
+            @media (min-width: 992px) { margin-bottom: 1.55rem; }
+        }
+        a {
+            transition: border-color 0.2s ease-in-out;
+            border-bottom: 1.5px solid transparent;
+            &:hover { border-bottom: 1.5px solid $yugo-cream !important; }
+        }
+    }
+
+    .address-spacer { margin-top: 1.8rem; }
+
+    // --- ASSETS & ICONS ---
+    .qr-desktop {
+        width: 105px; 
+        mix-blend-mode: multiply;
+        margin-top: 20px;
+    }
+
+    .custom-icon { width: 1.8rem; height: auto; }
+    
+    .review-icons, .icons {
+        display: flex;
+        gap: 15px;
+        margin: 8px 0 15px;
+        align-items: center;
+        i { font-size: 1.8rem; }
+        @media (min-width: 992px) { 
+            gap: 22px; 
+            i { font-size: 2.1rem; }
+        }
+    }
+
+    .jugotura-stamp {
+        position: absolute;
+        right: 0;
+        bottom: 20px;
+        width: 280px;
+        transform: translateX(15%);
+        opacity: 0.6;
+        @media (min-width: 992px) {
+            width: 360px;
+            transform: translateX(12%);
+            opacity: 1;
+        }
+    }
+
+    .footer-bottom {
+        margin-top: 40px;
+        padding-bottom: 30px;
+        p { color: rgba(0, 0, 0, 0.35) !important; }
+    }
+
+    // --- GAP REMOVAL ---
+    .footer-black-bar {
+        height: 30px;
+        background: $yugo-black;
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: -10px; 
+    }
+}
+
+#wrapper-footer {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    background-color: $yugo-black; 
+}
+
+// --- HERO VIDEO MODULE ---
+
+.hero-video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    background-color: #000;
+
+    // FIX: Shove the whole module up slightly to hide the gap
+    margin-top: -8px; 
+    
+    // Ensure the height compensates so we don't see the bottom gap
+    padding-top: 8px; 
+}
+
+.hero-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    
+    // Safety scale: a 1.01 scale ensures the edges 
+    // always hit the container boundaries.
+    transform: scale(1.01); 
+}
+
+.hero-logo-overlay {
+    position: absolute;
+    z-index: 10; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	will-change: transform;
+    pointer-events: none; // Clicks pass through to video/underlying elements
+
+    img {
+        // Mobile sizing (80%)
+        width: 80vw;
+        height: auto;
+
+        // Desktop sizing (35%)
+        @media (min-width: 992px) {
+            width: 35vw;
+        }
+    }
+}
+
+// Ensure the standard wrapper below the hero doesn't have 
+// an accidental margin-top that breaks the flow.
+#front-page-wrapper {
+    padding-top: 0;
+}
+
+
+.hero-logo-overlay {
+    position: absolute;
+    z-index: 10; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+
+    img {
+        // Mobile sizing
+        width: 80vw;
+        height: auto;
+
+        // --- 70s BROADCAST EFFECT ---
+        // 1. The Soft Edge + High-Contrast Glow
+        filter: blur(0.7px) 
+                brightness(1.1) 
+                drop-shadow(0 0 6px rgba($yugo-cream, 0.4));
+
+        // 2. The Knocked-out Blend
+        mix-blend-mode: screen;
+
+        // 3. The Analog Vibration
+        opacity: 0.8;
+        animation: yugo-flicker 0.15s infinite,
+                   yugo-jitter 0.2s infinite;
+		
+
+        // 4. Performance Optimization
+        will-change: filter, opacity, transform;
+		
+	
+
+        @media (min-width: 992px) {
+            width: 35vw;
+            // Slightly crispier on desktop.
+            filter: blur(0.8px) brightness(1.04) drop-shadow(0 0 4px rgba($yugo-cream, 0.3));
+			animation: yugo-flicker 0.15s infinite,
+                       yugo-jitter 0.3s infinite;
+        }
+    }
+}
+
+// --- INTRO SECTION: YUGO CREAM COMPOSITION ---
+
+// GLOBAL UTILITY - DO NOT MANGLE
+.yugo-red-link {
+    display: inline-block;
+    position: relative;
+    top: -1px;
+    background: url('../images/texture-red.webp') center center;
+    background-size: cover;
+    color: #FCF9EB !important; // $yugo-cream
+    font-size: 1rem;
+    letter-spacing: 0.01rem;
+    padding: 0 5px;
+    height: 1.15em;
+    line-height: 1.3em;
+    text-decoration: none !important;
+    font-weight: bold;
+    vertical-align: middle;
+    transition: filter 200ms ease-in-out;
+
+    &:hover {
+        filter: brightness(1.2);
+        color: #FCF9EB !important;
+        text-decoration: none !important;
+    }
+}
+
+.intro-module {
+    $yugo-cream: #FCF9EB;
+    $yugo-red: #C6363C;
+    $yugo-black: #212121;
+
+    position: relative;
+    padding: 2vh 0; 
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $yugo-cream;
+    overflow: hidden;
+
+    .spomenik-bg {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        pointer-events: none;
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; // Ensures full vertical/horizontal coverage
+            object-position: right center;
+            opacity: 0.8; // Global opacity set to 0.8
+        }
+
+        @media (min-width: 992px) {
+            left: auto;
+            right: 0;
+            width: 60%; // Expanded slightly to ensure no gaps
+        }
+    }
+
+    .container { position: relative; z-index: 10; }
+
+    // 1. HEADLINE: Mobile +25% Size and Leading
+    .staggered-headline {
+        font-family: 'TungstenCompressed', sans-serif;
+        text-transform: uppercase;
+        padding-top: 27px;
+        
+        // Centering Logic for Mobile
+        display: table;
+        margin: 0 auto; 
+        text-align: left;
+        transform: rotate(-1deg);
+        transform-origin: center center;
+
+        // 1. MOBILE SPACING: 25px gap to body text
+        margin-bottom: 30px; 
+
+        line-height: 0.75; 
+
+        .line-1 { 
+            font-size: clamp(6rem, 18vw, 11.5rem); 
+            display: block; 
+            color: $yugo-black; 
+        }
+        .line-2 { 
+            font-size: clamp(6rem, 18vw, 11.5rem);
+            color: $yugo-red;
+            padding-left: 12vw; 
+            
+            @media (min-width: 992px) { 
+                padding-left: 92px; 
+            }
+        }
+
+        // Desktop Reset
+        @media (min-width: 992px) {
+            display: block;        
+            margin: 0;             
+            margin-bottom: 0.5rem; // Restore tight desktop spacing
+            transform-origin: left center;
+            .line-1, .line-2 { font-size: 11.5rem; }
+        }
+    }
+
+    // 2. SPACING: Headline to Body (+25px on mobile)
+    .intro-copy-wrapper {
+        margin-bottom: 25px; 
+        @media (min-width: 992px) { margin-bottom: 0px; }
+    }
+
+    .intro-text-1-container {
+        padding-left: 0;
+        @media (min-width: 992px) { padding-left: 95px; }
+    }
+
+    .intro-text-1, .how-it-works p, .how-it-works li {
+        width: 100%;
+        max-width: 100%;
+        line-height: 1.4;
+        color: $yugo-black;
+        margin-bottom: 0.1rem;
+
+        font-size: 1.05rem; // 300-400px
+        @media (min-width: 400px) { font-size: 1.2rem; } // 400-992px
+        @media (min-width: 992px) {
+            width: 720px;
+            max-width: 130%;
+            font-size: 1.3rem;
+            line-height: 1.5;
+        }
+    }
+
+    // 3 & 4. CARS: +25px spacing and 100% width on mobile
+    .yugo-car-display {
+        display: block;
+        margin: 18px auto; // Vertical spacing boost
+        
+        img { 
+            width: 104%; // Target for 320px-600px
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+
+            @media (min-width: 601px) { max-width: 85%; }
+            @media (min-width: 992px) { 
+                max-width: 75%; 
+                margin: 0.25rem auto; // Tight desktop spacing
+            }
+        }
+    }
+
+    .how-it-works {
+        margin-top: 0;
+        padding-left: 0;
+        @media (min-width: 992px) {
+            margin-top: -95px;
+            padding-left: 200px;
+        }
+        .how-it-works-title { margin-bottom: 0.25rem; }
+    }
+
+    .yugo-bullets {
+        list-style: none;
+        padding: 0;
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: calc(0.25rem - 4px); 
+            span { 
+                color: $yugo-red; 
+                margin-right: 12px; 
+                font-size: 1.1em;
+                line-height: 1;
+            }
+        }
+    }
+}

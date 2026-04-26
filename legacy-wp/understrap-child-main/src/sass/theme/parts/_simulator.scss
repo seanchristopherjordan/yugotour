@@ -1,0 +1,328 @@
+// ============================================================
+// YUGOTOUR SIMULATOR MODULE
+// ============================================================
+
+
+
+.yugo-simulator-module {
+    position: relative;
+    width: 100%;
+    left: 50%;
+    margin-left: -50vw;
+    overflow: hidden;
+    background: #212121;
+}
+
+// --- BLACK BARS ---
+.sim-black-bar {
+    width: 100%;
+    height: 25px;
+    background: #212121;
+    position: relative;
+    z-index: 1;
+}
+
+
+// ============================================================
+// BACKGROUND WRAP
+// This is the sizing anchor for everything.
+// All content overlays this via position: absolute.
+// ============================================================
+
+.sim-bg-wrap {
+    position: relative;
+    width: 100%;
+
+    // ---------------------------------------------------
+    // MOBILE: explicit height controls the module height
+    // Increase to show more background, decrease to crop
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        height: 190vw; // Adjust this to control mobile module height
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP: locks to viewport height
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        height: 100vh;
+    }
+}
+
+.sim-bg-picture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.sim-bg-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    // ---------------------------------------------------
+    // MOBILE: cover fills the height set above
+    // object-position biases which part of image shows
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        object-fit: cover;
+        object-position: center top; // top = show top of image
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP: cover + center crops evenly
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        object-fit: cover;
+        object-position: center center;
+    }
+}
+
+// ============================================================
+// CONTENT LAYER
+// Always absolutely positioned over the background.
+// ============================================================
+
+.sim-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    // ---------------------------------------------------
+    // MOBILE: vertical distribution of headline + car box
+    // justify-content controls spacing between them
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        justify-content: center;
+        padding-bottom: 16%;    // MOBILE: gap from top of module to headline
+                            // Increase to push everything down
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP: vertical distribution
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        justify-content: center;
+        padding-bottom: 0%;
+    }
+}
+
+// ============================================================
+// HEADLINE
+// ============================================================
+
+p.sim-headline {
+    color: #ffffff !important;
+    font-family: 'ZipperStd', sans-serif !important;
+}
+
+.yugo-simulator-module .sim-headline {
+    font-family: 'ZipperStd', sans-serif;
+    color: #FFFFFF !important;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    line-height: 0.85;
+    text-align: center;
+    margin: 0;
+    text-shadow:
+        0 0 10px #53FEFF,
+        0 0 5px #53FEFF;
+
+    // ---------------------------------------------------
+    // MOBILE headline size + spacing
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        font-size: clamp(5rem, 15vw, 8rem);
+        padding: 0 0px 30px;
+        white-space: normal;
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP headline size + spacing
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        font-size: clamp(4rem, 6vw, 7rem);
+        padding: 0 0 40px 0;
+        white-space: nowrap;
+    }
+}
+
+// ============================================================
+// CAR SIMULATOR BOX
+// ============================================================
+
+.sim-car-wrap {
+    position: relative;
+    overflow: hidden;
+
+    // ---------------------------------------------------
+    // MOBILE: car box width
+    // 100% = edge to edge
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        width: 100%;
+		border-top: 2px solid #53FEFF;
+		border-bottom: 2px solid #53FEFF;
+
+        // MOBILE: outer glow
+        // Format: offset-x offset-y blur color
+        // Use 0 0 for even glow on all sides
+        box-shadow: 0 0 10px 5px #53FEFF;
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP: car box width
+    // 45% ≈ 750px at 1920px wide
+    // Increase towards 100% to go edge-to-edge
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        width: 40%;
+
+        // DESKTOP: outer glow top and bottom only
+        // (sides are clipped by the module overflow: hidden)
+        border: 2px solid #53FEFF;
+		box-shadow:
+            0 0 10px 0px #53FEFF,  // top glow — increase middle value for more spread
+            0 0 10px 0px #53FEFF;  // bottom glow
+    }
+}
+
+// ============================================================
+// DRIVING VIDEO
+// ============================================================
+
+.sim-drive-video {
+    position: absolute;
+    z-index: 1;
+    pointer-events: none;
+    display: block;
+
+    // ---------------------------------------------------
+    // MOBILE: video position + size within car box
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 72%;
+        object-fit: cover;
+        object-position: center top;
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP: video position + size within car box
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 72%;
+        object-fit: cover;
+        object-position: center top;
+    }
+}
+
+// ============================================================
+// CAR INTERIOR OVERLAY
+// ============================================================
+
+.sim-car-interior {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+// ============================================================
+// STEERING WHEEL
+// ============================================================
+
+.sim-steering-wrap {
+    position: absolute;
+    z-index: 3;
+    cursor: pointer;
+
+    // ---------------------------------------------------
+    // MOBILE: steering wheel position + size
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        bottom: 2.6%;   // distance from bottom of car box
+        left: 10.9%;      // distance from left of car box
+        width: 37.4%;    // size relative to car box width
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP: steering wheel position + size
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        bottom: 2.6%;
+        left: 10.9%;
+        width: 37.4%;
+    }
+}
+
+.sim-steering-wheel {
+    width: 100%;
+    height: auto;
+    display: block;
+    animation: sim-wheel-rock 4s ease-in-out infinite;
+    transform-origin: center center;
+}
+
+// @keyframes sim-wheel-rock {
+//   0%   { transform: rotate(-8deg); }
+//    25%  { transform: rotate(8deg); }
+//    50%  { transform: rotate(-8deg); }
+//    75%  { transform: rotate(8deg); }
+//    100% { transform: rotate(-8deg); }
+//}
+
+// ============================================================
+// SOUND TOGGLE BUTTON
+// ============================================================
+
+.sim-sound-wrap {
+    position: absolute;
+    z-index: 3;
+    cursor: pointer;
+    left: 50%;
+    transform: translateX(-50%);
+
+    // ---------------------------------------------------
+    // MOBILE: sound button position + size
+    // ---------------------------------------------------
+    @media (max-width: 991px) {
+        bottom: 1%;    // distance from bottom of car box
+        width: 12%;    // size relative to car box width
+    }
+
+    // ---------------------------------------------------
+    // DESKTOP: sound button position + size
+    // ---------------------------------------------------
+    @media (min-width: 992px) {
+        bottom: 1%;
+        width: 7%;
+    }
+}
+
+.sim-sound-btn {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 300ms ease;
+
+    &:hover {
+        transform: scale(1.15);
+    }
+}
+

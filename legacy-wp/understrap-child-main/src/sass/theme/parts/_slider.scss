@@ -1,0 +1,129 @@
+/* --- 1. GLOBAL MODULE RESET --- */
+#tour-carousel-module.yugo-full-width,
+#tour-list-carousel-module.yugo-full-width {
+    background-color: $yugo-black !important;
+    border-top: 20px solid $yugo-black !important;
+    border-bottom: 20px solid $yugo-black !important;
+    width: 100vw !important;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw !important;
+    padding: 0 !important;
+    overflow: hidden;
+
+    /* DESKTOP HEIGHT LOCK */
+    height: 80vh !important;
+    max-height: 80vh !important;
+
+    .metaslider, .flexslider, .flex-viewport, .slides {
+        height: 100% !important;
+    }
+
+    .slides li {
+        height: 80vh !important;
+    }
+
+    .slides li img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center center !important;
+    }
+}
+
+/* --- 2. DESKTOP REFINEMENTS (all sliders) --- */
+@media (min-width: 992px) {
+    #tour-carousel-module.yugo-full-width,
+    #tour-list-carousel-module.yugo-full-width {
+
+        [id^="metaslider_"] {
+            .flexslider { overflow: visible !important; }
+            .flex-viewport { overflow: visible !important; }
+
+            /* ARROWS: VERTICALLY CENTERED */
+            .flex-direction-nav a {
+                display: block !important;
+                position: absolute !important;
+                top: 50% !important;
+                margin-top: -30px !important;
+                z-index: 9999 !important;
+                width: 60px !important;
+                height: 60px !important;
+                background-color: rgba(33, 33, 33, 0.8) !important;
+                border-radius: 50% !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+                background-size: 24px !important;
+                text-indent: -9999px !important;
+                transition: all 0.3s ease;
+                &:hover { background-color: $yugo-red !important; }
+            }
+
+            /* ARROWS */
+            .flex-prev {
+                left: 40px !important;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23FCF9EB' d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H109.2l105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z'/%3E%3C/svg%3E") !important;
+            }
+            .flex-next {
+                right: 40px !important;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23FCF9EB' d='M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h306.7L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E") !important;
+            }
+
+            /* DOTS */
+            .flex-control-nav {
+                display: flex !important;
+                justify-content: center !important;
+                position: absolute !important;
+                bottom: 75px !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                z-index: 10001 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                list-style: none !important;
+
+                li { margin: 0 2px !important; display: inline-block !important; }
+                li a {
+                    display: block !important;
+                    width: 10px !important;
+                    height: 10px !important;
+                    background: $yugo-cream !important;
+                    opacity: 0.5 !important;
+                    border-radius: 50% !important;
+                    text-indent: -9999px !important;
+                    &.flex-active { background: $yugo-red !important; opacity: 1 !important; }
+                }
+            }
+        }
+    }
+}
+
+/* --- 3. MOBILE ONLY --- */
+
+
+@media (max-width: 991px) {
+    #tour-carousel-module.yugo-full-width,
+    #tour-list-carousel-module.yugo-full-width {
+        height: 75vh !important;
+        .metaslider, .flexslider, .flex-viewport { overflow: hidden !important; touch-action: pan-y !important; }
+        .slides li { width: 100vw !important; height: 75vh !important; margin-right: 0 !important; float: left !important; }
+        .slides li img { object-fit: cover !important; }
+        .flex-direction-nav { display: none !important; }
+        .flex-control-nav {
+            display: flex !important; flex-direction: row !important; justify-content: center !important; align-items: center !important;
+            position: absolute !important; bottom: 60px !important; left: 0 !important; right: 0 !important; width: 100% !important;
+            z-index: 10000 !important; margin: 0 auto !important; padding: 0 !important; list-style: none !important;
+            li { margin: 0 1px !important; display: inline-block !important; }
+            li a { display: block !important; width: 9px !important; height: 9px !important; background: $yugo-cream !important; opacity: 0.7 !important; border-radius: 50% !important; text-indent: -9999px !important; &.flex-active { background: $yugo-red !important; opacity: 1 !important; } }
+            .flex-direction-nav {
+                display: none !important;
+                visibility: hidden !important;
+                opacity: 0 !important;
+                height: 0 !important;
+                width: 0 !important;
+                overflow: hidden !important;
+            }
+        }
+    }
+}

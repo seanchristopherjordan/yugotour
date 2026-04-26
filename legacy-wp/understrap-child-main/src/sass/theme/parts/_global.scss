@@ -1,0 +1,98 @@
+@media (max-width: 767px) {
+    .container, 
+    .container-fluid {
+        padding-right: 15px !important;
+        padding-left: 15px !important;
+    }
+}
+
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+
+body {
+    color: #212121 !important;
+}
+
+@media (min-width: 1400px) {
+    .container, .container-xxl {
+        --bs-gutter-x: 4rem;
+    }
+}
+
+#page-wrapper.wrapper {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+// --- BOOKING MODAL ACTIVE STATE ---
+// html scrolls (modal content), body is locked
+html.booking-modal-active {
+    overflow-y: auto;
+
+    // Custom scrollbar for Chrome when booking modal is open
+    // Matches the modal's blue background colour
+    &::-webkit-scrollbar {
+        width: 4px;
+        background: #224665;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #224665;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 4px;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.45);
+        }
+    }
+
+    // Firefox
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) #224665;
+}
+
+body.booking-modal-active {
+    overflow: hidden;
+}
+
+// --- IFRAME PAGE (book-now page loaded inside modal iframe) ---
+// Scrolling is handled by the modal — iframe page itself does not scroll
+body.iframe-page {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow: hidden;
+
+    background-color: #224665;
+    background-image: url('/wp-content/themes/understrap-child-main/images/texture-blue.webp');
+    background-repeat: repeat;
+    background-size: auto;
+
+    // Suppress native scrollbar entirely — modal handles scrolling
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none;
+}
+
+@media (min-width: 1500px) {
+    .container, .container-xxl {
+        max-width: 1420px;
+        --bs-gutter-x: 12rem;
+    }
+}
+
+
+
+// Global heading and text colour
+h1, h2, h3, h4, h5, h6, p, li, span {
+    color: #212121;
+}

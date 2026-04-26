@@ -1,0 +1,157 @@
+// --- TOUR LIST HEADER: CINEMATIC STACK ---
+
+.tour-header {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2400 / 762; // Desktop Lock
+    background-color: $yugo-cream; 
+    overflow: hidden; 
+    z-index: 10;
+
+    .header-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+            //will-change: transform;
+        }
+
+        // DESKTOP STACK
+        &.layer-1 { z-index: 4; } // Foreground
+        &.layer-2 { z-index: 2; } // Midground
+        &.layer-3 { z-index: 1; } // Background
+        &.layer-4 { display: none; } // Hidden on desktop
+    }
+
+    .header-text-layer {
+        position: absolute;
+        top: 17%; // Your 1920px sweet spot
+        left: 0;
+        width: 100%;
+        z-index: 3; 
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        pointer-events: none;
+
+        .container {
+            margin-left: 0;
+            margin-right: 0;
+            width: 100%;
+            max-width: none;
+            // Rail-to-Wall Logic
+            padding-left: max(12vw, 100px); 
+            padding-right: 15px;
+        }
+
+        .tour-title {
+            font-family: 'ZipperStd', sans-serif;
+            color: $yugo-cream;
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin: 0;
+            white-space: nowrap;
+            display: inline-block;
+            will-change: transform;
+            font-size: clamp(9rem, 12vw, 23rem);
+            letter-spacing: -0.01em;
+
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.05), 
+                         0 0 3px rgba(0, 0, 0, 0.05);
+        }
+    }
+}
+
+// --- MOBILE OVERRIDE (SUB-992PX) ---
+@media (max-width: 991px) {
+    // --- TWEAK THESE TO DIAL IT IN ---
+    $mobile-title-top-offset: 22%; 
+    $mobile-font-size: 31vw;      
+
+    .tour-header {
+        height: 100vh; 
+        aspect-ratio: auto; 
+
+        .header-layer {
+            height: 100%;
+            width: 100%;
+
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center top;
+				display: block;
+				display: block;
+				//will-change: transform; // Already present
+			}
+
+            // THE MOBILE SANDWICH
+            &.layer-1 { z-index: 5; } // Foreground
+            &.layer-2 { z-index: 4; } // Architecture (In front of text)
+            &.layer-3 { z-index: 2; } // Background 1
+            &.layer-4 { 
+                display: block; 
+                z-index: 1;           // Deep Background
+            } 
+        } // End .header-layer
+
+        .header-text-layer {
+    z-index: 3; 
+    position: absolute;
+    top: $mobile-title-top-offset; 
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center; // Horizontal center
+    pointer-events: none;
+    padding-left: 0 !important; // Kill desktop rail
+
+    .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .tour-title {
+        font-family: 'ZipperStd', sans-serif;
+        color: $yugo-cream;
+        margin: 0 !important;
+        
+        // --- THE FIX ---
+        display: flex;
+        flex-direction: column; // Forces "SARAJEVO" and "TOURS" into a stack
+        align-items: center;    // Mathematically centers both lines
+        text-align: center;
+        
+        // We use width: 90vw to define the boundary, 
+        // but no max-width to "force" the break anymore.
+        width: 90vw; 
+        
+        // Standard typography settings
+        font-size: $mobile-font-size; 
+        line-height: 0.78;
+        white-space: normal; 
+        word-break: break-word; // Ensures long names wrap
+        
+        // Clean slate
+        padding: 0 !important;
+        transform: none; 
+        will-change: transform;
+
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+    }
+}
+    } // End .tour-header
+} // End @media

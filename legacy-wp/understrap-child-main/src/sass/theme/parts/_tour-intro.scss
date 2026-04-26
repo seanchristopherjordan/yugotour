@@ -1,0 +1,93 @@
+.tour-intro-section {
+    position: relative;
+    padding: 50px 0 0;
+    background-color: $yugo-cream;
+    background-image: url('../images/texture-cream.webp');
+    background-repeat: repeat;
+    min-height: 100px;
+    clip-path: inset(0);
+
+	
+    .intro-headline {
+        font-family: 'TungstenCompressed', sans-serif !important;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: clamp(3.8rem, 10vw, 7.5rem);
+        line-height: 0.8 !important;
+        letter-spacing: 0;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        transform: rotate(-1deg);
+        transform-origin: left center;
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            font-size: clamp(3.4rem, 9vw, 6.75rem);
+        }
+
+        span { display: inline; }
+        .part-black { color: $yugo-black !important; }
+        .part-red   { color: $yugo-red !important; }
+    }
+
+    .intro-copy-rich p {
+        font-family: 'FaktPro', sans-serif !important;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: $yugo-black;
+        line-height: 1.4;
+        letter-spacing: -0.01em;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        max-width: 100%;
+
+        font-size: 1.05rem;
+        @media (min-width: 440px) { font-size: 1.2rem; }
+    }
+
+// --- TOUR LIST PAGE: FIXED BACKGROUND IMAGE ---
+
+&::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+	width: 100%;
+    background-image: var(--tour-bg);
+    background-size: auto 100%; // Full height, width scales — crops bottom if needed
+    background-repeat: no-repeat;
+    background-position: top right;
+    z-index: 1;
+    pointer-events: none;
+}
+
+// --- BELGRADE ---
+&.belgrade::before {
+    height: 120vw;        // DESKTOP: image width
+    top: 5px;           // DESKTOP: vertical offset from top
+    opacity: 0.8;       // DESKTOP: opacity
+
+    @media (max-width: 991px) {
+        height: 300vw;    // MOBILE: image width
+        top: 0;         // MOBILE: vertical offset from top
+        opacity: 0.6;   // MOBILE: opacity
+    }
+}
+
+// --- SARAJEVO ---
+&.sarajevo::before {
+    height: 80vw;        // DESKTOP: image width
+    top: -20px;           // DESKTOP: vertical offset from top
+    opacity: 0.8;       // DESKTOP: opacity
+
+    @media (max-width: 991px) {
+        height: 280vw;    // MOBILE: image width
+        top: 0;         // MOBILE: vertical offset from top
+        opacity: 0.6;   // MOBILE: opacity
+    }
+}
+}

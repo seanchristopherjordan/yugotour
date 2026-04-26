@@ -1,0 +1,365 @@
+
+.hero-video-wrapper {
+    position: relative;
+    width: 100%;
+    /* Standard Fallback */
+    height: 100vh; 
+    /* Modern Mobile Fix: Small Viewport Height */
+    height: 100svh; 
+    overflow: hidden;
+    background-color: #000;
+    
+    // REMOVE THE NEGATIVE MARGINS/PADDING
+    margin-top: 0; 
+    padding-top: 0;
+}
+
+.hero-video-container {
+    position: absolute;
+    top: 0;
+    bottom: 0; // Force-anchor to the bottom
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-video-element {
+    display: block; // KILL THE DESCENDER SPACE
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+	transform: scale(1.01);
+}
+
+.hero-logo-overlay {
+    position: absolute;
+    z-index: 10; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	will-change: transform;
+    pointer-events: none; // Clicks pass through to video/underlying elements
+
+    img {
+        // Mobile sizing (80%)
+        width: 80vw;
+        height: auto;
+
+        // Desktop sizing (35%)
+        @media (min-width: 992px) {
+            width: 35vw;
+        }
+    }
+}
+
+
+/* --- TRIPADVISOR BADGE POSITIONING --- */
+.tripadvisor-badge-anchor {
+    position: absolute;
+    top: 0; 
+    right: 0; // Pin to the far right edge of the viewport
+    z-index: 100; 
+    transform: translateY(-50%); // Straddle the video/cream line
+    pointer-events: none;
+    display: flex;
+    justify-content: flex-end;
+
+    img {
+        /* Mobile: Keep it slightly away from the edge */
+        width: 170px; 
+        margin-right: -20px; 
+        height: auto;
+        filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+        
+        @media (min-width: 992px) {
+            /* Desktop: Size up and keep no gutter from the right edge */
+            width: 240px; 
+            margin-right: 0px; 
+        }
+    }
+}
+
+/* --- CRITICAL: MUST BE VISIBLE --- */
+#intro-section.intro-module {
+    position: relative;
+    z-index: 20;
+    /* This allows the badge to 'float' up over the video section */
+    overflow: visible !important; 
+}
+
+
+
+
+
+
+// Ensure the  standard wrapper below the hero doesn't have 
+// an accidental margin-top that breaks the flow.
+#front-page-wrapper {
+    padding-top: 0;
+}
+
+
+.hero-logo-overlay {
+    position: absolute;
+    z-index: 10; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+
+    img {
+        // Mobile sizing
+        width: 80vw;
+        height: auto;
+
+        // --- 70s BROADCAST EFFECT ---
+        // 1. The Soft Edge + High-Contrast Glow
+        filter: blur(0.7px) 
+                brightness(1.1) 
+                drop-shadow(0 0 6px rgba($yugo-cream, 0.4));
+
+        // 2. The Knocked-out Blend
+        mix-blend-mode: screen;
+
+        // 3. The Analog Vibration
+        opacity: 0.8;
+        animation: yugo-flicker 0.15s infinite,
+                   yugo-jitter 0.2s infinite;
+		
+
+        // 4. Performance Optimization
+        will-change: filter, opacity, transform;
+		
+	
+
+        @media (min-width: 992px) {
+            width: 35vw;
+            // Slightly crispier on desktop.
+            filter: blur(0.8px) brightness(1.04) drop-shadow(0 0 4px rgba($yugo-cream, 0.3));
+			animation: yugo-flicker 0.15s infinite,
+                       yugo-jitter 0.3s infinite;
+        }
+    }
+}
+
+
+// --- INTRO SECTION: YUGO CREAM COMPOSITION ---
+
+// GLOBAL UTILITY - DO NOT MANGLE
+.yugo-red-link {
+    display: inline-block;
+    position: relative;
+    top: -1px;
+    background: url('../images/texture-red.webp') center center;
+    background-size: cover;
+    color: #FCF9EB !important; // $yugo-cream
+    font-size: 1rem;
+    letter-spacing: 0.01rem;
+    padding: 0 5px;
+    height: 1.15em;
+    line-height: 1.3em;
+    text-decoration: none !important;
+    font-weight: bold;
+    vertical-align: middle;
+    transition: filter 200ms ease-in-out;
+
+    &:hover {
+        filter: brightness(1.15);
+        color: #FCF9EB !important;
+        text-decoration: none !important;
+    }
+}
+
+
+#intro-section.intro-module {
+    position: relative; // This is the "Anchor" - the Spomenik cannot leave this box
+    z-index: 20;        // Keeps the whole section above or below other modules
+    overflow: hidden;   // This cuts off anything that tries to bleed into the video
+    background-color: $yugo-cream;
+    padding: 20px 0;
+}
+
+.spomenik-bg {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;   
+    right: 0;  
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden; 
+
+    img {
+        position: absolute;
+        right: 0;   
+        top: 0; // This is the value we will animate
+        width: 85%; 
+        height: auto; // Allow it to be taller than the section
+        min-height: 150%; // Ensures it is always taller for the parallax "room"
+        
+        object-position: right top; 
+        opacity: 0.7;
+        will-change: transform; // Optimizes for smooth scrolling
+
+        @media (max-width: 991px) {
+            width: 150%; // Let it bleed off the left side on mobile
+            right: -25%; // Center the monument's "meat"
+        }
+    }
+}
+
+
+
+
+.intro-module .container {
+    position: relative;
+    z-index: 5; // Forces text to stay on top of the image
+}
+
+
+// 1. HEADLINE: 
+    .staggered-headline {
+        font-family: 'TungstenCompressed', sans-serif;
+        text-transform: uppercase;
+        padding-top: 18px;
+        
+        // Centering Logic for Mobile
+        display: table;
+        margin: 0 auto; 
+        text-align: left;
+        transform: rotate(-1deg);
+        transform-origin: center center;
+
+        // 1. MOBILE HEADLINE SPACING: 25px gap to body text
+        margin-bottom: 30px; 
+        line-height: 0.75; 
+
+        .line-1 { 
+            font-size: clamp(6rem, 18vw, 11.5rem); 
+            display: block; 
+            color: $yugo-black; 
+        }
+        .line-2 { 
+            font-size: clamp(6rem, 18vw, 11.5rem);
+            color: $yugo-red;
+            padding-left: 12vw; 
+            
+            @media (min-width: 992px) { 
+                padding-left: 92px; 
+            }
+        }
+
+        // DESKTOP HEADLINE SPACING
+        @media (min-width: 992px) {
+            display: block;        
+            margin: 0;             
+            margin-bottom: 1rem; // Restore tight desktop spacing
+            transform-origin: left center;
+            .line-1, .line-2 { font-size: 10rem; }
+        }
+    }
+
+    // 2. SPACING: Headline to Body 
+    .intro-copy-wrapper {
+        margin-bottom: 10px; 
+        @media (min-width: 992px) { margin-bottom: 0px; }
+    }
+
+    .intro-text-1-container {
+        padding-left: 0;
+        @media (min-width: 992px) { padding-left: 95px; }
+    }
+
+    .intro-text-1, .how-it-works p, .how-it-works li {
+        width: 100%;
+        max-width: 100%;
+        line-height: 1.4;
+        color: $yugo-black;
+        margin-bottom: 0rem;
+
+        font-size: 1.05rem; // 300-400px
+        @media (min-width: 400px) { font-size: 1.2rem; } // 400-992px
+        @media (min-width: 992px) {
+            width: 650px;
+            max-width: 100%;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+    }
+
+    // 3 & 4. CARS: 100% width on mobile breakpoint
+    .yugo-car-display {
+        display: block;
+        margin: 0px auto; // Vertical spacing boost
+        
+        img { 
+            width: 104%; // Target for 320px-600px
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+
+            @media (min-width: 601px) { max-width: 85%; }
+            @media (min-width: 992px) { 
+                max-width: 68%; 
+                margin: 0rem auto; // Tight desktop spacing
+            }
+        }
+    }
+
+    .how-it-works {
+        margin-top: 5px;
+        padding-left: 0;
+		padding-bottom: 10px;
+        @media (min-width: 992px) {
+            // 1. TIGHT WINDOW (992px - 1199px): 
+            // Reduce the pull so it doesn't hit the car
+            margin-top: -35px; 
+            
+            padding-left: 95px;
+            display: flex;
+            align-items: baseline;
+
+            // 2. WIDE WINDOW (1200px and up): 
+            // Restore the full "tightening" pull
+            @media (min-width: 1200px) {
+                margin-top: -70px;
+            }
+        }
+        
+        .how-it-works-title { 
+            margin-bottom: 0.25rem; 
+            @media (min-width: 992px) {
+                margin-bottom: 0;
+                margin-right: 15px; // Fixed 15px spacing
+                width: auto;
+                flex-shrink: 0;
+            }
+        }
+    }
+
+    .yugo-bullets {
+        list-style: none;
+        padding: 0;
+        margin: 0; 
+        @media (min-width: 992px) {
+            width: auto; // Overrides the 720px width
+            flex: 1;     // Allows it to fill space starting from the 15px gap
+        }
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: calc(0.25rem - 4px); 
+            span { 
+                color: $yugo-red; 
+                margin-right: 6px; 
+                font-size: 1.1em;
+                line-height: 1;
+            }
+        }
+    }

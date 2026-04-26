@@ -16,7 +16,8 @@ const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  folders: true,
+  // Keep folders: true if you want to organize your vintage car photos into folders in the admin UI
+  folders: true, 
   access: {
     create: authenticated,
     delete: authenticated,
@@ -27,7 +28,7 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      //required: true,
+      required: false, // Recommended for SEO on your tour images
     },
     {
       name: 'caption',
@@ -40,8 +41,9 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '../../public/media'),
+    // When using a storage adapter like Uploadthing, staticDir is ignored by the cloud, 
+    // but it's good to keep a simple string here for local development reference.
+    staticDir: 'media', 
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

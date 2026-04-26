@@ -1,0 +1,130 @@
+/*
+ Theme Name:   Yugotour
+ Theme URI:    https://understrap.com
+ Description:  Understrap Child Theme
+ Author:       the Understrap Contributors
+ Author URI:   https://github.com/understrap/understrap-child/graphs/contributors
+ Template:     understrap
+ Version:      1.2.0
+ License: GNU General Public License v2 or later
+ License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ Text Domain:  understrap-child
+ Tags: one-column, custom-menu, featured-images, theme-options, translation-ready
+ GitHub Theme URI: understrap/understrap-child
+*/
+
+/*
+Theme Name: Yugotour Child
+Template: understrap
+*/
+
+
+body {
+    // Force the dark charcoal across the board
+    color: #212121 !important; 
+}
+
+// Ensure headers don't override back to #000
+h1, h2, h3, h4, h5, h6, p, li, span {
+    color: #212121;
+}
+
+
+/* --- 1. Define Breakpoint Variables --- */
+:root {
+    /* Default Mobile (360 - 768) */
+    --content-margin: 22px;
+    --fluid-h1: 2.5rem;
+}
+
+/* Tablet (769 - 1279) */
+@media (min-width: 769px) {
+    :root {
+        --content-margin: 40px;
+        --fluid-h1: 3.5rem;
+    }
+}
+
+/* Desktop Small (1280 - 1535) */
+@media (min-width: 1280px) {
+    :root {
+        --content-margin: 60px;
+        --fluid-h1: 4.5rem;
+    }
+}
+
+/* Desktop Medium (1536 - 1919) */
+@media (min-width: 1536px) {
+    :root {
+        --content-margin: 80px;
+        --fluid-h1: 5.5rem;
+    }
+}
+
+/* Desktop Large (1920+) */
+@media (min-width: 1920px) {
+    :root {
+        --content-margin: 120px;
+        --fluid-h1: 6.5rem;
+    }
+}
+
+/* --- 2. Apply the Layout Logic --- */
+
+/* Full-width elements (Backgrounds, Nav, Carousels) */
+.full-width-element {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* Content wrapper (Text, specific grids) */
+.content-wrap {
+    padding-left: var(--content-margin);
+    padding-right: var(--content-margin);
+    max-width: 100%; /* Keeps it fluid within the margins */
+    margin: 0 auto;
+}
+
+
+.container, .container-fluid {
+    padding-left: var(--content-margin) !important;
+    padding-right: var(--content-margin) !important;
+    max-width: none !important; /* Forces it to be truly fluid based on your margins */
+}
+
+
+/* HOT TEXTURE ACTION */
+
+
+/* Base rules for all textures */
+.bg-texture-red, 
+.bg-texture-gold, 
+.bg-texture-blue, 
+.bg-texture-cream {
+    background-size: cover;
+    background-repeat: repeat-y;
+    background-position: top center;
+    background-blend-mode: multiply;
+}
+
+/* Specific Texture Assignments */
+.bg-texture-red { 
+    background-color: #C6363C; 
+    background-image: url('images/texture-red.webp'); 
+}
+
+.bg-texture-gold { 
+    background-color: #FFD700; 
+    background-image: url('images/texture-gold.webp'); 
+}
+
+.bg-texture-blue { 
+    background-color: #003882; 
+    background-image: url('images/texture-blue.webp'); 
+}
+
+.bg-texture-cream { 
+    background-color: #FCF9EB; 
+    background-image: url('images/texture-cream.webp'); 
+}

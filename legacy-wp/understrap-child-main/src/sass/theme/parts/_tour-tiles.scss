@@ -1,0 +1,222 @@
+// --- TOUR TILE GRID ---
+
+.tour-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    // 30% less vertical padding: 70px * 0.7 = 49px top, 0 bottom
+    padding: 40px 0 80px;
+    position: relative;
+    z-index: 50;
+
+    @media (min-width: 992px) {
+        grid-template-columns: 1fr 1fr;
+        gap: 37px;
+    }
+}
+
+.tour-tile {
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+    container-type: inline-size;
+    container-name: tile;
+
+    .tour-tile-inner {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        position: relative;
+        border-radius: 3px;
+        transition: filter 300ms ease;
+
+        &:hover {
+            filter: brightness(1.15);
+        }
+    }
+}
+
+// --- IMAGE + TITLE AREA ---
+// Red bar % is controlled by flex-basis below per breakpoint
+
+.tile-image-wrap {
+    position: relative;
+    overflow: hidden;
+    background-color: $yugo-black;
+
+    // --- RED BAR HEIGHT BREAKPOINTS ---
+    // Image area height = 100% minus red bar %
+    // Adjust flex-basis to change the red bar size at each breakpoint
+
+    flex: 0 0 54%;  // 320-369px:  red bar = 46%
+    @media (min-width: 370px)  { flex: 0 0 59%; } // red bar = 44%
+    @media (min-width: 410px)  { flex: 0 0 62%; } // red bar = 35%
+    @media (min-width: 440px)  { flex: 0 0 60%; } // red bar = 40%
+    @media (min-width: 480px)  { flex: 0 0 64%; } // red bar = 36%
+    @media (min-width: 520px)  { flex: 0 0 69%; } // red bar = 31%
+    @media (min-width: 768px)  { flex: 0 0 78%; } // red bar = 22%
+    @media (min-width: 992px)  { flex: 0 0 66%; } // red bar = 34%
+    @media (min-width: 1200px) { flex: 0 0 70%; } // red bar = 30%
+    @media (min-width: 1400px) { flex: 0 0 76%; } // red bar = 24%
+
+    .tile-bg-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        z-index: 1;
+    }
+
+    // Gradient — height set by JS per tile
+    .tile-gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 0; // Set by JS
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0) 100%
+        );
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .tile-title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 4cqi 4cqi 5cqi;
+        z-index: 3;
+        font-family: $font-family-fakt;
+        font-weight: 600;
+        color: $yugo-cream;
+        text-transform: uppercase;
+        line-height: 0.95;
+        letter-spacing: -0.01em;
+        margin: 0;
+        font-size: 7.5cqi;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    // Tile-specific LET'S GO — anchored bottom right
+    .tile-cta {
+        position: absolute;
+        bottom: 3cqi;
+        right: 3cqi;
+        z-index: 3;
+        display: inline-block;
+        background: url('../images/texture-red.webp') center center;
+        background-size: cover;
+        color: $yugo-cream !important;
+        font-family: $font-family-fakt;
+        font-weight: 700;
+        font-size: 1.05rem;
+        letter-spacing: 0.01rem;
+        padding: 3px 6px 1px 10px;
+        line-height: 1.5;
+        text-decoration: none !important;
+        text-transform: uppercase;
+        transition: filter 200ms ease-in-out;
+        white-space: nowrap;
+
+        &:hover {
+            filter: brightness(1.15);
+            color: $yugo-cream !important;
+        }
+    }
+}
+
+// --- INFO BAR ---
+.tile-info-bar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: url('../images/texture-red.webp');
+    background-size: auto;
+    background-repeat: repeat;
+    background-position: top left;
+    padding: 3cqi 4cqi;
+    overflow: hidden;
+}
+
+.tile-intro-text {
+    font-family: $font-family-fakt;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+    color: $yugo-cream;
+    margin: 0 0 10px 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    font-size: 1.05rem;
+    @media (min-width: 440px) { font-size: 1.2rem; }
+
+    p {
+        margin: 0 0 0.9em 0;
+        color: $yugo-cream !important;
+        line-height: 1.4 !important;
+        letter-spacing: -0.015em !important;
+        font-weight: 500 !important;
+
+        font-size: 1.05rem !important;
+        @media (min-width: 440px) { font-size: 1.2rem !important; }
+
+        &:last-child { margin-bottom: 0; }
+    }
+}
+
+// Info lines anchored to bottom
+
+.tile-info-lines {
+    margin-top: auto;
+    max-height: calc(1.161em * 2); // Exactly 2 lines based on line-height
+    overflow: hidden; // Clips at 2 lines, no ellipsis
+}
+
+.tile-info-line {
+    font-family: $font-family-fakt;
+    font-weight: 600;
+    color: $yugo-cream;
+    text-transform: uppercase;
+    letter-spacing: -0.01rem;
+    line-height: 1.2;
+    margin: 0;
+    white-space: normal; // Main text wraps freely
+	font-size: 0.9rem;
+    @media (min-width: 440px) { font-size: 1.1rem; }
+	-webkit-line-clamp: unset;
+    display: block;
+    overflow: visible;
+
+    .info-sep {
+        font-weight: 400;
+        margin: 0 3px;
+        opacity: 0.7;
+    }
+
+    // Extras: inline, never wraps
+    .info-extras {
+    display: block;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+}
+}

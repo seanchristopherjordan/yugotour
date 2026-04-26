@@ -1,0 +1,71 @@
+// --- TALES FROM THE ROAD: MASTER STYLES ---
+.tales-module {
+    padding: 40px 0;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    background-image: url('../images/texture-gold.webp');
+    background-repeat: repeat-y; 
+    background-size: 100% auto; 
+    background-color: #D4AF37;
+
+    .tales-main-title {
+        font-family: 'CooperBlackPro', serif;
+        font-size: clamp(3.8rem, 6vw, 5.5rem);
+        color: $yugo-cream;
+        margin-bottom: 30px;
+        line-height: 1.1;
+        text-shadow: none;
+    }
+
+    .city-label {
+        font-family: 'FL Art Grotesk Ample', sans-serif;
+        font-weight: 500; 
+        font-size: 1.5rem;
+        letter-spacing: 0.6em;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0.5); 
+        margin-bottom: 0px; 
+    }
+
+
+    .jotform-wrapper {
+        width: 100%;
+        max-width: 1320px; 
+        margin: 0 auto;
+        padding: 0;
+
+        // --- THE ID STACK ---
+        // Add new TripAdvisor or additional city IDs here
+        #JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4, // Belgrade Google
+        #JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad // Sarajevo Google
+        {
+            // 1. THE BODY TEXT (Fakt + 1.35 Line Height)
+            p, 
+            span:not([class*="button"]), 
+            [class*="sc-"] {
+                font-family: 'FaktPro', sans-serif !important;
+                color: #212121 !important;
+                line-height: 1.4 !important;
+                font-size: 1rem !important;
+            }
+
+            // 2. THE NAV BUTTON FIX
+            button[class*="Arrow"],
+            [class*="NavigationButton"] {
+                opacity: 1 !important;
+                visibility: visible !important;
+                
+                svg {
+                    fill: #212121 !important; 
+                    opacity: 1 !important;
+                }
+            }
+
+            // 3. THE WIDGET BACKGROUND
+            & {
+                background: transparent !important;
+            }
+        }
+    }
+}

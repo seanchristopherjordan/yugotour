@@ -1,0 +1,221 @@
+// ============================================================
+// YUGOTOUR BOOKING MODAL — iframe approach
+// Modal scrolls. Iframe does not. This prevents Chrome gutter.
+// ============================================================
+
+.yugo-booking-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 400ms ease, visibility 400ms ease;
+    background-color: #224665;
+    overflow-y: auto;
+    overflow-x: hidden !important;
+	overflow: overlay !important;
+
+    // Custom scrollbar — Chrome/Safari/Edge
+    &::-webkit-scrollbar {
+        width: 4px;
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #224665;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.25);
+        border-radius: 4px;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.45);
+        }
+    }
+
+
+    // Firefox
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+
+    &.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+    }
+}
+
+// ------------------------------------------------------------
+// HEADER / CLOSE BAR
+// Fixed height bar at top — always above the iframe
+// Background only applied when modal is open
+// ------------------------------------------------------------
+
+.booking-modal-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
+    z-index: 2;
+    background: transparent;
+
+    @media (min-width: 992px) {
+        padding-right: 30px;
+    }
+}
+
+// Background only when modal is open
+.yugo-booking-modal.is-open .booking-modal-header {
+    background-color: #1e3a52;
+    background-image: url('../images/texture-blue.webp');
+    background-repeat: repeat;
+}
+
+// ------------------------------------------------------------
+// CLOSE BUTTON
+// Inherits .menu-trigger underline hover from _header.scss
+// Colours overridden to cream for blue background
+// ------------------------------------------------------------
+
+.booking-modal-close {
+    cursor: pointer;
+
+    // Creates stacking context for ::after underline
+    // inherited from .menu-trigger in _header.scss
+    .menu-trigger {
+        position: relative;
+    }
+
+    .menu-text {
+        font-family: $font-family-grotesk;
+        color: $yugo-cream !important;
+        font-size: 1.1rem;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .hamburger {
+        width: 22px;
+        height: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+
+        span {
+            width: 20px;
+            height: 2px;
+            background: $yugo-cream !important;
+            border-radius: 5px;
+            transform-origin: center;
+
+            // Always in X state on booking modal
+            &:first-child { transform: translateY(4.25px) rotate(45deg); }
+            &:last-child  { transform: translateY(-4.25px) rotate(-45deg); }
+        }
+    }
+}
+
+// ------------------------------------------------------------
+// IFRAME — absolutely positioned below the close bar
+// overflow: hidden prevents iframe from creating its own
+// scrollbar gutter — modal handles all scrolling
+// ------------------------------------------------------------
+
+.yugo-booking-iframe {
+    position: absolute;
+    top: 42px;                  // Below close bar
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% - 42px);
+    border: none;
+    display: block;
+    overflow: hidden;           // iframe does NOT scroll
+}
+
+
+
+// ------------------------------------------------------------
+// IFRAME — Formatting for list of Includes
+// ------------------------------------------------------------
+// Force the container to align left and use the brand color
+.frm_forms {
+    // 1. The Container (Alignment & Label)
+    .yugo-includes-container {
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        margin-top: 10px;
+        
+        .yugo-includes-label {
+            flex: 0 0 100px !important;
+            /* Matches the content exactly */
+            font-weight: normal !important; 
+            font-size: 1.1rem !important;
+            line-height: 1.2 !important;
+            color: $yugo-cream !important;
+            text-align: left !important;
+        }
+    }
+
+    // 2. The Content (Bullets & Size)
+    .yugo-includes-content {
+        font-size: 1rem !important; // Kills the Understrap responsive size
+
+        ul.yugo-includes-list {
+            margin: 0 !important;
+            padding-left: 20px !important;
+            list-style-type: disc !important; 
+            display: block !important;
+
+            li {
+                font-size: 1.1rem !important; 
+                line-height: 1.2 !important;
+                color: $yugo-cream !important;
+                margin-bottom: 4px;
+                display: list-item !important; // Forces the bullet to exist
+                list-style: disc outside !important; // Forces the bullet to show
+                text-align: left !important;
+                
+                // Kills any theme "icons" that might be replacing bullets
+                &:before {
+                    content: none !important;
+                }
+            }
+        }
+        
+        p {
+            margin: 0 !important;
+            padding: 0 !important;
+            color: $yugo-cream !important;
+            font-size: 1.1rem !important;
+            line-height: 1.2 !important;
+        }
+    }
+}
+
+
+
+
+// ------------------------------------------------------------
+// SCROLL LOCK — parent page locked when modal is open
+// ------------------------------------------------------------
+
+html.booking-modal-active,
+body.booking-modal-active {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100% !important;
+}

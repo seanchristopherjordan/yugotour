@@ -1,0 +1,264 @@
+// Use this file to overwrite the basic Bootstrap variables and add your own variables
+// To overwrite a Bootstrap variable you don´t have to touch the Bootstrap folder.
+// Just copy a variable from src/sass/assets/bootstrap5/_variables.scss, paste it here and edit the value.
+
+
+
+
+// Texture Mixin: Fill + Vertical Repeat Only
+@mixin yugo-texture-base {
+    background-size: cover;       // Fills the entire div/section
+    background-repeat: repeat-y;  // No horizontal tiling
+    background-position: top center;
+    background-blend-mode: multiply; // Essential for the 1970s "ink" look
+}
+
+
+// --- 1. The 50% Growth Mixin ---
+@mixin fluid-type($min-px, $max-px, $rate: 0.8) {
+  $min-rem: calc($min-px / 16) * 1rem;
+  $max-rem: calc($max-px / 16) * 1rem;
+  font-size: clamp(#{$min-rem}, calc(#{$min-rem} + #{$rate}vw), #{$max-rem});
+}
+/* ---------------------------------------------------------
+   1. FAKT PRO FAMILY (Grouped)
+   --------------------------------------------------------- */
+
+/* Normal / Regular */
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-Normal.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-NormalItalic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Medium */
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-MediumItalic.woff2') format('woff2');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Semibold */
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-SemiBoldItalic.woff2') format('woff2');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Bold */
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FaktPro';
+    src: url('../fonts/FaktPro-BoldItalic.woff2') format('woff2');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+
+/* ---------------------------------------------------------
+   2. FL ART GROTESK FAMILY (Grouped)
+   --------------------------------------------------------- */
+
+@font-face {
+    font-family: 'FLArtGrotesk';
+    src: url('../fonts/FLArtGroteskAmpleRegular.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FLArtGrotesk';
+    src: url('../fonts/FLArtGroteskAmpleMedium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'FLArtGrotesk';
+    src: url('../fonts/FLArtGroteskAmpleBold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+
+/* ---------------------------------------------------------
+   3. INDIVIDUAL DISPLAY FONTS
+   --------------------------------------------------------- */
+
+@font-face {
+    font-family: 'CooperBlackPro';
+    src: url('../fonts/CooperBlackPro.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'JobClarendon';
+    src: url('../fonts/JobClarendon-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'TungstenCompressed';
+    src: url('../fonts/TungstenCompressedBold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ZipperStd';
+    src: url('../fonts/ZipperStd.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Steelfish-Bold';
+    src: url('../fonts/Steelfish-Bold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+// Brand Colors
+$yugo-blue:   #003882;
+$yugo-red:    #C6363C;
+$yugo-gold:   #FFD700;
+$yugo-black:  #212121;
+$pure-black:  #000000;
+$pure-white:  #FFFFFF;
+$yugo-cream:  #FCF9EB;
+
+
+// --- Brand Typography Stack ----
+
+// Sans-Serif Body & UI
+$font-family-fakt:         'FaktPro', sans-serif;
+$font-family-grotesk:      'FLArtGrotesk', sans-serif;
+
+// Display & Decorative 
+$font-family-cooper:       'CooperBlackPro', serif;
+$font-family-clarendon:    'JobClarendon', serif;
+$font-family-tungsten:     'TungstenCompressed', sans-serif;
+$font-family-zipper:       'ZipperStd', sans-serif;
+
+// --- Bootstrap Overrides ---
+// This tells UnderStrap to use FaktPro as the default for everything
+$font-family-base:         $font-family-fakt;
+
+// --- 2. The Full YugoTour Scale ---
+
+// TUNGSTEN: Big-ass Compressed Headers
+h1, .h1, .hero-title {
+    font-family: 'TungstenCompressed', sans-serif; 
+    @include fluid-type(48, 140, 0.8); 
+    line-height: 1.0;
+    letter-spacing: 0.01em;
+}
+
+// COOPER BLACK: Bulbous 70s action
+h2, .h2, .subheader {
+    font-family: 'CooperBlackPro', serif; 
+    @include fluid-type(32, 72, 0.5); 
+    line-height: 1.0;
+    letter-spacing: -0.013em;
+}
+
+// FL ART GROTESK: The fat subheads and menu items
+h3, .h3, .subsubheader {
+    font-family: 'FLArtGrotesk', sans-serif; 
+    font-weight: 500; // Ample Medium
+    @include fluid-type(22, 42, 0.4); 
+	line-height: 1.2;
+    letter-spacing: -0.01em; 
+}
+
+// ZIPPER STD: The Yugotour Simulator Font
+.simulator-header {
+    font-family: 'ZipperStd', cursive; 
+    @include fluid-type(28, 56, 0.3); // Slower growth to protect the intricate "zipper" detail
+    line-height: 0.8;
+	letter-spacing: -0.2em;
+}
+
+// JOB CLARENDON: The Menu Items
+.menu-list {
+    font-family: 'JobClarendon', serif; 
+    font-weight: 700;
+    letter-spacing: 0.005em;
+
+    /* MIN: 3rem (48px) - Your iPhone/Small Tablet floor
+       VAL: 1rem + 3vw - This "Slope" ensures it doesn't hit max until ~1700px
+       MAX: 4.8rem (76px) - The ceiling you want for the 24" monitor
+    */
+    font-size: clamp(3.5rem, 1rem + 3.5vw, 4rem);
+    white-space: nowrap; // Prevents "book now" from breaking
+}
+
+
+// FAKT PRO: The Main Body Text
+body, p {
+    font-family: 'FaktPro', sans-serif; 
+    @include fluid-type(18, 22, 0.2); 
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+}
+
+// STEELFISH: The Map Cyrillic One-Off
+.cyrillic {
+    font-family: 'Steelfish-Bold', sans-serif; 
+    @include fluid-type(22, 42, 0.4); 
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+}
+
+// Custom Spacing Utilities
+.wide-1  { letter-spacing: 0.2em !important; }  // Good for FL Art Grotesk subheads

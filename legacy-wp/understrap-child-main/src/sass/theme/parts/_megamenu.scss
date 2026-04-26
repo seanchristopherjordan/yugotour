@@ -1,0 +1,273 @@
+
+
+// MOBILE & TABLET
+@media (max-width: 991px) {
+    .modal-image-split {
+        display: none !important;
+    }
+
+    .modal-nav-body {
+        width: 100% !important;
+        text-align: left; 
+        padding: 4rem 2rem;
+    }
+}
+
+// DESKTOP
+@media (min-width: 992px) {
+    .modal-content-wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .modal-image-split {
+        display: block;
+        width: 50%;
+    }
+    
+    .modal-nav-body {
+        width: 50%;
+    }
+}
+
+.yugo-takeover-modal {
+    position: fixed;
+    top: 0; left: 0;
+    // FIX 2: Changed from 100vw to 100% to stop mobile overflow/jumps
+    width: 100%; 
+    height: 100vh;
+	overflow: hidden;
+    overflow-x: hidden;
+    background: url('../images/texture-blue.webp') center/cover no-repeat;
+    z-index: 10000;
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 600ms ease, visibility 600ms ease;
+
+    &.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-image-split {
+        position: relative;
+        width: 50%;
+        height: 100vh; 
+        background-color: #000;
+        overflow: hidden;
+
+        .active-preview-img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            pointer-events: none; 
+            transition: opacity 600ms ease-in-out;
+        }
+
+        .default-bg {
+            background-image: url('../images/menu-default.webp');
+            z-index: 1;
+            opacity: 1; 
+        }
+
+        .hover-layer {
+            z-index: 2;
+            opacity: 0; 
+
+            &.is-active {
+                opacity: 1;
+                z-index: 3; 
+            }
+        }
+    }
+
+    .modal-content-wrap {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+		max-width: 100%;
+        overflow: hidden;
+    }
+
+
+    // --- HEADER PERSISTENCE ---
+    .modal-header-mimic {
+        position: absolute;
+        top: 0; right: 0;
+        height: 3.4vh;
+        min-height: 42px;
+		overflow: hidden !important;
+        display: flex;
+        align-items: center;
+		justify-content: flex-end;
+        // FIX 3: Locked to 20px to match .container-fluid exactly
+        padding-right: 20px; 
+		z-index: 10010;
+        
+        @media (min-width: 992px) {
+            padding-right: 30px; // Match desktop header padding
+        }
+    }
+
+    // Restore the nested trigger logic for the modal state
+    .menu-trigger {
+        height: 24px;
+		background: none; border: none; display: flex; align-items: center;
+        align-items: center;
+		
+        .menu-text {
+            color: #fdfaf0 !important; 
+            margin-right: 8px;
+            font-family: $font-family-grotesk;
+            font-weight: 300; 
+            font-size: 1.1rem;
+            @media (max-width: 991px) { font-size: 1.3rem; }
+        }
+
+        .hamburger {
+            height: 20px;
+			overflow: visible;
+			display: flex; flex-direction: column; gap: 6px;
+            span {
+                background: #fdfaf0 !important;
+                width: 20px; height: 2.5px; border-radius: 5px;
+                transition: transform 0.3s ease;
+            }
+        }
+
+        &.is-active .hamburger {
+            span:first-child { transform: translateY(4.25px) rotate(45deg); }
+            span:last-child { transform: translateY(-4.25px) rotate(-45deg); }
+        }
+    }
+}
+
+
+ // --- BOTTOM ALIGNED CONTENT ---
+.modal-nav-body {
+	margin-top: auto;	
+    
+    /* RESPONSIVE PADDING:
+       - Min: 20px (Mobile)
+       - Scaler: 6vw (Grows with the screen)
+       - Max: 80px (Big Desktop)
+    */
+    padding-left: clamp(32px, 6vw, 94px);
+    
+    /* Keeping top/right/bottom padding static or adjusted */
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    display: flex;
+    flex-direction: column;
+
+    .main-links {
+        list-style: none; 
+        padding: 0; 
+        margin: 0 0 50px 0;
+
+        li {
+            /* LOOSER LEADING: 25% increase in vertical gap */
+            margin-bottom: 1.3rem; 
+            line-height: 1.0;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        a {
+            font-family: "Job Clarendon", serif;
+            font-weight: 700;
+            /* RESPONSIVE FONT SIZE:
+               - Min: 2.6rem (Perfect for 15" Laptop)
+               - Scaler: 4vw (Shrinks faster as screen narrows)
+               - Max: 5.5rem (Full size for 24" Monitor)
+            */
+            //font-size: clamp(3.4rem, 2rem + 3.5vw, 4.6rem);  
+            font-size: clamp(3.4rem, 1rem + 3.5vw, 5.5rem); 
+			color: #FCF9EB;
+            text-decoration: none;
+			white-space: nowrap;
+			letter-spacing: 0.03rem; 
+            transition: color 300ms ease;
+            text-transform: lowercase;
+
+            &:hover { 
+                color: $yugo-red; 
+            }
+        }
+    }
+
+
+// --- THE BASEMENT: LINKS + CITIES + ICONS ---
+
+// 1. Shared variables for pixel-perfect leading
+$secondary-gap-v: 1.5rem; // The vertical "Leading"
+$secondary-gap-h: 40px;  // The horizontal "Spine"
+$fakt-size: 1.2rem;
+// 1. Define a fixed "Spine" width for the first column
+$col-width: 140px; 
+$gap-h: 1px; 
+$tight-leading: 0.5rem; // Tight gap for City -> Icons
+$row-leading: 1.4rem;   // Gap for Link -> Link and Link -> City
+
+
+.secondary-links-grid {
+    display: grid;
+    grid-template-columns: $col-width $col-width; 
+    column-gap: $gap-h;
+    row-gap: $row-leading;
+    margin-bottom: $row-leading; // The exact gap between FAQs and Belgrade
+    overflow: hidden; // Prevent any internal text from pushing the box wider
+
+    a {
+        font-family: $font-family-fakt;
+        font-size: $fakt-size;
+        color: #fdfaf0;
+        line-height: 1.4;
+		text-decoration: none;
+        text-transform: none; // Kill all-caps
+        &:hover { color: $yugo-red; }
+		transition: color 0.2s; 
+    }
+}
+
+.social-footer {
+    display: flex;
+    gap: $gap-h;
+
+    .social-group {
+        flex: 0 0 $col-width;
+
+        span {
+            display: block; 
+            font-family: $font-family-fakt;
+            font-size: 1.2rem; // Match Contact/Blog size
+            line-height: 1.2;      // Match Contact/Blog leading
+            color: #a6b0b1; 
+            text-transform: none;  // Kill all-caps
+            margin-bottom: 0.2rem;
+        }
+
+        .icons {
+            display: flex; 
+            gap: 25px;
+			}
+			
+            a i { 
+                color: #a6b0b1; 
+                font-size: 2.4rem; 
+                text-decoration: none;
+                transition: color 0.2s;                
+                &:hover { color: $yugo-red; opacity: 1; }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,31 @@
+// 1. Core Variables & Bootstrap (Keep these as is)
+@import "theme/child_theme_variables";  // Your colors and font stacks
+@import "assets/bootstrap5/bootstrap";
+@import "assets/understrap/theme/understrap";
+@import "assets/understrap/theme/woocommerce";
+
+// 2. Assets & Icons
+@import "assets/fontawesome/font-awesome";
+@import "assets/underscores";
+
+// 2. Yugotour Custom (Flat Structure)
+@import "theme/parts/animations";
+@import "theme/parts/global";
+@import "theme/parts/megamenu";
+@import "theme/parts/city-picker";
+@import "theme/parts/header";
+@import "theme/parts/footer";
+@import "theme/parts/home-sections";
+@import "theme/parts/slider";
+@import "theme/parts/tales-section";
+@import "theme/parts/television";
+@import "theme/parts/tour-header";
+@import "theme/parts/tour-intro";
+@import "theme/parts/tour-tiles";
+@import "theme/parts/simulator";
+@import "theme/parts/booking-modal";
+
+// 3. Understrap Utilities
+@import "assets/understrap/theme/colors";
+@import "assets/understrap/theme/blocks";
+@import "assets/understrap/theme/contact-form7";

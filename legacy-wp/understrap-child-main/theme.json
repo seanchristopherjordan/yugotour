@@ -1,0 +1,79 @@
+{
+    "version": 2,
+    "settings": {
+        "appearanceTools": true,
+        "typography": {
+            "fontFamilies": [
+                {
+                    "fontFamily": "'FaktPro', sans-serif",
+                    "name": "Fakt Pro (Body)",
+                    "slug": "fakt"
+                },
+                {
+                    "fontFamily": "'FLArtGrotesk', sans-serif",
+                    "name": "FL Art Grotesk (Display)",
+                    "slug": "grotesk"
+                },
+                {
+                    "fontFamily": "'CooperBlackPro', serif",
+                    "name": "Cooper Black (Retro)",
+                    "slug": "cooper"
+                },
+                {
+                    "fontFamily": "'JobClarendon', serif",
+                    "name": "Job Clarendon (Serif)",
+                    "slug": "clarendon"
+                },
+                {
+                    "fontFamily": "'TungstenCompressed', sans-serif",
+                    "name": "Tungsten Compressed (Poster)",
+                    "slug": "tungsten"
+                },
+                {
+                    "fontFamily": "'ZipperStd', sans-serif",
+                    "name": "Zipper Std (Accent)",
+                    "slug": "zipper"
+                }
+            ]
+        },
+        "color": {
+            "palette": [
+                {
+                    "color": "#FCF9EB",
+                    "name": "Yugo Cream",
+                    "slug": "yugo-cream"
+                },
+                {
+                    "color": "#E23D28",
+                    "name": "Yugo Red",
+                    "slug": "yugo-red"
+                },
+                {
+                    "color": "#2D2D2D",
+                    "name": "Yugo Dark Grey",
+                    "slug": "yugo-dark-grey"
+                },
+				{
+                    "color": "#003882",
+                    "name": "Yugo Blue",
+                    "slug": "yugo-blue"
+                },
+				{
+                    "color": "#FFD700",
+                    "name": "Yugo Gold",
+                    "slug": "yugo-gold"
+                },
+				{
+                    "color": "#000000",
+                    "name": "Blackest Black",
+                    "slug": "blackest-black"
+                },
+				{
+                    "color": "#FFFFFF",
+                    "name": "Whitest White",
+                    "slug": "whitest-white"
+                }
+            ]
+        }
+    }
+}

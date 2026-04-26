@@ -1,0 +1,87 @@
+// --- YUGOTOUR VINTAGE TV SECTION ---
+.tv-section {
+    position: relative;
+    width: 100%;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background-color: #000;
+    overflow: hidden;
+
+    // The 25px Yugotour Black Bars
+    .tv-divider-bar {
+        width: 100%;
+        height: 25px;
+        background-color: #212121;
+        position: relative;
+        z-index: 20; // Stays above everything
+    }
+
+    .tv-container {
+        position: relative;
+        width: 100%;
+        background-color: #000;
+        line-height: 0; // Kills bottom whitespace
+
+        // 1. THE VIDEO LAYER (Underneath)
+        .video-layer {
+            position: absolute;
+            z-index: 1;
+            aspect-ratio: 16 / 9; // Locked ratio for the "tube"
+            overflow: hidden;
+
+            iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+                // Slight overscan to ensure no gaps
+                transform: scale(1.02); 
+            }
+
+            // --- COORDINATE ADJUSTMENTS ---
+            // Nudge these % in the inspector to align with your .webp holes
+            
+            @media (max-width: 991px) {
+                // Mobile TV Hole Position
+                top: 15.2%;    
+                left: 0%;   
+                width: 85%;  
+            }
+
+            @media (min-width: 992px) {
+                // Desktop TV Hole Position
+                top: 15%;    
+                left: 19.1%;   
+                width: 52.8%;  
+            }
+        }
+
+        // 2. THE TV OVERLAY (On Top)
+        .tv-overlay {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            pointer-events: none; // Reach-through to YouTube controls
+
+            img {
+                width: 100%;
+                height: auto;
+                display: block;
+                // Optional: slight contrast boost for that "old photo" look
+                filter: contrast(1.05) brightness(0.95);
+            }
+        }
+
+        // 3. OPTIONAL VINTAGE "GLASS" EFFECT
+        // Adds a subtle reflection over the video
+        &:after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+            pointer-events: none;
+            z-index: 15;
+        }
+    }
+}
