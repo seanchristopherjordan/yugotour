@@ -12,6 +12,7 @@ import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { draftMode } from 'next/headers'
 
 import './globals.css'
@@ -77,6 +78,10 @@ const steelfishBold = localFont({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
+  const siteSettings = await getCachedGlobal('site-settings', 1)()
+  const faviconMedia = siteSettings.site?.favicon
+  const faviconUrl =
+    typeof faviconMedia === 'object' && faviconMedia !== null ? faviconMedia.url ?? null : null
 
   return (
     <html
@@ -96,10 +101,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <InitTheme />
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        {faviconUrl ? (
+          <link href={faviconUrl} rel="icon" />
+        ) : (
+          <>
+            <link href="/favicon.ico" rel="icon" sizes="32x32" />
+            <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+          </>
+        )}
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <Providers>
           <AdminBar
             adminBarProps={{

@@ -24,6 +24,10 @@ export interface MegaMenuProps {
   textureUrl: string | null
   images: MegaMenuImages
   socialLinks: MegaMenuSocialCity[]
+  socialIcons: {
+    ig: string | null
+    fb: string | null
+  }
 }
 
 const MAIN_LINKS = [
@@ -41,7 +45,7 @@ const SECONDARY_LINKS = [
   { label: 'Media', href: '/media' },
 ]
 
-export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: MegaMenuProps) {
+export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks, socialIcons }: MegaMenuProps) {
   // Mirrors the layerA/layerB crossfade logic from custom-javascript.js exactly
   const [activeSlot, setActiveSlot] = useState<'a' | 'b' | null>(null)
   const [imgA, setImgA] = useState<string | null>(null)
@@ -108,8 +112,8 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
       <div className="flex-1 flex flex-col relative max-w-full overflow-hidden">
         {/* Close button — mirrors header trigger position exactly */}
         <div
-          className="absolute top-0 right-0 z-[10010] flex items-center justify-end overflow-hidden"
-          style={{ height: '3.4vh', minHeight: '42px', paddingRight: '20px' }}
+          className="absolute top-0 right-0 z-[10010] flex items-center justify-end overflow-hidden min-h-[50px] min-[992px]:min-h-[42px] pr-[20px] min-[992px]:pr-[30px]"
+          style={{ height: '3.4vh' }}
         >
           <button
             type="button"
@@ -117,16 +121,16 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
             aria-label="Close menu"
             className="flex items-center cursor-pointer bg-transparent border-none p-0 h-[24px] relative group"
           >
-            <span className="mr-[8px] font-grotesk text-[1.1rem] font-light leading-none text-yugo-cream">
-              menu
+            <span className="mr-[8px] font-grotesk text-[1.1rem] max-[991px]:text-[1.3rem] font-light leading-none text-yugo-cream">
+              close
             </span>
-            <div className="flex flex-col justify-center gap-[6px] w-[22px] h-[20px] overflow-visible">
+            <div className="flex flex-col justify-center gap-[6px] w-[22px] max-[991px]:w-[26px] h-[20px] overflow-visible">
               <span
-                className="block w-[20px] h-[2.5px] bg-yugo-cream rounded-[5px] transition-transform duration-300 origin-center"
+                className="block w-[20px] max-[991px]:w-[24px] h-[2.5px] bg-yugo-cream rounded-[5px] transition-transform duration-300 origin-center"
                 style={{ transform: 'translateY(4.25px) rotate(45deg)' }}
               />
               <span
-                className="block w-[20px] h-[2.5px] bg-yugo-cream rounded-[5px] transition-transform duration-300 origin-center"
+                className="block w-[20px] max-[991px]:w-[24px] h-[2.5px] bg-yugo-cream rounded-[5px] transition-transform duration-300 origin-center"
                 style={{ transform: 'translateY(-4.25px) rotate(-45deg)' }}
               />
             </div>
@@ -178,17 +182,18 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
 
           {/* Secondary links — 2-column grid */}
           <div
-            className="grid gap-x-[1px] gap-y-[1.4rem] mb-[1.4rem] overflow-hidden"
+            className="grid gap-x-[1px] gap-y-[1.4rem] mb-[1.4rem]"
             style={{ gridTemplateColumns: '140px 140px' }}
           >
             {SECONDARY_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-fakt text-[1.2rem] text-yugo-cream no-underline leading-[1.4] transition-colors duration-200 hover:text-yugo-red"
+                className="relative w-fit font-fakt text-[1.2rem] text-yugo-cream no-underline leading-[1.4] group"
                 onClick={onClose}
               >
                 {link.label}
+                <span className="absolute bottom-[-2px] left-0 h-[2px] w-0 bg-yugo-cream transition-[width] duration-300 group-hover:w-full" />
               </Link>
             ))}
           </div>
@@ -200,16 +205,25 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
                 <span className="block font-fakt text-[1.2rem] leading-[1.2] text-[#a6b0b1] mb-[0.2rem]">
                   {city}
                 </span>
-                <div className="flex gap-[25px]">
+                <div className="flex gap-[19px]">
                   {igHref && (
                     <a
                       href={igHref}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`${city} Instagram`}
-                      className="text-[#a6b0b1] transition-colors duration-200 hover:text-yugo-red"
+                      className="transition-opacity duration-200 hover:opacity-100 opacity-70"
                     >
-                      <InstagramIcon className="w-[2.4rem] h-[2.4rem]" />
+                      {socialIcons.ig ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={socialIcons.ig}
+                          alt="Instagram"
+                          className="w-[2.4rem] h-[2.4rem] object-contain"
+                        />
+                      ) : (
+                        <InstagramIcon className="w-[2.4rem] h-[2.4rem] text-[#a6b0b1]" />
+                      )}
                     </a>
                   )}
                   {fbHref && (
@@ -218,9 +232,18 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={`${city} Facebook`}
-                      className="text-[#a6b0b1] transition-colors duration-200 hover:text-yugo-red"
+                      className="transition-opacity duration-200 hover:opacity-100 opacity-70"
                     >
-                      <FacebookIcon className="w-[2.4rem] h-[2.4rem]" />
+                      {socialIcons.fb ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={socialIcons.fb}
+                          alt="Facebook"
+                          className="w-[2.4rem] h-[2.4rem] object-contain"
+                        />
+                      ) : (
+                        <FacebookIcon className="w-[2.4rem] h-[2.4rem] text-[#a6b0b1]" />
+                      )}
                     </a>
                   )}
                 </div>

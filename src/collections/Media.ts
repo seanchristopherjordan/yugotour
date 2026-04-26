@@ -40,10 +40,23 @@ export const Media: CollectionConfig = {
       }),
     },
   ],
+  hooks: {
+    beforeOperation: [
+      ({ args, operation }) => {
+        if ((operation === 'create' || operation === 'update') && args.req?.file) {
+          const mimeType: string = args.req.file.mimetype ?? ''
+          if (mimeType === 'image/svg+xml') {
+            args.req.file.sizes = {}
+          }
+        }
+        return args
+      },
+    ],
+  },
   upload: {
-    // When using a storage adapter like Uploadthing, staticDir is ignored by the cloud, 
+    // When using a storage adapter like Uploadthing, staticDir is ignored by the cloud,
     // but it's good to keep a simple string here for local development reference.
-    staticDir: 'media', 
+    staticDir: 'media',
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [

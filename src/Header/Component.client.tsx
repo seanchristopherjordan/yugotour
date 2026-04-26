@@ -61,10 +61,9 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
         ].join(' ')}
       >
         <nav
-          className="relative flex items-center overflow-visible border-b border-black/10 shadow-[inset_0_10px_12px_-10px_rgba(0,0,0,0.2)]"
+          className="relative flex items-center overflow-visible border-b border-black/10 shadow-[inset_0_10px_12px_-10px_rgba(0,0,0,0.2)] min-h-[50px] min-[992px]:min-h-[42px]"
           style={{
             height: '3.4vh',
-            minHeight: '42px',
             backgroundImage: navTextureUrl ? `url('${navTextureUrl}')` : undefined,
             backgroundSize: 'cover',
           }}
@@ -80,7 +79,7 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
                 <img
                   src={logoUrl}
                   alt="YugoTour"
-                  className="w-[92px] min-[992px]:w-[96px] h-auto block transition-[filter] duration-300"
+                  className="w-[106px] min-[992px]:w-[96px] h-auto block transition-[filter] duration-300"
                   style={{ filter: 'brightness(1) drop-shadow(0 2px 2px rgba(0,0,0,0.2))' }}
                   onMouseEnter={(e) =>
                     ((e.currentTarget as HTMLImageElement).style.filter =
@@ -156,21 +155,19 @@ export function HamburgerTrigger({ isActive, onToggle, color }: HamburgerTrigger
       aria-expanded={isActive}
       className={`flex items-center cursor-pointer bg-transparent border-none p-0 relative group text-${color}`}
     >
-      <span className="mr-[8px] font-grotesk text-[1.1rem] font-light leading-none text-inherit">
+      <span className="mr-[8px] font-grotesk text-[1.1rem] max-[991px]:text-[1.3rem] font-light leading-none text-inherit">
         menu
       </span>
-      <div className="flex flex-col justify-center gap-[6px] w-[22px] h-[20px] overflow-visible">
+      <div className="flex flex-col justify-center gap-[6px] w-[22px] max-[991px]:w-[26px] h-[20px] overflow-visible">
         <span
-          className="block h-[2px] rounded-[5px] bg-current transition-transform duration-300 origin-center"
+          className="block w-[20px] max-[991px]:w-[24px] h-[2px] rounded-[5px] bg-current transition-transform duration-300 origin-center"
           style={{
-            width: '20px',
             transform: isActive ? 'translateY(4.25px) rotate(45deg)' : 'none',
           }}
         />
         <span
-          className="block h-[2px] rounded-[5px] bg-current transition-transform duration-300 origin-center"
+          className="block w-[20px] max-[991px]:w-[24px] h-[2px] rounded-[5px] bg-current transition-transform duration-300 origin-center"
           style={{
-            width: '20px',
             transform: isActive ? 'translateY(-4.25px) rotate(-45deg)' : 'none',
           }}
         />

@@ -113,11 +113,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     'site-settings': SiteSetting;
+    'homepage-intro': HomepageIntro;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'homepage-intro': HomepageIntroSelect<false> | HomepageIntroSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1749,6 +1751,26 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Text content for the intro section below the hero video.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-intro".
+ */
+export interface HomepageIntro {
+  id: number;
+  headlineTop: string;
+  headlineBottom: string;
+  bodyText?: string | null;
+  ctaText?: string | null;
+  ctaUrl?: string | null;
+  howItWorksTitle?: string | null;
+  bullet1?: string | null;
+  bullet2?: string | null;
+  bullet3?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -1827,6 +1849,24 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         favicon?: T;
         youtubeVideoUrl?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-intro_select".
+ */
+export interface HomepageIntroSelect<T extends boolean = true> {
+  headlineTop?: T;
+  headlineBottom?: T;
+  bodyText?: T;
+  ctaText?: T;
+  ctaUrl?: T;
+  howItWorksTitle?: T;
+  bullet1?: T;
+  bullet2?: T;
+  bullet3?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
