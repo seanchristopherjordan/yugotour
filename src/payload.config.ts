@@ -1,4 +1,4 @@
-import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
+import { s3Storage } from '@payloadcms/storage-s3'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import sharp from 'sharp'
 import path from 'path'
@@ -53,13 +53,22 @@ export default buildConfig({
   // --- PLUGINS SECTION ---
   plugins: [
     ...existingPlugins, // Keeps your boilerplate plugins (like Search, SEO, etc.)
-    uploadthingStorage({
+    s3Storage({
       collections: {
-        [Media.slug]: true, // Uses the slug from your imported Media collection
+        [Media.slug]: true,
       },
-      options: {
-        token: process.env.UPLOADTHING_TOKEN, // Add this to Vercel and your local .env
-        acl: 'public-read',
+      bucket: 'yugotour-assets',
+      config: {
+        endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
+        region: 'auto',
+        credentials: {
+          accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ?? '',
+          secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ?? '',
+        },
+      },
+      generateURL: ({ filename, prefix }) => {
+        const key = prefix ? `${prefix}/${filename}` : filename
+        return `https://media.yugotour-assets.workers.dev/${key}`
       },
     }),
   ],

@@ -34,8 +34,7 @@ const nextConfig: NextConfig = {
           protocol: url.protocol.replace(':', '') as 'http' | 'https',
         }
       }),
-      { hostname: 'utfs.io', protocol: 'https' as const },
-      { hostname: '*.ufs.sh', protocol: 'https' as const },
+      { hostname: 'media.yugotour-assets.workers.dev', protocol: 'https' as const },
     ],
   },
   webpack: (webpackConfig) => {
