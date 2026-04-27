@@ -56,7 +56,7 @@ export default buildConfig({
     s3Storage({
       collections: {
         [Media.slug]: {
-          generateFileURL: ({ filename, prefix }) => {
+          generateFileURL: ({ filename, prefix }: { filename: string; prefix?: string }) => {
             const key = prefix ? `${prefix}/${filename}` : filename
             return `https://media.yugotour-assets.workers.dev/${key}`
           },
