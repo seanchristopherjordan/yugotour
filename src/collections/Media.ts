@@ -53,7 +53,7 @@ export const Media: CollectionConfig = {
     afterDelete: [
       ({ doc, req: { context } }) => {
         if (!context.disableRevalidate) {
-          revalidateTag('media')
+          revalidateTag('media', {})
         }
         return doc
       },
