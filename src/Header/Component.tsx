@@ -14,8 +14,6 @@ export async function Header() {
     menuYugopediaUrl,
     menuAboutUrl,
     menuBookNowUrl,
-    instagramIconUrl,
-    facebookIconUrl,
   ] = await Promise.all([
     getCachedGlobal('site-settings', 0)(),
     getMediaUrl('yugotour-header-logo.webp'),
@@ -27,8 +25,6 @@ export async function Header() {
     getMediaUrl('menu-yugopedia.webp'),
     getMediaUrl('menu-aboutus.webp'),
     getMediaUrl('menu-booknow.webp'),
-    getMediaUrl('instagram_icon.png'),
-    getMediaUrl('Facebook_icon.png'),
   ])
 
   // Preload all megamenu images so hover states are instant on first open
@@ -72,10 +68,6 @@ export async function Header() {
               fbHref: siteSettings.sarajevo?.facebook ?? null,
             },
           ],
-          socialIcons: {
-            ig: instagramIconUrl,
-            fb: facebookIconUrl,
-          },
         }}
       />
     </>

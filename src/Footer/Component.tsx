@@ -37,8 +37,6 @@ export async function Footer() {
     footerLogoUrl,
     qrCodeUrl,
     tripadvisorIconUrl,
-    instagramIconUrl,
-    facebookIconUrl,
   ] = await Promise.all([
     getCachedGlobal('site-settings', 0)(),
     getMediaUrl('texture-red.webp'),
@@ -46,8 +44,6 @@ export async function Footer() {
     getMediaUrl('yugotour-footer-logo.webp'),
     getMediaUrl('yugotour-googlereview-qrcode.webp'),
     getMediaUrl('tripadvisor_icon1.png'),
-    getMediaUrl('instagram_icon.png'),
-    getMediaUrl('Facebook_icon.png'),
   ])
 
   const belgrade = siteSettings.belgrade
@@ -155,16 +151,12 @@ export async function Footer() {
                 city="Belgrade"
                 instagramHref={belgrade?.instagram ?? null}
                 facebookHref={belgrade?.facebook ?? null}
-                instagramIconUrl={instagramIconUrl}
-                facebookIconUrl={facebookIconUrl}
                 bodyTextClass={bodyTextClass}
               />
               <CityIcons
                 city="Sarajevo"
                 instagramHref={sarajevo?.instagram ?? null}
                 facebookHref={sarajevo?.facebook ?? null}
-                instagramIconUrl={instagramIconUrl}
-                facebookIconUrl={facebookIconUrl}
                 bodyTextClass={bodyTextClass}
               />
             </div>
@@ -236,19 +228,10 @@ interface CityIconsProps {
   city: string
   instagramHref: string | null
   facebookHref: string | null
-  instagramIconUrl: string | null
-  facebookIconUrl: string | null
   bodyTextClass: string
 }
 
-function CityIcons({
-  city,
-  instagramHref,
-  facebookHref,
-  instagramIconUrl,
-  facebookIconUrl,
-  bodyTextClass,
-}: CityIconsProps) {
+function CityIcons({ city, instagramHref, facebookHref, bodyTextClass }: CityIconsProps) {
   return (
     <div className="mb-[15px] last:mb-0">
       <span className={`${bodyTextClass} block`}>{city}</span>
@@ -261,16 +244,7 @@ function CityIcons({
             aria-label={`${city} Facebook`}
             className="opacity-90 hover:opacity-100 transition-opacity duration-200"
           >
-            {facebookIconUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={facebookIconUrl}
-                alt="Facebook"
-                className="w-[1.8rem] min-[992px]:w-[2.1rem] h-auto object-contain"
-              />
-            ) : (
-              <FacebookIcon className="w-[1.8rem] min-[992px]:w-[2.1rem] h-auto text-yugo-cream" />
-            )}
+            <FacebookIcon className="w-[1.8rem] min-[992px]:w-[2.1rem] h-auto text-yugo-cream" />
           </a>
         )}
         {instagramHref && (
@@ -281,16 +255,7 @@ function CityIcons({
             aria-label={`${city} Instagram`}
             className="opacity-90 hover:opacity-100 transition-opacity duration-200"
           >
-            {instagramIconUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={instagramIconUrl}
-                alt="Instagram"
-                className="w-[1.8rem] min-[992px]:w-[2.1rem] h-auto object-contain"
-              />
-            ) : (
-              <InstagramIcon className="w-[1.8rem] min-[992px]:w-[2.1rem] h-auto text-yugo-cream" />
-            )}
+            <InstagramIcon className="w-[1.8rem] min-[992px]:w-[2.1rem] h-auto text-yugo-cream" />
           </a>
         )}
       </div>

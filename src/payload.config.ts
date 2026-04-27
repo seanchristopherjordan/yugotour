@@ -66,6 +66,7 @@ export default buildConfig({
       config: {
         endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
         region: 'auto',
+        forcePathStyle: true,
         credentials: {
           accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ?? '',
           secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ?? '',

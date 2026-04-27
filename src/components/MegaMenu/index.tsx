@@ -24,10 +24,6 @@ export interface MegaMenuProps {
   textureUrl: string | null
   images: MegaMenuImages
   socialLinks: MegaMenuSocialCity[]
-  socialIcons: {
-    ig: string | null
-    fb: string | null
-  }
 }
 
 const MAIN_LINKS = [
@@ -45,7 +41,7 @@ const SECONDARY_LINKS = [
   { label: 'Media', href: '/media' },
 ]
 
-export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks, socialIcons }: MegaMenuProps) {
+export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: MegaMenuProps) {
   // Mirrors the layerA/layerB crossfade logic from custom-javascript.js exactly
   const [activeSlot, setActiveSlot] = useState<'a' | 'b' | null>(null)
   const [imgA, setImgA] = useState<string | null>(null)
@@ -214,16 +210,7 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks, soc
                       aria-label={`${city} Instagram`}
                       className="transition-opacity duration-200 hover:opacity-100 opacity-70"
                     >
-                      {socialIcons.ig ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={socialIcons.ig}
-                          alt="Instagram"
-                          className="w-[2.4rem] h-[2.4rem] object-contain"
-                        />
-                      ) : (
-                        <InstagramIcon className="w-[2.4rem] h-[2.4rem] text-[#a6b0b1]" />
-                      )}
+                      <InstagramIcon className="w-[2.4rem] h-[2.4rem] text-[#a6b0b1]" />
                     </a>
                   )}
                   {fbHref && (
@@ -234,16 +221,7 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks, soc
                       aria-label={`${city} Facebook`}
                       className="transition-opacity duration-200 hover:opacity-100 opacity-70"
                     >
-                      {socialIcons.fb ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={socialIcons.fb}
-                          alt="Facebook"
-                          className="w-[2.4rem] h-[2.4rem] object-contain"
-                        />
-                      ) : (
-                        <FacebookIcon className="w-[2.4rem] h-[2.4rem] text-[#a6b0b1]" />
-                      )}
+                      <FacebookIcon className="w-[2.4rem] h-[2.4rem] text-[#a6b0b1]" />
                     </a>
                   )}
                 </div>
