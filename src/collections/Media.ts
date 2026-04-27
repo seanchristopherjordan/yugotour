@@ -45,7 +45,7 @@ export const Media: CollectionConfig = {
     afterChange: [
       ({ doc, req: { context } }) => {
         if (!context.disableRevalidate) {
-          revalidateTag('media')
+          revalidateTag('media', 'page')
         }
         return doc
       },
