@@ -57,19 +57,20 @@ export default buildConfig({
       collections: {
         [Media.slug]: {
           generateFileURL: ({ filename, prefix }: { filename: string; prefix?: string }) => {
+            const cdnBase = (process.env.NEXT_PUBLIC_S3_URL ?? '').replace(/\/$/, '')
             const key = prefix ? `${prefix}/${filename}` : filename
-            return `https://media.yugotour-assets.workers.dev/${key}`
+            return `${cdnBase}/${key}`
           },
         },
       },
-      bucket: 'yugotour-assets',
+      bucket: process.env.S3_BUCKET ?? 'yugotour-assets',
       config: {
-        endpoint: process.env.CLOUDFLARE_R2_ENDPOINT,
+        endpoint: process.env.S3_ENDPOINT,
         region: 'auto',
         forcePathStyle: true,
         credentials: {
-          accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ?? '',
-          secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ?? '',
+          accessKeyId: process.env.S3_ACCESS_KEY_ID ?? '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY ?? '',
         },
       },
     }),
