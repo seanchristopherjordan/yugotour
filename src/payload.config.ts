@@ -55,7 +55,12 @@ export default buildConfig({
     ...existingPlugins, // Keeps your boilerplate plugins (like Search, SEO, etc.)
     s3Storage({
       collections: {
-        [Media.slug]: true,
+        [Media.slug]: {
+          generateFileURL: ({ filename, prefix }) => {
+            const key = prefix ? `${prefix}/${filename}` : filename
+            return `https://media.yugotour-assets.workers.dev/${key}`
+          },
+        },
       },
       bucket: 'yugotour-assets',
       config: {
@@ -65,10 +70,6 @@ export default buildConfig({
           accessKeyId: process.env.CLOUDFLARE_R2_ACCESS_KEY_ID ?? '',
           secretAccessKey: process.env.CLOUDFLARE_R2_SECRET_ACCESS_KEY ?? '',
         },
-      },
-      generateURL: ({ filename, prefix }) => {
-        const key = prefix ? `${prefix}/${filename}` : filename
-        return `https://media.yugotour-assets.workers.dev/${key}`
       },
     }),
   ],
