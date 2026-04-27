@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    tours: Tour;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -93,6 +94,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tours: ToursSelect<false> | ToursSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -205,7 +207,16 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ImageSliderBlock
+    | TvSectionBlock
+    | ReviewsSectionBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -796,6 +807,159 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageSliderBlock".
+ */
+export interface ImageSliderBlock {
+  /**
+   * Internal label to identify this slider (e.g. "Homepage Carousel")
+   */
+  label?: string | null;
+  /**
+   * Shown on screens narrower than 992 px. Upload portrait-oriented photos.
+   */
+  mobileImages: (number | Media)[];
+  /**
+   * Shown on screens 992 px and wider. Upload landscape-oriented photos.
+   */
+  desktopImages: (number | Media)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageSlider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TvSectionBlock".
+ */
+export interface TvSectionBlock {
+  /**
+   * Internal label to identify this block (e.g. "Homepage TV")
+   */
+  label?: string | null;
+  /**
+   * Paste any YouTube URL — watch URL (youtube.com/watch?v=…) or short URL (youtu.be/…).
+   */
+  youtubeUrl: string;
+  /**
+   * TV overlay shown on screens narrower than 992 px. Must have a transparent screen area.
+   */
+  mobileImage: number | Media;
+  /**
+   * TV overlay shown on screens 992 px and wider. Must have a transparent screen area.
+   */
+  desktopImage: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tvSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsSectionBlock".
+ */
+export interface ReviewsSectionBlock {
+  /**
+   * Internal label to identify this block (e.g. "Homepage Reviews")
+   */
+  label?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reviewsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tours".
+ */
+export interface Tour {
+  id: number;
+  title: string;
+  city: 'belgrade' | 'sarajevo';
+  /**
+   * 1x = Belgrade, 2x = Sarajevo. Used by the booking system.
+   */
+  tourId?: number | null;
+  /**
+   * Short pitch shown on tour listing cards and at the top of the tour page.
+   */
+  lede?: string | null;
+  /**
+   * e.g. "4 hours" or "6–7 hours"
+   */
+  duration?: string | null;
+  priceGroup?: number | null;
+  priceSolo?: number | null;
+  /**
+   * One item per line. Rendered as a bulleted list on the tour page.
+   */
+  includes?: string | null;
+  introText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Used on listing tiles and social sharing.
+   */
+  thumbnail?: (number | null) | Media;
+  headerDesktop?: (number | null) | Media;
+  headerMobile?: (number | null) | Media;
+  /**
+   * Optional upgrades guests can add during booking.
+   */
+  extras?:
+    | {
+        title: string;
+        /**
+         * e.g. "15" or "30 per car"
+         */
+        priceGroup?: string | null;
+        priceSolo?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Itinerary stops displayed on the tour page. Each step has a title, description, and optional photo.
+   */
+  steps?:
+    | {
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        photo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1001,6 +1165,10 @@ export interface PayloadLockedDocument {
         value: number | Category;
       } | null)
     | ({
+        relationTo: 'tours';
+        value: number | Tour;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1102,6 +1270,9 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        imageSlider?: T | ImageSliderBlockSelect<T>;
+        tvSection?: T | TvSectionBlockSelect<T>;
+        reviewsSection?: T | ReviewsSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1198,6 +1369,38 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageSliderBlock_select".
+ */
+export interface ImageSliderBlockSelect<T extends boolean = true> {
+  label?: T;
+  mobileImages?: T;
+  desktopImages?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TvSectionBlock_select".
+ */
+export interface TvSectionBlockSelect<T extends boolean = true> {
+  label?: T;
+  youtubeUrl?: T;
+  mobileImage?: T;
+  desktopImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsSectionBlock_select".
+ */
+export interface ReviewsSectionBlockSelect<T extends boolean = true> {
+  label?: T;
   id?: T;
   blockName?: T;
 }
@@ -1352,6 +1555,44 @@ export interface CategoriesSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tours_select".
+ */
+export interface ToursSelect<T extends boolean = true> {
+  title?: T;
+  city?: T;
+  tourId?: T;
+  lede?: T;
+  duration?: T;
+  priceGroup?: T;
+  priceSolo?: T;
+  includes?: T;
+  introText?: T;
+  thumbnail?: T;
+  headerDesktop?: T;
+  headerMobile?: T;
+  extras?:
+    | T
+    | {
+        title?: T;
+        priceGroup?: T;
+        priceSolo?: T;
+        id?: T;
+      };
+  steps?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        photo?: T;
+        id?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }

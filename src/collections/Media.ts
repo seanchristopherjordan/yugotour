@@ -5,6 +5,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import { revalidateTag } from 'next/cache'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -41,12 +42,28 @@ export const Media: CollectionConfig = {
     },
   ],
   hooks: {
+    afterChange: [
+      ({ doc, req: { context } }) => {
+        if (!context.disableRevalidate) {
+          revalidateTag('media')
+        }
+        return doc
+      },
+    ],
+    afterDelete: [
+      ({ doc, req: { context } }) => {
+        if (!context.disableRevalidate) {
+          revalidateTag('media')
+        }
+        return doc
+      },
+    ],
     beforeOperation: [
       ({ args, operation }) => {
         if ((operation === 'create' || operation === 'update') && args.req?.file) {
           const mimeType: string = args.req.file.mimetype ?? ''
           if (mimeType === 'image/svg+xml') {
-            args.req.file.sizes = {}
+            ;(args.req.file as unknown as Record<string, unknown>).sizes = {}
           }
         }
         return args

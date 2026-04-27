@@ -99,7 +99,7 @@ export async function Footer() {
                 <strong className={`${bodyTextClass} font-bold block`}>Yugotour Belgrade</strong>
                 {belgrade?.address && (
                   <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
-                    {belgrade.address}
+                    {belgrade.address.trim()}
                   </p>
                 )}
                 {belgrade?.phone && (
@@ -118,7 +118,7 @@ export async function Footer() {
                 <strong className={`${bodyTextClass} font-bold block`}>Yugotour Sarajevo</strong>
                 {sarajevo?.address && (
                   <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
-                    {sarajevo.address}
+                    {sarajevo.address.trim()}
                   </p>
                 )}
                 {sarajevo?.phone && (

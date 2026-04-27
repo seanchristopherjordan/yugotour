@@ -10,7 +10,15 @@ export async function HeroVideoServer() {
 
   return (
     <>
-      {videoUrl && <link rel="preload" as="video" href={videoUrl} type="video/webm" />}
+      {videoUrl && (
+        <link
+          rel="preload"
+          as="video"
+          href={videoUrl}
+          type="video/webm"
+          fetchPriority="high"
+        />
+      )}
       <HeroVideo videoUrl={videoUrl} posterUrl={posterUrl} logoUrl={logoUrl} />
     </>
   )

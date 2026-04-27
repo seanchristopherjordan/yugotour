@@ -10,6 +10,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { HeroVideoServer } from '@/components/HeroVideo/Component'
 import { IntroSectionServer } from '@/components/IntroSection/Component'
+import { CityPickerServer } from '@/components/CityPicker/Component'
 
 export default async function HomePage() {
   const { isEnabled: draft } = await draftMode()
@@ -26,9 +27,12 @@ export default async function HomePage() {
       {/* Intro section — cream, spomentik parallax, cars image */}
       <IntroSectionServer />
 
+      {/* City picker — Yugoslavia map with pulsing Belgrade / Sarajevo signs */}
+      <CityPickerServer />
+
       {/* Page blocks — no pt since they start right after the 100svh hero */}
       {page?.layout && (
-        <main className="pb-24">
+        <main>
           <RenderBlocks blocks={page.layout} />
         </main>
       )}

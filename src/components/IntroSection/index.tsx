@@ -79,7 +79,7 @@ export function IntroSection({
           <motion.img
             src={spomentikUrl}
             alt=""
-            className="absolute top-0 h-auto opacity-70 min-h-[150%] w-[150%] right-[-25%] min-[992px]:w-[85%] min-[992px]:right-0"
+            className="absolute top-0 h-auto min-h-[150%] opacity-70 w-[150%] right-[-25%] min-[992px]:w-[85%] min-[992px]:right-0"
             style={{ y: spomentikY, willChange: 'transform' }}
           />
         </div>

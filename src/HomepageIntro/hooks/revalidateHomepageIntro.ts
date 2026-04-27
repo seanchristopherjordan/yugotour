@@ -7,7 +7,7 @@ export const revalidateHomepageIntro: GlobalAfterChangeHook = ({
 }) => {
   if (!context.disableRevalidate) {
     payload.logger.info('Revalidating homepage-intro')
-    revalidateTag('global_homepage-intro')
+    revalidateTag('global_homepage-intro', 'max')
   }
   return doc
 }

@@ -7,6 +7,9 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
+import { TvSectionBlock } from '@/blocks/TvSection/Component'
+import { ReviewsSectionBlock } from '@/blocks/ReviewsSection/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -14,6 +17,9 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  imageSlider: ImageSliderBlock,
+  tvSection: TvSectionBlock,
+  reviewsSection: ReviewsSectionBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -33,8 +39,13 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection'])
+              const isFullBleed = fullBleedTypes.has(blockType)
+              const followsFullBleed = index > 0 && fullBleedTypes.has(blocks[index - 1]?.blockType ?? '')
+              const wrapperClass = isFullBleed ? '' : followsFullBleed ? 'mb-16' : 'my-16'
+
               return (
-                <div className="my-16" key={index}>
+                <div className={wrapperClass} key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

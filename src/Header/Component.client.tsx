@@ -68,7 +68,7 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
             backgroundSize: 'cover',
           }}
         >
-          <div className="flex items-center justify-end h-full w-full pr-[20px] min-[992px]:pr-[30px]">
+          <div className="flex items-center justify-end h-full w-full pr-[30px]">
             {/* Logo — absolute, spills below the nav bar */}
             <Link
               href="/"
