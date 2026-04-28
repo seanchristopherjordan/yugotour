@@ -875,18 +875,18 @@ html[data-theme='light'] {
   position: relative;
   overflow: hidden;
   background-color: var(--color-yugo-black);
-  flex: 0 0 54%;
+  flex: 0 0 46%;
 }
 
 @media (min-width: 370px)  { .tile-image-wrap { flex-basis: 50%; } }
-@media (min-width: 410px)  { .tile-image-wrap { flex-basis: 52%; } }
-@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 54%; } }
-@media (min-width: 480px)  { .tile-image-wrap { flex-basis: 64%; } }
-@media (min-width: 520px)  { .tile-image-wrap { flex-basis: 69%; } }
-@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 78%; } }
-@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 66%; } }
-@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 70%; } }
-@media (min-width: 1400px) { .tile-image-wrap { flex-basis: 76%; } }
+@media (min-width: 400px)  { .tile-image-wrap { flex-basis: 54%; } }
+@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 51%; } }
+@media (min-width: 480px)  { .tile-image-wrap { flex-basis: 55%; } }
+@media (min-width: 520px)  { .tile-image-wrap { flex-basis: 63%; } }
+@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 76%; } }
+@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 54%; } }
+@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 56%; } }
+@media (min-width: 1400px) { .tile-image-wrap { flex-basis: 73%; } }
 
 .tile-bg-img {
   position: absolute;

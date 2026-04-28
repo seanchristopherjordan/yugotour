@@ -10,6 +10,7 @@ import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
 import { TalesFromTheRoad } from '@/components/TalesFromTheRoad'
 import { SimulatorSection } from '@/components/SimulatorSection'
 import { getMediaUrl } from '@/lib/getMediaUrl'
+import { getSimulatorAssets } from '@/lib/getSimulatorAssets'
 import RichText from '@/components/RichText'
 
 export const metadata: Metadata = {
@@ -54,7 +55,7 @@ function FallbackBody() {
 export default async function BelgradeToursPage() {
   const payload = await getPayload({ config: configPromise })
 
-  const [pageResult, toursResult, orderResult, talesTextureUrl, ...simAssets] = await Promise.all([
+  const [pageResult, toursResult, orderResult, talesTextureUrl, sim] = await Promise.all([
     payload.find({
       collection: 'tour-list-pages',
       where: { city: { equals: 'belgrade' } },
@@ -69,28 +70,8 @@ export default async function BelgradeToursPage() {
     }),
     payload.findGlobal({ slug: 'tour-order', depth: 1 }),
     getMediaUrl('texture-gold.webp'),
-    getMediaUrl('space-age-wireframe-desktop.webp'),
-    getMediaUrl('space-age-wireframe-mobile.webp'),
-    getMediaUrl('yugo-tour-simulator-smallest-possible.webm'),
-    getMediaUrl('CarInterior2.webp'),
-    getMediaUrl('steering-wheel-570kb.webp'),
-    getMediaUrl('sound-off.webp'),
-    getMediaUrl('sound-on.webp'),
-    getMediaUrl('yugo-simulator-radio-chatter.mp3'),
-    getMediaUrl('horn.mp3'),
+    getSimulatorAssets(),
   ])
-
-  const [
-    bgDesktopUrl,
-    bgMobileUrl,
-    driveVideoUrl,
-    carInteriorUrl,
-    steeringWheelUrl,
-    soundOffUrl,
-    soundOnUrl,
-    radioAudioUrl,
-    hornAudioUrl,
-  ] = simAssets
 
   const page = pageResult.docs[0] ?? null
   const allTours = toursResult.docs
@@ -193,19 +174,7 @@ export default async function BelgradeToursPage() {
         <TalesFromTheRoad textureUrl={talesTextureUrl} city="belgrade" />
       )}
 
-      {showSim && (
-        <SimulatorSection
-          bgDesktopUrl={bgDesktopUrl}
-          bgMobileUrl={bgMobileUrl}
-          driveVideoUrl={driveVideoUrl}
-          carInteriorUrl={carInteriorUrl}
-          steeringWheelUrl={steeringWheelUrl}
-          soundOffUrl={soundOffUrl}
-          soundOnUrl={soundOnUrl}
-          radioAudioUrl={radioAudioUrl}
-          hornAudioUrl={hornAudioUrl}
-        />
-      )}
+      {showSim && <SimulatorSection {...sim} />}
     </>
   )
 }
