@@ -1,5 +1,6 @@
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
 
+import { seedTourListPages } from './tour-list-pages'
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
 import { home } from './home'
@@ -18,6 +19,7 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  'tour-list-pages',
 ]
 
 const navGlobals: ('header' | 'footer')[] = ['header', 'footer']
@@ -273,6 +275,8 @@ export const seed = async ({
       },
     }),
   ])
+
+  await seedTourListPages({ payload, req })
 
   payload.logger.info('Seeded database successfully!')
 }

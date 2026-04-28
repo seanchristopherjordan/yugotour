@@ -832,7 +832,7 @@ html[data-theme='light'] {
   z-index: 50;
 }
 
-@media (min-width: 650px) {
+@media (min-width: 992px) {
   .tour-grid {
     grid-template-columns: 1fr 1fr;
     gap: 37px;
@@ -1011,6 +1011,10 @@ html[data-theme='light'] {
   font-weight: 400;
   margin: 0 3px;
   opacity: 0.7;
+}
+
+.tile-info-line .info-val-includes {
+  color: var(--color-yugo-black);
 }
 
 .tile-info-extras {

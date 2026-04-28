@@ -18,7 +18,7 @@ export function TourTile({ tour }: TourTileProps) {
   const duration = tour.duration ?? null
   const price = tour.priceGroup != null ? `${tour.priceGroup}€` : null
   const includesText = tour.includes
-    ? tour.includes.replace(/\n/g, ' ').trim()
+    ? tour.includes.split('\n').map(s => s.trim()).filter(Boolean).join(', ')
     : null
 
   // First two extras for the info line
@@ -63,7 +63,7 @@ export function TourTile({ tour }: TourTileProps) {
               {includesText && (
                 <>
                   {(duration || price) && <span className="info-sep">|</span>}
-                  <span className="info-val">INCL. {includesText}</span>
+                  <span className="info-val info-val-includes">INCL. {includesText}</span>
                 </>
               )}
             </p>

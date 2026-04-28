@@ -1,6 +1,7 @@
 'use client'
 
-import { motion, useScroll, useMotionValue, useMotionValueEvent, useSpring } from 'framer-motion'
+import { useRef } from 'react'
+import { motion, useScroll, useMotionValue, useMotionValueEvent, useAnimationFrame } from 'framer-motion'
 
 export interface TourListHeaderProps {
   title: string
@@ -18,8 +19,8 @@ function fallback(city: string, filename: string) {
   return `/tour-headers/${city}-${filename}`
 }
 
-// Critically overdamped spring — follows scroll smoothly, zero bounce
-const SPRING = { stiffness: 120, damping: 28, restDelta: 0.001 }
+// Lerp factor: 0.4 gives ~50ms to settle — removes per-frame jitter, no spring feel
+const ALPHA = 0.4
 
 export function TourListHeader({
   title,
@@ -42,32 +43,30 @@ export function TourListHeader({
 
   const { scrollY } = useScroll()
 
-  // Raw target values driven by scroll
-  const rawTitleY = useMotionValue(0)
-  const rawL2Y    = useMotionValue(0)
-  const rawL3Y    = useMotionValue(0)
-  const rawL4Y    = useMotionValue(0)
+  const titleY = useMotionValue(0)
+  const l2Y    = useMotionValue(0)
+  const l3Y    = useMotionValue(0)
+  const l4Y    = useMotionValue(0)
 
-  // Spring-smoothed values — this eliminates jumpiness
-  const titleY = useSpring(rawTitleY, SPRING)
-  const l2Y    = useSpring(rawL2Y,    SPRING)
-  const l3Y    = useSpring(rawL3Y,    SPRING)
-  const l4Y    = useSpring(rawL4Y,    SPRING)
+  // Plain ref for scroll targets — avoids triggering re-renders
+  const targets = useRef({ titleY: 0, l2Y: 0, l3Y: 0, l4Y: 0 })
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     const clamped = Math.min(y, 1200)
     const mobile = window.innerWidth < 992
     if (mobile) {
-      rawTitleY.set(clamped * 0.4)
-      rawL2Y.set(clamped * 0.3)
-      rawL3Y.set(clamped * 0.5)
-      rawL4Y.set(clamped * 0.7)
+      targets.current = { titleY: clamped * 0.4, l2Y: clamped * 0.3, l3Y: clamped * 0.5, l4Y: clamped * 0.7 }
     } else {
-      rawTitleY.set(clamped * 0.31)
-      rawL2Y.set(clamped * 0.39)
-      rawL3Y.set(clamped * 0.6)
-      rawL4Y.set(0)
+      targets.current = { titleY: clamped * 0.31, l2Y: clamped * 0.39, l3Y: clamped * 0.6, l4Y: 0 }
     }
+  })
+
+  useAnimationFrame(() => {
+    const t = targets.current
+    titleY.set(titleY.get() + (t.titleY - titleY.get()) * ALPHA)
+    l2Y.set(l2Y.get()       + (t.l2Y    - l2Y.get())    * ALPHA)
+    l3Y.set(l3Y.get()       + (t.l3Y    - l3Y.get())    * ALPHA)
+    l4Y.set(l4Y.get()       + (t.l4Y    - l4Y.get())    * ALPHA)
   })
 
   return (

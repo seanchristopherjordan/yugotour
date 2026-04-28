@@ -127,7 +127,7 @@ export function CityPicker({
 
               {/* Belgrade sign — top-right, pulses big→small */}
               {belgradSignUrl && (
-                <Link href="/belgrade" className="city-sign-belgrade">
+                <Link href="/belgrade-tours" className="city-sign-belgrade">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={belgradSignUrl} alt="Belgrade Tours" />
                 </Link>
@@ -135,7 +135,7 @@ export function CityPicker({
 
               {/* Sarajevo sign — bottom-left, pulses small→big */}
               {sarajevoSignUrl && (
-                <Link href="/sarajevo" className="city-sign-sarajevo">
+                <Link href="/sarajevo-tours" className="city-sign-sarajevo">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={sarajevoSignUrl} alt="Sarajevo Tours" />
                 </Link>

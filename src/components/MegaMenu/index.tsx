@@ -27,8 +27,8 @@ export interface MegaMenuProps {
 }
 
 const MAIN_LINKS = [
-  { label: 'belgrade', href: '/belgrade', imgKey: 'belgrade' as keyof MegaMenuImages },
-  { label: 'sarajevo', href: '/sarajevo', imgKey: 'sarajevo' as keyof MegaMenuImages },
+  { label: 'belgrade', href: '/belgrade-tours', imgKey: 'belgrade' as keyof MegaMenuImages },
+  { label: 'sarajevo', href: '/sarajevo-tours', imgKey: 'sarajevo' as keyof MegaMenuImages },
   { label: 'yugopedia', href: '/yugopedia', imgKey: 'yugopedia' as keyof MegaMenuImages },
   { label: 'about us', href: '/about-us', imgKey: 'aboutUs' as keyof MegaMenuImages },
   { label: 'book now', href: '#book', imgKey: 'bookNow' as keyof MegaMenuImages, isBookNow: true },

@@ -4,8 +4,8 @@ import Link from 'next/link'
 
 const NAV_LINKS = [
   { label: 'Book Now', href: '#book' },
-  { label: 'Belgrade Tours', href: '/belgrade' },
-  { label: 'Sarajevo Tours', href: '/sarajevo' },
+  { label: 'Belgrade Tours', href: '/belgrade-tours' },
+  { label: 'Sarajevo Tours', href: '/sarajevo-tours' },
   { label: 'About Us', href: '/about-us' },
   { label: 'Yugopedia', href: '/yugopedia' },
   { label: 'FAQs', href: '/faqs' },
