@@ -37,7 +37,7 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
             slidesPerView={1}
             spaceBetween={25}
             loop={mobileSlides.length >= 3}
-            speed={500}
+            speed={310}
             pagination={{ clickable: true }}
             grabCursor
             className="image-slider-swiper"

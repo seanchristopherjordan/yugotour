@@ -111,7 +111,7 @@ export function IntroSection({
 
           {/* Body text + red CTA pill */}
           <div className="pl-0 min-[992px]:pl-[95px]">
-            <p className="font-fakt text-yugo-black leading-[1.4] mb-0 w-full min-[992px]:w-[650px] min-[992px]:max-w-full text-[1.05rem] min-[400px]:text-[1.2rem]">
+            <p className="font-fakt text-yugo-black leading-[1.4] mb-0 w-full min-[992px]:w-[650px] min-[992px]:max-w-full text-[1.071rem] min-[400px]:text-[1.224rem] min-[992px]:text-[1.2rem]">
               {bodyText}
               {ctaText && ctaUrl && (
                 <>
@@ -160,7 +160,7 @@ export function IntroSection({
         <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%]">
           <div className="mt-[5px] min-[992px]:mt-[-35px] min-[1200px]:mt-[-70px] pb-[10px] pl-0 min-[992px]:pl-[95px] min-[992px]:flex min-[992px]:items-baseline">
             {howItWorksTitle && (
-              <p className="font-fakt font-bold text-yugo-black leading-[1.4] text-[1.05rem] min-[400px]:text-[1.2rem] mb-[0.25rem] min-[992px]:mb-0 min-[992px]:mr-[15px] min-[992px]:flex-shrink-0">
+              <p className="font-fakt font-bold text-yugo-black leading-[1.4] text-[1.071rem] min-[400px]:text-[1.224rem] min-[992px]:text-[1.2rem] mb-[0.25rem] min-[992px]:mb-0 min-[992px]:mr-[15px] min-[992px]:flex-shrink-0">
                 {howItWorksTitle}
               </p>
             )}
@@ -174,7 +174,7 @@ export function IntroSection({
                   <span className="text-yugo-red mr-[6px] leading-none text-[1.1em] flex-shrink-0">
                     {(['❶', '❷', '❸'] as const)[i] ?? '•'}
                   </span>
-                  <span className="font-fakt text-yugo-black leading-[1.4] text-[1.05rem] min-[400px]:text-[1.2rem]">
+                  <span className="font-fakt text-yugo-black leading-[1.4] text-[1.071rem] min-[400px]:text-[1.224rem] min-[992px]:text-[1.2rem]">
                     {bullet}
                   </span>
                 </li>

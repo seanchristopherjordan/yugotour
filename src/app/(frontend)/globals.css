@@ -238,6 +238,15 @@
   }
 }
 
+/* ── Fakt body text — mobile refinements ── */
+@media (max-width: 991px) {
+  /* Tighten character spacing by 0.5% on all Fakt body text.
+     Excludes headings (h5 column labels carry explicit tracking-[1px]). */
+  .font-fakt:not(h1, h2, h3, h4, h5, h6) {
+    letter-spacing: -0.005em;
+  }
+}
+
 /* Scroll lock when megamenu is open */
 html.modal-active,
 body.modal-active {
@@ -420,7 +429,7 @@ html[data-theme='light'] {
 
 /* Ease-out on the wrapper transform */
 .image-slider-swiper .swiper-wrapper {
-  transition-timing-function: ease-out !important;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1) !important;
 }
 
 /* ── Pagination dots ── */
