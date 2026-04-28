@@ -93,7 +93,7 @@ export function CityPicker({
             )}
 
             <h2
-              className="font-steelfish uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.9] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.015em] max-[991px]:text-[clamp(2.7rem,6vw,5rem)] min-[992px]:text-[clamp(1.78rem,4.15vw,4.17rem)]"
+              className="font-steelfish uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.85] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.015em] max-[991px]:text-[clamp(2.7rem,6vw,5rem)] min-[992px]:text-[clamp(1.78rem,4.15vw,4.17rem)]"
             >
               Куда, Друже?
             </h2>
