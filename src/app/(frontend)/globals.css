@@ -814,10 +814,14 @@ html[data-theme='light'] {
   line-height: 1.4;
   letter-spacing: -0.01em;
   margin-bottom: 1.5rem;
-  font-size: 1.05rem;
+  font-size: 1.092rem;
 }
 
-@media (min-width: 440px) {
+@media (min-width: 400px) {
+  .intro-copy-rich p { font-size: 1.248rem; }
+}
+
+@media (min-width: 992px) {
   .intro-copy-rich p { font-size: 1.2rem; }
 }
 
@@ -847,6 +851,7 @@ html[data-theme='light'] {
   overflow: hidden;
   container-type: inline-size;
   container-name: tile;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .tour-tile-inner {
@@ -927,32 +932,33 @@ html[data-theme='light'] {
   overflow: hidden;
 }
 
-.tile-cta {
-  position: absolute;
-  bottom: 3cqi;
-  right: 3cqi;
-  z-index: 3;
-  display: inline-block;
-  background-image: url('/textures/texture-red.webp');
-  background-size: auto;
-  background-repeat: repeat;
-  background-color: var(--color-yugo-red);
-  color: var(--color-yugo-cream) !important;
+.tile-learn-more {
+  background-color: var(--color-yugo-cream);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 2.5cqi 4cqi;
+  flex-shrink: 0;
+}
+
+.tile-learn-more-text {
   font-family: var(--font-fakt);
   font-weight: 700;
-  font-size: 1.05rem;
-  letter-spacing: 0.01rem;
-  padding: 3px 6px 1px 10px;
-  line-height: 1.5;
-  text-decoration: none !important;
+  font-size: 0.9rem;
   text-transform: uppercase;
-  border-radius: 3px;
-  transition: filter 200ms ease-in-out;
+  letter-spacing: -0.01rem;
+  line-height: 1.2;
+  color: var(--color-yugo-red);
+  transition: color 200ms ease;
   white-space: nowrap;
 }
 
-.tile-cta:hover {
-  filter: brightness(1.15);
+@media (min-width: 440px) {
+  .tile-learn-more-text { font-size: 1.1rem; }
+}
+
+.tour-tile-inner:hover .tile-learn-more-text {
+  color: #ffffff;
 }
 
 .tile-info-bar {
@@ -978,7 +984,7 @@ html[data-theme='light'] {
   margin: 0 0 10px 0;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   font-size: 1.05rem;
 }
@@ -1001,7 +1007,10 @@ html[data-theme='light'] {
   line-height: 1.2;
   margin: 0;
   font-size: 0.9rem;
-  display: block;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 @media (min-width: 440px) {

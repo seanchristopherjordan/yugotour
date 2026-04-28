@@ -61,7 +61,7 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
         ].join(' ')}
       >
         <nav
-          className="relative flex items-center overflow-visible border-b border-black/10 shadow-[inset_0_10px_12px_-10px_rgba(0,0,0,0.2)] min-h-[50px] min-[992px]:min-h-[42px]"
+          className="relative flex items-center overflow-visible border-b border-black/10 shadow-[inset_0_10px_12px_-10px_rgba(0,0,0,0.2)] min-h-[45px] min-[992px]:min-h-[42px]"
           style={{
             height: '3.4vh',
             backgroundImage: navTextureUrl ? `url('${navTextureUrl}')` : undefined,
@@ -79,7 +79,7 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
                 <img
                   src={logoUrl}
                   alt="YugoTour"
-                  className="w-[106px] min-[992px]:w-[96px] h-auto block transition-[filter] duration-300"
+                  className="w-[99px] min-[992px]:w-[96px] h-auto block transition-[filter] duration-300"
                   style={{ filter: 'brightness(1) drop-shadow(0 2px 2px rgba(0,0,0,0.2))' }}
                   onMouseEnter={(e) =>
                     ((e.currentTarget as HTMLImageElement).style.filter =
@@ -97,8 +97,8 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
 
             {/* Desktop city + book now links */}
             <div className="hidden min-[992px]:flex items-center">
-              <NavLink href="/belgrade">belgrade</NavLink>
-              <NavLink href="/sarajevo">sarajevo</NavLink>
+              <NavLink href="/belgrade-tours">belgrade</NavLink>
+              <NavLink href="/sarajevo-tours">sarajevo</NavLink>
               <button
                 id="headerBookNow"
                 type="button"

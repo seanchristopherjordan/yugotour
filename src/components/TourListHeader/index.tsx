@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { motion, useScroll, useMotionValue, useMotionValueEvent } from 'framer-motion'
+import { useEffect, useRef, useCallback } from 'react'
+import { animate, motion, useScroll, useMotionValue, useMotionValueEvent } from 'framer-motion'
 
 export interface TourListHeaderProps {
   title: string
@@ -68,6 +68,20 @@ export function TourListHeader({
     }
   })
 
+  const scrollToContent = useCallback(() => {
+    const target = document.getElementById('tour-list-intro')
+    if (!target) return
+    const targetY = target.getBoundingClientRect().top + window.scrollY
+    const controls = animate(window.scrollY, targetY, {
+      duration: 1,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => window.scrollTo(0, v),
+    })
+    const cancel = () => controls.stop()
+    window.addEventListener('touchstart', cancel, { once: true, passive: true })
+    window.addEventListener('wheel', cancel, { once: true, passive: true })
+  }, [])
+
   return (
     <header className="tour-header">
       {/* Layer 3 — Background */}
@@ -109,6 +123,38 @@ export function TourListHeader({
           <img src={l1d} alt="" />
         </picture>
       </div>
+
+      {/* Scroll-down button */}
+      <motion.button
+        onClick={scrollToContent}
+        aria-label="Scroll to content"
+        className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2 cursor-pointer border-none bg-transparent p-0"
+        whileHover={{ filter: 'brightness(1.2)' }}
+        transition={{ duration: 0.3 }}
+      >
+        <motion.div
+          animate={{ y: [0, 7, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <svg
+            width="38"
+            height="38"
+            viewBox="0 0 38 38"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="opacity-50"
+          >
+            <circle cx="19" cy="19" r="18" stroke="white" strokeWidth="1.5" />
+            <path
+              d="M12 16.5L19 23.5L26 16.5"
+              stroke="white"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </motion.div>
+      </motion.button>
     </header>
   )
 }

@@ -39,7 +39,6 @@ export function TourTile({ tour }: TourTileProps) {
           )}
           <div className="tile-gradient" />
           <h2 className="tile-title">{tour.title}</h2>
-          <span className="tile-cta">LET&apos;S GO →</span>
         </div>
 
         {/* Red info bar */}
@@ -65,6 +64,10 @@ export function TourTile({ tour }: TourTileProps) {
               )}
             </p>
           </div>
+        </div>
+
+        <div className="tile-learn-more">
+          <span className="tile-learn-more-text">LEARN MORE →</span>
         </div>
 
       </Link>
