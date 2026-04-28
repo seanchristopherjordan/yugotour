@@ -28,11 +28,16 @@ export function HeroVideo({ videoUrl, posterUrl, logoUrl }: HeroVideoProps) {
     const target = document.getElementById('intro-section')
     if (!target) return
     const targetY = target.getBoundingClientRect().top + window.scrollY
-    animate(window.scrollY, targetY, {
+    const controls = animate(window.scrollY, targetY, {
       duration: 1,
-      ease: [0.22, 1, 0.36, 1], // custom ease-out cubic
+      ease: [0.22, 1, 0.36, 1],
       onUpdate: (v) => window.scrollTo(0, v),
     })
+    // Cancel programmatic scroll if the user touches or wheels — prevents
+    // the animation fighting manual scroll on mobile.
+    const cancel = () => controls.stop()
+    window.addEventListener('touchstart', cancel, { once: true, passive: true })
+    window.addEventListener('wheel', cancel, { once: true, passive: true })
   }, [])
 
   // Mirrors handleHeroLogoParallax from custom-javascript.js (speed: 0.4)
@@ -53,9 +58,13 @@ export function HeroVideo({ videoUrl, posterUrl, logoUrl }: HeroVideoProps) {
       const navMinHeight = window.innerWidth < 992 ? 50 : 42
       const navHeight = Math.max(window.innerHeight * 0.034, navMinHeight)
       // Temporarily zero our margin to read the natural flow offset
-      // (= AdminBar height when logged in, 0 otherwise)
+      // (= AdminBar height when logged in, 0 otherwise).
+      // Use getBoundingClientRect + scrollY to get the absolute document
+      // position — getBoundingClientRect alone is viewport-relative and
+      // produces a huge wrong value when called mid-scroll (e.g. when
+      // the mobile address bar shows/hides and fires a resize event).
       el.style.marginTop = '0px'
-      const naturalTop = el.getBoundingClientRect().top
+      const naturalTop = el.getBoundingClientRect().top + window.scrollY
       el.style.marginTop = `${Math.max(0, navHeight - naturalTop)}px`
       el.style.height = `calc(100svh - ${navHeight}px)`
     }

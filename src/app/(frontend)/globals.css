@@ -232,6 +232,9 @@
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
     overflow-x: hidden;
+    /* Prevent Chrome scroll-anchoring from jumping to the footer when a
+       layout shift occurs (e.g. HeroVideo marginTop recalc on mobile). */
+    overflow-anchor: none;
   }
 }
 
@@ -445,7 +448,9 @@ html[data-theme='light'] {
    swiper/css/navigation is NOT imported in the component, so we own
    all button styles here with no competing stylesheet. */
 .image-slider-swiper .swiper-button-prev::after,
-.image-slider-swiper .swiper-button-next::after {
+.image-slider-swiper .swiper-button-next::after,
+.image-slider-swiper .swiper-button-prev svg,
+.image-slider-swiper .swiper-button-next svg {
   display: none;
 }
 
