@@ -23,11 +23,11 @@ const h5Class =
   'font-fakt font-bold text-[0.8rem] min-[402px]:text-[0.85rem] tracking-[1px] uppercase text-black/35 leading-none m-0 mb-[1.6rem] min-[402px]:mb-[2rem]'
 
 const bodyTextClass =
-  'font-fakt text-yugo-cream text-[1.02rem] min-[402px]:text-[1.122rem] min-[992px]:text-[1.1rem] leading-[1.4] m-0'
+  'font-fakt text-yugo-cream text-[1.04rem] min-[402px]:text-[1.144rem] min-[992px]:text-[1.1rem] leading-[1.4] m-0'
 
 // Nav link: cream text, relative container for the sliding underline span
 const navLinkClass =
-  'relative inline-block font-fakt text-yugo-cream no-underline text-[1.02rem] min-[402px]:text-[1.122rem] min-[992px]:text-[1.1rem] leading-[1.4] group'
+  'relative inline-block font-fakt text-yugo-cream no-underline text-[1.04rem] min-[402px]:text-[1.144rem] min-[992px]:text-[1.1rem] leading-[1.4] group'
 
 export async function Footer() {
   const [
@@ -91,7 +91,7 @@ export async function Footer() {
               )}
 
               {/* Belgrade address block */}
-              <div className="mb-[1.8rem]">
+              <div className="mb-[1.8rem] mt-[3px] min-[992px]:mt-0">
                 <strong className={`${bodyTextClass} font-bold block`}>Yugotour Belgrade</strong>
                 {belgrade?.address && (
                   <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
@@ -130,7 +130,7 @@ export async function Footer() {
             </div>
 
             {/* Col 2 — Navigate */}
-            <div className="order-2 mt-[74px] min-[992px]:mt-[120px]">
+            <div className="order-2 mt-[72px] min-[992px]:mt-[120px]">
               <h5 className={h5Class}>NAVIGATE</h5>
               <ul className="list-none p-0 m-0">
                 {NAV_LINKS.map(({ label, href }) => (
@@ -207,7 +207,7 @@ export async function Footer() {
 
           {/* Footer bottom */}
           <div className="mt-[40px] pb-[30px]">
-            <p className="font-fakt text-[1.02rem] min-[402px]:text-[1.122rem] min-[992px]:text-[1.1rem] leading-[1.4] m-0 text-black/35">
+            <p className="font-fakt text-[1.04rem] min-[402px]:text-[1.144rem] min-[992px]:text-[1.1rem] leading-[1.4] m-0 text-black/35">
               Site by Sean J
               <br />
               Copyright © {year} Yugotour

@@ -240,10 +240,10 @@
 
 /* ── Fakt body text — mobile refinements ── */
 @media (max-width: 991px) {
-  /* Tighten character spacing by 0.5% on all Fakt body text.
+  /* Tighten character spacing by 1% on all Fakt body text.
      Excludes headings (h5 column labels carry explicit tracking-[1px]). */
   .font-fakt:not(h1, h2, h3, h4, h5, h6) {
-    letter-spacing: -0.005em;
+    letter-spacing: -0.01em;
   }
 }
 
@@ -345,8 +345,8 @@ html[data-theme='light'] {
 .city-sign-sarajevo:hover { filter: brightness(1.15); }
 
 @media (max-width: 991px) {
-  .city-sign-belgrade { width: 37%; top: -6%;  right: 2%;  }
-  .city-sign-sarajevo { width: 37%; bottom: 5%; left: 13%; }
+  .city-sign-belgrade { width: 42%; top: -10%;  right: 2%;  }
+  .city-sign-sarajevo { width: 42%; bottom: 2%; left: 13%; }
 }
 
 .city-sign-belgrade img,

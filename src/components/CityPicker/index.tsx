@@ -59,7 +59,7 @@ export function CityPicker({
             )}
 
             <h2
-              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(2.86rem,6.5vw,4.8rem)] min-[992px]:text-[clamp(2.2rem,5vw,4.8rem)]"
+              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(3.3rem,7vw,5.4rem)] min-[992px]:text-[clamp(2.2rem,5vw,4.8rem)]"
             >
               Where to, Comrade?
             </h2>
@@ -76,7 +76,7 @@ export function CityPicker({
             )}
 
             <h2
-              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(2.86rem,6.5vw,4.8rem)] min-[992px]:text-[clamp(2.2rem,5vw,4.8rem)]"
+              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(3.3rem,7vw,5.4rem)] min-[992px]:text-[clamp(2.2rem,5vw,4.8rem)]"
             >
               Kuda, Druže?
             </h2>
@@ -93,7 +93,7 @@ export function CityPicker({
             )}
 
             <h2
-              className="font-steelfish uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.9] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.015em] max-[991px]:text-[clamp(2.31rem,5.4vw,4.17rem)] min-[992px]:text-[clamp(1.78rem,4.15vw,4.17rem)]"
+              className="font-steelfish uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.9] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.015em] max-[991px]:text-[clamp(2.7rem,6vw,5rem)] min-[992px]:text-[clamp(1.78rem,4.15vw,4.17rem)]"
             >
               Куда, Друже?
             </h2>
