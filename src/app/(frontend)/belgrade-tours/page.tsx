@@ -19,6 +19,29 @@ function resolveMediaUrl(field: number | Media | null | undefined): string | nul
   return (field as Media).url ?? null
 }
 
+const FALLBACK_HEADLINE_BLACK = 'See the Capital of a Country'
+const FALLBACK_HEADLINE_RED = 'That No Longer Exists!'
+
+function FallbackBody() {
+  return (
+    <>
+      <p>
+        <strong>Belgrade,</strong> the perfect place to travel back to Yugoslavia. Be blown away by
+        its <strong>brutalist architecture,</strong> see the <strong>scars of war</strong> from the
+        &apos;90s, and trace the footsteps of its former leader{' '}
+        <strong>Josip Broz Tito.</strong> All from the back seat of a Yugoslav time machine on
+        wheels: the <strong>Zastava!</strong>
+      </p>
+      <p>
+        Tours start at the <strong>Yugotour Headquarters</strong> at Karadjordjeva 11. It&apos;s
+        possible to start or end your tour at another location, but if you want to pay by card
+        you&apos;ll need to do that back at the HQ. Alternately, you can pay in cash (euros or
+        dinars) to your driver directly.
+      </p>
+    </>
+  )
+}
+
 export default async function BelgradeToursPage() {
   const payload = await getPayload({ config: configPromise })
 
@@ -40,6 +63,8 @@ export default async function BelgradeToursPage() {
   const page = pageResult.docs[0] ?? null
   const tours = toursResult.docs
 
+  const headlineBlack = page?.introHeaderBlack || FALLBACK_HEADLINE_BLACK
+  const headlineRed   = page?.introHeaderRed   || FALLBACK_HEADLINE_RED
   const bgUrl =
     resolveMediaUrl(page?.backgroundImage) ??
     '/tour-headers/belgrade-list-page-background.webp'
@@ -65,23 +90,23 @@ export default async function BelgradeToursPage() {
       >
         <div className="container relative z-10">
           <div className="w-full min-[992px]:w-2/3">
-            {(page?.introHeaderBlack || page?.introHeaderRed) && (
-              <h1 className="intro-headline">
-                <span className="part-black">{page?.introHeaderBlack}</span>
-                {page?.introHeaderRed && (
-                  <>{' '}<span className="part-red">{page.introHeaderRed}</span></>
-                )}
-              </h1>
-            )}
-            {page?.introBodyText && (
-              <div className="intro-copy-rich">
+            <h1 className="intro-headline">
+              <span className="part-black">{headlineBlack}</span>
+              {' '}
+              <span className="part-red">{headlineRed}</span>
+            </h1>
+
+            <div className="intro-copy-rich">
+              {page?.introBodyText ? (
                 <RichText
                   data={page.introBodyText as Parameters<typeof RichText>[0]['data']}
                   enableGutter={false}
                   enableProse={false}
                 />
-              </div>
-            )}
+              ) : (
+                <FallbackBody />
+              )}
+            </div>
           </div>
 
           <section className="tour-grid">
@@ -89,7 +114,7 @@ export default async function BelgradeToursPage() {
               <TourTile key={tour.id} tour={tour} />
             ))}
             {tours.length === 0 && (
-              <p className="font-fakt text-yugo-black">
+              <p className="font-fakt text-yugo-black col-span-2">
                 No tours found for Belgrade yet. Check back soon!
               </p>
             )}

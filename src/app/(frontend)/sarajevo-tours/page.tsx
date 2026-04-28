@@ -19,6 +19,30 @@ function resolveMediaUrl(field: number | Media | null | undefined): string | nul
   return (field as Media).url ?? null
 }
 
+const FALLBACK_HEADLINE_BLACK =
+  "EXPLORE THE ’84 WINTER OLYMPICS, BRUTALIST ARCHITECTURE, AND SPOMENIKS—"
+const FALLBACK_HEADLINE_RED = 'IN A VINTAGE YUGO!'
+
+function FallbackBody() {
+  return (
+    <>
+      <p>
+        <strong>Yugotour Sarajevo</strong> guides you through the history, architecture, and pop
+        culture of Yugoslavia in an interactive way, driving a vintage YUGO car to the most
+        significant socialist-era buildings and sights in Sarajevo and beyond.
+      </p>
+      <p>
+        Our main tour explores <strong>Yugoslav Sarajevo,</strong> host of the &apos;84 Winter
+        Olympics and beating heart of <strong>YU-<em>rock</em>.</strong> Our other tours separately
+        focus on the <strong>Olympics</strong>, <strong>Brutalist Zenica,</strong> the Second World
+        War battles of <strong>Neretva &amp; Sutjeska,</strong> and the{' '}
+        <strong>Fall of Yugoslavia.</strong> Hop on board, comrade, as we rock onwards, rock upwards
+        across Yugoslavia!
+      </p>
+    </>
+  )
+}
+
 export default async function SarajevoToursPage() {
   const payload = await getPayload({ config: configPromise })
 
@@ -40,6 +64,8 @@ export default async function SarajevoToursPage() {
   const page = pageResult.docs[0] ?? null
   const tours = toursResult.docs
 
+  const headlineBlack = page?.introHeaderBlack || FALLBACK_HEADLINE_BLACK
+  const headlineRed   = page?.introHeaderRed   || FALLBACK_HEADLINE_RED
   const bgUrl =
     resolveMediaUrl(page?.backgroundImage) ??
     '/tour-headers/sarajevo-list-page-background.webp'
@@ -65,23 +91,23 @@ export default async function SarajevoToursPage() {
       >
         <div className="container relative z-10">
           <div className="w-full min-[992px]:w-2/3">
-            {(page?.introHeaderBlack || page?.introHeaderRed) && (
-              <h1 className="intro-headline">
-                <span className="part-black">{page?.introHeaderBlack}</span>
-                {page?.introHeaderRed && (
-                  <>{' '}<span className="part-red">{page.introHeaderRed}</span></>
-                )}
-              </h1>
-            )}
-            {page?.introBodyText && (
-              <div className="intro-copy-rich">
+            <h1 className="intro-headline">
+              <span className="part-black">{headlineBlack}</span>
+              {' '}
+              <span className="part-red">{headlineRed}</span>
+            </h1>
+
+            <div className="intro-copy-rich">
+              {page?.introBodyText ? (
                 <RichText
                   data={page.introBodyText as Parameters<typeof RichText>[0]['data']}
                   enableGutter={false}
                   enableProse={false}
                 />
-              </div>
-            )}
+              ) : (
+                <FallbackBody />
+              )}
+            </div>
           </div>
 
           <section className="tour-grid">
@@ -89,7 +115,7 @@ export default async function SarajevoToursPage() {
               <TourTile key={tour.id} tour={tour} />
             ))}
             {tours.length === 0 && (
-              <p className="font-fakt text-yugo-black">
+              <p className="font-fakt text-yugo-black col-span-2">
                 No tours found for Sarajevo yet. Check back soon!
               </p>
             )}

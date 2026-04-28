@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useMotionValue, useMotionValueEvent } from 'framer-motion'
+import { motion, useScroll, useMotionValue, useMotionValueEvent, useSpring } from 'framer-motion'
 
 export interface TourListHeaderProps {
   title: string
@@ -17,6 +17,9 @@ export interface TourListHeaderProps {
 function fallback(city: string, filename: string) {
   return `/tour-headers/${city}-${filename}`
 }
+
+// Critically overdamped spring — follows scroll smoothly, zero bounce
+const SPRING = { stiffness: 120, damping: 28, restDelta: 0.001 }
 
 export function TourListHeader({
   title,
@@ -39,24 +42,31 @@ export function TourListHeader({
 
   const { scrollY } = useScroll()
 
-  const titleY = useMotionValue(0)
-  const l2Y = useMotionValue(0)
-  const l3Y = useMotionValue(0)
-  const l4Y = useMotionValue(0)
+  // Raw target values driven by scroll
+  const rawTitleY = useMotionValue(0)
+  const rawL2Y    = useMotionValue(0)
+  const rawL3Y    = useMotionValue(0)
+  const rawL4Y    = useMotionValue(0)
+
+  // Spring-smoothed values — this eliminates jumpiness
+  const titleY = useSpring(rawTitleY, SPRING)
+  const l2Y    = useSpring(rawL2Y,    SPRING)
+  const l3Y    = useSpring(rawL3Y,    SPRING)
+  const l4Y    = useSpring(rawL4Y,    SPRING)
 
   useMotionValueEvent(scrollY, 'change', (y) => {
-    if (y > 1200) return
+    const clamped = Math.min(y, 1200)
     const mobile = window.innerWidth < 992
     if (mobile) {
-      titleY.set(y * 0.4)
-      l2Y.set(y * 0.3)
-      l3Y.set(y * 0.5)
-      l4Y.set(y * 0.7)
+      rawTitleY.set(clamped * 0.4)
+      rawL2Y.set(clamped * 0.3)
+      rawL3Y.set(clamped * 0.5)
+      rawL4Y.set(clamped * 0.7)
     } else {
-      titleY.set(y * 0.31)
-      l2Y.set(y * 0.39)
-      l3Y.set(y * 0.6)
-      l4Y.set(0)
+      rawTitleY.set(clamped * 0.31)
+      rawL2Y.set(clamped * 0.39)
+      rawL3Y.set(clamped * 0.6)
+      rawL4Y.set(0)
     }
   })
 

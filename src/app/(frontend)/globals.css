@@ -933,6 +933,9 @@ html[data-theme='light'] {
   right: 3cqi;
   z-index: 3;
   display: inline-block;
+  background-image: url('/textures/texture-red.webp');
+  background-size: auto;
+  background-repeat: repeat;
   background-color: var(--color-yugo-red);
   color: var(--color-yugo-cream) !important;
   font-family: var(--font-fakt);
@@ -956,6 +959,10 @@ html[data-theme='light'] {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-image: url('/textures/texture-red.webp');
+  background-size: auto;
+  background-repeat: repeat;
+  background-position: top left;
   background-color: var(--color-yugo-red);
   padding: 3cqi 4cqi;
   overflow: hidden;
