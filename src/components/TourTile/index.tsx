@@ -1,0 +1,87 @@
+import Link from 'next/link'
+import type { Tour } from '@/payload-types'
+
+interface TourTileProps {
+  tour: Tour
+}
+
+function resolveUrl(field: number | { url?: string | null } | null | undefined): string | null {
+  if (!field || typeof field === 'number') return null
+  return field.url ?? null
+}
+
+export function TourTile({ tour }: TourTileProps) {
+  const thumbnailUrl = resolveUrl(tour.thumbnail)
+  const href = `/tours/${tour.slug}`
+
+  // Build info-bar details line
+  const duration = tour.duration ?? null
+  const price = tour.priceGroup != null ? `${tour.priceGroup}€` : null
+  const includesText = tour.includes
+    ? tour.includes.replace(/\n/g, ' ').trim()
+    : null
+
+  // First two extras for the info line
+  const extras = tour.extras?.slice(0, 2) ?? []
+
+  return (
+    <article className="tour-tile">
+      <Link href={href} className="tour-tile-inner">
+
+        {/* Image + title area */}
+        <div className="tile-image-wrap">
+          {thumbnailUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={thumbnailUrl}
+              alt={tour.title}
+              className="tile-bg-img"
+            />
+          ) : (
+            <div className="tile-bg-img" style={{ backgroundColor: '#212121' }} />
+          )}
+          <div className="tile-gradient" />
+          <h2 className="tile-title">{tour.title}</h2>
+          <span className="tile-cta">LET&apos;S GO →</span>
+        </div>
+
+        {/* Red info bar */}
+        <div className="tile-info-bar">
+          {tour.lede && (
+            <p className="tile-intro-text">{tour.lede}</p>
+          )}
+
+          <div className="tile-info-lines">
+            <p className="tile-info-line">
+              {duration && <span className="info-val">{duration}</span>}
+              {price && (
+                <>
+                  {duration && <span className="info-sep">|</span>}
+                  <span className="info-val">{price}</span>
+                </>
+              )}
+              {includesText && (
+                <>
+                  {(duration || price) && <span className="info-sep">|</span>}
+                  <span className="info-val">INCL. {includesText}</span>
+                </>
+              )}
+            </p>
+            {extras.length > 0 && (
+              <span className="tile-info-extras">
+                {extras.map((extra, i) => (
+                  <span key={extra.id ?? i}>
+                    {i > 0 && ' | '}
+                    +{extra.title}
+                    {extra.priceGroup ? ` ${extra.priceGroup}€` : ''}
+                  </span>
+                ))}
+              </span>
+            )}
+          </div>
+        </div>
+
+      </Link>
+    </article>
+  )
+}

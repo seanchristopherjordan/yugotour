@@ -614,3 +614,412 @@ html[data-theme='light'] {
     row-gap: 40px;
   }
 }
+
+/* ===== TOUR LIST HEADER ===== */
+
+.tour-header {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2400 / 762;
+  background-color: var(--color-yugo-cream);
+  overflow: hidden;
+  z-index: 10;
+}
+
+.header-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.header-layer img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.header-layer.layer-1 { z-index: 4; }
+.header-layer.layer-2 { z-index: 2; }
+.header-layer.layer-3 { z-index: 1; }
+.header-layer.layer-4 { display: none; }
+
+.header-text-layer {
+  position: absolute;
+  top: 17%;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  pointer-events: none;
+}
+
+.header-text-layer .container {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  max-width: none !important;
+  padding-left: max(12vw, 100px);
+  padding-right: 15px;
+}
+
+.tour-title {
+  font-family: var(--font-zipper);
+  color: var(--color-yugo-cream);
+  text-transform: uppercase;
+  line-height: 0.9;
+  margin: 0;
+  white-space: nowrap;
+  display: inline-block;
+  font-size: clamp(9rem, 12vw, 23rem);
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.05), 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 991px) {
+  .tour-header {
+    height: 100svh;
+    aspect-ratio: unset;
+  }
+
+  .header-layer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .header-layer.layer-1 { z-index: 5; }
+  .header-layer.layer-2 { z-index: 4; }
+  .header-layer.layer-3 { z-index: 2; }
+  .header-layer.layer-4 {
+    display: block;
+    z-index: 1;
+  }
+
+  .header-text-layer {
+    top: 22%;
+    justify-content: center;
+  }
+
+  .header-text-layer .container {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100%;
+    max-width: 100% !important;
+    display: flex;
+    justify-content: center;
+  }
+
+  .tour-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 90vw;
+    font-size: 31vw;
+    line-height: 0.78;
+    white-space: normal;
+    word-break: break-word;
+    padding: 0 !important;
+  }
+}
+
+/* ===== TOUR LIST INTRO SECTION ===== */
+
+.tour-intro-section {
+  position: relative;
+  padding: 50px 0 0;
+  background-color: var(--color-yugo-cream);
+  clip-path: inset(0);
+}
+
+.tour-intro-section::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-image: var(--tour-bg);
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: top right;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tour-intro-section.belgrade::before {
+  height: 120vw;
+  top: 5px;
+  opacity: 0.8;
+}
+
+.tour-intro-section.sarajevo::before {
+  height: 80vw;
+  top: -20px;
+  opacity: 0.8;
+}
+
+@media (max-width: 991px) {
+  .tour-intro-section.belgrade::before {
+    height: 300vw;
+    top: 0;
+    opacity: 0.6;
+  }
+
+  .tour-intro-section.sarajevo::before {
+    height: 280vw;
+    top: 0;
+    opacity: 0.6;
+  }
+}
+
+.intro-headline {
+  font-family: var(--font-tungsten);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(3.8rem, 10vw, 7.5rem);
+  line-height: 0.8;
+  letter-spacing: 0;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+  transform: rotate(-1deg);
+  transform-origin: left center;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .intro-headline { font-size: clamp(3.4rem, 9vw, 6.75rem); }
+}
+
+.intro-headline span { display: inline; }
+.intro-headline .part-black { color: var(--color-yugo-black); }
+.intro-headline .part-red { color: var(--color-yugo-red); }
+
+.intro-copy-rich {
+  position: relative;
+  z-index: 10;
+}
+
+.intro-copy-rich p {
+  font-family: var(--font-fakt);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  color: var(--color-yugo-black);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+}
+
+@media (min-width: 440px) {
+  .intro-copy-rich p { font-size: 1.2rem; }
+}
+
+/* ===== TOUR GRID ===== */
+
+.tour-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  padding: 40px 0 80px;
+  position: relative;
+  z-index: 50;
+}
+
+@media (min-width: 650px) {
+  .tour-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 37px;
+  }
+}
+
+/* ===== TOUR TILE ===== */
+
+.tour-tile {
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+  container-type: inline-size;
+  container-name: tile;
+}
+
+.tour-tile-inner {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  position: relative;
+  border-radius: 3px;
+  transition: filter 300ms ease;
+}
+
+.tour-tile-inner:hover {
+  filter: brightness(1.15);
+}
+
+/* Red bar height = 100% minus flex-basis of image area */
+.tile-image-wrap {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-yugo-black);
+  flex: 0 0 54%;
+}
+
+@media (min-width: 370px)  { .tile-image-wrap { flex-basis: 59%; } }
+@media (min-width: 410px)  { .tile-image-wrap { flex-basis: 62%; } }
+@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 60%; } }
+@media (min-width: 480px)  { .tile-image-wrap { flex-basis: 64%; } }
+@media (min-width: 520px)  { .tile-image-wrap { flex-basis: 69%; } }
+@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 78%; } }
+@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 66%; } }
+@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 70%; } }
+@media (min-width: 1400px) { .tile-image-wrap { flex-basis: 76%; } }
+
+.tile-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  z-index: 1;
+}
+
+.tile-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 55%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tile-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 4cqi 4cqi 5cqi;
+  z-index: 3;
+  font-family: var(--font-fakt);
+  font-weight: 600;
+  color: var(--color-yugo-cream);
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  margin: 0;
+  font-size: 7.5cqi;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tile-cta {
+  position: absolute;
+  bottom: 3cqi;
+  right: 3cqi;
+  z-index: 3;
+  display: inline-block;
+  background-color: var(--color-yugo-red);
+  color: var(--color-yugo-cream) !important;
+  font-family: var(--font-fakt);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01rem;
+  padding: 3px 6px 1px 10px;
+  line-height: 1.5;
+  text-decoration: none !important;
+  text-transform: uppercase;
+  transition: filter 200ms ease-in-out;
+  white-space: nowrap;
+}
+
+.tile-cta:hover {
+  filter: brightness(1.15);
+}
+
+.tile-info-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-yugo-red);
+  padding: 3cqi 4cqi;
+  overflow: hidden;
+}
+
+.tile-intro-text {
+  font-family: var(--font-fakt);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--color-yugo-cream);
+  margin: 0 0 10px 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-size: 1.05rem;
+}
+
+@media (min-width: 440px) {
+  .tile-intro-text { font-size: 1.2rem; }
+}
+
+.tile-info-lines {
+  margin-top: auto;
+  overflow: hidden;
+}
+
+.tile-info-line {
+  font-family: var(--font-fakt);
+  font-weight: 600;
+  color: var(--color-yugo-cream);
+  text-transform: uppercase;
+  letter-spacing: -0.01rem;
+  line-height: 1.2;
+  margin: 0;
+  font-size: 0.9rem;
+  display: block;
+}
+
+@media (min-width: 440px) {
+  .tile-info-line { font-size: 1.1rem; }
+}
+
+.tile-info-line .info-sep {
+  font-weight: 400;
+  margin: 0 3px;
+  opacity: 0.7;
+}
+
+.tile-info-extras {
+  display: block;
+  font-family: var(--font-fakt);
+  font-weight: 600;
+  color: var(--color-yugo-cream);
+  text-transform: uppercase;
+  letter-spacing: -0.01rem;
+  line-height: 1.2;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 440px) {
+  .tile-info-extras { font-size: 1.1rem; }
+}

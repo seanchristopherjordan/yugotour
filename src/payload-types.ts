@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     categories: Category;
     tours: Tour;
+    'tour-list-pages': TourListPage;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -95,6 +96,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tours: ToursSelect<false> | ToursSelect<true>;
+    'tour-list-pages': TourListPagesSelect<false> | TourListPagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -951,6 +953,48 @@ export interface Tour {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tour-list-pages".
+ */
+export interface TourListPage {
+  id: number;
+  /**
+   * Displayed in the parallax header (e.g. "Belgrade Tours")
+   */
+  title: string;
+  city: 'belgrade' | 'sarajevo';
+  introHeaderBlack?: string | null;
+  introHeaderRed?: string | null;
+  introBodyText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  layer1Desktop?: (number | null) | Media;
+  layer2Desktop?: (number | null) | Media;
+  layer3Desktop?: (number | null) | Media;
+  layer1Mobile?: (number | null) | Media;
+  layer2Mobile?: (number | null) | Media;
+  layer3Mobile?: (number | null) | Media;
+  layer4Mobile?: (number | null) | Media;
+  /**
+   * The frozen right-side background visible throughout the tour list and grid.
+   */
+  backgroundImage?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1158,6 +1202,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tours';
         value: number | Tour;
+      } | null)
+    | ({
+        relationTo: 'tour-list-pages';
+        value: number | TourListPage;
       } | null)
     | ({
         relationTo: 'users';
@@ -1575,6 +1623,27 @@ export interface ToursSelect<T extends boolean = true> {
       };
   generateSlug?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tour-list-pages_select".
+ */
+export interface TourListPagesSelect<T extends boolean = true> {
+  title?: T;
+  city?: T;
+  introHeaderBlack?: T;
+  introHeaderRed?: T;
+  introBodyText?: T;
+  layer1Desktop?: T;
+  layer2Desktop?: T;
+  layer3Desktop?: T;
+  layer1Mobile?: T;
+  layer2Mobile?: T;
+  layer3Mobile?: T;
+  layer4Mobile?: T;
+  backgroundImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
