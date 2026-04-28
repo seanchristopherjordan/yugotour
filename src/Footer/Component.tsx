@@ -79,6 +79,17 @@ export async function Footer() {
           {/* ── Footer grid — layout controlled entirely by .footer-grid in globals.css ── */}
           <div className="footer-grid">
 
+            {/* Mobile-only: logo full-width above the 2-col content */}
+            {footerLogoUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={footerLogoUrl}
+                alt="Yugotour"
+                aria-hidden="true"
+                className="min-[992px]:hidden col-span-2 w-[150px] h-auto mb-[1.6rem]"
+              />
+            )}
+
             {/* Col 1 — Brand */}
             <div className="order-1 min-[992px]:mt-[55px]">
               {footerLogoUrl && (
@@ -86,12 +97,12 @@ export async function Footer() {
                 <img
                   src={footerLogoUrl}
                   alt="Yugotour"
-                  className="w-[165px] min-[992px]:w-[190px] mb-[2rem] min-[992px]:mb-[2.2rem] min-[992px]:-mt-[16px]"
+                  className="hidden min-[992px]:block w-[190px] mb-[2.2rem] -mt-[16px]"
                 />
               )}
 
               {/* Belgrade address block */}
-              <div className="mb-[1.8rem] mt-[3px] min-[992px]:mt-0">
+              <div className="mb-[1.8rem]">
                 <strong className={`${bodyTextClass} font-bold block`}>Yugotour Belgrade</strong>
                 {belgrade?.address && (
                   <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
@@ -130,8 +141,8 @@ export async function Footer() {
             </div>
 
             {/* Col 2 — Navigate */}
-            <div className="order-2 mt-[72px] min-[992px]:mt-[120px]">
-              <h5 className={h5Class}>NAVIGATE</h5>
+            <div className="order-2 min-[992px]:mt-[120px]">
+              <h5 className={`${h5Class} hidden min-[992px]:block`}>NAVIGATE</h5>
               <ul className="list-none p-0 m-0">
                 {NAV_LINKS.map(({ label, href }) => (
                   <li key={href} className="mb-[1.2rem] min-[992px]:mb-[1.55rem] last:mb-0">

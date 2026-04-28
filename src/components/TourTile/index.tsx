@@ -44,7 +44,9 @@ export function TourTile({ tour }: TourTileProps) {
         {/* Red info bar */}
         <div className="tile-info-bar">
           {tour.lede && (
-            <p className="tile-intro-text">{tour.lede}</p>
+            <p className="tile-intro-text">
+              {tour.lede}{'  '}<span className="tile-lede-cta">Learn More →</span>
+            </p>
           )}
 
           <div className="tile-info-lines">
@@ -64,10 +66,6 @@ export function TourTile({ tour }: TourTileProps) {
               )}
             </p>
           </div>
-        </div>
-
-        <div className="tile-learn-more">
-          <span className="tile-learn-more-text">LEARN MORE →</span>
         </div>
 
       </Link>

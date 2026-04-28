@@ -54,8 +54,8 @@ export function HeroVideo({ videoUrl, posterUrl, logoUrl }: HeroVideoProps) {
     if (!el) return
 
     const update = () => {
-      // nav: height 3.4vh, min-height 50px mobile / 42px desktop (≥992px)
-      const navMinHeight = window.innerWidth < 992 ? 50 : 42
+      // nav: height 3.4vh, min-height 45px mobile / 42px desktop (≥992px)
+      const navMinHeight = window.innerWidth < 992 ? 45 : 42
       const navHeight = Math.max(window.innerHeight * 0.034, navMinHeight)
       // Temporarily zero our margin to read the natural flow offset
       // (= AdminBar height when logged in, 0 otherwise).

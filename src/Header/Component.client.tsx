@@ -56,7 +56,7 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
       <header
         className={[
           'fixed top-0 w-full z-[9999] overflow-visible',
-          'transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+          'transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
           isNavHidden ? '-translate-y-[calc(100%+40px)]' : 'translate-y-0',
         ].join(' ')}
       >
