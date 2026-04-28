@@ -21,9 +21,6 @@ export function TourTile({ tour }: TourTileProps) {
     ? tour.includes.split('\n').map(s => s.trim()).filter(Boolean).join(', ')
     : null
 
-  // First two extras for the info line
-  const extras = tour.extras?.slice(0, 2) ?? []
-
   return (
     <article className="tour-tile">
       <Link href={href} className="tour-tile-inner">
@@ -53,31 +50,20 @@ export function TourTile({ tour }: TourTileProps) {
 
           <div className="tile-info-lines">
             <p className="tile-info-line">
-              {duration && <span className="info-val">{duration}</span>}
+              {duration && <span className="info-val info-val-dark">{duration}</span>}
               {price && (
                 <>
-                  {duration && <span className="info-sep">|</span>}
-                  <span className="info-val">{price}</span>
+                  {duration && <span className="info-sep info-sep-dark">|</span>}
+                  <span className="info-val info-val-dark">{price}</span>
                 </>
               )}
               {includesText && (
                 <>
-                  {(duration || price) && <span className="info-sep">|</span>}
+                  {(duration || price) && <span className="info-sep info-sep-dark">|</span>}
                   <span className="info-val info-val-includes">INCL. {includesText}</span>
                 </>
               )}
             </p>
-            {extras.length > 0 && (
-              <span className="tile-info-extras">
-                {extras.map((extra, i) => (
-                  <span key={extra.id ?? i}>
-                    {i > 0 && ' | '}
-                    +{extra.title}
-                    {extra.priceGroup ? ` ${extra.priceGroup}€` : ''}
-                  </span>
-                ))}
-              </span>
-            )}
           </div>
         </div>
 

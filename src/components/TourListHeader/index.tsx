@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useMotionValue, useMotionValueEvent, useAnimationFrame } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { motion, useScroll, useMotionValue, useMotionValueEvent } from 'framer-motion'
 
 export interface TourListHeaderProps {
   title: string
@@ -18,9 +18,6 @@ export interface TourListHeaderProps {
 function fallback(city: string, filename: string) {
   return `/tour-headers/${city}-${filename}`
 }
-
-// Lerp factor: 0.4 gives ~50ms to settle — removes per-frame jitter, no spring feel
-const ALPHA = 0.4
 
 export function TourListHeader({
   title,
@@ -42,73 +39,67 @@ export function TourListHeader({
   const l4m = layer4MobileUrl ?? fallback(city, 'mobile-header-layer-4.webp')
 
   const { scrollY } = useScroll()
+  const isMobileRef = useRef(false)
 
   const titleY = useMotionValue(0)
   const l2Y    = useMotionValue(0)
   const l3Y    = useMotionValue(0)
   const l4Y    = useMotionValue(0)
 
-  // Plain ref for scroll targets — avoids triggering re-renders
-  const targets = useRef({ titleY: 0, l2Y: 0, l3Y: 0, l4Y: 0 })
+  useEffect(() => {
+    const update = () => { isMobileRef.current = window.innerWidth < 992 }
+    update()
+    window.addEventListener('resize', update, { passive: true })
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   useMotionValueEvent(scrollY, 'change', (y) => {
-    const clamped = Math.min(y, 1200)
-    const mobile = window.innerWidth < 992
-    if (mobile) {
-      targets.current = { titleY: clamped * 0.4, l2Y: clamped * 0.3, l3Y: clamped * 0.5, l4Y: clamped * 0.7 }
+    const cy = Math.min(y, 1200)
+    if (isMobileRef.current) {
+      titleY.set(cy * 0.4)
+      l2Y.set(cy * 0.3)
+      l3Y.set(cy * 0.5)
+      l4Y.set(cy * 0.7)
     } else {
-      targets.current = { titleY: clamped * 0.31, l2Y: clamped * 0.39, l3Y: clamped * 0.6, l4Y: 0 }
+      titleY.set(cy * 0.31)
+      l2Y.set(cy * 0.39)
+      l3Y.set(cy * 0.6)
+      l4Y.set(0)
     }
-  })
-
-  useAnimationFrame(() => {
-    const t = targets.current
-    titleY.set(titleY.get() + (t.titleY - titleY.get()) * ALPHA)
-    l2Y.set(l2Y.get()       + (t.l2Y    - l2Y.get())    * ALPHA)
-    l3Y.set(l3Y.get()       + (t.l3Y    - l3Y.get())    * ALPHA)
-    l4Y.set(l4Y.get()       + (t.l4Y    - l4Y.get())    * ALPHA)
   })
 
   return (
     <header className="tour-header">
       {/* Layer 3 — Background */}
-      <div className="header-layer layer-3">
-        <motion.div style={{ y: l3Y, width: '100%', height: '100%' }}>
-          <picture>
-            <source srcSet={l3m} media="(max-width: 991px)" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={l3d} alt="" />
-          </picture>
-        </motion.div>
-      </div>
+      <motion.div className="header-layer layer-3" style={{ y: l3Y }}>
+        <picture>
+          <source srcSet={l3m} media="(max-width: 991px)" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={l3d} alt="" />
+        </picture>
+      </motion.div>
 
       {/* Layer 4 — Deep Background (mobile only) */}
-      <div className="header-layer layer-4">
-        <motion.div style={{ y: l4Y, width: '100%', height: '100%' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={l4m} alt="" />
-        </motion.div>
-      </div>
+      <motion.div className="header-layer layer-4" style={{ y: l4Y }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={l4m} alt="" />
+      </motion.div>
 
       {/* Layer 2 — Midground */}
-      <div className="header-layer layer-2">
-        <motion.div style={{ y: l2Y, width: '100%', height: '100%' }}>
-          <picture>
-            <source srcSet={l2m} media="(max-width: 991px)" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={l2d} alt="" />
-          </picture>
-        </motion.div>
-      </div>
+      <motion.div className="header-layer layer-2" style={{ y: l2Y }}>
+        <picture>
+          <source srcSet={l2m} media="(max-width: 991px)" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={l2d} alt="" />
+        </picture>
+      </motion.div>
 
       {/* Title text layer */}
-      <div className="header-text-layer">
+      <motion.div className="header-text-layer" style={{ y: titleY }}>
         <div className="container">
-          <motion.h1 className="tour-title" style={{ y: titleY }}>
-            {title.toUpperCase()}
-          </motion.h1>
+          <h1 className="tour-title">{title.toUpperCase()}</h1>
         </div>
-      </div>
+      </motion.div>
 
       {/* Layer 1 — Foreground (no parallax, in front of text) */}
       <div className="header-layer layer-1">
