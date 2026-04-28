@@ -7,9 +7,37 @@ const SARAJEVO_WIDGET_ID = '019d5feef4297bba973ed40b64c5f91f4cad'
 
 export interface TalesFromTheRoadProps {
   textureUrl: string | null
+  /** When provided, renders only the reviews widget for that city. */
+  city?: 'belgrade' | 'sarajevo'
 }
 
-export function TalesFromTheRoad({ textureUrl }: TalesFromTheRoadProps) {
+interface CityWidgetProps {
+  city: 'belgrade' | 'sarajevo'
+  widgetId: string
+  showLabel: boolean
+}
+
+function CityWidget({ city, widgetId, showLabel }: CityWidgetProps) {
+  return (
+    <div>
+      {showLabel && (
+        <h3 className="font-grotesk font-medium text-[1.5rem] tracking-[0.6em] uppercase text-black/50 mb-0">
+          {city.charAt(0).toUpperCase() + city.slice(1)}
+        </h3>
+      )}
+      <div className="w-full max-w-[1320px] mx-auto">
+        <div id={`JFWebsiteWidget-${widgetId}`} />
+        <Script
+          id={`jotform-${city}`}
+          src={`https://www.jotform.com/website-widgets/embed/${widgetId}`}
+          strategy="afterInteractive"
+        />
+      </div>
+    </div>
+  )
+}
+
+export function TalesFromTheRoad({ textureUrl, city }: TalesFromTheRoadProps) {
   return (
     <section
       id="tales-from-the-road"
@@ -29,35 +57,21 @@ export function TalesFromTheRoad({ textureUrl }: TalesFromTheRoadProps) {
           Tales From the Road
         </h2>
 
-        {/* Belgrade reviews */}
-        <div>
-          <h3 className="font-grotesk font-medium text-[1.5rem] tracking-[0.6em] uppercase text-black/50 mb-0">
-            Belgrade
-          </h3>
-          <div className="w-full max-w-[1320px] mx-auto">
-            <div id={`JFWebsiteWidget-${BELGRADE_WIDGET_ID}`} />
-            <Script
-              id="jotform-belgrade"
-              src={`https://www.jotform.com/website-widgets/embed/${BELGRADE_WIDGET_ID}`}
-              strategy="afterInteractive"
-            />
-          </div>
-        </div>
+        {city === 'belgrade' || !city ? (
+          <CityWidget
+            city="belgrade"
+            widgetId={BELGRADE_WIDGET_ID}
+            showLabel={!city}
+          />
+        ) : null}
 
-        {/* Sarajevo reviews */}
-        <div>
-          <h3 className="font-grotesk font-medium text-[1.5rem] tracking-[0.6em] uppercase text-black/50 mb-0">
-            Sarajevo
-          </h3>
-          <div className="w-full max-w-[1320px] mx-auto">
-            <div id={`JFWebsiteWidget-${SARAJEVO_WIDGET_ID}`} />
-            <Script
-              id="jotform-sarajevo"
-              src={`https://www.jotform.com/website-widgets/embed/${SARAJEVO_WIDGET_ID}`}
-              strategy="afterInteractive"
-            />
-          </div>
-        </div>
+        {city === 'sarajevo' || !city ? (
+          <CityWidget
+            city="sarajevo"
+            widgetId={SARAJEVO_WIDGET_ID}
+            showLabel={!city}
+          />
+        ) : null}
       </div>
     </section>
   )

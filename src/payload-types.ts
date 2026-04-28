@@ -118,12 +118,14 @@ export interface Config {
     footer: Footer;
     'site-settings': SiteSetting;
     'homepage-intro': HomepageIntro;
+    'tour-order': TourOrder;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'homepage-intro': HomepageIntroSelect<false> | HomepageIntroSelect<true>;
+    'tour-order': TourOrderSelect<false> | TourOrderSelect<true>;
   };
   locale: null;
   widgets: {
@@ -990,6 +992,16 @@ export interface TourListPage {
    * The frozen right-side background visible throughout the tour list and grid.
    */
   backgroundImage?: (number | null) | Media;
+  /**
+   * Shown on mobile (< 992 px). Portrait orientation recommended (700 × 1100 px).
+   */
+  carouselMobileImages?: (number | Media)[] | null;
+  /**
+   * Shown on desktop (≥ 992 px). Landscape orientation recommended (1200 × 750 px).
+   */
+  carouselDesktopImages?: (number | Media)[] | null;
+  showTales?: boolean | null;
+  showSimulator?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1644,6 +1656,10 @@ export interface TourListPagesSelect<T extends boolean = true> {
   layer3Mobile?: T;
   layer4Mobile?: T;
   backgroundImage?: T;
+  carouselMobileImages?: T;
+  carouselDesktopImages?: T;
+  showTales?: T;
+  showSimulator?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2063,6 +2079,29 @@ export interface HomepageIntro {
   createdAt?: string | null;
 }
 /**
+ * Drag rows to set the display order of tours on each city's listing page. Only tours added here will appear in the grid — unordered tours go to the bottom.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tour-order".
+ */
+export interface TourOrder {
+  id: number;
+  belgrade?:
+    | {
+        tour: number | Tour;
+        id?: string | null;
+      }[]
+    | null;
+  sarajevo?:
+    | {
+        tour: number | Tour;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2159,6 +2198,27 @@ export interface HomepageIntroSelect<T extends boolean = true> {
   bullet1?: T;
   bullet2?: T;
   bullet3?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tour-order_select".
+ */
+export interface TourOrderSelect<T extends boolean = true> {
+  belgrade?:
+    | T
+    | {
+        tour?: T;
+        id?: T;
+      };
+  sarajevo?:
+    | T
+    | {
+        tour?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

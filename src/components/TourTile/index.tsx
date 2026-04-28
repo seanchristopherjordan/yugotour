@@ -45,7 +45,7 @@ export function TourTile({ tour }: TourTileProps) {
         <div className="tile-info-bar">
           {tour.lede && (
             <p className="tile-intro-text">
-              {tour.lede}{'  '}<span className="tile-lede-cta">Learn More →</span>
+              {tour.lede}<span className="tile-lede-cta">learn more →</span>
             </p>
           )}
 

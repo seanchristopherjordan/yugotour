@@ -127,6 +127,50 @@ export const TourListPages: CollectionConfig = {
             },
           ],
         },
+
+        // ─── SECTIONS ─────────────────────────────────────────────
+        {
+          label: 'Sections',
+          fields: [
+            // ── Carousel ──────────────────────────────────────────
+            {
+              name: 'carouselMobileImages',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              label: 'Carousel — Mobile Images',
+              admin: {
+                description: 'Shown on mobile (< 992 px). Portrait orientation recommended (700 × 1100 px).',
+              },
+            },
+            {
+              name: 'carouselDesktopImages',
+              type: 'upload',
+              relationTo: 'media',
+              hasMany: true,
+              label: 'Carousel — Desktop Images',
+              admin: {
+                description: 'Shown on desktop (≥ 992 px). Landscape orientation recommended (1200 × 750 px).',
+              },
+            },
+
+            // ── Tales From the Road ───────────────────────────────
+            {
+              name: 'showTales',
+              type: 'checkbox',
+              label: 'Show Tales From the Road',
+              defaultValue: true,
+            },
+
+            // ── Yugotour Simulator ────────────────────────────────
+            {
+              name: 'showSimulator',
+              type: 'checkbox',
+              label: 'Show Yugotour Simulator',
+              defaultValue: true,
+            },
+          ],
+        },
       ],
     },
   ],

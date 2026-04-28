@@ -2,10 +2,14 @@ import type { Metadata } from 'next'
 import React from 'react'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import type { Media } from '@/payload-types'
+import type { Media, Tour } from '@/payload-types'
 
 import { TourListHeader } from '@/components/TourListHeader'
 import { TourTile } from '@/components/TourTile'
+import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
+import { TalesFromTheRoad } from '@/components/TalesFromTheRoad'
+import { SimulatorSection } from '@/components/SimulatorSection'
+import { getMediaUrl } from '@/lib/getMediaUrl'
 import RichText from '@/components/RichText'
 
 export const metadata: Metadata = {
@@ -19,8 +23,13 @@ function resolveMediaUrl(field: number | Media | null | undefined): string | nul
   return (field as Media).url ?? null
 }
 
+function resolveMediaList(field: unknown): Media[] {
+  if (!Array.isArray(field)) return []
+  return field.filter((img): img is Media => typeof img !== 'number' && img !== null)
+}
+
 const FALLBACK_HEADLINE_BLACK =
-  "EXPLORE THE ’84 WINTER OLYMPICS, BRUTALIST ARCHITECTURE, AND SPOMENIKS—"
+  "EXPLORE THE '84 WINTER OLYMPICS, BRUTALIST ARCHITECTURE, AND SPOMENIKS—"
 const FALLBACK_HEADLINE_RED = 'IN A VINTAGE YUGO!'
 
 function FallbackBody() {
@@ -46,12 +55,12 @@ function FallbackBody() {
 export default async function SarajevoToursPage() {
   const payload = await getPayload({ config: configPromise })
 
-  const [pageResult, toursResult] = await Promise.all([
+  const [pageResult, toursResult, orderResult, talesTextureUrl, ...simAssets] = await Promise.all([
     payload.find({
       collection: 'tour-list-pages',
       where: { city: { equals: 'sarajevo' } },
       limit: 1,
-      depth: 1,
+      depth: 2,
     }),
     payload.find({
       collection: 'tours',
@@ -59,16 +68,66 @@ export default async function SarajevoToursPage() {
       limit: 50,
       depth: 1,
     }),
+    payload.findGlobal({ slug: 'tour-order', depth: 1 }),
+    getMediaUrl('texture-gold.webp'),
+    getMediaUrl('space-age-wireframe-desktop.webp'),
+    getMediaUrl('space-age-wireframe-mobile.webp'),
+    getMediaUrl('yugo-tour-simulator-smallest-possible.webm'),
+    getMediaUrl('CarInterior2.webp'),
+    getMediaUrl('steering-wheel-570kb.webp'),
+    getMediaUrl('sound-off.webp'),
+    getMediaUrl('sound-on.webp'),
+    getMediaUrl('yugo-simulator-radio-chatter.mp3'),
+    getMediaUrl('horn.mp3'),
   ])
 
+  const [
+    bgDesktopUrl,
+    bgMobileUrl,
+    driveVideoUrl,
+    carInteriorUrl,
+    steeringWheelUrl,
+    soundOffUrl,
+    soundOnUrl,
+    radioAudioUrl,
+    hornAudioUrl,
+  ] = simAssets
+
   const page = pageResult.docs[0] ?? null
-  const tours = toursResult.docs
+  const allTours = toursResult.docs
+
+  // Order tours according to TourOrder global; unordered tours go last
+  const orderedRefs = (orderResult.sarajevo ?? []) as { tour: number | Tour; id?: string }[]
+  const orderedIds = orderedRefs
+    .map(item => (typeof item.tour === 'number' ? item.tour : item.tour?.id))
+    .filter((id): id is number => typeof id === 'number')
+
+  const tours = [
+    ...orderedIds
+      .map(id => allTours.find(t => t.id === id))
+      .filter((t): t is Tour => t !== undefined),
+    ...allTours.filter(t => !orderedIds.includes(t.id)),
+  ]
 
   const headlineBlack = page?.introHeaderBlack || FALLBACK_HEADLINE_BLACK
   const headlineRed   = page?.introHeaderRed   || FALLBACK_HEADLINE_RED
   const bgUrl =
     resolveMediaUrl(page?.backgroundImage) ??
     '/tour-headers/sarajevo-list-page-background.webp'
+
+  const p = page as typeof page & {
+    carouselMobileImages?: Media[] | null
+    carouselDesktopImages?: Media[] | null
+    showTales?: boolean | null
+    showSimulator?: boolean | null
+  }
+
+  const hasCarousel =
+    (resolveMediaList(p?.carouselMobileImages).length > 0) ||
+    (resolveMediaList(p?.carouselDesktopImages).length > 0)
+
+  const showTales    = p?.showTales    !== false
+  const showSim      = p?.showSimulator !== false
 
   return (
     <>
@@ -122,6 +181,32 @@ export default async function SarajevoToursPage() {
           </section>
         </div>
       </section>
+
+      {hasCarousel && (
+        <ImageSliderBlock
+          blockType="imageSlider"
+          mobileImages={resolveMediaList(p?.carouselMobileImages)}
+          desktopImages={resolveMediaList(p?.carouselDesktopImages)}
+        />
+      )}
+
+      {showTales && (
+        <TalesFromTheRoad textureUrl={talesTextureUrl} city="sarajevo" />
+      )}
+
+      {showSim && (
+        <SimulatorSection
+          bgDesktopUrl={bgDesktopUrl}
+          bgMobileUrl={bgMobileUrl}
+          driveVideoUrl={driveVideoUrl}
+          carInteriorUrl={carInteriorUrl}
+          steeringWheelUrl={steeringWheelUrl}
+          soundOffUrl={soundOffUrl}
+          soundOnUrl={soundOnUrl}
+          radioAudioUrl={radioAudioUrl}
+          hornAudioUrl={hornAudioUrl}
+        />
+      )}
     </>
   )
 }
