@@ -885,6 +885,10 @@ export interface Tour {
    * One item per line. Rendered as a bulleted list on the tour page.
    */
   includes?: string | null;
+  /**
+   * Paste the embed src URL from Google My Maps (Share → Embed on a website → copy the src="…" value).
+   */
+  mapEmbedUrl?: string | null;
   introText?: {
     root: {
       type: string;
@@ -906,6 +910,10 @@ export interface Tour {
   thumbnail?: (number | null) | Media;
   headerDesktop?: (number | null) | Media;
   headerMobile?: (number | null) | Media;
+  /**
+   * Wide landscape photo displayed full-bleed between the tour steps and the map. 2:1 aspect ratio (e.g. 2400×1200 px) recommended.
+   */
+  fullBleedImage?: (number | null) | Media;
   /**
    * Optional upgrades guests can add during booking.
    */
@@ -1613,10 +1621,12 @@ export interface ToursSelect<T extends boolean = true> {
   priceGroup?: T;
   priceSolo?: T;
   includes?: T;
+  mapEmbedUrl?: T;
   introText?: T;
   thumbnail?: T;
   headerDesktop?: T;
   headerMobile?: T;
+  fullBleedImage?: T;
   extras?:
     | T
     | {

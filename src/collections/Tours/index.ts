@@ -104,6 +104,15 @@ export const Tours: CollectionConfig = {
                   'One item per line. Rendered as a bulleted list on the tour page.',
               },
             },
+            {
+              name: 'mapEmbedUrl',
+              type: 'text',
+              label: 'Google My Maps Embed URL',
+              admin: {
+                description:
+                  'Paste the embed src URL from Google My Maps (Share → Embed on a website → copy the src="…" value).',
+              },
+            },
           ],
         },
 
@@ -144,6 +153,16 @@ export const Tours: CollectionConfig = {
               type: 'upload',
               relationTo: 'media',
               label: 'Header Background — Mobile',
+            },
+            {
+              name: 'fullBleedImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Full-Bleed Parallax Image',
+              admin: {
+                description:
+                  'Wide landscape photo displayed full-bleed between the tour steps and the map. 2:1 aspect ratio (e.g. 2400×1200 px) recommended.',
+              },
             },
           ],
         },

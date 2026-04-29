@@ -833,6 +833,7 @@ html[data-theme='light'] {
 .intro-headline span { display: inline; }
 .intro-headline .part-black { color: var(--color-yugo-black); }
 .intro-headline .part-red { color: var(--color-yugo-red); }
+.tour-intro-section.belgrade .intro-headline .part-red { display: block; }
 
 .intro-copy-rich {
   position: relative;
@@ -1255,4 +1256,406 @@ html[data-theme='light'] {
 
 .sim-sound-btn:hover {
   transform: scale(1.15);
+}
+
+/* ===== TOUR DETAIL PAGE ===== */
+
+/* ── Header ────────────────────────────────────────────────── */
+
+.tour-page-header {
+  position: relative;
+  height: 65vh;
+  min-height: 420px;
+  overflow: hidden;
+  background-color: var(--color-yugo-black);
+}
+
+@media (max-width: 991px) {
+  .tour-page-header {
+    height: 72svh;
+    min-height: 380px;
+  }
+}
+
+.tour-page-header-bg {
+  position: absolute;
+  top: -15%;
+  left: 0;
+  width: 100%;
+  height: 130%;
+  will-change: transform;
+}
+
+.tour-page-header-bg picture { display: block; width: 100%; height: 100%; }
+
+.tour-page-header-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.tour-page-header-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.25) 55%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+}
+
+.tour-page-header-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-bottom: 44px;
+  z-index: 3;
+}
+
+.tour-page-badge {
+  display: inline-block;
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-yugo-black);
+  background-color: var(--color-yugo-cream);
+  padding: 4px 13px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.tour-page-title {
+  font-family: var(--font-tungsten);
+  font-weight: 700;
+  color: var(--color-yugo-cream);
+  text-transform: uppercase;
+  font-size: clamp(3.5rem, 7.5vw, 7.8rem);
+  line-height: 0.85;
+  letter-spacing: -0.01em;
+  margin: 0 0 20px;
+  max-width: 18ch;
+}
+
+.tour-page-lede {
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  color: var(--color-yugo-red);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  line-height: 1.35;
+  margin: 0;
+  max-width: 640px;
+}
+
+/* ── Info bar ─────────────────────────────────────────────── */
+
+.tour-page-info-bar {
+  background-image: url('/textures/texture-red.webp');
+  background-repeat: repeat;
+  background-color: var(--color-yugo-red);
+  padding: 20px 0;
+}
+
+.tour-page-info-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.tour-page-info-details {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.tour-page-info-item {
+  display: flex;
+  flex-direction: column;
+  padding-right: 22px;
+  margin-right: 22px;
+  border-right: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.tour-page-info-item:last-child {
+  border-right: none;
+  margin-right: 0;
+  padding-right: 0;
+}
+
+.tour-page-info-label {
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(252, 249, 235, 0.55);
+  margin-bottom: 2px;
+}
+
+.tour-page-info-value {
+  font-family: var(--font-fakt);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-yugo-cream);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.tour-page-info-includes .tour-page-info-value {
+  color: var(--color-yugo-black);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 991px) {
+  .tour-page-info-inner { flex-direction: column; align-items: flex-start; }
+  .tour-page-info-details { gap: 14px; }
+  .tour-page-info-item {
+    border-right: none;
+    margin-right: 0;
+    padding-right: 0;
+  }
+}
+
+/* ── Book This Tour button ────────────────────────────────── */
+
+.tour-book-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('/textures/texture-red.webp');
+  background-repeat: repeat;
+  background-color: var(--color-yugo-red);
+  color: var(--color-yugo-cream);
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 13px 26px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: filter 0.2s ease;
+}
+
+.tour-book-btn:hover { filter: brightness(1.12); }
+
+/* On the red info bar, use cream background so the button stands apart */
+.tour-book-btn--bar {
+  background-image: none;
+  background-color: var(--color-yugo-cream);
+  color: var(--color-yugo-black);
+}
+
+.tour-book-btn--bar:hover {
+  filter: none;
+  background-color: #f0edd6;
+}
+
+@media (max-width: 991px) {
+  .tour-book-btn {
+    width: 100%;
+    font-size: 0.95rem;
+    padding: 15px 24px;
+  }
+}
+
+/* ── Body: intro + steps ──────────────────────────────────── */
+
+.tour-page-body {
+  background-color: var(--color-yugo-cream);
+  padding: 56px 0 80px;
+}
+
+.tour-page-intro {
+  max-width: 700px;
+  margin-bottom: 64px;
+}
+
+.tour-page-intro p {
+  font-family: var(--font-fakt);
+  font-weight: 400;
+  color: var(--color-yugo-black);
+  font-size: 1.1rem;
+  line-height: 1.65;
+  margin-bottom: 1.2rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Steps ────────────────────────────────────────────────── */
+
+.tour-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.tour-step {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 992px) {
+  .tour-step {
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  /* Even-indexed steps: image on left, text on right */
+  .tour-step.image-left .tour-step-text  { order: 2; }
+  .tour-step.image-left .tour-step-image-wrap { order: 1; }
+}
+
+.tour-step-title {
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  color: var(--color-yugo-black);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+
+.tour-step-description p {
+  font-family: var(--font-fakt);
+  font-weight: 400;
+  color: var(--color-yugo-black);
+  font-size: 1rem;
+  line-height: 1.65;
+  margin-bottom: 0.9rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tour-step-description p:last-child { margin-bottom: 0; }
+
+/* All step images share the same aspect ratio — enforces equal sizing */
+.tour-step-image-wrap {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--color-yugo-black);
+}
+
+.tour-step-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* On mobile, image always appears above its text */
+@media (max-width: 991px) {
+  .tour-step-image-wrap { order: -1; }
+}
+
+/* ── Full-bleed parallax image ─────────────────────────────── */
+
+.tour-full-bleed {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  background-color: var(--color-yugo-black);
+}
+
+@media (max-width: 991px) {
+  .tour-full-bleed { aspect-ratio: 4 / 3; }
+}
+
+/* Inner div is oversized so the parallax shift never shows gaps */
+.tour-full-bleed-inner {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  will-change: transform;
+}
+
+.tour-full-bleed-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Tour map ─────────────────────────────────────────────── */
+
+.tour-map-section {
+  background-color: #e6e2d6;
+  padding: 50px 0 60px;
+}
+
+.tour-map-heading {
+  font-family: var(--font-tungsten);
+  font-weight: 700;
+  font-size: clamp(4.5rem, 10vw, 9.5rem);
+  color: rgba(33, 33, 33, 0.1);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 0.85;
+  margin: 0 0 32px;
+  letter-spacing: 0.02em;
+}
+
+/* Full-bleed on mobile, contained on desktop */
+.tour-map-iframe-outer {
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .tour-map-iframe-outer {
+    max-width: var(--breakpoint-lg);
+    margin: 0 auto;
+    padding: 0 3.8rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .tour-map-iframe-outer { max-width: var(--breakpoint-xl); }
+}
+
+@media (min-width: 1376px) {
+  .tour-map-iframe-outer { max-width: var(--breakpoint-2xl); }
+}
+
+.tour-map-iframe-wrap {
+  width: 100%;
+  aspect-ratio: 3 / 4.5;
+  overflow: hidden;
+}
+
+@media (min-width: 992px) {
+  .tour-map-iframe-wrap { aspect-ratio: 16 / 9; }
+}
+
+.tour-map-iframe-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.tour-map-book-wrap {
+  margin-top: 40px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media (max-width: 991px) {
+  .tour-map-book-wrap { justify-content: center; }
 }
