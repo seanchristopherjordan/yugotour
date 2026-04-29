@@ -1,6 +1,6 @@
 'use client'
 
-import Script from 'next/script'
+import { useEffect } from 'react'
 
 const BELGRADE_WIDGET_ID = '019d5f672eff751aaabdf254da1d85f411f4'
 const SARAJEVO_WIDGET_ID = '019d5feef4297bba973ed40b64c5f91f4cad'
@@ -18,6 +18,25 @@ interface CityWidgetProps {
 }
 
 function CityWidget({ city, widgetId, showLabel }: CityWidgetProps) {
+  useEffect(() => {
+    const scriptId = `jotform-widget-${widgetId}`
+
+    // Always remove any existing instance so the script re-runs on SPA navigation
+    const existing = document.getElementById(scriptId)
+    if (existing) existing.remove()
+
+    const script = document.createElement('script')
+    script.id = scriptId
+    script.src = `https://www.jotform.com/website-widgets/embed/${widgetId}`
+    script.async = true
+    document.body.appendChild(script)
+
+    return () => {
+      const s = document.getElementById(scriptId)
+      if (s) s.remove()
+    }
+  }, [widgetId])
+
   return (
     <div>
       {showLabel && (
@@ -27,11 +46,6 @@ function CityWidget({ city, widgetId, showLabel }: CityWidgetProps) {
       )}
       <div className="w-full max-w-[1320px] mx-auto">
         <div id={`JFWebsiteWidget-${widgetId}`} />
-        <Script
-          id={`jotform-${city}`}
-          src={`https://www.jotform.com/website-widgets/embed/${widgetId}`}
-          strategy="afterInteractive"
-        />
       </div>
     </div>
   )
