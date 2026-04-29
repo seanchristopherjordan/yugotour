@@ -87,7 +87,7 @@
     }
   }
 
-  @variant lg {
+  @media (min-width: 992px) {
     .container {
       max-width: var(--breakpoint-lg);
     }
@@ -603,7 +603,7 @@ html[data-theme='light'] {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   column-gap: 20px;
-  row-gap: 40px;
+  row-gap: 0;
   align-items: start;
 }
 
@@ -611,7 +611,40 @@ html[data-theme='light'] {
   .footer-grid {
     grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
     column-gap: 40px;
-    row-gap: 40px;
+    row-gap: 0;
+    padding-top: 55px;
+  }
+}
+
+/* Subgrid: each column spans header row + content row */
+.footer-col {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 2;
+}
+
+/* Header zone: items float to bottom so logo baseline = h5 baseline */
+.footer-col-header {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 1.6rem;
+}
+
+@media (min-width: 992px) {
+  .footer-col-header {
+    padding-bottom: 2.2rem;
+  }
+}
+
+/* Strip the h5 own margin — header padding handles the gap */
+.footer-col-header h5 {
+  margin-bottom: 0;
+}
+
+/* Mobile: gap between column groups (3rd+ cols are group 2 and 3) */
+@media (max-width: 991px) {
+  .footer-col:nth-child(n+3) .footer-col-header {
+    padding-top: 40px;
   }
 }
 
@@ -847,11 +880,22 @@ html[data-theme='light'] {
 
 .tour-tile {
   width: 100%;
-  border-radius: 3px;
+  border-radius: 5px;
   overflow: hidden;
   container-type: inline-size;
   container-name: tile;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 360ms ease;
+}
+
+@media (min-width: 992px) {
+  .tour-tile:hover {
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+    z-index: 10;
+  }
 }
 
 .tour-tile-inner {
@@ -862,12 +906,14 @@ html[data-theme='light'] {
   aspect-ratio: 1 / 1;
   overflow: hidden;
   position: relative;
-  border-radius: 3px;
-  transition: filter 300ms ease;
+  border-radius: 5px;
+  transition: filter 360ms ease;
 }
 
-.tour-tile-inner:hover {
-  filter: brightness(1.15);
+@media (min-width: 992px) {
+  .tour-tile-inner:hover {
+    filter: brightness(1.07);
+  }
 }
 
 /* Red bar height = 100% minus flex-basis of image area */

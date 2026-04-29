@@ -27,6 +27,7 @@ export function SimulatorSection({
 }: SimulatorSectionProps) {
   const [radioPlaying, setRadioPlaying] = useState(false)
   const radioRef = useRef<HTMLAudioElement>(null)
+  const hornRef  = useRef<HTMLAudioElement>(null)
   const driveVideoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -36,10 +37,10 @@ export function SimulatorSection({
   }, [driveVideoUrl])
 
   function handleSteeringClick() {
-    if (!hornAudioUrl) return
-    // New Audio instance per click: no ref, no currentTime reset,
-    // no stale-load issues. Browser caches the file after first fetch.
-    new Audio(hornAudioUrl).play().catch(() => {})
+    const horn = hornRef.current
+    if (!horn) return
+    horn.currentTime = 0
+    horn.play().catch(() => {})
   }
 
   function handleSoundToggle() {
@@ -137,6 +138,13 @@ export function SimulatorSection({
                 className="sim-sound-btn"
               />
             </button>
+
+            {/* Horn audio — preloaded for instant playback */}
+            {hornAudioUrl && (
+              <audio ref={hornRef} preload="auto">
+                <source src={hornAudioUrl} type="audio/mpeg" />
+              </audio>
+            )}
 
             {/* Radio audio — looping background, controlled via ref */}
             {radioAudioUrl && (

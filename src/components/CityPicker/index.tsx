@@ -107,6 +107,7 @@ export function CityPicker({
                 src={flagRibbonUrl}
                 alt=""
                 aria-hidden="true"
+                className="min-[992px]:rounded-t-[5px]"
                 style={{ width: '100%', height: '33px', display: 'block', objectFit: 'fill' }}
               />
             </div>
@@ -121,6 +122,7 @@ export function CityPicker({
                 <img
                   src={mapUrl}
                   alt="Yugoslavia Map"
+                  className="min-[992px]:rounded-b-[5px]"
                   style={{ width: '100%', height: 'auto', display: 'block' }}
                 />
               )}

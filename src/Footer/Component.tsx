@@ -80,128 +80,147 @@ export async function Footer() {
           <div className="footer-grid">
 
             {/* Col 1 — Brand */}
-            <div className="order-1 min-[992px]:mt-[55px]">
-              {footerLogoUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={footerLogoUrl}
-                  alt="Yugotour"
-                  className="block w-[110px] min-[992px]:w-[190px] mb-[0.8rem] min-[992px]:mb-[2.2rem] min-[992px]:-mt-[16px]"
-                />
-              )}
-
-              {/* Belgrade address block */}
-              <div className="mb-[1.8rem]">
-                <strong className={`${bodyTextClass} font-bold block`}>Yugotour Belgrade</strong>
-                {belgrade?.address && (
-                  <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
-                    {belgrade.address.trim()}
-                  </p>
-                )}
-                {belgrade?.phone && (
-                  <p className={bodyTextClass}>
-                    Tel./WhatsApp:{' '}
-                    <span className="inline-block whitespace-nowrap">{belgrade.phone}</span>
-                  </p>
-                )}
-                {belgrade?.email && (
-                  <p className={bodyTextClass}>{belgrade.email}</p>
+            <div className="footer-col order-1">
+              <div className="footer-col-header">
+                {footerLogoUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={footerLogoUrl}
+                    alt="Yugotour"
+                    className="block w-[110px] min-[992px]:w-[190px]"
+                  />
                 )}
               </div>
+              <div className="footer-col-content">
+                {/* Belgrade address block */}
+                <div className="mb-[1.8rem]">
+                  <strong className={`${bodyTextClass} font-bold block`}>Yugotour Belgrade</strong>
+                  {belgrade?.address && (
+                    <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
+                      {belgrade.address.trim()}
+                    </p>
+                  )}
+                  {belgrade?.phone && (
+                    <p className={bodyTextClass}>
+                      Tel./WhatsApp:{' '}
+                      <span className="inline-block whitespace-nowrap">{belgrade.phone}</span>
+                    </p>
+                  )}
+                  {belgrade?.email && (
+                    <p className={bodyTextClass}>{belgrade.email}</p>
+                  )}
+                </div>
 
-              {/* Sarajevo address block */}
-              <div>
-                <strong className={`${bodyTextClass} font-bold block`}>Yugotour Sarajevo</strong>
-                {sarajevo?.address && (
-                  <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
-                    {sarajevo.address.trim()}
-                  </p>
-                )}
-                {sarajevo?.phone && (
-                  <p className={bodyTextClass}>
-                    Tel./WhatsApp:{' '}
-                    <span className="inline-block whitespace-nowrap">{sarajevo.phone}</span>
-                  </p>
-                )}
-                {sarajevo?.email && (
-                  <p className={bodyTextClass}>{sarajevo.email}</p>
-                )}
+                {/* Sarajevo address block */}
+                <div>
+                  <strong className={`${bodyTextClass} font-bold block`}>Yugotour Sarajevo</strong>
+                  {sarajevo?.address && (
+                    <p className={bodyTextClass} style={{ whiteSpace: 'pre-line' }}>
+                      {sarajevo.address.trim()}
+                    </p>
+                  )}
+                  {sarajevo?.phone && (
+                    <p className={bodyTextClass}>
+                      Tel./WhatsApp:{' '}
+                      <span className="inline-block whitespace-nowrap">{sarajevo.phone}</span>
+                    </p>
+                  )}
+                  {sarajevo?.email && (
+                    <p className={bodyTextClass}>{sarajevo.email}</p>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Col 2 — Navigate */}
-            <div className="order-2 min-[992px]:mt-[120px]">
-              <h5 className={h5Class}>NAVIGATE</h5>
-              <ul className="list-none p-0 m-0">
-                {NAV_LINKS.map(({ label, href }) => (
-                  <li key={href} className="mb-[1.2rem] min-[992px]:mb-[1.55rem] last:mb-0">
-                    <Link href={href} className={navLinkClass}>
-                      {label}
-                      <span className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-yugo-cream transition-[width] duration-200 ease-in-out group-hover:w-full" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <div className="footer-col order-2">
+              <div className="footer-col-header">
+                <h5 className={h5Class}>NAVIGATE</h5>
+              </div>
+              <div className="footer-col-content">
+                <ul className="list-none p-0 m-0">
+                  {NAV_LINKS.map(({ label, href }) => (
+                    <li key={href} className="mb-[1.2rem] min-[992px]:mb-[1.55rem] last:mb-0">
+                      <Link href={href} className={navLinkClass}>
+                        {label}
+                        <span className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-yugo-cream transition-[width] duration-200 ease-in-out group-hover:w-full" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             {/* Col 3 mobile → Col 5 desktop — Follow */}
-            <div className="order-3 min-[992px]:order-5 min-[992px]:mt-[120px]">
-              <h5 className={h5Class}>FOLLOW</h5>
-              <CityIcons
-                city="Belgrade"
-                instagramHref={belgrade?.instagram ?? null}
-                facebookHref={belgrade?.facebook ?? null}
-                bodyTextClass={bodyTextClass}
-              />
-              <CityIcons
-                city="Sarajevo"
-                instagramHref={sarajevo?.instagram ?? null}
-                facebookHref={sarajevo?.facebook ?? null}
-                bodyTextClass={bodyTextClass}
-              />
+            <div className="footer-col order-3 min-[992px]:order-5">
+              <div className="footer-col-header">
+                <h5 className={h5Class}>FOLLOW</h5>
+              </div>
+              <div className="footer-col-content">
+                <CityIcons
+                  city="Belgrade"
+                  instagramHref={belgrade?.instagram ?? null}
+                  facebookHref={belgrade?.facebook ?? null}
+                  bodyTextClass={bodyTextClass}
+                />
+                <CityIcons
+                  city="Sarajevo"
+                  instagramHref={sarajevo?.instagram ?? null}
+                  facebookHref={sarajevo?.facebook ?? null}
+                  bodyTextClass={bodyTextClass}
+                />
+              </div>
             </div>
 
             {/* Col 4 — Gas Us Up */}
-            <div className="order-4 min-[992px]:mt-[120px]">
-              <h5 className={h5Class}>GAS US UP</h5>
-              <CityReviewIcons
-                city="Belgrade"
-                googleHref={belgrade?.googleReviews ?? null}
-                tripadvisorHref={belgrade?.tripadvisor ?? null}
-                tripadvisorIconUrl={tripadvisorIconUrl}
-                bodyTextClass={bodyTextClass}
-              />
-              <CityReviewIcons
-                city="Sarajevo"
-                googleHref={sarajevo?.googleReviews ?? null}
-                tripadvisorHref={sarajevo?.tripadvisor ?? null}
-                tripadvisorIconUrl={tripadvisorIconUrl}
-                bodyTextClass={bodyTextClass}
-              />
-              {qrCodeUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={qrCodeUrl}
-                  alt="Google Review QR Code"
-                  className="hidden min-[992px]:block w-[105px] mt-[20px]"
-                  style={{ mixBlendMode: 'multiply' }}
+            <div className="footer-col order-4">
+              <div className="footer-col-header">
+                <h5 className={h5Class}>GAS US UP</h5>
+              </div>
+              <div className="footer-col-content">
+                <CityReviewIcons
+                  city="Belgrade"
+                  googleHref={belgrade?.googleReviews ?? null}
+                  tripadvisorHref={belgrade?.tripadvisor ?? null}
+                  tripadvisorIconUrl={tripadvisorIconUrl}
+                  bodyTextClass={bodyTextClass}
                 />
-              )}
+                <CityReviewIcons
+                  city="Sarajevo"
+                  googleHref={sarajevo?.googleReviews ?? null}
+                  tripadvisorHref={sarajevo?.tripadvisor ?? null}
+                  tripadvisorIconUrl={tripadvisorIconUrl}
+                  bodyTextClass={bodyTextClass}
+                />
+                {qrCodeUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={qrCodeUrl}
+                    alt="Google Review QR Code"
+                    className="hidden min-[992px]:block w-[105px] mt-[20px]"
+                    style={{ mixBlendMode: 'multiply' }}
+                  />
+                )}
+              </div>
             </div>
 
             {/* Col 5 mobile → Col 3 desktop — Fine Print */}
-            <div className="order-5 min-[992px]:order-3 min-[992px]:mt-[120px]">
-              <h5 className={h5Class}>FINE PRINT</h5>
-              <ul className="list-none p-0 m-0">
-                {FINE_PRINT_LINKS.map(({ label, href }) => (
-                  <li key={href} className="mb-[1.2rem] min-[992px]:mb-[1.55rem] last:mb-0">
-                    <Link href={href} className={navLinkClass}>
-                      {label}
-                      <span className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-yugo-cream transition-[width] duration-200 ease-in-out group-hover:w-full" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <div className="footer-col order-5 min-[992px]:order-3">
+              <div className="footer-col-header">
+                <h5 className={h5Class}>FINE PRINT</h5>
+              </div>
+              <div className="footer-col-content">
+                <ul className="list-none p-0 m-0">
+                  {FINE_PRINT_LINKS.map(({ label, href }) => (
+                    <li key={href} className="mb-[1.2rem] min-[992px]:mb-[1.55rem] last:mb-0">
+                      <Link href={href} className={navLinkClass}>
+                        {label}
+                        <span className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-yugo-cream transition-[width] duration-200 ease-in-out group-hover:w-full" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
 
