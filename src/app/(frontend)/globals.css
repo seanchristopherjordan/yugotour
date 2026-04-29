@@ -83,7 +83,7 @@
   @variant md {
     .container {
       max-width: var(--breakpoint-md);
-      padding-inline: 3.5rem;
+      padding-inline: 3.8rem;
     }
   }
 
@@ -924,9 +924,9 @@ html[data-theme='light'] {
   flex: 0 0 46%;
 }
 
-@media (min-width: 370px)  { .tile-image-wrap { flex-basis: 51%; } }
-@media (min-width: 400px)  { .tile-image-wrap { flex-basis: 53%; } }
-@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 52%; } }
+@media (min-width: 370px)  { .tile-image-wrap { flex-basis: 50.5%; } }
+@media (min-width: 400px)  { .tile-image-wrap { flex-basis: 52.5%; } }
+@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 51.5%; } }
 @media (min-width: 480px)  { .tile-image-wrap { flex-basis: 55%; } }
 @media (min-width: 520px)  { .tile-image-wrap { flex-basis: 63%; } }
 @media (min-width: 768px)  { .tile-image-wrap { flex-basis: 76%; } }
