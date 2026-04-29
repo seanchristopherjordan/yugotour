@@ -71,7 +71,7 @@
   .container {
     width: 100%;
     margin-inline: auto;
-    padding-inline: 1rem;
+    padding-inline: 1.2rem;
   }
 
   @variant sm {
@@ -83,7 +83,7 @@
   @variant md {
     .container {
       max-width: var(--breakpoint-md);
-      padding-inline: 2rem;
+      padding-inline: 3.5rem;
     }
   }
 
@@ -924,14 +924,15 @@ html[data-theme='light'] {
   flex: 0 0 46%;
 }
 
-@media (min-width: 370px)  { .tile-image-wrap { flex-basis: 50%; } }
+@media (min-width: 370px)  { .tile-image-wrap { flex-basis: 52%; } }
 @media (min-width: 400px)  { .tile-image-wrap { flex-basis: 54%; } }
-@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 51%; } }
+@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 52%; } }
 @media (min-width: 480px)  { .tile-image-wrap { flex-basis: 55%; } }
 @media (min-width: 520px)  { .tile-image-wrap { flex-basis: 63%; } }
 @media (min-width: 768px)  { .tile-image-wrap { flex-basis: 76%; } }
 @media (min-width: 992px)  { .tile-image-wrap { flex-basis: 54%; } }
-@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 56%; } }
+@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 55%; } }
+@media (min-width: 1280px) { .tile-image-wrap { flex-basis: 69%; } }
 @media (min-width: 1400px) { .tile-image-wrap { flex-basis: 73%; } }
 
 .tile-bg-img {

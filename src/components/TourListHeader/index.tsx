@@ -56,10 +56,10 @@ export function TourListHeader({
   useMotionValueEvent(scrollY, 'change', (y) => {
     const cy = Math.min(y, 1200)
     if (isMobileRef.current) {
-      titleY.set(cy * 0.4)
-      l2Y.set(cy * 0.3)
-      l3Y.set(cy * 0.5)
-      l4Y.set(cy * 0.7)
+      titleY.set(cy * 0.6)
+      l2Y.set(cy * 0.2)
+      l3Y.set(cy * 0.7)
+      l4Y.set(cy * 0.9)
     } else {
       titleY.set(cy * 0.31)
       l2Y.set(cy * 0.39)
@@ -73,7 +73,7 @@ export function TourListHeader({
     if (!target) return
     const targetY = target.getBoundingClientRect().top + window.scrollY
     const controls = animate(window.scrollY, targetY, {
-      duration: 1,
+      duration: 2,
       ease: [0.22, 1, 0.36, 1],
       onUpdate: (v) => window.scrollTo(0, v),
     })
