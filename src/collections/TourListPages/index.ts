@@ -6,6 +6,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
+import { revalidateTourListPage, revalidateTourListPageDelete } from './hooks/revalidateTourListPage'
 
 const bodyEditor = lexicalEditor({
   features: ({ rootFeatures }) => [
@@ -27,6 +28,10 @@ export const TourListPages: CollectionConfig = {
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateTourListPage],
+    afterDelete: [revalidateTourListPageDelete],
   },
   fields: [
     {

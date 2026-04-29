@@ -16,7 +16,7 @@ Logic: If an element is hidden on mobile, it must also be hidden on tablet. Do n
 Technical Stack Specifics
 Framework: Next.js 15 (App Router) + Payload 3.0.
 Animations: Use Framer Motion for the parallax headers. Priority: Smoothness and performance on high-res Belgrade city layers.
-Storage: Uploadthing is the source of truth for all media. Use utfs.io URLs. Never use local /public/media for content.
+Storage: Cloudflare R2 is the source of truth for all media. Use utfs.io URLs. Never use local /public/media for content.
 Database: Neon.tech. Ensure all schema changes are reflected in migrations.
 Legacy Code Protocol
 Refactoring: When reading from /legacy-wp/understrap-child-main, extract the PHP logic and GSAP/JS logic, but translate it into clean TypeScript/React.

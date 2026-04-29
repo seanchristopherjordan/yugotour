@@ -8,6 +8,7 @@ import {
 
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
+import { revalidateTour, revalidateTourDelete } from './hooks/revalidateTour'
 
 const bodyEditor = lexicalEditor({
   features: ({ rootFeatures }) => [
@@ -29,6 +30,10 @@ export const Tours: CollectionConfig = {
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateTour],
+    afterDelete: [revalidateTourDelete],
   },
   fields: [
     {
