@@ -74,21 +74,78 @@ export default async function TourPage({ params: paramsPromise }: Args) {
   const bookingHref = t.tourId ? `/booking?tourId=${t.tourId}` : '/booking'
 
   return (
-    <>
-      {/* ── Header (includes info + book button) ─────────────── */}
+    <div className="tour-page-root">
+      {/* ── Header hero (image + badge + title + lede + caret) ── */}
       <TourDetailHeader
         city={t.city as 'belgrade' | 'sarajevo'}
         title={t.title}
         lede={t.lede}
         desktopUrl={headerDesktopUrl}
         mobileUrl={headerMobileUrl}
-        duration={t.duration}
-        priceGroup={t.priceGroup}
-        priceSolo={t.priceSolo}
-        includesList={includesList}
-        extras={extras}
-        bookingHref={bookingHref}
       />
+
+      {/* ── Info Bar (red texture — duration / price / includes / extras / book) ── */}
+      <section id="tour-info-bar" className="tour-info-bar">
+        <div className="container">
+          <div className="tour-ibar-inner">
+            {t.duration && (
+              <>
+                <div className="tour-ibar-item tour-ibar-item--duration">
+                  <span className="tour-ibar-label">Duration</span>
+                  <span className="tour-ibar-value">{t.duration}</span>
+                </div>
+                <div className="tour-ibar-sep" aria-hidden="true" />
+              </>
+            )}
+            {(t.priceGroup != null || t.priceSolo != null) && (
+              <>
+                <div className="tour-ibar-item tour-ibar-item--price">
+                  <span className="tour-ibar-label">Price</span>
+                  {t.priceGroup != null && (
+                    <span className="tour-ibar-value">
+                      €{t.priceGroup} <span className="tour-ibar-sublabel">group</span>
+                    </span>
+                  )}
+                  {t.priceSolo != null && (
+                    <span className="tour-ibar-value">
+                      €{t.priceSolo} <span className="tour-ibar-sublabel">solo</span>
+                    </span>
+                  )}
+                </div>
+                <div className="tour-ibar-sep" aria-hidden="true" />
+              </>
+            )}
+            {includesList.length > 0 && (
+              <>
+                <div className="tour-ibar-item tour-ibar-item--includes">
+                  <span className="tour-ibar-label">Includes</span>
+                  <ul className="tour-ibar-list">
+                    {includesList.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                {extras.length > 0 && <div className="tour-ibar-sep" aria-hidden="true" />}
+              </>
+            )}
+            {extras.length > 0 && (
+              <div className="tour-ibar-item tour-ibar-item--extras">
+                <span className="tour-ibar-label">Optional Extras</span>
+                <ul className="tour-ibar-list">
+                  {extras.map((ex, i) => (
+                    <li key={ex.id ?? i}>{ex.title}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="tour-ibar-book">
+              <Link href={bookingHref} className="tour-ibar-book-btn">
+                Book This Tour →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── Body: intro + steps ─────────────────────────────── */}
       <section id="tour-detail-body" className="tour-page-body">
@@ -166,7 +223,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
 
       {/* ── Television section ──────────────────────────────── */}
       {tvBlock && <TvSectionBlock {...tvBlock} />}
-    </>
+    </div>
   )
 }
 
