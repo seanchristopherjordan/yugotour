@@ -29,7 +29,7 @@ export function HeroVideo({ videoUrl, posterUrl, logoUrl }: HeroVideoProps) {
     if (!target) return
     const targetY = target.getBoundingClientRect().top + window.scrollY
     const controls = animate(window.scrollY, targetY, {
-      duration: 1,
+      duration: 1.2,
       ease: [0.22, 1, 0.36, 1],
       onUpdate: (v) => window.scrollTo(0, v),
     })

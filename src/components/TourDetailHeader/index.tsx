@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { animate, motion } from 'framer-motion'
 import Link from 'next/link'
 import { useCallback } from 'react'
 
@@ -22,7 +22,15 @@ export function TourDetailHeader({
   const scrollToBody = useCallback(() => {
     const target = document.getElementById('tour-info-bar')
     if (!target) return
-    target.scrollIntoView({ behavior: 'smooth' })
+    const targetY = target.getBoundingClientRect().top + window.scrollY
+    const controls = animate(window.scrollY, targetY, {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => window.scrollTo(0, v),
+    })
+    const cancel = () => controls.stop()
+    window.addEventListener('touchstart', cancel, { once: true, passive: true })
+    window.addEventListener('wheel', cancel, { once: true, passive: true })
   }, [])
 
   const cityLabel = city.charAt(0).toUpperCase() + city.slice(1)
