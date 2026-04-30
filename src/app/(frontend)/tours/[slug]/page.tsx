@@ -11,6 +11,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { TourDetailHeader } from '@/components/TourDetailHeader'
 import { TourFullBleedImage } from '@/components/TourFullBleedImage'
 import { TvSectionBlock, type TvSectionBlockProps } from '@/blocks/TvSection/Component'
+import { getMediaUrl } from '@/lib/getMediaUrl'
 
 function mediaUrl(field: number | Media | null | undefined): string | null {
   if (!field || typeof field === 'number') return null
@@ -34,9 +35,10 @@ type Args = { params: Promise<{ slug?: string }> }
 export default async function TourPage({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   const url = `/tours/${slug}`
-  const [tour, tvBlock] = await Promise.all([
+  const [tour, tvBlock, textureCreamUrl] = await Promise.all([
     queryTourBySlug({ slug }),
     queryTvBlock(),
+    getMediaUrl('texture-cream.webp'),
   ])
 
   if (!tour) return <PayloadRedirects url={url} />
@@ -73,8 +75,12 @@ export default async function TourPage({ params: paramsPromise }: Args) {
 
   const bookingHref = t.tourId ? `/booking?tourId=${t.tourId}` : '/booking'
 
+  const creamBg = textureCreamUrl
+    ? { backgroundImage: `url('${textureCreamUrl}')`, backgroundRepeat: 'repeat' as const }
+    : {}
+
   return (
-    <div className="tour-page-root">
+    <div className="tour-page-root" style={creamBg}>
       {/* ── Header hero (image + badge + title + lede + caret) ── */}
       <TourDetailHeader
         city={t.city as 'belgrade' | 'sarajevo'}
@@ -148,7 +154,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
       </section>
 
       {/* ── Body: intro + steps ─────────────────────────────── */}
-      <section id="tour-detail-body" className="tour-page-body">
+      <section id="tour-detail-body" className="tour-page-body" style={creamBg}>
         <div className="container">
           {t.introText && (
             <div className="tour-page-intro">
@@ -198,7 +204,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
 
       {/* ── Tour map (before full-bleed) ────────────────────── */}
       {mapEmbedUrl && (
-        <section className="tour-map-section">
+        <section className="tour-map-section" style={creamBg}>
           <div className="tour-map-iframe-outer">
             <div className="tour-map-iframe-wrap">
               <iframe
