@@ -205,15 +205,17 @@ export default async function TourPage({ params: paramsPromise }: Args) {
       {/* ── Tour map (before full-bleed) ────────────────────── */}
       {mapEmbedUrl && (
         <section className="tour-map-section" style={creamBg}>
-          <div className="tour-map-iframe-outer">
-            <div className="tour-map-iframe-wrap">
-              <iframe
-                src={mapEmbedUrl}
-                title={`${t.title} map`}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              />
+          <div className="container">
+            <div className="tour-map-iframe-outer">
+              <div className="tour-map-iframe-wrap">
+                <iframe
+                  src={mapEmbedUrl}
+                  title={`${t.title} map`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
             </div>
           </div>
           <div className="container tour-map-book-wrap">

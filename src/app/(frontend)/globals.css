@@ -598,6 +598,15 @@ html[data-theme='light'] {
   overflow: hidden;
 }
 
+.tales-section-title {
+  font-family: var(--font-cooper);
+  color: var(--color-yugo-cream);
+  font-size: clamp(3.8rem, 6vw, 5.5rem);
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  margin-bottom: 18px;
+}
+
 /* â”€â”€ Footer â”€â”€ */
 .footer-grid {
   display: grid;
@@ -1309,7 +1318,7 @@ html[data-theme='light'] {
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
 }
 
 /* Back-to-tours — Fakt Pro Medium, positioned outside container margins */
@@ -1392,7 +1401,7 @@ html[data-theme='light'] {
   font-family: var(--font-grotesk);
   font-weight: 500;
   color: var(--color-yugo-cream);
-  font-size: clamp(1.15rem, 1.6vw, 1.7rem);
+  font-size: clamp(1.15rem, 0.2rem + 1.5vw, 1.7rem);
   line-height: 1.35;
   margin: 0 0 20px;
 }
@@ -1765,22 +1774,6 @@ html[data-theme='light'] {
 }
 
 .tour-map-iframe-outer { width: 100%; }
-
-@media (min-width: 992px) {
-  .tour-map-iframe-outer {
-    max-width: var(--breakpoint-lg);
-    margin: 0 auto;
-    padding: 0 3.8rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .tour-map-iframe-outer { max-width: var(--breakpoint-xl); }
-}
-
-@media (min-width: 1376px) {
-  .tour-map-iframe-outer { max-width: var(--breakpoint-2xl); }
-}
 
 /* 55 vh height; top:-60px clips the Google Maps toolbar */
 .tour-map-iframe-wrap {

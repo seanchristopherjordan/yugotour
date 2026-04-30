@@ -64,10 +64,7 @@ export function TalesFromTheRoad({ textureUrl, city }: TalesFromTheRoadProps) {
       }}
     >
       <div className="container">
-        <h2
-          className="font-cooper text-yugo-cream mb-[30px] leading-[1.1]"
-          style={{ fontSize: 'clamp(3.8rem, 6vw, 5.5rem)' }}
-        >
+        <h2 className="tales-section-title">
           Tales From the Road
         </h2>
 

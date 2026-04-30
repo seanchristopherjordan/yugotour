@@ -56,12 +56,12 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
       <header
         className={[
           'fixed top-0 w-full z-[9999] overflow-visible',
-          'transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
+          'transition-transform duration-[750ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
           isNavHidden ? '-translate-y-[calc(100%+40px)]' : 'translate-y-0',
         ].join(' ')}
       >
         <nav
-          className="relative flex items-center overflow-visible border-b border-black/10 shadow-[inset_0_10px_12px_-10px_rgba(0,0,0,0.2)] min-h-[45px] min-[992px]:min-h-[42px]"
+            className="relative flex items-center overflow-visible border-b border-black/10 min-h-[45px] min-[992px]:min-h-[42px] [filter:drop-shadow(0_4px_6px_rgba(0,0,0,0.07))_drop-shadow(0_2px_2px_rgba(0,0,0,0.06))]"
           style={{
             height: '3.4vh',
             backgroundImage: navTextureUrl ? `url('${navTextureUrl}')` : undefined,
