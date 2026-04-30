@@ -1544,7 +1544,7 @@ html[data-theme='light'] {
 }
 
 @media (max-width: 991px) {
-  .tour-ibar-list li { font-size: 1.2rem; }
+  .tour-ibar-list li { font-size: 1.05rem; }
 }
 
 /* Book button: pushed to right on desktop, full-width on mobile */
