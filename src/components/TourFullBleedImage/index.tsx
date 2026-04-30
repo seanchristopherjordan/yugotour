@@ -16,8 +16,8 @@ export function TourFullBleedImage({ imageUrl, alt = '' }: TourFullBleedImagePro
     offset: ['start end', 'end start'],
   })
 
-  // Image drifts upward by 16% of the inner div's height as section scrolls through viewport
-  const imgY = useTransform(scrollYProgress, [0, 1], ['8%', '-8%'])
+  // 2× parallax range (±16%). Inner div is 160% tall so no gaps appear at edges.
+  const imgY = useTransform(scrollYProgress, [0, 1], ['16%', '-16%'])
 
   return (
     <section ref={sectionRef} className="tour-full-bleed">
