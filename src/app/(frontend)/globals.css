@@ -1384,7 +1384,7 @@ html[data-theme='light'] {
 }
 
 @media (max-width: 991px) {
-  .tour-page-title { font-size: clamp(6.5rem, 20vw, 7.5rem); }
+  .tour-page-title { font-size: clamp(5.9rem, 20vw, 7.5rem); }
 }
 
 /* Subheadline: yugo-cream */
