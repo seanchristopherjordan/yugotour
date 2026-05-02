@@ -22,7 +22,7 @@ function calcExtraPrice(extra: BookingTour['extras'][0], guestCount: number): nu
       ? (extra.priceSolo ?? extra.priceGroup ?? '0')
       : (extra.priceGroup ?? '0')
   const price = parsePrice(priceStr)
-  return isAirport ? Math.ceil(guestCount / 3) * price : price
+  return isAirport ? Math.ceil(guestCount / 3) * price : price * guestCount
 }
 
 function formatExtraLabel(extra: BookingTour['extras'][0]): string {
