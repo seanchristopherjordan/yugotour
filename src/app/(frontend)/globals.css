@@ -2442,15 +2442,17 @@ html[data-theme='light'] {
 }
 
 /* ── Reviews section: restore narrower padding so Jotform shows 3+ tiles ── */
-.reviews-section-outer .container {
-  padding-inline: 5.5rem;
+@media (min-width: 992px) {
+  .reviews-section-outer .container {
+    padding-inline: 5.5rem;
+  }
 }
 
 /* ── Booking drawer — animated height reveal ─────────────────────────────── */
 .booking-drawer {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 800ms ease-out;
+  transition: grid-template-rows 400ms ease-out;
   width: 100%;
 }
 .booking-drawer--open {
@@ -2459,6 +2461,35 @@ html[data-theme='light'] {
 .booking-drawer-inner {
   overflow: hidden;
   min-height: 0;
+}
+
+/* Mobile: confirmation dialog message matches body text standard */
+@media (max-width: 991px) {
+  .booking-confirm-text {
+    font-size: calc(0.93rem * 1.06 * 1.06) !important;
+  }
+}
+
+/* FAB fallback label (shown when book-now-button.webp is not yet uploaded) */
+.book-now-fab-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--color-yugo-red);
+  color: var(--color-yugo-cream);
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  pointer-events: none;
+  user-select: none;
 }
 
 /* ── Floating Book Now FAB ────────────────────────────────────────────────── */

@@ -215,7 +215,7 @@ function ConfirmDialog({
   return (
     <div className="absolute inset-0 z-[10020] flex items-center justify-center bg-black/70">
       <div className="bg-yugo-cream rounded-[8px] p-8 w-full max-w-sm mx-4 text-center shadow-2xl" role="alertdialog">
-        <p className="font-fakt text-yugo-black text-base mb-6 leading-relaxed">{message}</p>
+        <p className="font-fakt booking-confirm-text text-yugo-black text-base mb-6 leading-relaxed">{message}</p>
         <div className="flex gap-3 justify-center">
           <button
             type="button"
@@ -370,6 +370,18 @@ function InputField({
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
+function hasUserInput(state: FormState): boolean {
+  return (
+    state.selectedExtras.length > 0
+    || !!state.name.trim()
+    || !!state.email.trim()
+    || !!state.phone.trim()
+    || !!state.date.trim()
+    || !!state.startTime.trim()
+    || !!state.comments.trim()
+  )
+}
+
 export function BookingModal() {
   const { isOpen, close, tours, initialOpts, textureUrl, images, timeSettings } = useBookingModal()
   const [formState, dispatch] = useReducer(formReducer, defaultForm)
@@ -377,6 +389,7 @@ export function BookingModal() {
   const [pendingTourId, setPendingTourId] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [section2Open, setSection2Open] = useState(false)
 
   const tourTimeOpts = useMemo(
     () => generateTimeOpts(parseHour(timeSettings.tourTimeStart, 9), parseHour(timeSettings.tourTimeEnd, 17)),
@@ -416,6 +429,12 @@ export function BookingModal() {
     return () => window.removeEventListener('keydown', handler)
   }, [isOpen, close])
 
+  // Drawer-2 opens after the browser has painted the closed state, ensuring the
+  // CSS transition fires even when tour selection happens alongside other DOM changes.
+  useEffect(() => {
+    setSection2Open(!!formState.selectedTourDocId)
+  }, [formState.selectedTourDocId])
+
   // Derived
   const cityTours = tours.filter((t) => t.city === formState.city)
   const selectedTour = cityTours.find((t) => String(t.id) === formState.selectedTourDocId) ?? null
@@ -429,14 +448,17 @@ export function BookingModal() {
 
   function handleCityClick(city: 'belgrade' | 'sarajevo') {
     if (city === formState.city) return
-    if (formState.selectedTourDocId) setPendingCity(city)
+    if (formState.selectedTourDocId && hasUserInput(formState)) setPendingCity(city)
     else dispatch({ type: 'SET_CITY', city })
   }
 
   function handleTourChange(docId: string) {
     if (!docId) { dispatch({ type: 'SET_TOUR', tourDocId: null }); return }
-    if (formState.selectedTourDocId && docId !== formState.selectedTourDocId) setPendingTourId(docId)
-    else dispatch({ type: 'SET_TOUR', tourDocId: docId })
+    if (formState.selectedTourDocId && docId !== formState.selectedTourDocId && formState.selectedExtras.length > 0) {
+      setPendingTourId(docId)
+    } else {
+      dispatch({ type: 'SET_TOUR', tourDocId: docId })
+    }
   }
 
   const handleSubmit = useCallback(async () => {
@@ -857,7 +879,7 @@ export function BookingModal() {
           </div>
 
           {/* ── Contact card — drawer 2: reveals after tour chosen ───── */}
-          <div className={`booking-drawer ${MAX_FORM_W} ${selectedTour ? 'booking-drawer--open' : ''}`}>
+          <div className={`booking-drawer ${MAX_FORM_W} ${section2Open ? 'booking-drawer--open' : ''}`}>
           <div className="booking-drawer-inner">
           <div className={`${FORM_CARD} bg-[#fcf9ea]`}>
 
