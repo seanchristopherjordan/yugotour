@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import type { MegaMenuProps } from '@/components/MegaMenu'
 import { MegaMenu } from '@/components/MegaMenu'
-import { useBookingModal } from '@/providers/BookingModal'
+
 
 export interface HeaderClientProps {
   logoUrl: string | null
@@ -16,7 +16,6 @@ export interface HeaderClientProps {
 export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderClientProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isNavHidden, setIsNavHidden] = useState(false)
-  const { open: openBooking } = useBookingModal()
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
 
@@ -97,19 +96,10 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
               )}
             </Link>
 
-            {/* Desktop city + book now links */}
+            {/* Desktop city links */}
             <div className="hidden min-[992px]:flex items-center">
               <NavLink href="/belgrade-tours">belgrade</NavLink>
               <NavLink href="/sarajevo-tours">sarajevo</NavLink>
-              <button
-                id="headerBookNow"
-                type="button"
-                className="mr-[50px] font-grotesk text-yugo-red text-[1.1rem] font-light bg-transparent border-none p-0 cursor-pointer relative group"
-                onClick={() => openBooking()}
-              >
-                book now
-                <span className="absolute bottom-[-2px] left-0 h-[2px] w-0 bg-yugo-red transition-[width] duration-300 group-hover:w-full" />
-              </button>
             </div>
 
             {/* Hamburger trigger */}

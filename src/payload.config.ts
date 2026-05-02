@@ -27,6 +27,15 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    // 1. Add this React Query block to kill the devtools "bug"
+    reactQuery: {
+      devtools: false,
+    },
+    // 2. This is also where you'd set your favicon PNG for the admin panel
+    meta: {
+      titleSuffix: '- Yugotour',
+      favicon: '/favicon.png', // Ensure this file is in your /public folder
+    },
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/BeforeDashboard'],

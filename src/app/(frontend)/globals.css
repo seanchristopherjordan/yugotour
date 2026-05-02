@@ -88,7 +88,7 @@
   @variant md {
     .container {
       max-width: var(--breakpoint-md);
-      padding-inline: 5.5rem;
+      padding-inline: 7rem;
     }
   }
 
@@ -901,13 +901,11 @@ html[data-theme='light'] {
   container-name: tile;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   position: relative;
-  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 360ms ease;
+  transition: box-shadow 400ms ease;
 }
 
 @media (min-width: 992px) {
   .tour-tile:hover {
-    transform: scale(1.03) translateY(-2.5px);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
     z-index: 10;
   }
@@ -922,12 +920,18 @@ html[data-theme='light'] {
   overflow: hidden;
   position: relative;
   border-radius: 5px;
-  transition: filter 360ms ease;
+  transition: filter 400ms ease;
 }
 
 @media (min-width: 992px) {
   .tour-tile-inner:hover {
-    filter: brightness(1.07);
+    filter: brightness(1.15);
+  }
+  .tile-bg-img {
+    transition: transform 400ms ease-out;
+  }
+  .tour-tile:hover .tile-bg-img {
+    transform: scale(1.20);
   }
 }
 
@@ -940,16 +944,16 @@ html[data-theme='light'] {
 }
 
 @media (min-width: 370px)  { .tile-image-wrap { flex-basis: 50.5%; } }
-@media (min-width: 400px)  { .tile-image-wrap { flex-basis: 52.5%; } }
+@media (min-width: 400px)  { .tile-image-wrap { flex-basis: 54.5%; } }
 @media (min-width: 440px)  { .tile-image-wrap { flex-basis: 51.5%; } }
-@media (min-width: 480px)  { .tile-image-wrap { flex-basis: 55%; } }
+@media (min-width: 480px)  { .tile-image-wrap { flex-basis: 56%; } }
 @media (min-width: 520px)  { .tile-image-wrap { flex-basis: 65%; } }
 @media (min-width: 630px)  { .tile-image-wrap { flex-basis: 74%; } }
-@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 73%; } }
-@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 54%; } }
+@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 72%; } }
+@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 50%; } }
 @media (min-width: 1200px) { .tile-image-wrap { flex-basis: 55%; } }
-@media (min-width: 1280px) { .tile-image-wrap { flex-basis: 69%; } }
-@media (min-width: 1400px) { .tile-image-wrap { flex-basis: 73%; } }
+@media (min-width: 1280px) { .tile-image-wrap { flex-basis: 67%; } }
+@media (min-width: 1400px) { .tile-image-wrap { flex-basis: 69%; } }
 
 .tile-bg-img {
   position: absolute;
@@ -1906,7 +1910,7 @@ html[data-theme='light'] {
 }
 @media (min-width: 992px) {
   .booking-city-card img {
-    transition: transform 600ms ease-out;
+    transition: transform 400ms ease-out;
   }
   .booking-city-card:not(.booking-city-card--selected):hover img {
     transform: scale(1.20);
@@ -2395,29 +2399,22 @@ html[data-theme='light'] {
   filter: brightness(0.95);
 }
 
-/* Header book-now pulse (desktop only) */
-@keyframes bookNowPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-}
-@media (min-width: 992px) {
-  #headerBookNow {
-    animation: bookNowPulse 1.12s ease-in-out infinite;
-  }
-}
-
 /* Option inner padding (best-effort; works in Firefox) */
 .booking-modal-body select option {
   padding: 8px 14px;
   color: #212121;
 }
 
-/* Mobile: Fakt text 6%+6% = 12.36% larger inside booking modal */
+/* Mobile: normalize ALL Fakt body text inside booking modal to enlarged standard */
 @media (max-width: 991px) {
   .booking-modal-body select,
   .booking-modal-body input,
-  .booking-modal-body textarea {
-    font-size: calc(0.93rem * 1.06 * 1.06);
+  .booking-modal-body textarea,
+  .booking-modal-body p.font-fakt,
+  .booking-modal-body li.font-fakt,
+  .booking-modal-body label.font-fakt,
+  .booking-modal-body span.font-fakt {
+    font-size: calc(0.93rem * 1.06 * 1.06) !important;
   }
   .booking-modal-body .booking-section-label {
     font-size: calc(0.72rem * 1.06 * 1.06);
@@ -2442,5 +2439,70 @@ html[data-theme='light'] {
   .booking-close-bar {
     height: max(3.4vh, 37px);
   }
+}
+
+/* ── Reviews section: restore narrower padding so Jotform shows 3+ tiles ── */
+.reviews-section-outer .container {
+  padding-inline: 5.5rem;
+}
+
+/* ── Booking drawer — animated height reveal ─────────────────────────────── */
+.booking-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 800ms ease-out;
+  width: 100%;
+}
+.booking-drawer--open {
+  grid-template-rows: 1fr;
+}
+.booking-drawer-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Floating Book Now FAB ────────────────────────────────────────────────── */
+@keyframes fabRock {
+  0%   { transform: rotate(-15deg); }
+  50%  { transform: rotate(15deg); }
+  100% { transform: rotate(-15deg); }
+}
+@keyframes fabBounceIn {
+  0%   { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+.book-now-fab {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 9990;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  animation: fabRock 1000ms ease-in-out infinite;
+  transform-origin: center bottom;
+  transition: opacity 0.25s ease;
+}
+.book-now-fab-inner {
+  display: block;
+  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 300ms ease;
+}
+.book-now-fab img {
+  display: block;
+  width: 80px;
+  height: auto;
+}
+@media (min-width: 992px) {
+  .book-now-fab:hover .book-now-fab-inner {
+    transform: scale(1.18);
+    filter: brightness(1.15);
+  }
+}
+body.modal-active .book-now-fab {
+  opacity: 0;
+  pointer-events: none;
 }
 

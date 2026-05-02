@@ -642,8 +642,10 @@ export function BookingModal() {
             })}
           </div>
 
-          {/* ── Selection card ───────────────────────────────────── */}
-          <div className={`${FORM_CARD} bg-[#fcf9ea] ${MAX_FORM_W} mb-4`}>
+          {/* ── Selection card — drawer 1: reveals after city chosen ─── */}
+          <div className={`booking-drawer ${MAX_FORM_W} ${formState.city ? 'booking-drawer--open' : ''}`}>
+          <div className="booking-drawer-inner">
+          <div className={`${FORM_CARD} bg-[#fcf9ea] mb-4`}>
 
             {/* Tour + Guests dropdowns */}
             <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-1">
@@ -654,7 +656,7 @@ export function BookingModal() {
                   onChange={(e) => handleTourChange(e.target.value)}
                   disabled={!formState.city}
                 >
-                  <option value="">Select Your Yugotour</option>
+                  <option value="" hidden>Select Your Yugotour</option>
                   {cityTours.map((tour) => (
                     <option key={String(tour.id)} value={String(tour.id)}>{tour.title}</option>
                   ))}
@@ -851,10 +853,13 @@ export function BookingModal() {
               )}
             </div>
           </div>
+          </div>
+          </div>
 
-          {/* ── Contact card ─────────────────────────────────────── */}
-          {selectedTour && (
-            <div className={`${FORM_CARD} bg-[#fcf9ea] ${MAX_FORM_W}`}>
+          {/* ── Contact card — drawer 2: reveals after tour chosen ───── */}
+          <div className={`booking-drawer ${MAX_FORM_W} ${selectedTour ? 'booking-drawer--open' : ''}`}>
+          <div className="booking-drawer-inner">
+          <div className={`${FORM_CARD} bg-[#fcf9ea]`}>
 
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-4">
                 <InputField
@@ -946,8 +951,9 @@ export function BookingModal() {
                   : <span aria-hidden="true">★</span>
                 }
               </button>
-            </div>
-          )}
+          </div>
+          </div>
+          </div>
 
         </div>
       </div>

@@ -7,6 +7,7 @@ import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
+import { FloatingBookNow } from '@/components/FloatingBookNow'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
@@ -88,10 +89,11 @@ const steelfishBold = localFont({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const [siteSettings, allTours, menuTextureUrl, bookingImages] = await Promise.all([
+  const [siteSettings, allTours, menuTextureUrl, bookNowButtonUrl, bookingImages] = await Promise.all([
     getCachedGlobal('site-settings', 1)(),
     getAllToursForBooking(),
     getMediaUrl('texture-blue.webp'),
+    getMediaUrl('book-now-button.webp'),
     Promise.all([
       getMediaUrl('booking-form-header.webp'),
       getMediaUrl('booking-form-header-mobile.webp'),
@@ -165,6 +167,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Header />
             {children}
             <Footer />
+            <FloatingBookNow imageUrl={bookNowButtonUrl} />
           </Providers>
         </BookingModalProvider>
       </body>
