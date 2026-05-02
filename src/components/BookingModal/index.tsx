@@ -507,8 +507,7 @@ export function BookingModal() {
     >
       {/* Close button bar — fixed-height, non-scrolling */}
       <div
-        className="flex-none flex items-center justify-end pr-[20px] min-[992px]:pr-[30px] z-[10010]"
-        style={{ height: 'max(3.4vh, 45px)' }}
+        className="booking-close-bar flex-none flex items-center justify-end pr-[20px] min-[992px]:pr-[30px] z-[10010]"
       >
         <BookingCloseButton onClick={close} />
       </div>
@@ -542,10 +541,10 @@ export function BookingModal() {
           )}
 
           {/* Heading */}
-          <div className={`text-center mb-4 ${MAX_FORM_W}`}>
+          <div className={`text-center mb-[30px] ${MAX_FORM_W}`}>
             <h2
-              className="text-yugo-cream text-center m-0 mb-[0.4rem] flex items-center justify-center gap-3"
-              style={{ fontFamily: 'var(--font-zipper)', fontSize: 'clamp(3.15rem, 8.4vw, 5.775rem)', lineHeight: 1, letterSpacing: '-0.02em' }}
+              className="booking-ready-heading text-yugo-cream text-center m-0 mb-[0.4rem] flex items-center justify-center gap-3"
+              style={{ fontFamily: 'var(--font-zipper)', lineHeight: 1, letterSpacing: '-0.02em' }}
             >
               {images.redStar
                 ? <img src={images.redStar} width="40" height="40" alt="" aria-hidden="true" className="inline-block" />
@@ -578,7 +577,7 @@ export function BookingModal() {
                     style={{
                       borderRadius: '5px',
                       boxShadow: isSelected
-                        ? '0 0 0 7px #FCF9EB, 0 3px 10px rgba(0,0,0,0.22), inset 0 3px 8px rgba(0,0,0,0.20)'
+                        ? '0 0 0 5px #FCF9EB, 0 3px 10px rgba(0,0,0,0.22), inset 0 3px 8px rgba(0,0,0,0.20)'
                         : '0 0 0 2px #FCF9EB, 0 3px 10px rgba(0,0,0,0.22), inset 0 3px 8px rgba(0,0,0,0.20)',
                     }}
                   >
@@ -599,14 +598,14 @@ export function BookingModal() {
                       }
                       {/* City name overlay */}
                       <div
-                        className="absolute inset-0 flex items-end justify-center"
-                        style={{ paddingBottom: '8%', pointerEvents: 'none' }}
+                        className="absolute inset-0 flex items-start justify-center"
+                        style={{ paddingTop: '8%', pointerEvents: 'none' }}
                       >
                         <span
                           style={{
                             fontFamily: 'var(--font-clarendon-extra)',
                             fontWeight: 800,
-                            fontSize: '16cqi',
+                            fontSize: '19cqi',
                             color: '#FCF9EB',
                             lineHeight: 1,
                             textShadow: '0 2px 6px rgba(0,0,0,0.55)',
@@ -676,7 +675,7 @@ export function BookingModal() {
                   }}
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-                    <option key={n} value={String(n)}>{n === 1 ? '1 (solo)' : `${n} guests`}</option>
+                    <option key={n} value={String(n)}>{n === 1 ? '1 (single)' : `${n} guests`}</option>
                   ))}
                   <option value="10+">10 or more</option>
                 </select>
@@ -832,7 +831,7 @@ export function BookingModal() {
             )}
 
             {/* Total price — centered, section label style, Fakt Bold amount */}
-            <div className="flex items-center justify-center gap-[8px] mt-[18px] pt-[14px] border-t border-dashed border-[#c9b898]">
+            <div className="flex items-center justify-center gap-[8px] mt-[28px] pt-[14px] border-t border-dashed border-[#c9b898]">
               {images.priceTag
                 // eslint-disable-next-line @next/next/no-img-element
                 ? <img src={images.priceTag} width="16" height="16" alt="" aria-hidden="true" className="flex-shrink-0" />
@@ -857,7 +856,7 @@ export function BookingModal() {
           {selectedTour && (
             <div className={`${FORM_CARD} bg-[#fcf9ea] ${MAX_FORM_W}`}>
 
-              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-[10px]">
+              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-4">
                 <InputField
                   imgSrc={images.iconName}
                   placeholder="Your Name"
@@ -956,7 +955,7 @@ export function BookingModal() {
       {/* Confirmation dialogs */}
       {pendingCity && (
         <ConfirmDialog
-          message="Are you sure you want to change city? Your current tour selection will be cleared."
+          message="Are you sure you want to change the selected city? Your current tour selection will be cleared."
           onConfirm={() => { dispatch({ type: 'SET_CITY', city: pendingCity }); setPendingCity(null) }}
           onCancel={() => setPendingCity(null)}
         />

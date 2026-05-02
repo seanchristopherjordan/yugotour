@@ -1905,9 +1905,11 @@ html[data-theme='light'] {
               box-shadow 360ms ease;
 }
 @media (min-width: 992px) {
-  .booking-city-card:not(.booking-city-card--selected):hover {
-    transform: scale(1.03) translateY(-2.5px);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
+  .booking-city-card img {
+    transition: transform 600ms ease-out;
+  }
+  .booking-city-card:not(.booking-city-card--selected):hover img {
+    transform: scale(1.20);
   }
 }
 
@@ -2400,26 +2402,45 @@ html[data-theme='light'] {
 }
 @media (min-width: 992px) {
   #headerBookNow {
-    animation: bookNowPulse 2.8s ease-in-out infinite;
+    animation: bookNowPulse 1.12s ease-in-out infinite;
   }
 }
 
 /* Option inner padding (best-effort; works in Firefox) */
 .booking-modal-body select option {
   padding: 8px 14px;
+  color: #212121;
 }
 
-/* Mobile: 6% larger text inside booking modal */
+/* Mobile: Fakt text 6%+6% = 12.36% larger inside booking modal */
 @media (max-width: 991px) {
   .booking-modal-body select,
   .booking-modal-body input,
-  .booking-modal-body textarea,
-  .booking-modal-body .booking-city-card,
-  .booking-modal-body .booking-section-label {
-    font-size: calc(0.93rem * 1.06);
+  .booking-modal-body textarea {
+    font-size: calc(0.93rem * 1.06 * 1.06);
   }
   .booking-modal-body .booking-section-label {
-    font-size: calc(0.72rem * 1.06);
+    font-size: calc(0.72rem * 1.06 * 1.06);
+  }
+}
+
+/* Mobile: Ready to Roll heading 10% larger */
+.booking-ready-heading {
+  font-size: clamp(3.15rem, 8.4vw, 5.775rem);
+}
+@media (max-width: 991px) {
+  .booking-ready-heading {
+    font-size: clamp(3.465rem, 9.24vw, 6.3525rem);
+  }
+}
+
+/* Close bar height: 45px desktop, 37px mobile */
+.booking-close-bar {
+  height: max(3.4vh, 45px);
+}
+@media (max-width: 991px) {
+  .booking-close-bar {
+    height: max(3.4vh, 37px);
   }
 }
 
