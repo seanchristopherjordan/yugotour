@@ -2475,8 +2475,8 @@ html[data-theme='light'] {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 130px;
-  height: 130px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background: var(--color-yugo-red);
   color: var(--color-yugo-cream);
@@ -2508,9 +2508,10 @@ html[data-theme='light'] {
   border: none;
   padding: 0;
   cursor: pointer;
-  animation: fabRock 3000ms ease-in-out infinite;
+  animation: fabRock 6000ms ease-in-out infinite;
   transform-origin: center center;
   transition: opacity 0.25s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
 }
 .book-now-fab-inner {
   display: block;
@@ -2519,8 +2520,22 @@ html[data-theme='light'] {
 }
 .book-now-fab img {
   display: block;
-  width: 144px;
+  width: 122px;
   height: auto;
+}
+@media (max-width: 991px) {
+  .book-now-fab {
+    left: 14px;
+    bottom: 17px;
+  }
+  .book-now-fab img {
+    width: 101px;
+  }
+  .book-now-fab-fallback {
+    width: 91px;
+    height: 91px;
+    font-size: 1rem;
+  }
 }
 @media (min-width: 992px) {
   .book-now-fab:hover .book-now-fab-inner {
