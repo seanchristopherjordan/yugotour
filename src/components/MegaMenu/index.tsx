@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useRef, useState } from 'react'
+import { useBookingModal } from '@/providers/BookingModal'
 
 export interface MegaMenuImages {
   default: string | null
@@ -42,6 +43,7 @@ const SECONDARY_LINKS = [
 ]
 
 export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: MegaMenuProps) {
+  const { open: openBooking } = useBookingModal()
   // Mirrors the layerA/layerB crossfade logic from custom-javascript.js exactly
   const [activeSlot, setActiveSlot] = useState<'a' | 'b' | null>(null)
   const [imgA, setImgA] = useState<string | null>(null)
@@ -152,7 +154,7 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
                     onMouseEnter={() => handleLinkEnter(link.imgKey)}
                     onMouseLeave={handleLinkLeave}
                     onClick={() => {
-                      // TODO: dispatch booking modal open event
+                      openBooking()
                       onClose()
                     }}
                   >

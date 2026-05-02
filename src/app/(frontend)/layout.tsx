@@ -10,9 +10,12 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
+import { BookingModalProvider } from '@/providers/BookingModal'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getAllToursForBooking } from '@/lib/getAllToursForBooking'
+import { getMediaUrl } from '@/lib/getMediaUrl'
 import { draftMode } from 'next/headers'
 
 import './globals.css'
@@ -35,9 +38,9 @@ const faktPro = localFont({
 
 const flArtGrotesk = localFont({
   src: [
-    { path: './fonts/FLArtGroteskAmpleRegular.woff2', weight: '300', style: 'normal' },
-    { path: './fonts/FLArtGroteskAmpleMedium.woff2', weight: '500', style: 'normal' },
-    { path: './fonts/FLArtGroteskAmpleBold.woff2', weight: '700', style: 'normal' },
+    { path: './fonts/FLArtGroteskAmpleRegular.woff', weight: '300', style: 'normal' },
+    { path: './fonts/FLArtGroteskAmpleMedium.woff', weight: '500', style: 'normal' },
+    { path: './fonts/FLArtGroteskAmpleBold.woff', weight: '700', style: 'normal' },
   ],
   variable: '--font-art-grotesk',
   display: 'swap',
@@ -78,7 +81,11 @@ const steelfishBold = localFont({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const siteSettings = await getCachedGlobal('site-settings', 1)()
+  const [siteSettings, allTours, menuTextureUrl] = await Promise.all([
+    getCachedGlobal('site-settings', 1)(),
+    getAllToursForBooking(),
+    getMediaUrl('texture-blue.webp'),
+  ])
   const faviconMedia = siteSettings.site?.favicon
   const faviconUrl =
     typeof faviconMedia === 'object' && faviconMedia !== null ? faviconMedia.url ?? null : null
@@ -111,17 +118,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body suppressHydrationWarning>
-        <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+        <BookingModalProvider tours={allTours} textureUrl={menuTextureUrl}>
+          <Providers>
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
 
-          <Header />
-          {children}
-          <Footer />
-        </Providers>
+            <Header />
+            {children}
+            <Footer />
+          </Providers>
+        </BookingModalProvider>
       </body>
     </html>
   )

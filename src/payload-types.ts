@@ -74,6 +74,7 @@ export interface Config {
     tours: Tour;
     'tour-list-pages': TourListPage;
     users: User;
+    bookings: Booking;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -98,6 +99,7 @@ export interface Config {
     tours: ToursSelect<false> | ToursSelect<true>;
     'tour-list-pages': TourListPagesSelect<false> | TourListPagesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    bookings: BookingsSelect<false> | BookingsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1014,6 +1016,38 @@ export interface TourListPage {
   createdAt: string;
 }
 /**
+ * Incoming tour booking requests. Use the city column to filter by destination.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bookings".
+ */
+export interface Booking {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string | null;
+  city: 'belgrade' | 'sarajevo';
+  tourTitle: string;
+  tourId?: number | null;
+  guests: string;
+  totalPrice?: number | null;
+  date: string;
+  startTime?: string | null;
+  extras?:
+    | {
+        title?: string | null;
+        price?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  airportDirection?: ('pickup' | 'dropoff') | null;
+  flightTime?: string | null;
+  comments?: string | null;
+  submittedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1230,6 +1264,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'bookings';
+        value: number | Booking;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1695,6 +1733,35 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bookings_select".
+ */
+export interface BookingsSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  phone?: T;
+  city?: T;
+  tourTitle?: T;
+  tourId?: T;
+  guests?: T;
+  totalPrice?: T;
+  date?: T;
+  startTime?: T;
+  extras?:
+    | T
+    | {
+        title?: T;
+        price?: T;
+        id?: T;
+      };
+  airportDirection?: T;
+  flightTime?: T;
+  comments?: T;
+  submittedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

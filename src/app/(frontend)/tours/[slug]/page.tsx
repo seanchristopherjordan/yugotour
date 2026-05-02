@@ -11,6 +11,7 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { TourDetailHeader } from '@/components/TourDetailHeader'
 import { TourFullBleedImage } from '@/components/TourFullBleedImage'
 import { TvSectionBlock, type TvSectionBlockProps } from '@/blocks/TvSection/Component'
+import { BookNowButton } from '@/components/BookNowButton'
 import { getMediaUrl } from '@/lib/getMediaUrl'
 
 function mediaUrl(field: number | Media | null | undefined): string | null {
@@ -73,7 +74,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
     photo?: number | Media | null
   }>
 
-  const bookingHref = t.tourId ? `/booking?tourId=${t.tourId}` : '/booking'
+  const tourPayloadId = String(t.id)
 
   const creamBg = textureCreamUrl
     ? { backgroundImage: `url('${textureCreamUrl}')`, backgroundRepeat: 'repeat' as const }
@@ -145,9 +146,13 @@ export default async function TourPage({ params: paramsPromise }: Args) {
               </div>
             )}
             <div className="tour-ibar-book">
-              <Link href={bookingHref} className="tour-ibar-book-btn">
+              <BookNowButton
+                payloadId={tourPayloadId}
+                city={t.city as 'belgrade' | 'sarajevo'}
+                className="tour-ibar-book-btn"
+              >
                 Book This Tour →
-              </Link>
+              </BookNowButton>
             </div>
           </div>
         </div>
@@ -219,9 +224,13 @@ export default async function TourPage({ params: paramsPromise }: Args) {
             </div>
           </div>
           <div className="container tour-map-book-wrap">
-            <Link href={bookingHref} className="tour-book-btn">
+            <BookNowButton
+              payloadId={tourPayloadId}
+              city={t.city as 'belgrade' | 'sarajevo'}
+              className="tour-book-btn"
+            >
               Book this Tour →
-            </Link>
+            </BookNowButton>
           </div>
         </section>
       )}

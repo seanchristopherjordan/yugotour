@@ -5,6 +5,7 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import { Bookings } from './collections/Bookings'
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -48,7 +49,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Tours, TourListPages, Users],
+  collections: [Pages, Posts, Media, Categories, Tours, TourListPages, Users, Bookings],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, SiteSettings, HomepageIntro, TourOrder],
   

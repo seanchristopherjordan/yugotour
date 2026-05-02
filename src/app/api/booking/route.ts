@@ -1,0 +1,36 @@
+import { NextRequest, NextResponse } from 'next/server'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json()
+    const payload = await getPayload({ config: configPromise })
+
+    await payload.create({
+      collection: 'bookings',
+      data: {
+        name: body.name,
+        email: body.email,
+        phone: body.phone || undefined,
+        city: body.city,
+        tourTitle: body.tourTitle,
+        tourId: body.tourId || undefined,
+        guests: String(body.guests),
+        totalPrice: body.totalPrice ?? undefined,
+        date: body.date,
+        startTime: body.startTime || undefined,
+        extras: body.extras || [],
+        airportDirection: body.airportDirection || undefined,
+        flightTime: body.flightTime || undefined,
+        comments: body.comments || undefined,
+        submittedAt: new Date().toISOString(),
+      },
+    })
+
+    return NextResponse.json({ success: true })
+  } catch (err) {
+    console.error('[booking]', err)
+    return NextResponse.json({ error: 'Submission failed' }, { status: 500 })
+  }
+}
