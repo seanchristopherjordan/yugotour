@@ -2122,6 +2122,24 @@ export interface SiteSetting {
     phone?: string | null;
     email?: string | null;
   };
+  booking?: {
+    /**
+     * 24h HH:MM format. First option in the "Preferred Start Time" dropdown.
+     */
+    tourTimeStart?: string | null;
+    /**
+     * 24h HH:MM format. Last option in the "Preferred Start Time" dropdown.
+     */
+    tourTimeEnd?: string | null;
+    /**
+     * 24h HH:MM format. First option in airport transfer time dropdowns.
+     */
+    airportTimeStart?: string | null;
+    /**
+     * 24h HH:MM format. Last option in airport transfer time dropdowns.
+     */
+    airportTimeEnd?: string | null;
+  };
   site?: {
     /**
      * Recommended: 32×32 .ico or 64×64 .png
@@ -2250,6 +2268,14 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         address?: T;
         phone?: T;
         email?: T;
+      };
+  booking?:
+    | T
+    | {
+        tourTimeStart?: T;
+        tourTimeEnd?: T;
+        airportTimeStart?: T;
+        airportTimeEnd?: T;
       };
   site?:
     | T

@@ -71,6 +71,52 @@ export const SiteSettings: GlobalConfig = {
           fields: cityFields('Sarajevo'),
         },
         {
+          label: 'Booking',
+          name: 'booking',
+          fields: [
+            {
+              name: 'tourTimeStart',
+              type: 'text' as const,
+              label: 'Tour Start Time — Earliest',
+              defaultValue: '09:00',
+              admin: {
+                description: '24h HH:MM format. First option in the "Preferred Start Time" dropdown.',
+                placeholder: '09:00',
+              },
+            },
+            {
+              name: 'tourTimeEnd',
+              type: 'text' as const,
+              label: 'Tour Start Time — Latest',
+              defaultValue: '17:00',
+              admin: {
+                description: '24h HH:MM format. Last option in the "Preferred Start Time" dropdown.',
+                placeholder: '17:00',
+              },
+            },
+            {
+              name: 'airportTimeStart',
+              type: 'text' as const,
+              label: 'Airport Transfer Time — Earliest',
+              defaultValue: '08:00',
+              admin: {
+                description: '24h HH:MM format. First option in airport transfer time dropdowns.',
+                placeholder: '08:00',
+              },
+            },
+            {
+              name: 'airportTimeEnd',
+              type: 'text' as const,
+              label: 'Airport Transfer Time — Latest',
+              defaultValue: '20:00',
+              admin: {
+                description: '24h HH:MM format. Last option in airport transfer time dropdowns.',
+                placeholder: '20:00',
+              },
+            },
+          ],
+        },
+        {
           label: 'Site & Media',
           name: 'site',
           fields: [

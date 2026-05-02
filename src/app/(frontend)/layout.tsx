@@ -10,7 +10,7 @@ import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
-import { BookingModalProvider } from '@/providers/BookingModal'
+import { BookingModalProvider, type BookingModalImages, type BookingTimeSettings } from '@/providers/BookingModal'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getCachedGlobal } from '@/utilities/getGlobals'
@@ -59,6 +59,13 @@ const jobClarendon = localFont({
   display: 'swap',
 })
 
+const jobClarendonExtraBold = localFont({
+  src: './fonts/JobClarendonExtraBold.woff',
+  weight: '800',
+  variable: '--font-job-clarendon-extra-bold',
+  display: 'swap',
+})
+
 const tungstenCompressed = localFont({
   src: './fonts/TungstenCompressedBold.woff2',
   weight: '700',
@@ -81,11 +88,39 @@ const steelfishBold = localFont({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const [siteSettings, allTours, menuTextureUrl] = await Promise.all([
+  const [siteSettings, allTours, menuTextureUrl, bookingImages] = await Promise.all([
     getCachedGlobal('site-settings', 1)(),
     getAllToursForBooking(),
     getMediaUrl('texture-blue.webp'),
+    Promise.all([
+      getMediaUrl('booking-form-header.webp'),
+      getMediaUrl('booking-form-header-mobile.webp'),
+      getMediaUrl('checkmark-circle-icon.webp'),
+      getMediaUrl('city-selector-belgrade.webp'),
+      getMediaUrl('city-selector-sarajevo.webp'),
+      getMediaUrl('inline-icon-comment.webp'),
+      getMediaUrl('inline-icon-date.webp'),
+      getMediaUrl('inline-icon-email.webp'),
+      getMediaUrl('inline-icon-name.webp'),
+      getMediaUrl('inline-icon-phone.webp'),
+      getMediaUrl('inline-icon-time.webp'),
+      getMediaUrl('little-white-star.webp'),
+      getMediaUrl('price-tag-icon.webp'),
+      getMediaUrl('red-star.webp'),
+    ]).then(([headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo, iconComment, iconDate, iconEmail, iconName, iconPhone, iconTime, littleWhiteStar, priceTag, redStar]): BookingModalImages => ({
+      headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo,
+      iconComment, iconDate, iconEmail, iconName, iconPhone, iconTime,
+      littleWhiteStar, priceTag, redStar,
+    })),
   ])
+
+  const bookingTab = (siteSettings as Record<string, unknown>).booking as Record<string, string> | undefined
+  const timeSettings: BookingTimeSettings = {
+    tourTimeStart: bookingTab?.tourTimeStart ?? '09:00',
+    tourTimeEnd: bookingTab?.tourTimeEnd ?? '17:00',
+    airportTimeStart: bookingTab?.airportTimeStart ?? '08:00',
+    airportTimeEnd: bookingTab?.airportTimeEnd ?? '20:00',
+  }
   const faviconMedia = siteSettings.site?.favicon
   const faviconUrl =
     typeof faviconMedia === 'object' && faviconMedia !== null ? faviconMedia.url ?? null : null
@@ -118,7 +153,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body suppressHydrationWarning>
-        <BookingModalProvider tours={allTours} textureUrl={menuTextureUrl}>
+        <BookingModalProvider tours={allTours} textureUrl={menuTextureUrl} images={bookingImages} timeSettings={timeSettings}>
           <Providers>
             <AdminBar
               adminBarProps={{

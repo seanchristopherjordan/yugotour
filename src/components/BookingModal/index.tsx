@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useReducer, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { useBookingModal } from '@/providers/BookingModal'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
 
@@ -37,11 +37,7 @@ function formatExtraLabel(extra: BookingTour['extras'][0]): string {
   return ''
 }
 
-function calcTotal(
-  tour: BookingTour,
-  guests: number | '10+',
-  selectedExtras: string[],
-): number {
+function calcTotal(tour: BookingTour, guests: number | '10+', selectedExtras: string[]): number {
   if (guests === '10+') return 0
   const count = guests as number
   const base = count === 1 ? (tour.priceSolo ?? 0) : (tour.priceGroup ?? 0) * count
@@ -52,6 +48,41 @@ function calcTotal(
       return extra ? sum + calcExtraPrice(extra, count) : sum
     }, 0)
   )
+}
+
+// ─── Date helper ──────────────────────────────────────────────────────────────
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+function formatDate(dateStr: string): string {
+  if (!dateStr) return ''
+  const parts = dateStr.split('-').map(Number)
+  const y = parts[0], m = parts[1], d = parts[2]
+  if (!y || !m || !d) return dateStr
+  return `${d} ${MONTHS[m - 1]} ${y}`
+}
+
+// ─── Time helpers ─────────────────────────────────────────────────────────────
+
+function parseHour(s: string, def: number): number {
+  const n = parseInt((s ?? '').split(':')[0] ?? '', 10)
+  return isNaN(n) ? def : n
+}
+
+function generateTimeOpts(startHour: number, endHour: number): Array<{ value: string; label: string }> {
+  const opts: Array<{ value: string; label: string }> = []
+  for (let h = startHour; h <= endHour; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      if (h === endHour && m > 0) break
+      const hh = String(h).padStart(2, '0')
+      const mm = String(m).padStart(2, '0')
+      const value = `${hh}:${mm}`
+      const hour12 = h % 12 || 12
+      const ampm = h >= 12 ? 'pm' : 'am'
+      opts.push({ value, label: `${hour12}:${mm}${ampm}` })
+    }
+  }
+  return opts
 }
 
 // ─── Form state ───────────────────────────────────────────────────────────────
@@ -72,18 +103,9 @@ interface FormState {
 }
 
 const defaultForm: FormState = {
-  city: null,
-  selectedTourDocId: null,
-  guests: 2,
-  selectedExtras: [],
-  airportDirection: 'pickup',
-  flightTime: '',
-  name: '',
-  email: '',
-  phone: '',
-  date: '',
-  startTime: '',
-  comments: '',
+  city: null, selectedTourDocId: null, guests: 2, selectedExtras: [],
+  airportDirection: 'pickup', flightTime: '', name: '', email: '',
+  phone: '', date: '', startTime: '', comments: '',
 }
 
 type FormAction =
@@ -114,16 +136,11 @@ function formReducer(state: FormState, action: FormAction): FormState {
         ...(isAirportExtra(action.title) && has ? { airportDirection: 'pickup' as const, flightTime: '' } : {}),
       }
     }
-    case 'SET_AIRPORT_DIR':
-      return { ...state, airportDirection: action.dir }
-    case 'SET_FLIGHT_TIME':
-      return { ...state, flightTime: action.time }
-    case 'SET_FIELD':
-      return { ...state, [action.field]: action.value }
-    case 'RESET':
-      return { ...defaultForm, guests: 2, ...action.init }
-    default:
-      return state
+    case 'SET_AIRPORT_DIR': return { ...state, airportDirection: action.dir }
+    case 'SET_FLIGHT_TIME': return { ...state, flightTime: action.time }
+    case 'SET_FIELD': return { ...state, [action.field]: action.value }
+    case 'RESET': return { ...defaultForm, guests: 2, ...action.init }
+    default: return state
   }
 }
 
@@ -140,70 +157,23 @@ function isFormValid(state: FormState, tourSelected: boolean): boolean {
   return true
 }
 
-// ─── Icons ────────────────────────────────────────────────────────────────────
+// ─── Style constants ──────────────────────────────────────────────────────────
 
-function PersonIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path d="M10 10a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 1114 0H3z" />
-    </svg>
-  )
-}
-function EmailIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-      <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-    </svg>
-  )
-}
-function PhoneIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-    </svg>
-  )
-}
-function CalendarIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-    </svg>
-  )
-}
-function ClockIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-    </svg>
-  )
-}
-function ChatIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
-    </svg>
-  )
-}
-function PriceTagIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-    </svg>
-  )
-}
-function ChevronDownIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-    </svg>
-  )
-}
+const FORM_CARD = 'rounded-[8px] p-[22px] min-[480px]:p-[28px] shadow-[0_4px_24px_rgba(0,0,0,0.18)]'
+const INPUT_ROW = 'flex items-center gap-[10px] bg-[#fcf9ea] border border-[#c9b898] rounded-[5px] px-[12px] py-[9px] focus-within:border-[#C25E5E] transition-colors duration-200'
+const MAX_FORM_W = 'w-full max-w-[660px] min-[992px]:max-w-[790px]'
 
-// ─── Shared style constants ───────────────────────────────────────────────────
-
-const FORM_CARD = 'rounded-xl p-[22px] min-[480px]:p-[28px] shadow-[0_4px_24px_rgba(0,0,0,0.18)]'
-const INPUT_ROW = 'flex items-center gap-[10px] bg-white border border-[#c9b898] rounded-[6px] px-[12px] py-[9px] focus-within:border-yugo-red transition-colors duration-200'
+// Guaranteed Art Grotesk Bold styling for section labels, applied inline to bypass CSS cache issues
+const SECTION_LABEL_STYLE: React.CSSProperties = {
+  fontFamily: 'var(--font-grotesk)',
+  fontWeight: 700,
+  fontSize: '0.72rem',
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: '#C1A98D',
+  marginBottom: '15px',
+  display: 'block',
+}
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -233,29 +203,6 @@ function BookingCloseButton({ onClick }: { onClick: () => void }) {
   )
 }
 
-function BookingDivider() {
-  return (
-    <div className="flex items-center w-full max-w-[660px] mb-5">
-      <div className="flex-1 flex flex-col gap-[3px]">
-        <span className="h-[3px] w-full rounded-[1px]" style={{ background: 'var(--color-yugo-blue)' }} />
-        <span className="h-[3px] w-full rounded-[1px]" style={{ background: 'rgba(252,249,235,0.8)' }} />
-        <span className="h-[3px] w-full rounded-[1px]" style={{ background: 'var(--color-yugo-red)' }} />
-      </div>
-      <div className="flex-shrink-0 w-[44px] h-[44px] mx-[14px]" aria-hidden="true">
-        <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="22" cy="22" r="20.5" stroke="#FCF9EB" strokeWidth="2" />
-          <text x="22" y="27" textAnchor="middle" fill="#FCF9EB" fontSize="18" fontWeight="bold" fontFamily="serif">Y</text>
-        </svg>
-      </div>
-      <div className="flex-1 flex flex-col gap-[3px]">
-        <span className="h-[3px] w-full rounded-[1px]" style={{ background: 'var(--color-yugo-red)' }} />
-        <span className="h-[3px] w-full rounded-[1px]" style={{ background: 'rgba(252,249,235,0.8)' }} />
-        <span className="h-[3px] w-full rounded-[1px]" style={{ background: 'var(--color-yugo-blue)' }} />
-      </div>
-    </div>
-  )
-}
-
 function ConfirmDialog({
   message,
   onConfirm,
@@ -267,16 +214,14 @@ function ConfirmDialog({
 }) {
   return (
     <div className="absolute inset-0 z-[10020] flex items-center justify-center bg-black/70">
-      <div
-        className="bg-yugo-cream rounded-xl p-8 w-full max-w-sm mx-4 text-center shadow-2xl"
-        role="alertdialog"
-      >
+      <div className="bg-yugo-cream rounded-[8px] p-8 w-full max-w-sm mx-4 text-center shadow-2xl" role="alertdialog">
         <p className="font-fakt text-yugo-black text-base mb-6 leading-relaxed">{message}</p>
         <div className="flex gap-3 justify-center">
           <button
             type="button"
             onClick={onConfirm}
-            className="font-grotesk text-[0.95rem] font-medium px-[22px] py-[9px] rounded-[5px] bg-yugo-red text-yugo-cream border-none cursor-pointer hover:brightness-110 transition-[filter] duration-200"
+            className="font-grotesk text-[0.95rem] font-medium px-[22px] py-[9px] rounded-[5px] border-none cursor-pointer hover:brightness-110 transition-[filter] duration-200"
+            style={{ background: '#C25E5E', color: '#FCF9EB' }}
           >
             OK
           </button>
@@ -293,14 +238,117 @@ function ConfirmDialog({
   )
 }
 
+// Calendar-only date field — no manual typing, clicking anywhere opens the picker
+function DateInputField({
+  imgSrc,
+  value,
+  onChange,
+}: {
+  imgSrc: string | null
+  value: string
+  onChange: (v: string) => void
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  function openPicker() {
+    const el = inputRef.current
+    if (!el) return
+    try {
+      // showPicker() is supported in Chrome 99+, Firefox 101+, Safari 16+
+      ;(el as HTMLInputElement & { showPicker?: () => void }).showPicker?.()
+    } catch {
+      el.focus()
+    }
+  }
+
+  return (
+    <div
+      className={`${INPUT_ROW} cursor-pointer`}
+      onClick={openPicker}
+    >
+      {imgSrc && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={imgSrc} width="18" height="18" alt="" aria-hidden="true" className="flex-shrink-0" />
+      )}
+      <span
+        className={`flex-1 font-fakt text-[0.93rem] pointer-events-none select-none ${value ? 'text-[#212121]' : 'text-[#b09070]'}`}
+      >
+        {value ? formatDate(value) : 'Date of Tour'}
+      </span>
+      {/* Hidden date input — completely invisible, used only for showPicker() */}
+      <input
+        ref={inputRef}
+        type="date"
+        aria-label="Date of Tour"
+        tabIndex={-1}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => e.preventDefault()}
+        style={{
+          position: 'absolute',
+          opacity: 0,
+          width: '1px',
+          height: '1px',
+          pointerEvents: 'none',
+          overflow: 'hidden',
+        }}
+      />
+    </div>
+  )
+}
+
+// Time select dropdown — chevron absolutely positioned so full row is clickable
+function TimeSelectField({
+  imgSrc,
+  placeholder,
+  value,
+  onChange,
+  options,
+}: {
+  imgSrc: string | null
+  placeholder: string
+  value: string
+  onChange: (v: string) => void
+  options: Array<{ value: string; label: string }>
+}) {
+  return (
+    <div className={INPUT_ROW}>
+      {imgSrc && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={imgSrc} width="18" height="18" alt="" aria-hidden="true" className="flex-shrink-0" />
+      )}
+      {/* Wrapper with relative positioning so chevron overlays the select */}
+      <div className="relative flex-1 min-w-0">
+        <select
+          className="w-full appearance-none border-none bg-transparent font-fakt text-[0.93rem] text-[#212121] outline-none cursor-pointer pr-[20px]"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option value="">{placeholder}</option>
+          {options.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+        {/* Chevron — pointer-events:none so clicks fall through to the select */}
+        <span className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none flex items-center text-[#a08060]">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        </span>
+      </div>
+    </div>
+  )
+}
+
+// Generic text/email/tel input with R2 icon image
 function InputField({
-  icon,
+  imgSrc,
   placeholder,
   type = 'text',
   value,
   onChange,
 }: {
-  icon: 'person' | 'email' | 'phone' | 'calendar' | 'clock'
+  imgSrc: string | null
   placeholder: string
   type?: string
   value: string
@@ -308,13 +356,10 @@ function InputField({
 }) {
   return (
     <div className={INPUT_ROW}>
-      <span className="flex-shrink-0 text-[#b09070] flex items-center">
-        {icon === 'person' && <PersonIcon />}
-        {icon === 'email' && <EmailIcon />}
-        {icon === 'phone' && <PhoneIcon />}
-        {icon === 'calendar' && <CalendarIcon />}
-        {icon === 'clock' && <ClockIcon />}
-      </span>
+      {imgSrc && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={imgSrc} width="18" height="18" alt="" aria-hidden="true" className="flex-shrink-0" />
+      )}
       <input
         type={type}
         className="flex-1 border-none bg-transparent font-fakt text-[0.93rem] text-[#212121] outline-none min-w-0 placeholder:text-[#b09070] [color-scheme:light]"
@@ -329,31 +374,35 @@ function InputField({
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function BookingModal() {
-  const { isOpen, close, tours, initialOpts, textureUrl } = useBookingModal()
+  const { isOpen, close, tours, initialOpts, textureUrl, images, timeSettings } = useBookingModal()
   const [formState, dispatch] = useReducer(formReducer, defaultForm)
   const [pendingCity, setPendingCity] = useState<'belgrade' | 'sarajevo' | null>(null)
   const [pendingTourId, setPendingTourId] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
 
-  // Reset and pre-populate when modal opens
+  const tourTimeOpts = useMemo(
+    () => generateTimeOpts(parseHour(timeSettings.tourTimeStart, 9), parseHour(timeSettings.tourTimeEnd, 17)),
+    [timeSettings.tourTimeStart, timeSettings.tourTimeEnd],
+  )
+  const airportTimeOpts = useMemo(
+    () => generateTimeOpts(parseHour(timeSettings.airportTimeStart, 8), parseHour(timeSettings.airportTimeEnd, 20)),
+    [timeSettings.airportTimeStart, timeSettings.airportTimeEnd],
+  )
+
   useEffect(() => {
     if (!isOpen) return
     const init: Partial<FormState> = {}
     if (initialOpts.city) init.city = initialOpts.city
     if (initialOpts.payloadId) {
       const tour = tours.find((t) => String(t.id) === initialOpts.payloadId)
-      if (tour) {
-        init.city = tour.city
-        init.selectedTourDocId = initialOpts.payloadId
-      }
+      if (tour) { init.city = tour.city; init.selectedTourDocId = initialOpts.payloadId }
     }
     dispatch({ type: 'RESET', init })
     setSubmitError(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
-  // Scroll lock
   useEffect(() => {
     document.documentElement.classList.toggle('modal-active', isOpen)
     document.body.classList.toggle('modal-active', isOpen)
@@ -363,7 +412,6 @@ export function BookingModal() {
     }
   }, [isOpen])
 
-  // Escape key
   useEffect(() => {
     if (!isOpen) return
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') close() }
@@ -371,7 +419,7 @@ export function BookingModal() {
     return () => window.removeEventListener('keydown', handler)
   }, [isOpen, close])
 
-  // Derived values
+  // Derived
   const cityTours = tours.filter((t) => t.city === formState.city)
   const selectedTour = cityTours.find((t) => String(t.id) === formState.selectedTourDocId) ?? null
   const includesList = selectedTour?.includes?.split('\n').map((s) => s.trim()).filter(Boolean) ?? []
@@ -384,14 +432,14 @@ export function BookingModal() {
 
   function handleCityClick(city: 'belgrade' | 'sarajevo') {
     if (city === formState.city) return
-    if (formState.selectedTourDocId) { setPendingCity(city) }
-    else { dispatch({ type: 'SET_CITY', city }) }
+    if (formState.selectedTourDocId) setPendingCity(city)
+    else dispatch({ type: 'SET_CITY', city })
   }
 
   function handleTourChange(docId: string) {
     if (!docId) { dispatch({ type: 'SET_TOUR', tourDocId: null }); return }
-    if (formState.selectedTourDocId && docId !== formState.selectedTourDocId) { setPendingTourId(docId) }
-    else { dispatch({ type: 'SET_TOUR', tourDocId: docId }) }
+    if (formState.selectedTourDocId && docId !== formState.selectedTourDocId) setPendingTourId(docId)
+    else dispatch({ type: 'SET_TOUR', tourDocId: docId })
   }
 
   const handleSubmit = useCallback(async () => {
@@ -426,13 +474,20 @@ export function BookingModal() {
     }
   }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, close])
 
-  // Select style shared
+  // Shared select styles for tour + guests dropdowns
   const selectCls = [
-    'w-full appearance-none pl-[14px] pr-[36px] py-[10px]',
+    'w-full appearance-none pl-[14px] pr-[36px] pt-[12px] pb-[8px]',
     'font-fakt text-[0.97rem] text-[#212121]',
-    'bg-[#FCF9EB] border border-[#c9b898] rounded-[6px] cursor-pointer outline-none',
-    'transition-[border-color] duration-200 focus:border-yugo-red disabled:opacity-45 disabled:cursor-default',
+    'bg-[#fcf9ea] border border-[#c9b898] rounded-[5px] cursor-pointer outline-none',
+    'transition-[border-color] duration-200 focus:border-[#C25E5E] disabled:opacity-45 disabled:cursor-default',
   ].join(' ')
+
+  const cityImg: Record<string, string | null> = {
+    belgrade: images.cityBelgrade,
+    sarajevo: images.citySarajevo,
+  }
+
+  const hasHeaderImage = images.headerImage || images.headerImageMobile
 
   return (
     <div
@@ -461,66 +516,96 @@ export function BookingModal() {
         <BookingCloseButton onClick={close} />
       </div>
 
-      {/* Scrollable content */}
+      {/* Scrollable area */}
       <div className="h-full overflow-y-auto">
-        <div className="flex flex-col items-center px-4 pt-[10vh] pb-16 max-[767px]:pt-[13vh]">
 
-          <BookingDivider />
+        {/* Spacer clears the close button — desktop minimal, mobile generous */}
+        <div className="w-full min-[992px]:hidden" style={{ height: '10vh' }} aria-hidden="true" />
+        <div className="w-full hidden min-[992px]:block" style={{ height: 'max(3.4vh, 44px)' }} aria-hidden="true" />
+
+        {/* All content centered at form width */}
+        <div className="flex flex-col items-center px-4 pt-4 pb-16">
+
+          {/* Header image — constrained to form width, responsive desktop/mobile */}
+          {hasHeaderImage && (
+            <div className={`${MAX_FORM_W} mb-5 overflow-hidden rounded-[8px]`}>
+              <picture>
+                {images.headerImageMobile && (
+                  <source media="(max-width: 767px)" srcSet={images.headerImageMobile} />
+                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={images.headerImage ?? images.headerImageMobile ?? ''}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full block"
+                  style={{ display: 'block' }}
+                />
+              </picture>
+            </div>
+          )}
 
           {/* Heading */}
-          <div className="text-center mb-5 w-full max-w-[660px]">
+          <div className={`text-center mb-5 ${MAX_FORM_W}`}>
             <h2
-              className="text-yugo-cream text-center m-0 mb-[0.4rem]"
+              className="text-yugo-cream text-center m-0 mb-[0.4rem] flex items-center justify-center gap-3"
               style={{ fontFamily: 'var(--font-zipper)', fontSize: 'clamp(3rem, 8vw, 5.5rem)', lineHeight: 1, letterSpacing: '0.02em' }}
             >
-              <span style={{ color: 'var(--color-yugo-red)' }}>★</span>
-              {' '}Ready to Roll?{' '}
-              <span style={{ color: 'var(--color-yugo-red)' }}>★</span>
+              {images.redStar
+                ? <img src={images.redStar} width="40" height="40" alt="" aria-hidden="true" className="inline-block" />
+                : <span style={{ color: 'var(--color-yugo-red)' }}>★</span>
+              }
+              Ready to Roll?
+              {images.redStar
+                ? <img src={images.redStar} width="40" height="40" alt="" aria-hidden="true" className="inline-block" />
+                : <span style={{ color: 'var(--color-yugo-red)' }}>★</span>
+              }
             </h2>
             <p className="font-fakt text-yugo-cream text-[1.1rem] m-0 opacity-90">
               Build your unforgettable Yugotour!
             </p>
           </div>
 
-          {/* City cards */}
-          <div className="grid grid-cols-2 gap-3 w-full max-w-[660px] mb-4">
-            {(['belgrade', 'sarajevo'] as const).map((city) => (
-              <button
-                key={city}
-                type="button"
-                onClick={() => handleCityClick(city)}
-                aria-pressed={formState.city === city}
-                className={[
-                  'relative overflow-hidden rounded-[10px] cursor-pointer p-0',
-                  'flex items-end transition-[border-color,filter] duration-[250ms]',
-                  formState.city === city
-                    ? 'border-[2.5px] border-yugo-cream'
-                    : 'border-[2.5px] border-transparent brightness-75 hover:brightness-90',
-                ].join(' ')}
-                style={{ aspectRatio: '3/2', minHeight: '100px' }}
-              >
-                {/* Placeholder bg */}
-                <div className="absolute inset-0 bg-[#3a5a7c]" />
-                {/* Label */}
-                <span
-                  className="relative z-[1] w-full text-yugo-cream px-[14px] pb-[12px] pt-[30px]"
+          {/* City cards — full opacity, hover like tour tiles, 4px border when selected */}
+          <div className={`grid grid-cols-2 gap-3 ${MAX_FORM_W} mb-4`}>
+            {(['belgrade', 'sarajevo'] as const).map((city) => {
+              const img = cityImg[city]
+              const isSelected = formState.city === city
+              return (
+                <button
+                  key={city}
+                  type="button"
+                  onClick={() => handleCityClick(city)}
+                  aria-pressed={isSelected}
+                  className="booking-city-card relative overflow-hidden cursor-pointer p-0 block"
                   style={{
-                    fontFamily: 'var(--font-zipper)',
-                    fontSize: 'clamp(2rem, 5vw, 3.2rem)',
-                    lineHeight: 1,
-                    letterSpacing: '0.04em',
-                    textShadow: '0 2px 8px rgba(0,0,0,0.6)',
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)',
+                    borderRadius: '5px',
+                    border: isSelected ? '4px solid #FCF9EB' : '4px solid transparent',
+                    filter: isSelected ? 'brightness(1.2)' : undefined,
                   }}
                 >
-                  {city.toUpperCase()}
-                </span>
-              </button>
-            ))}
+                  {img
+                    ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={img}
+                        alt={city}
+                        className="w-full block"
+                        style={{ display: 'block', width: '100%', height: 'auto' }}
+                      />
+                    )
+                    : (
+                      // Fallback when no image yet
+                      <div style={{ aspectRatio: '3/2', minHeight: '80px', background: '#3a5a7c' }} />
+                    )
+                  }
+                </button>
+              )
+            })}
           </div>
 
-          {/* Selection card */}
-          <div className={`${FORM_CARD} bg-[#FCF9EB] w-full max-w-[660px] mb-4`}>
+          {/* ── Selection card ───────────────────────────────────── */}
+          <div className={`${FORM_CARD} bg-[#fcf9ea] ${MAX_FORM_W} mb-4`}>
 
             {/* Tour + Guests dropdowns */}
             <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[12px] mb-1">
@@ -533,13 +618,13 @@ export function BookingModal() {
                 >
                   <option value="">Select Your Yugotour</option>
                   {cityTours.map((tour) => (
-                    <option key={String(tour.id)} value={String(tour.id)}>
-                      {tour.title}
-                    </option>
+                    <option key={String(tour.id)} value={String(tour.id)}>{tour.title}</option>
                   ))}
                 </select>
                 <span className="absolute right-[10px] top-1/2 -translate-y-1/2 pointer-events-none text-[#a08060]">
-                  <ChevronDownIcon />
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
                 </span>
               </div>
               <div className="relative">
@@ -552,19 +637,19 @@ export function BookingModal() {
                   }}
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-                    <option key={n} value={String(n)}>
-                      {n === 1 ? '1 (solo)' : `${n} guests`}
-                    </option>
+                    <option key={n} value={String(n)}>{n === 1 ? '1 (solo)' : `${n} guests`}</option>
                   ))}
                   <option value="10+">10 or more</option>
                 </select>
                 <span className="absolute right-[10px] top-1/2 -translate-y-1/2 pointer-events-none text-[#a08060]">
-                  <ChevronDownIcon />
+                  <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
                 </span>
               </div>
             </div>
 
-            {/* Group message */}
+            {/* 10+ group message */}
             {selectedTour && formState.guests === '10+' && (
               <div className="pt-[16px] pb-[6px]">
                 <h3 className="font-fakt font-bold text-[1rem] text-[#212121] m-0 mb-[6px]">Group Tours</h3>
@@ -575,34 +660,51 @@ export function BookingModal() {
               </div>
             )}
 
-            {/* Includes + Extras */}
+            {/* Duration + Includes + Extras (hidden for 10+) */}
             {selectedTour && formState.guests !== '10+' && (
               <div className="grid grid-cols-1 min-[560px]:grid-cols-2 gap-[20px] mt-[18px]">
 
-                {/* Includes */}
-                {includesList.length > 0 && (
-                  <div>
-                    <h4 className="booking-section-label">This Tour Includes</h4>
-                    <ul className="list-none p-0 m-0 flex flex-col gap-[7px]">
-                      {includesList.map((item, i) => (
-                        <li key={i} className="flex items-start gap-[8px] font-fakt text-[0.93rem] text-[#212121] leading-[1.35]">
-                          <span className="flex-shrink-0 mt-[1px]">
-                            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                              <circle cx="10" cy="10" r="9" fill="#C6363C" />
-                              <path d="M6 10.5L8.5 13L14 7.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                {/* Left: Duration then Includes */}
+                <div>
+                  {selectedTour.duration && (
+                    <div className="mb-[18px]">
+                      <span style={SECTION_LABEL_STYLE}>Duration</span>
+                      <p className="font-fakt text-[0.93rem] text-[#212121] leading-[1.35] m-0">
+                        {selectedTour.duration}
+                      </p>
+                    </div>
+                  )}
 
-                {/* Extras */}
+                  {includesList.length > 0 && (
+                    <div>
+                      <span style={SECTION_LABEL_STYLE}>This Tour Includes</span>
+                      <ul className="list-none p-0 m-0 flex flex-col gap-[7px]">
+                        {includesList.map((item, i) => (
+                          <li key={i} className="flex items-start gap-[8px] font-fakt text-[0.93rem] text-[#212121] leading-[1.35]">
+                            <span className="flex-shrink-0 mt-[1px]">
+                              {images.checkmarkCircle
+                                // eslint-disable-next-line @next/next/no-img-element
+                                ? <img src={images.checkmarkCircle} width="18" height="18" alt="" aria-hidden="true" />
+                                : (
+                                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                    <circle cx="10" cy="10" r="9" fill="#C25E5E" />
+                                    <path d="M6 10.5L8.5 13L14 7.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                  </svg>
+                                )
+                              }
+                            </span>
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right: Extras */}
                 {selectedTour.extras.length > 0 && (
                   <div>
-                    <h4 className="booking-section-label">Optional Extras</h4>
+                    <span style={SECTION_LABEL_STYLE}>Optional Extras</span>
                     <ul className="list-none p-0 m-0 flex flex-col gap-[8px]">
                       {selectedTour.extras.map((extra, i) => {
                         const checked = formState.selectedExtras.includes(extra.title)
@@ -612,6 +714,7 @@ export function BookingModal() {
                         return (
                           <li key={extra.id ?? i} className="flex flex-col">
                             <label className="flex items-start gap-[9px] cursor-pointer font-fakt text-[0.93rem] text-[#212121] leading-[1.35]">
+                              {/* Checkbox with centered checkmark */}
                               <span className="relative flex-shrink-0 w-[18px] h-[18px] mt-[1px]">
                                 <input
                                   type="checkbox"
@@ -620,15 +723,15 @@ export function BookingModal() {
                                   onChange={() => dispatch({ type: 'TOGGLE_EXTRA', title: extra.title })}
                                 />
                                 <span
-                                  className="block w-[18px] h-[18px] border-[2px] rounded-[3px] transition-[background,border-color] duration-150 pointer-events-none"
+                                  className="flex items-center justify-center w-[18px] h-[18px] border-[2px] rounded-[3px] transition-[background,border-color] duration-150 pointer-events-none"
                                   style={{
-                                    background: checked ? 'var(--color-yugo-red)' : 'white',
-                                    borderColor: checked ? 'var(--color-yugo-red)' : '#b09070',
+                                    background: checked ? '#C25E5E' : 'white',
+                                    borderColor: '#C25E5E',
                                   }}
                                 >
                                   {checked && (
-                                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" className="absolute top-[3px] left-[1px]">
-                                      <path d="M1 4L4.5 7.5L11 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+                                      <path d="M1 4L3.5 6.5L9 1" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                   )}
                                 </span>
@@ -639,7 +742,7 @@ export function BookingModal() {
                               </span>
                             </label>
 
-                            {/* Airport expanded */}
+                            {/* Airport expansion */}
                             {isAirport && checked && (
                               <div className="ml-[27px] mt-[6px] flex flex-col gap-[6px]">
                                 <p className="font-fakt text-[0.82rem] text-[#887060] m-0">
@@ -660,10 +763,10 @@ export function BookingModal() {
                                         />
                                         <span
                                           className="flex items-center justify-center w-[16px] h-[16px] rounded-full border-[2px] bg-white pointer-events-none"
-                                          style={{ borderColor: formState.airportDirection === dir ? 'var(--color-yugo-red)' : '#b09070' }}
+                                          style={{ borderColor: formState.airportDirection === dir ? '#C25E5E' : '#b09070' }}
                                         >
                                           {formState.airportDirection === dir && (
-                                            <span className="w-[8px] h-[8px] rounded-full bg-yugo-red block" />
+                                            <span className="w-[8px] h-[8px] rounded-full block" style={{ background: '#C25E5E' }} />
                                           )}
                                         </span>
                                       </span>
@@ -671,19 +774,13 @@ export function BookingModal() {
                                     </label>
                                   ))}
                                 </div>
-                                <div className="flex items-center gap-[8px] bg-white border border-[#c9b898] rounded-[6px] px-[10px] py-[7px] max-w-[260px]">
-                                  <span className="text-[#a08060] flex items-center"><ClockIcon /></span>
-                                  <input
-                                    type="time"
-                                    className="border-none bg-transparent font-fakt text-[0.9rem] text-[#212121] outline-none w-[90px] [color-scheme:light]"
-                                    value={formState.flightTime}
-                                    onChange={(e) => dispatch({ type: 'SET_FLIGHT_TIME', time: e.target.value })}
-                                    aria-label={formState.airportDirection === 'pickup' ? 'Flight landing time' : 'Flight departure time'}
-                                  />
-                                  <span className="font-fakt text-[0.82rem] text-[#887060] whitespace-nowrap">
-                                    {formState.airportDirection === 'pickup' ? 'Flight landing time' : 'Flight departure time'}
-                                  </span>
-                                </div>
+                                <TimeSelectField
+                                  imgSrc={images.iconTime}
+                                  placeholder={formState.airportDirection === 'pickup' ? 'Flight landing time' : 'Flight departure time'}
+                                  value={formState.flightTime}
+                                  onChange={(t) => dispatch({ type: 'SET_FLIGHT_TIME', time: t })}
+                                  options={airportTimeOpts}
+                                />
                               </div>
                             )}
                           </li>
@@ -695,47 +792,76 @@ export function BookingModal() {
               </div>
             )}
 
-            {/* Total price */}
-            <div className="flex items-baseline gap-[8px] mt-[18px] pt-[14px] border-t border-dashed border-[#c9b898]">
-              <span className="text-yugo-red flex items-center relative top-[1px]"><PriceTagIcon /></span>
-              <span
-                className="text-yugo-red"
-                style={{ fontFamily: 'var(--font-grotesk)', fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' }}
-              >
+            {/* Total price — centered, section label style, Fakt Bold amount */}
+            <div className="flex items-center justify-center gap-[8px] mt-[18px] pt-[14px] border-t border-dashed border-[#c9b898]">
+              {images.priceTag
+                // eslint-disable-next-line @next/next/no-img-element
+                ? <img src={images.priceTag} width="16" height="16" alt="" aria-hidden="true" className="flex-shrink-0" />
+                : (
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="#C1A98D" aria-hidden="true" className="flex-shrink-0">
+                    <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
+                  </svg>
+                )
+              }
+              <span style={{ ...SECTION_LABEL_STYLE, marginBottom: 0, marginTop: 0 }}>
                 Total Estimated Price:
               </span>
               {totalPrice !== null && (
-                <span
-                  className="text-yugo-red ml-[4px]"
-                  style={{ fontFamily: 'var(--font-zipper)', fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1 }}
-                >
-                  € {totalPrice}
+                <span style={{ fontFamily: 'var(--font-fakt)', fontWeight: 700, fontSize: 'clamp(1.5rem, 4vw, 2.2rem)', lineHeight: 1, color: '#C25E5E' }}>
+                  €{totalPrice}
                 </span>
               )}
             </div>
           </div>
 
-          {/* Contact card */}
+          {/* ── Contact card ─────────────────────────────────────── */}
           {selectedTour && (
-            <div className={`${FORM_CARD} bg-[#FCF9EB] w-full max-w-[660px]`}>
+            <div className={`${FORM_CARD} bg-[#fcf9ea] ${MAX_FORM_W}`}>
 
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[10px] mb-[10px]">
-                <InputField icon="person" placeholder="Your Name" value={formState.name}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'name', value: v })} />
-                <InputField icon="email" type="email" placeholder="Email" value={formState.email}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })} />
+                <InputField
+                  imgSrc={images.iconName}
+                  placeholder="Your Name"
+                  value={formState.name}
+                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'name', value: v })}
+                />
+                <InputField
+                  imgSrc={images.iconEmail}
+                  type="email"
+                  placeholder="Email"
+                  value={formState.email}
+                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })}
+                />
               </div>
+
               <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-[10px] mb-[10px]">
-                <InputField icon="phone" type="tel" placeholder="Phone (recommended)" value={formState.phone}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'phone', value: v })} />
-                <InputField icon="calendar" type="date" placeholder="Date of Tour" value={formState.date}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'date', value: v })} />
-                <InputField icon="clock" type="time" placeholder="Preferred Start Time" value={formState.startTime}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'startTime', value: v })} />
+                <InputField
+                  imgSrc={images.iconPhone}
+                  type="tel"
+                  placeholder="Phone (recommended)"
+                  value={formState.phone}
+                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'phone', value: v })}
+                />
+                <DateInputField
+                  imgSrc={images.iconDate}
+                  value={formState.date}
+                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'date', value: v })}
+                />
+                <TimeSelectField
+                  imgSrc={images.iconTime}
+                  placeholder="Preferred Start Time"
+                  value={formState.startTime}
+                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'startTime', value: v })}
+                  options={tourTimeOpts}
+                />
               </div>
+
               <div className="mb-[10px]">
                 <div className={`${INPUT_ROW} items-start`}>
-                  <span className="flex-shrink-0 text-[#b09070] flex items-center mt-[2px]"><ChatIcon /></span>
+                  {images.iconComment && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={images.iconComment} width="18" height="18" alt="" aria-hidden="true" className="flex-shrink-0 mt-[2px]" />
+                  )}
                   <textarea
                     className="flex-1 border-none bg-transparent font-fakt text-[0.93rem] text-[#212121] outline-none resize-y min-h-[90px] leading-[1.5] placeholder:text-[#b09070]"
                     placeholder="Comments / Requests (Anything we should know? Just want to say hello?)"
@@ -747,7 +873,7 @@ export function BookingModal() {
               </div>
 
               {submitError && (
-                <p className="text-yugo-red font-fakt text-sm text-center mt-2">{submitError}</p>
+                <p style={{ color: '#C25E5E' }} className="font-fakt text-sm text-center mt-2">{submitError}</p>
               )}
 
               <button
@@ -755,17 +881,32 @@ export function BookingModal() {
                 disabled={!valid || isSubmitting}
                 onClick={handleSubmit}
                 className={[
+                  'booking-submit-btn',
                   'flex items-center justify-center gap-[12px] w-full mt-[16px]',
-                  'px-[20px] py-[14px] rounded-[6px] border-none cursor-pointer',
-                  'bg-yugo-red text-yugo-cream',
-                  'transition-[filter,transform] duration-200',
-                  valid && !isSubmitting ? 'hover:brightness-110 hover:scale-[1.01]' : 'opacity-40 cursor-not-allowed',
+                  'px-[20px] py-[14px] rounded-[6px] border-none',
+                  valid && !isSubmitting ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed',
                 ].join(' ')}
-                style={{ fontFamily: 'var(--font-grotesk)', fontSize: '1rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase' }}
+                style={{
+                  background: '#C25E5E',
+                  color: '#FCF9EB',
+                  fontFamily: 'var(--font-grotesk)',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                }}
               >
-                <span aria-hidden="true">★</span>
+                {images.littleWhiteStar
+                  // eslint-disable-next-line @next/next/no-img-element
+                  ? <img src={images.littleWhiteStar} width="16" height="16" alt="" aria-hidden="true" />
+                  : <span aria-hidden="true">★</span>
+                }
                 <span>{isSubmitting ? 'Submitting…' : 'Book My Yugotour!'}</span>
-                <span aria-hidden="true">★</span>
+                {images.littleWhiteStar
+                  // eslint-disable-next-line @next/next/no-img-element
+                  ? <img src={images.littleWhiteStar} width="16" height="16" alt="" aria-hidden="true" />
+                  : <span aria-hidden="true">★</span>
+                }
               </button>
             </div>
           )}
@@ -773,7 +914,7 @@ export function BookingModal() {
         </div>
       </div>
 
-      {/* Confirmations */}
+      {/* Confirmation dialogs */}
       {pendingCity && (
         <ConfirmDialog
           message="Are you sure you want to change city? Your current tour selection will be cleared."

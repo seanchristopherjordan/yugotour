@@ -38,6 +38,10 @@
 @source inline("bg-warning/30");
 @source inline("min-[992px]:hidden");
 @source inline("min-[992px]:block");
+@source inline("min-[992px]:max-w-[790px]");
+@source inline("min-[480px]:grid-cols-2");
+@source inline("min-[560px]:grid-cols-2");
+@source inline("min-[600px]:grid-cols-3");
 
 @theme {
   --breakpoint-sm: 40rem;
@@ -302,12 +306,12 @@ html[data-theme='light'] {
 
 /* â”€â”€ City Picker â”€â”€ */
 @keyframes yugo-pulse-start-big {
-  0%, 100% { transform: scale(1.06); }
+  0%, 100% { transform: scale(1.08); }
   50%       { transform: scale(1);    }
 }
 @keyframes yugo-pulse-start-small {
   0%, 100% { transform: scale(1);    }
-  50%       { transform: scale(1.06); }
+  50%       { transform: scale(1.08); }
 }
 
 /* Mobile-only full-bleed helper (flag ribbon + map) */
@@ -324,9 +328,9 @@ html[data-theme='light'] {
   display: block;
   z-index: 10;
   width: 28%;
-  top: -2%;
-  right: 7%;
-  animation: yugo-pulse-start-big 1500ms ease-in-out infinite;
+  top: -4%;
+  right: 6%;
+  animation: yugo-pulse-start-big 1200ms ease-in-out infinite;
   transition: filter 0.2s ease-in-out;
   will-change: transform;
 }
@@ -337,7 +341,7 @@ html[data-theme='light'] {
   width: 28%;
   bottom: 8.5%;
   left: 17%;
-  animation: yugo-pulse-start-small 1500ms ease-in-out infinite;
+  animation: yugo-pulse-start-small 1200ms ease-in-out infinite;
   transition: filter 0.2s ease-in-out;
   will-change: transform;
 }
@@ -345,8 +349,8 @@ html[data-theme='light'] {
 .city-sign-sarajevo:hover { filter: brightness(1.15); }
 
 @media (max-width: 991px) {
-  .city-sign-belgrade { width: 42%; top: -10%;  right: 2%;  }
-  .city-sign-sarajevo { width: 42%; bottom: 2%; left: 13%; }
+  .city-sign-belgrade { width: 43%; top: -17%;  right: 2%;  }
+  .city-sign-sarajevo { width: 43%; bottom: -6%; left: 13%; }
 }
 
 .city-sign-belgrade img,
@@ -1887,45 +1891,22 @@ html[data-theme='light'] {
 }
 
 /* City cards */
+/* City card — hover mirrors tour-tile spring animation */
 .booking-city-card {
   position: relative;
-  border-radius: 10px;
   overflow: hidden;
   cursor: pointer;
-  border: 2.5px solid transparent;
-  aspect-ratio: 3 / 2;
-  background: transparent;
   padding: 0;
-  transition: border-color 0.25s ease, filter 0.25s ease;
-  display: flex;
-  align-items: flex-end;
+  background: transparent;
+  display: block;
+  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 360ms ease;
 }
-.booking-city-card--selected {
-  border-color: var(--color-yugo-cream);
-}
-.booking-city-card:not(.booking-city-card--selected) {
-  filter: brightness(0.85);
-}
-.booking-city-card:not(.booking-city-card--selected):hover {
-  filter: brightness(0.95);
-}
-.booking-city-card-img {
-  position: absolute;
-  inset: 0;
-  background: #3a5a7c;
-}
-.booking-city-card-label {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-zipper);
-  color: var(--color-yugo-cream);
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1;
-  padding: 12px 14px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-  letter-spacing: 0.04em;
-  width: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+@media (min-width: 992px) {
+  .booking-city-card:hover {
+    transform: scale(1.03) translateY(-2.5px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
+  }
 }
 
 /* Form cards */
@@ -1995,15 +1976,15 @@ html[data-theme='light'] {
   height: 100%;
 }
 
-/* Section labels */
+/* Section labels — Art Grotesk Ample Bold, muted gold */
 .booking-section-label {
   font-family: var(--font-grotesk);
   font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-yugo-red);
-  margin: 0 0 10px;
+  color: #C1A98D;
+  margin: 0 0 15px;
 }
 
 /* Includes + extras grid */
@@ -2373,34 +2354,16 @@ html[data-theme='light'] {
   color: #b09070;
 }
 
-/* Submit button */
+/* Submit button — spring hover mirrors tour-tile animation */
 .booking-submit-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  width: 100%;
-  margin-top: 16px;
-  padding: 14px 20px;
-  background: var(--color-yugo-red);
-  color: var(--color-yugo-cream);
-  font-family: var(--font-grotesk);
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: filter 0.2s ease, transform 0.15s ease;
+  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 360ms ease,
+              filter 360ms ease;
 }
-.booking-submit-btn:hover:not(.booking-submit-btn--disabled) {
-  filter: brightness(1.1);
-  transform: scale(1.01);
-}
-.booking-submit-btn--disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.booking-submit-btn:not(:disabled):hover {
+  transform: scale(1.02) translateY(-2px);
+  box-shadow: 0 8px 28px rgba(194, 94, 94, 0.45);
+  filter: brightness(1.06);
 }
 
 /* Confirmation dialog buttons */

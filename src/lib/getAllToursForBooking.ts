@@ -9,6 +9,7 @@ export interface BookingTour {
   city: 'belgrade' | 'sarajevo'
   priceGroup: number | null
   priceSolo: number | null
+  duration: string | null
   includes: string | null
   extras: Array<{
     id?: string | null
@@ -36,6 +37,7 @@ export const getAllToursForBooking = unstable_cache(
         city: d.city as 'belgrade' | 'sarajevo',
         priceGroup: (d.priceGroup as number) ?? null,
         priceSolo: (d.priceSolo as number) ?? null,
+        duration: (d.duration as string) ?? null,
         includes: (d.includes as string) ?? null,
         extras: (d.extras ?? []) as BookingTour['extras'],
       }
