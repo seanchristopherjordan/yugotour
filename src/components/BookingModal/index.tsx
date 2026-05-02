@@ -171,7 +171,7 @@ const SECTION_LABEL_STYLE: React.CSSProperties = {
   letterSpacing: '0.1em',
   textTransform: 'uppercase',
   color: '#C1A98D',
-  marginBottom: '15px',
+  marginBottom: '8px',
   display: 'block',
 }
 
@@ -263,7 +263,7 @@ function DateInputField({
 
   return (
     <div
-      className={`${INPUT_ROW} cursor-pointer`}
+      className={`${INPUT_ROW} relative cursor-pointer`}
       onClick={openPicker}
     >
       {imgSrc && (
@@ -272,10 +272,11 @@ function DateInputField({
       )}
       <span
         className={`flex-1 font-fakt text-[0.93rem] pointer-events-none select-none ${value ? 'text-[#212121]' : 'text-[#b09070]'}`}
+        style={{ paddingTop: '2px' }}
       >
         {value ? formatDate(value) : 'Date of Tour'}
       </span>
-      {/* Hidden date input — completely invisible, used only for showPicker() */}
+      {/* Date input — invisible overlay so showPicker() anchors to correct position */}
       <input
         ref={inputRef}
         type="date"
@@ -284,14 +285,8 @@ function DateInputField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.preventDefault()}
-        style={{
-          position: 'absolute',
-          opacity: 0,
-          width: '1px',
-          height: '1px',
-          pointerEvents: 'none',
-          overflow: 'hidden',
-        }}
+        className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+        style={{ colorScheme: 'light' }}
       />
     </div>
   )
@@ -320,9 +315,10 @@ function TimeSelectField({
       {/* Wrapper with relative positioning so chevron overlays the select */}
       <div className="relative flex-1 min-w-0">
         <select
-          className="w-full appearance-none border-none bg-transparent font-fakt text-[0.93rem] text-[#212121] outline-none cursor-pointer pr-[20px]"
+          className={`w-full appearance-none border-none bg-transparent font-fakt text-[0.93rem] outline-none cursor-pointer pr-[20px] ${value ? 'text-[#212121]' : 'text-[#b09070]'}`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          style={{ paddingTop: '2px' }}
         >
           <option value="">{placeholder}</option>
           {options.map((o) => (
@@ -366,6 +362,7 @@ function InputField({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        style={{ paddingTop: '2px' }}
       />
     </div>
   )
@@ -496,7 +493,7 @@ export function BookingModal() {
       aria-modal="true"
       aria-hidden={!isOpen}
       className={[
-        'fixed inset-0 z-[10000]',
+        'fixed inset-0 z-[10000] flex flex-col',
         'transition-[opacity,visibility] duration-[600ms] ease-[ease]',
         isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none',
       ].join(' ')}
@@ -508,27 +505,26 @@ export function BookingModal() {
         backgroundColor: '#1a3558',
       }}
     >
-      {/* Close button */}
+      {/* Close button bar — fixed-height, non-scrolling */}
       <div
-        className="absolute top-0 right-0 z-[10010] flex items-center justify-end pr-[20px] min-[992px]:pr-[30px]"
-        style={{ height: '3.4vh', minHeight: '45px' }}
+        className="flex-none flex items-center justify-end pr-[20px] min-[992px]:pr-[30px] z-[10010]"
+        style={{ height: 'max(3.4vh, 45px)' }}
       >
         <BookingCloseButton onClick={close} />
       </div>
 
-      {/* Scrollable area */}
-      <div className="h-full overflow-y-auto">
+      {/* 8px gap below close bar before scrollable content starts */}
+      <div className="flex-none" style={{ height: '8px' }} aria-hidden="true" />
 
-        {/* Spacer clears the close button — desktop minimal, mobile generous */}
-        <div className="w-full min-[992px]:hidden" style={{ height: '10vh' }} aria-hidden="true" />
-        <div className="w-full hidden min-[992px]:block" style={{ height: 'max(3.4vh, 44px)' }} aria-hidden="true" />
+      {/* Scrollable area — starts strictly below the close button */}
+      <div className="flex-1 min-h-0 overflow-y-auto booking-modal-body">
 
         {/* All content centered at form width */}
-        <div className="flex flex-col items-center px-4 pt-4 pb-16">
+        <div className="flex flex-col items-center px-4 pt-2 pb-16">
 
           {/* Header image — constrained to form width, responsive desktop/mobile */}
           {hasHeaderImage && (
-            <div className={`${MAX_FORM_W} mb-5 overflow-hidden rounded-[8px]`}>
+            <div className={`${MAX_FORM_W} mb-[10px] overflow-hidden rounded-[8px]`}>
               <picture>
                 {images.headerImageMobile && (
                   <source media="(max-width: 767px)" srcSet={images.headerImageMobile} />
@@ -546,10 +542,10 @@ export function BookingModal() {
           )}
 
           {/* Heading */}
-          <div className={`text-center mb-5 ${MAX_FORM_W}`}>
+          <div className={`text-center mb-4 ${MAX_FORM_W}`}>
             <h2
               className="text-yugo-cream text-center m-0 mb-[0.4rem] flex items-center justify-center gap-3"
-              style={{ fontFamily: 'var(--font-zipper)', fontSize: 'clamp(3rem, 8vw, 5.5rem)', lineHeight: 1, letterSpacing: '0.02em' }}
+              style={{ fontFamily: 'var(--font-zipper)', fontSize: 'clamp(3.15rem, 8.4vw, 5.775rem)', lineHeight: 1, letterSpacing: '-0.02em' }}
             >
               {images.redStar
                 ? <img src={images.redStar} width="40" height="40" alt="" aria-hidden="true" className="inline-block" />
@@ -566,40 +562,83 @@ export function BookingModal() {
             </p>
           </div>
 
-          {/* City cards — full opacity, hover like tour tiles, 4px border when selected */}
-          <div className={`grid grid-cols-2 gap-3 ${MAX_FORM_W} mb-4`}>
+          {/* City cards */}
+          <div className={`grid grid-cols-2 gap-4 ${MAX_FORM_W} mb-4`}>
             {(['belgrade', 'sarajevo'] as const).map((city) => {
               const img = cityImg[city]
               const isSelected = formState.city === city
+              const cityLabel = city === 'belgrade' ? 'Belgrade' : 'Sarajevo'
               return (
-                <button
-                  key={city}
-                  type="button"
-                  onClick={() => handleCityClick(city)}
-                  aria-pressed={isSelected}
-                  className="booking-city-card relative overflow-hidden cursor-pointer p-0 block"
-                  style={{
-                    borderRadius: '5px',
-                    border: isSelected ? '4px solid #FCF9EB' : '4px solid transparent',
-                    filter: isSelected ? 'brightness(1.2)' : undefined,
-                  }}
-                >
-                  {img
-                    ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={img}
-                        alt={city}
-                        className="w-full block"
-                        style={{ display: 'block', width: '100%', height: 'auto' }}
-                      />
-                    )
-                    : (
-                      // Fallback when no image yet
-                      <div style={{ aspectRatio: '3/2', minHeight: '80px', background: '#3a5a7c' }} />
-                    )
-                  }
-                </button>
+                <div key={city} className="relative">
+                  <button
+                    type="button"
+                    onClick={() => handleCityClick(city)}
+                    aria-pressed={isSelected}
+                    className={`booking-city-card w-full cursor-pointer p-0${isSelected ? ' booking-city-card--selected' : ''}`}
+                    style={{
+                      borderRadius: '5px',
+                      boxShadow: isSelected
+                        ? '0 0 0 7px #FCF9EB, 0 3px 10px rgba(0,0,0,0.22), inset 0 3px 8px rgba(0,0,0,0.20)'
+                        : '0 0 0 2px #FCF9EB, 0 3px 10px rgba(0,0,0,0.22), inset 0 3px 8px rgba(0,0,0,0.20)',
+                    }}
+                  >
+                    <div className="relative w-full overflow-hidden" style={{ borderRadius: '5px' }}>
+                      {img
+                        ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={img}
+                            alt={city}
+                            className="w-full block"
+                            style={{ display: 'block', width: '100%', height: 'auto' }}
+                          />
+                        )
+                        : (
+                          <div style={{ aspectRatio: '3/2', minHeight: '80px', background: '#3a5a7c' }} />
+                        )
+                      }
+                      {/* City name overlay */}
+                      <div
+                        className="absolute inset-0 flex items-end justify-center"
+                        style={{ paddingBottom: '8%', pointerEvents: 'none' }}
+                      >
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-clarendon-extra)',
+                            fontWeight: 800,
+                            fontSize: '16cqi',
+                            color: '#FCF9EB',
+                            lineHeight: 1,
+                            textShadow: '0 2px 6px rgba(0,0,0,0.55)',
+                            display: 'block',
+                          }}
+                        >
+                          {cityLabel}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Selected badge — green circle with cream checkmark */}
+                  {isSelected && (
+                    <div
+                      className="absolute z-10 flex items-center justify-center pointer-events-none"
+                      style={{
+                        top: '-10px',
+                        right: '-10px',
+                        width: '28px',
+                        height: '28px',
+                        background: '#22c55e',
+                        borderRadius: '50%',
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                      }}
+                    >
+                      <svg width="14" height="11" viewBox="0 0 14 11" fill="none" aria-hidden="true">
+                        <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#FCF9EB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
               )
             })}
           </div>
@@ -608,7 +647,7 @@ export function BookingModal() {
           <div className={`${FORM_CARD} bg-[#fcf9ea] ${MAX_FORM_W} mb-4`}>
 
             {/* Tour + Guests dropdowns */}
-            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[12px] mb-1">
+            <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-1">
               <div className="relative">
                 <select
                   className={selectCls}
@@ -662,7 +701,7 @@ export function BookingModal() {
 
             {/* Duration + Includes + Extras (hidden for 10+) */}
             {selectedTour && formState.guests !== '10+' && (
-              <div className="grid grid-cols-1 min-[560px]:grid-cols-2 gap-[20px] mt-[18px]">
+              <div className="grid grid-cols-1 min-[560px]:grid-cols-2 gap-4 mt-[18px]">
 
                 {/* Left: Duration then Includes */}
                 <div>
@@ -818,7 +857,7 @@ export function BookingModal() {
           {selectedTour && (
             <div className={`${FORM_CARD} bg-[#fcf9ea] ${MAX_FORM_W}`}>
 
-              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-[10px] mb-[10px]">
+              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-[10px]">
                 <InputField
                   imgSrc={images.iconName}
                   placeholder="Your Name"
@@ -834,7 +873,7 @@ export function BookingModal() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-[10px] mb-[10px]">
+              <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-[10px]">
                 <InputField
                   imgSrc={images.iconPhone}
                   type="tel"

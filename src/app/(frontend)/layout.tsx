@@ -60,7 +60,7 @@ const jobClarendon = localFont({
 })
 
 const jobClarendonExtraBold = localFont({
-  src: './fonts/JobClarendonExtraBold.woff',
+  src: './fonts/JobClarendon-ExtraBold.woff',
   weight: '800',
   variable: '--font-job-clarendon-extra-bold',
   display: 'swap',
@@ -96,8 +96,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       getMediaUrl('booking-form-header.webp'),
       getMediaUrl('booking-form-header-mobile.webp'),
       getMediaUrl('checkmark-circle-icon.webp'),
-      getMediaUrl('city-selector-belgrade.webp'),
-      getMediaUrl('city-selector-sarajevo.webp'),
+      getMediaUrl('belgrade-untitled-thumbnail.webp'),
+      getMediaUrl('sarajevo-untitled-thumbnail.webp'),
       getMediaUrl('inline-icon-comment.webp'),
       getMediaUrl('inline-icon-date.webp'),
       getMediaUrl('inline-icon-email.webp'),
@@ -134,6 +134,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         flArtGrotesk.variable,
         cooperBlackPro.variable,
         jobClarendon.variable,
+        jobClarendonExtraBold.variable,
         tungstenCompressed.variable,
         zipperStd.variable,
         steelfishBold.variable,

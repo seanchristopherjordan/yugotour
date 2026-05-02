@@ -57,6 +57,7 @@
   --font-grotesk: var(--font-art-grotesk);
   --font-cooper: var(--font-cooper-black);
   --font-clarendon: var(--font-job-clarendon);
+  --font-clarendon-extra: var(--font-job-clarendon-extra-bold);
   --font-tungsten: var(--font-tungsten-compressed);
   --font-zipper: var(--font-zipper-std);
   --font-steelfish: var(--font-steelfish-bold);
@@ -1899,11 +1900,12 @@ html[data-theme='light'] {
   padding: 0;
   background: transparent;
   display: block;
+  container-type: inline-size;
   transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
               box-shadow 360ms ease;
 }
 @media (min-width: 992px) {
-  .booking-city-card:hover {
+  .booking-city-card:not(.booking-city-card--selected):hover {
     transform: scale(1.03) translateY(-2.5px);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
   }
@@ -1984,7 +1986,7 @@ html[data-theme='light'] {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #C1A98D;
-  margin: 0 0 15px;
+  margin: 0 0 8px;
 }
 
 /* Includes + extras grid */
@@ -2357,12 +2359,10 @@ html[data-theme='light'] {
 /* Submit button — spring hover mirrors tour-tile animation */
 .booking-submit-btn {
   transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 360ms ease,
               filter 360ms ease;
 }
 .booking-submit-btn:not(:disabled):hover {
   transform: scale(1.02) translateY(-2px);
-  box-shadow: 0 8px 28px rgba(194, 94, 94, 0.45);
   filter: brightness(1.06);
 }
 
@@ -2391,5 +2391,35 @@ html[data-theme='light'] {
 }
 .booking-confirm-cancel:hover {
   filter: brightness(0.95);
+}
+
+/* Header book-now pulse (desktop only) */
+@keyframes bookNowPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@media (min-width: 992px) {
+  #headerBookNow {
+    animation: bookNowPulse 2.8s ease-in-out infinite;
+  }
+}
+
+/* Option inner padding (best-effort; works in Firefox) */
+.booking-modal-body select option {
+  padding: 8px 14px;
+}
+
+/* Mobile: 6% larger text inside booking modal */
+@media (max-width: 991px) {
+  .booking-modal-body select,
+  .booking-modal-body input,
+  .booking-modal-body textarea,
+  .booking-modal-body .booking-city-card,
+  .booking-modal-body .booking-section-label {
+    font-size: calc(0.93rem * 1.06);
+  }
+  .booking-modal-body .booking-section-label {
+    font-size: calc(0.72rem * 1.06);
+  }
 }
 

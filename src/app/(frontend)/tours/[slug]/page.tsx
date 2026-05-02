@@ -110,12 +110,12 @@ export default async function TourPage({ params: paramsPromise }: Args) {
                   <span className="tour-ibar-label">Price</span>
                   {t.priceGroup != null && (
                     <span className="tour-ibar-value">
-                      €{t.priceGroup} <span className="tour-ibar-sublabel">group</span>
+                      €{t.priceGroup} <span className="tour-ibar-sublabel">PP</span>
                     </span>
                   )}
                   {t.priceSolo != null && (
                     <span className="tour-ibar-value">
-                      €{t.priceSolo} <span className="tour-ibar-sublabel">solo</span>
+                      €{t.priceSolo} <span className="tour-ibar-sublabel">SINGLE</span>
                     </span>
                   )}
                 </div>

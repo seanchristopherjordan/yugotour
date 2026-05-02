@@ -175,7 +175,7 @@ export async function Footer() {
             {/* Col 4 — Gas Us Up */}
             <div className="footer-col order-4">
               <div className="footer-col-header">
-                <h5 className={h5Class}>GAS US UP</h5>
+                <h5 className={h5Class}>WRITE A REVIEW</h5>
               </div>
               <div className="footer-col-content">
                 <CityReviewIcons
