@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { useBookingModal } from '@/providers/BookingModal'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
 
@@ -238,6 +238,44 @@ function ConfirmDialog({
   )
 }
 
+function DrawerPanel({ isOpen, children, className }: { isOpen: boolean; children: React.ReactNode; className?: string }) {
+  const outerRef = useRef<HTMLDivElement>(null)
+  const isFirstRender = useRef(true)
+
+  useLayoutEffect(() => {
+    const el = outerRef.current
+    if (!el) return
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      el.style.height = isOpen ? 'auto' : '0px'
+      return
+    }
+
+    if (isOpen) {
+      el.style.height = el.scrollHeight + 'px'
+      const handler = () => { el.style.height = 'auto' }
+      el.addEventListener('transitionend', handler, { once: true })
+      return () => el.removeEventListener('transitionend', handler)
+    } else {
+      const h = el.getBoundingClientRect().height
+      el.style.height = h + 'px'
+      el.getBoundingClientRect()
+      el.style.height = '0px'
+    }
+  }, [isOpen])
+
+  return (
+    <div
+      ref={outerRef}
+      className={className}
+      style={{ overflow: 'hidden', transition: 'height 400ms cubic-bezier(0.4, 0, 0, 1)' }}
+    >
+      {children}
+    </div>
+  )
+}
+
 // Calendar-only date field — no manual typing, clicking anywhere opens the picker
 function DateInputField({
   imgSrc,
@@ -389,8 +427,6 @@ export function BookingModal() {
   const [pendingTourId, setPendingTourId] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
-  const [section2Open, setSection2Open] = useState(false)
-
   const tourTimeOpts = useMemo(
     () => generateTimeOpts(parseHour(timeSettings.tourTimeStart, 9), parseHour(timeSettings.tourTimeEnd, 17)),
     [timeSettings.tourTimeStart, timeSettings.tourTimeEnd],
@@ -428,12 +464,6 @@ export function BookingModal() {
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [isOpen, close])
-
-  // Drawer-2 opens after the browser has painted the closed state, ensuring the
-  // CSS transition fires even when tour selection happens alongside other DOM changes.
-  useEffect(() => {
-    setSection2Open(!!formState.selectedTourDocId)
-  }, [formState.selectedTourDocId])
 
   // Derived
   const cityTours = tours.filter((t) => t.city === formState.city)
@@ -665,8 +695,7 @@ export function BookingModal() {
           </div>
 
           {/* ── Selection card — drawer 1: reveals after city chosen ─── */}
-          <div className={`booking-drawer ${MAX_FORM_W} ${formState.city ? 'booking-drawer--open' : ''}`}>
-          <div className="booking-drawer-inner">
+          <DrawerPanel isOpen={!!formState.city} className={MAX_FORM_W}>
           <div className={`${FORM_CARD} bg-[#fcf9ea] mb-4`}>
 
             {/* Tour + Guests dropdowns */}
@@ -875,12 +904,10 @@ export function BookingModal() {
               )}
             </div>
           </div>
-          </div>
-          </div>
+          </DrawerPanel>
 
           {/* ── Contact card — drawer 2: reveals after tour chosen ───── */}
-          <div className={`booking-drawer ${MAX_FORM_W} ${section2Open ? 'booking-drawer--open' : ''}`}>
-          <div className="booking-drawer-inner">
+          <DrawerPanel isOpen={!!formState.selectedTourDocId} className={MAX_FORM_W}>
           <div className={`${FORM_CARD} bg-[#fcf9ea]`}>
 
               <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-4">
@@ -974,8 +1001,7 @@ export function BookingModal() {
                 }
               </button>
           </div>
-          </div>
-          </div>
+          </DrawerPanel>
 
         </div>
       </div>
