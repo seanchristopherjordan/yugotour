@@ -34,7 +34,6 @@ export default buildConfig({
     // 2. This is also where you'd set your favicon PNG for the admin panel
     meta: {
       titleSuffix: '- Yugotour',
-      favicon: '/favicon.png', // Ensure this file is in your /public folder
     },
     components: {
       beforeLogin: ['@/components/BeforeLogin'],

@@ -350,7 +350,7 @@ html[data-theme='light'] {
 .city-sign-sarajevo:hover { filter: brightness(1.15); }
 
 @media (max-width: 991px) {
-  .city-sign-belgrade { width: 43%; top: -17%;  right: 2%;  }
+  .city-sign-belgrade { width: 43%; top: -18%;  right: 2%;  }
   .city-sign-sarajevo { width: 43%; bottom: -6%; left: 13%; }
 }
 
