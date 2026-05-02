@@ -235,7 +235,7 @@ export async function Footer() {
         </div>
 
         {/* Black bar — bridges footer to yugo-black wrapper */}
-        <div className="h-[30px] bg-yugo-black w-full -mb-[10px]" />
+        <div className="h-[55px] bg-yugo-black w-full -mb-[10px]" />
       </footer>
     </div>
   )

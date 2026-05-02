@@ -2494,9 +2494,9 @@ html[data-theme='light'] {
 
 /* ── Floating Book Now FAB ────────────────────────────────────────────────── */
 @keyframes fabRock {
-  0%   { transform: rotate(-7deg); }
-  50%  { transform: rotate(7deg); }
-  100% { transform: rotate(-7deg); }
+  0%   { transform: rotate(-6deg); }
+  50%  { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
 }
 
 .book-now-fab {
@@ -2508,10 +2508,16 @@ html[data-theme='light'] {
   border: none;
   padding: 0;
   cursor: pointer;
-  animation: fabRock 6000ms ease-in-out infinite;
+  animation: fabRock 7500ms ease-in-out infinite;
   transform-origin: center center;
-  transition: opacity 0.25s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1000ms ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+.book-now-fab.book-now-fab--scrolled {
+  opacity: 1;
+  pointer-events: auto;
 }
 .book-now-fab-inner {
   display: block;
@@ -2525,15 +2531,15 @@ html[data-theme='light'] {
 }
 @media (max-width: 991px) {
   .book-now-fab {
-    left: 14px;
-    bottom: 17px;
+    left: 12px;
+    bottom: 11px;
   }
   .book-now-fab img {
-    width: 101px;
+    width: 95px;
   }
   .book-now-fab-fallback {
-    width: 91px;
-    height: 91px;
+    width: 70px;
+    height: 70px;
     font-size: 1rem;
   }
 }
@@ -2546,5 +2552,6 @@ html[data-theme='light'] {
 body.modal-active .book-now-fab {
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.25s ease;
 }
 

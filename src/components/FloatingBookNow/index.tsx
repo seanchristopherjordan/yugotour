@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { useBookingModal } from '@/providers/BookingModal'
 
 interface FloatingBookNowProps {
@@ -8,10 +10,21 @@ interface FloatingBookNowProps {
 
 export function FloatingBookNow({ imageUrl }: FloatingBookNowProps) {
   const { open } = useBookingModal()
+  const pathname = usePathname()
+  const [scrolled, setScrolled] = useState(false)
+  const isTourPage = pathname.startsWith('/tours/')
+
+  useEffect(() => {
+    const check = () => setScrolled(window.scrollY > 0)
+    check()
+    window.addEventListener('scroll', check, { passive: true })
+    return () => window.removeEventListener('scroll', check)
+  }, [])
+
   return (
     <button
       type="button"
-      className="book-now-fab"
+      className={`book-now-fab${scrolled && !isTourPage ? ' book-now-fab--scrolled' : ''}`}
       onClick={() => open()}
       aria-label="Book now"
     >

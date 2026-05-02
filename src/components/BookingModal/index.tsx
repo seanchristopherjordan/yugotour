@@ -956,7 +956,7 @@ export function BookingModal() {
                   )}
                   <textarea
                     className="flex-1 border-none bg-transparent font-fakt text-[0.93rem] text-[#212121] outline-none resize-y min-h-[90px] leading-[1.5] placeholder:text-[#b09070]"
-                    placeholder="Comments / Requests (Anything we should know? Just want to say hello?)"
+                    placeholder="Comments / Requests / Anything we should know"
                     value={formState.comments}
                     onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'comments', value: e.target.value })}
                     rows={4}
