@@ -114,7 +114,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     })),
   ])
 
-  const bookingTab = (siteSettings as Record<string, unknown>).booking as Record<string, string> | undefined
+  const bookingTab = (siteSettings as unknown as Record<string, unknown>).booking as Record<string, string> | undefined
   const timeSettings: BookingTimeSettings = {
     tourTimeStart: bookingTab?.tourTimeStart ?? '09:00',
     tourTimeEnd: bookingTab?.tourTimeEnd ?? '17:00',
