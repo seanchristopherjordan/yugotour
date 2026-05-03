@@ -304,7 +304,11 @@ function DateInputField({
   return (
     <div
       className={`${INPUT_ROW} relative cursor-pointer`}
+      tabIndex={0}
+      role="button"
+      aria-label="Date of Tour"
       onClick={openPicker}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPicker() } }}
     >
       {imgSrc && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -933,7 +937,7 @@ export function BookingModal() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-[10px]">
+              <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-4">
                 <InputField
                   imgSrc={images.iconPhone}
                   type="tel"
@@ -975,11 +979,11 @@ export function BookingModal() {
                 <p style={{ color: '#C25E5E' }} className="font-fakt text-sm text-center mt-2">{submitError}</p>
               )}
 
-              <div className="flex justify-center mt-[18px]">
+              <div className="flex justify-center">
                 <Turnstile
                   ref={turnstileRef}
                   siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
-                  options={{ theme: 'light', size: 'normal' }}
+                  options={{ theme: 'light', size: 'normal', appearance: 'interaction-only' }}
                   onSuccess={(token) => setTurnstileToken(token)}
                   onError={() => setTurnstileToken(null)}
                   onExpire={() => { setTurnstileToken(null); turnstileRef.current?.reset() }}
