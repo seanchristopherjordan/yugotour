@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { Turnstile } from '@marsidev/react-turnstile'
+import type { TurnstileInstance } from '@marsidev/react-turnstile'
 import { useBookingModal } from '@/providers/BookingModal'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
 
@@ -427,6 +429,8 @@ export function BookingModal() {
   const [pendingTourId, setPendingTourId] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileRef = useRef<TurnstileInstance>(null)
   const tourTimeOpts = useMemo(
     () => generateTimeOpts(parseHour(timeSettings.tourTimeStart, 9), parseHour(timeSettings.tourTimeEnd, 17)),
     [timeSettings.tourTimeStart, timeSettings.tourTimeEnd],
@@ -446,6 +450,8 @@ export function BookingModal() {
     }
     dispatch({ type: 'RESET', init })
     setSubmitError(null)
+    setTurnstileToken(null)
+    turnstileRef.current?.reset()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
@@ -492,7 +498,7 @@ export function BookingModal() {
   }
 
   const handleSubmit = useCallback(async () => {
-    if (!valid || !selectedTour || isSubmitting) return
+    if (!valid || !selectedTour || isSubmitting || !turnstileToken) return
     setIsSubmitting(true)
     setSubmitError(null)
     try {
@@ -512,6 +518,7 @@ export function BookingModal() {
           airportDirection: hasAirport ? formState.airportDirection : undefined,
           flightTime: hasAirport ? formState.flightTime : undefined,
           comments: formState.comments,
+          turnstileToken,
         }),
       })
       if (!res.ok) throw new Error('Failed')
@@ -521,7 +528,7 @@ export function BookingModal() {
     } finally {
       setIsSubmitting(false)
     }
-  }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, close])
+  }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, close, turnstileToken])
 
   // Shared select styles for tour + guests dropdowns
   const selectCls = [
@@ -968,15 +975,26 @@ export function BookingModal() {
                 <p style={{ color: '#C25E5E' }} className="font-fakt text-sm text-center mt-2">{submitError}</p>
               )}
 
+              <div className="flex justify-center mt-[18px]">
+                <Turnstile
+                  ref={turnstileRef}
+                  siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
+                  options={{ theme: 'light', size: 'normal' }}
+                  onSuccess={(token) => setTurnstileToken(token)}
+                  onError={() => setTurnstileToken(null)}
+                  onExpire={() => { setTurnstileToken(null); turnstileRef.current?.reset() }}
+                />
+              </div>
+
               <button
                 type="button"
-                disabled={!valid || isSubmitting}
+                disabled={!valid || !turnstileToken || isSubmitting}
                 onClick={handleSubmit}
                 className={[
                   'booking-submit-btn',
                   'flex items-center justify-center gap-[12px] w-full mt-[16px]',
                   'px-[20px] py-[14px] rounded-[6px] border-none',
-                  valid && !isSubmitting ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed',
+                  valid && turnstileToken && !isSubmitting ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed',
                 ].join(' ')}
                 style={{
                   background: '#C25E5E',

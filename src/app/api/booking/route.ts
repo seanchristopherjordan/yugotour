@@ -5,6 +5,21 @@ import { getPayload } from 'payload'
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
+
+    // Verify Cloudflare Turnstile token
+    const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY,
+        response: body.turnstileToken,
+      }),
+    })
+    const verifyData = await verifyRes.json() as { success: boolean }
+    if (!verifyData.success) {
+      return NextResponse.json({ error: 'Security check failed' }, { status: 400 })
+    }
+
     const payload = await getPayload({ config: configPromise })
 
     await payload.create({
