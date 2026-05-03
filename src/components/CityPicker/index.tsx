@@ -59,7 +59,7 @@ export function CityPicker({
             )}
 
             <h2
-              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(3.3rem,7vw,5.4rem)] min-[992px]:text-[clamp(2.2rem,4.4vw,4.6rem)]"
+              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(3.3rem,7vw,5.4rem)] min-[992px]:text-[clamp(2.2rem,4.2vw,4.4rem)]"
             >
               Where to, Comrade?
             </h2>
@@ -71,12 +71,12 @@ export function CityPicker({
                 src={starUrl}
                 alt="*"
                 aria-hidden="true"
-                className="hidden min-[992px]:block w-[60px] h-auto flex-shrink-0"
+                className="hidden min-[992px]:block w-[45px] h-auto flex-shrink-0"
               />
             )}
 
             <h2
-              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(3.3rem,7vw,5.4rem)] min-[992px]:text-[clamp(2.2rem,4.4vw,4.6rem)]"
+              className="font-tungsten uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.8] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.02em] max-[991px]:text-[clamp(3.3rem,7vw,5.4rem)] min-[992px]:text-[clamp(2.2rem,4.2vw,4.4rem)]"
             >
               Kuda, Druže?
             </h2>
@@ -88,12 +88,12 @@ export function CityPicker({
                 src={starUrl}
                 alt="*"
                 aria-hidden="true"
-                className="hidden min-[992px]:block w-[60px] h-auto flex-shrink-0"
+                className="hidden min-[992px]:block w-[45px] h-auto flex-shrink-0"
               />
             )}
 
             <h2
-              className="font-steelfish uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.85] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.015em] max-[991px]:text-[clamp(2.7rem,6vw,5rem)] min-[992px]:text-[clamp(1.78rem,3.8vw,3.8rem)]"
+              className="font-steelfish uppercase text-yugo-cream m-0 leading-[0.9] max-[991px]:leading-[0.85] max-[991px]:text-center max-[991px]:whitespace-nowrap tracking-[0.015em] max-[991px]:text-[clamp(2.7rem,6vw,5rem)] min-[992px]:text-[clamp(1.78rem,3.7vw,3.3rem)]"
             >
               Куда, Друже?
             </h2>
