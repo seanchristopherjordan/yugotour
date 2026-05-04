@@ -2466,22 +2466,26 @@ html[data-theme='light'] {
    ─────────────────────────────────────────────────────────────── */
 .success-text-container {
   position: absolute;
-  /* ↓ EDIT top to shift text block up/down (desktop) */
-  top: calc(58vh + 19vh);
+  top: auto;
+  bottom: 13vh;
   left: 50%;
   transform: translateX(-50%);
-  /* ↓ EDIT width (desktop) */
-  width: clamp(500px, 48vh, 85vw);
+  width: clamp(480px, 48vh, 85vw);
   text-align: center;
   pointer-events: none;
   user-select: none;
 }
 
-/* ↓ EDIT: success text positioning on mobile */
+@media (max-width: 992px) {
+  .success-text-container {
+    bottom: 8vh;
+  }
+}
+
 @media (max-width: 550px) {
   .success-text-container {
-    bottom: clamp (40px, 20vh, 30vh);  /* ↓ EDIT: vertical position on mobile  */
-    width: 85vw;               /* ↓ EDIT: width on mobile */
+    bottom: clamp(60px, 22vh, 30vh);
+    width: 85vw;
   }
 }
 
