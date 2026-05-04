@@ -2434,7 +2434,7 @@ html[data-theme='light'] {
   /* ↓ EDIT THESE to reposition on desktop */
   width: 35vh;
   height: 10vh;
-  left: 46%;
+  left: 46.5%;
   top: 37vh;
   transform: translateX(-90%);
 }
