@@ -72,6 +72,7 @@ export function SimulatorSection({
               src={bgMobileUrl ?? bgDesktopUrl ?? ''}
               alt=""
               aria-hidden="true"
+              loading="lazy"
               className="sim-bg-img"
             />
           </picture>
@@ -101,6 +102,7 @@ export function SimulatorSection({
               <img
                 src={carInteriorUrl}
                 alt="Yugo Interior"
+                loading="lazy"
                 className="sim-car-interior"
               />
             )}
@@ -118,6 +120,7 @@ export function SimulatorSection({
                   src={steeringWheelUrl}
                   alt=""
                   aria-hidden="true"
+                  loading="lazy"
                   className="sim-steering-wheel"
                 />
               </button>
@@ -135,6 +138,7 @@ export function SimulatorSection({
                 src={radioPlaying ? (soundOnUrl ?? soundOffUrl ?? '') : (soundOffUrl ?? '')}
                 alt=""
                 aria-hidden="true"
+                loading="lazy"
                 className="sim-sound-btn"
               />
             </button>

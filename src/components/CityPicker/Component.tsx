@@ -1,4 +1,5 @@
 import { getMediaUrl } from '@/lib/getMediaUrl'
+import { getMediaDoc } from '@/lib/getMediaUrl'
 import { CityPicker } from './index'
 
 export async function CityPickerServer() {
@@ -6,18 +7,18 @@ export async function CityPickerServer() {
     textureUrl,
     starUrl,
     flagRibbonUrl,
-    mapUrl,
-    belgradSignUrl,
-    sarajevoSignUrl,
-    partizanGirlUrl,
+    mapDoc,
+    belgradSignDoc,
+    sarajevoSignDoc,
+    partizanGirlDoc,
   ] = await Promise.all([
     getMediaUrl('texture-blue.webp'),
     getMediaUrl('star.webp'),
     getMediaUrl('flag-ribbon.webp'),
-    getMediaUrl('yugo-map.webp'),
-    getMediaUrl('belgrade-sign.webp'),
-    getMediaUrl('sarajevo-sign.webp'),
-    getMediaUrl('partizan-girl.webp'),
+    getMediaDoc('yugo-map.webp'),
+    getMediaDoc('belgrade-sign.webp'),
+    getMediaDoc('sarajevo-sign.webp'),
+    getMediaDoc('partizan-girl.webp'),
   ])
 
   return (
@@ -25,10 +26,12 @@ export async function CityPickerServer() {
       textureUrl={textureUrl}
       starUrl={starUrl}
       flagRibbonUrl={flagRibbonUrl}
-      mapUrl={mapUrl}
-      belgradSignUrl={belgradSignUrl}
-      sarajevoSignUrl={sarajevoSignUrl}
-      partizanGirlUrl={partizanGirlUrl}
+      mapUrl={mapDoc?.url ?? null}
+      mapMobileUrl={mapDoc?.sizes?.medium?.url ?? mapDoc?.url ?? null}
+      belgradSignUrl={belgradSignDoc?.url ?? null}
+      sarajevoSignUrl={sarajevoSignDoc?.url ?? null}
+      partizanGirlUrl={partizanGirlDoc?.url ?? null}
+      partizanGirlMobileUrl={partizanGirlDoc?.sizes?.small?.url ?? partizanGirlDoc?.url ?? null}
     />
   )
 }

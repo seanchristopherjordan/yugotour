@@ -82,7 +82,7 @@ export function TvSectionBlock({ youtubeUrl, mobileImage, desktopImage }: TvSect
               width={mobileImg.width ?? 750}
               height={mobileImg.height ?? 600}
               style={{ width: '100%', height: 'auto', display: 'block' }}
-              priority
+              loading="lazy"
             />
           </div>
         )}
@@ -96,7 +96,7 @@ export function TvSectionBlock({ youtubeUrl, mobileImage, desktopImage }: TvSect
               width={desktopImg.width ?? 1200}
               height={desktopImg.height ?? 400}
               style={{ width: '100%', height: 'auto', display: 'block' }}
-              priority
+              loading="lazy"
             />
           </div>
         )}

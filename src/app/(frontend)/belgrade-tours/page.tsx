@@ -24,6 +24,20 @@ function resolveMediaUrl(field: number | Media | null | undefined): string | nul
   return (field as Media).url ?? null
 }
 
+// Mobile layers: medium (900px) — covers retina up to ~450px-wide screens
+function resolveMediaMobileUrl(field: number | Media | null | undefined): string | null {
+  if (!field || typeof field !== 'object') return null
+  const doc = field as Media
+  return doc.sizes?.medium?.url ?? doc.url ?? null
+}
+
+// Desktop layers: xlarge (1920px) or large (1400px) for full-width parallax images
+function resolveMediaDesktopUrl(field: number | Media | null | undefined): string | null {
+  if (!field || typeof field !== 'object') return null
+  const doc = field as Media
+  return doc.sizes?.xlarge?.url ?? doc.sizes?.large?.url ?? doc.url ?? null
+}
+
 function resolveMediaList(field: unknown): Media[] {
   if (!Array.isArray(field)) return []
   return field.filter((img): img is Media => typeof img !== 'number' && img !== null)
@@ -114,13 +128,13 @@ export default async function BelgradeToursPage() {
       <TourListHeader
         title={page?.title ?? 'Belgrade Tours'}
         city="belgrade"
-        layer1DesktopUrl={resolveMediaUrl(page?.layer1Desktop)}
-        layer2DesktopUrl={resolveMediaUrl(page?.layer2Desktop)}
-        layer3DesktopUrl={resolveMediaUrl(page?.layer3Desktop)}
-        layer1MobileUrl={resolveMediaUrl(page?.layer1Mobile)}
-        layer2MobileUrl={resolveMediaUrl(page?.layer2Mobile)}
-        layer3MobileUrl={resolveMediaUrl(page?.layer3Mobile)}
-        layer4MobileUrl={resolveMediaUrl(page?.layer4Mobile)}
+        layer1DesktopUrl={resolveMediaDesktopUrl(page?.layer1Desktop)}
+        layer2DesktopUrl={resolveMediaDesktopUrl(page?.layer2Desktop)}
+        layer3DesktopUrl={resolveMediaDesktopUrl(page?.layer3Desktop)}
+        layer1MobileUrl={resolveMediaMobileUrl(page?.layer1Mobile)}
+        layer2MobileUrl={resolveMediaMobileUrl(page?.layer2Mobile)}
+        layer3MobileUrl={resolveMediaMobileUrl(page?.layer3Mobile)}
+        layer4MobileUrl={resolveMediaMobileUrl(page?.layer4Mobile)}
       />
 
       <section

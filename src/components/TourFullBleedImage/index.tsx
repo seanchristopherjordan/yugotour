@@ -23,7 +23,7 @@ export function TourFullBleedImage({ imageUrl, alt = '' }: TourFullBleedImagePro
     <section ref={sectionRef} className="tour-full-bleed">
       <motion.div className="tour-full-bleed-inner" style={{ y: imgY }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imageUrl} alt={alt} className="tour-full-bleed-img" />
+        <img src={imageUrl} alt={alt} className="tour-full-bleed-img" loading="lazy" />
       </motion.div>
     </section>
   )

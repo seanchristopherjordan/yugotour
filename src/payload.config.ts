@@ -67,6 +67,9 @@ export default buildConfig({
             const key = prefix ? `${prefix}/${filename}` : filename
             return `${cdnBase}/${key}`
           },
+          generateMetadata: () => ({
+            CacheControl: 'public, max-age=31536000, immutable',
+          }),
         },
       },
       bucket: process.env.S3_BUCKET ?? 'yugotour-assets',

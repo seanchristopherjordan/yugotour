@@ -5,9 +5,11 @@ export interface CityPickerProps {
   starUrl: string | null
   flagRibbonUrl: string | null
   mapUrl: string | null
+  mapMobileUrl: string | null
   belgradSignUrl: string | null
   sarajevoSignUrl: string | null
   partizanGirlUrl: string | null
+  partizanGirlMobileUrl: string | null
 }
 
 export function CityPicker({
@@ -15,9 +17,11 @@ export function CityPicker({
   starUrl,
   flagRibbonUrl,
   mapUrl,
+  mapMobileUrl,
   belgradSignUrl,
   sarajevoSignUrl,
   partizanGirlUrl,
+  partizanGirlMobileUrl,
 }: CityPickerProps) {
   return (
     <section
@@ -46,6 +50,7 @@ export function CityPicker({
                   src={starUrl}
                   alt=""
                   aria-hidden="true"
+                  loading="lazy"
                   className="block absolute left-[1vw] top-1/2 -translate-y-1/2 w-[12vw] h-auto min-[992px]:hidden"
                 />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -53,6 +58,7 @@ export function CityPicker({
                   src={starUrl}
                   alt=""
                   aria-hidden="true"
+                  loading="lazy"
                   className="block absolute right-[1vw] top-1/2 -translate-y-1/2 w-[12vw] h-auto min-[992px]:hidden"
                 />
               </>
@@ -71,6 +77,7 @@ export function CityPicker({
                 src={starUrl}
                 alt="*"
                 aria-hidden="true"
+                loading="lazy"
                 className="hidden min-[992px]:block w-[45px] h-auto flex-shrink-0"
               />
             )}
@@ -88,6 +95,7 @@ export function CityPicker({
                 src={starUrl}
                 alt="*"
                 aria-hidden="true"
+                loading="lazy"
                 className="hidden min-[992px]:block w-[45px] h-auto flex-shrink-0"
               />
             )}
@@ -107,6 +115,7 @@ export function CityPicker({
                 src={flagRibbonUrl}
                 alt=""
                 aria-hidden="true"
+                loading="lazy"
                 className="min-[992px]:rounded-t-[5px]"
                 style={{ width: '100%', height: '33px', display: 'block', objectFit: 'fill' }}
               />
@@ -115,23 +124,28 @@ export function CityPicker({
 
           {/* ── Map + pulsing city signs — bleeds full viewport width on mobile ── */}
           <div className="vw-bleed relative w-full">
-            {/* map-inner: line-height 0 prevents gap below the map img */}
             <div className="relative w-full" style={{ lineHeight: 0, overflow: 'visible' }}>
               {mapUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={mapUrl}
-                  alt="Yugoslavia Map"
-                  className="min-[992px]:rounded-b-[5px]"
-                  style={{ width: '100%', height: 'auto', display: 'block' }}
-                />
+                <picture>
+                  {mapMobileUrl && (
+                    <source srcSet={mapMobileUrl} media="(max-width: 991px)" />
+                  )}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={mapUrl}
+                    alt="Yugoslavia Map"
+                    loading="lazy"
+                    className="min-[992px]:rounded-b-[5px]"
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                  />
+                </picture>
               )}
 
               {/* Belgrade sign — top-right, pulses big→small */}
               {belgradSignUrl && (
                 <Link href="/belgrade-tours" className="city-sign-belgrade">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={belgradSignUrl} alt="Belgrade Tours" />
+                  <img src={belgradSignUrl} alt="Belgrade Tours" loading="lazy" />
                 </Link>
               )}
 
@@ -139,7 +153,7 @@ export function CityPicker({
               {sarajevoSignUrl && (
                 <Link href="/sarajevo-tours" className="city-sign-sarajevo">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={sarajevoSignUrl} alt="Sarajevo Tours" />
+                  <img src={sarajevoSignUrl} alt="Sarajevo Tours" loading="lazy" />
                 </Link>
               )}
             </div>
@@ -151,13 +165,19 @@ export function CityPicker({
 
       {/* Partizan girl — right edge of section, bleeds on mobile */}
       {partizanGirlUrl && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={partizanGirlUrl}
-          alt=""
-          aria-hidden="true"
-          className="absolute right-0 bottom-0 w-[23vw] max-w-[400px] z-[15] pointer-events-none max-[991px]:w-[42vw] max-[991px]:right-[-6vw]"
-        />
+        <picture className="absolute right-0 bottom-0 w-[23vw] max-w-[400px] z-[15] pointer-events-none max-[991px]:w-[42vw] max-[991px]:right-[-6vw] block">
+          {partizanGirlMobileUrl && (
+            <source srcSet={partizanGirlMobileUrl} media="(max-width: 991px)" />
+          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={partizanGirlUrl}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
+        </picture>
       )}
     </section>
   )

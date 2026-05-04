@@ -79,6 +79,7 @@ export function IntroSection({
           <motion.img
             src={spomentikUrl}
             alt=""
+            loading="lazy"
             className="absolute top-0 right-0 opacity-70"
             style={{ height: '150%', width: 'auto', maxWidth: 'none', y: spomentikY, willChange: 'transform' }}
           />
@@ -150,6 +151,7 @@ export function IntroSection({
               <img
                 src={carsMobileUrl ?? carsDesktopUrl ?? ''}
                 alt="Yugoslav Cars"
+                loading="lazy"
                 className="block mx-auto h-auto w-[104%] max-w-full min-[601px]:max-w-[85%] min-[992px]:max-w-[68%]"
               />
             </picture>
