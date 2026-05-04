@@ -1,3 +1,17 @@
+/*
+  Pre-hydration height — mirrors the useLayoutEffect calculation in index.tsx.
+  Prevents the section collapsing to 0px before JS runs and revealing content below.
+  The layout effect overrides this with an identical inline style after hydration.
+*/
+#hero-video-module {
+  height: calc(100svh - max(3.4vh, 45px));
+}
+@media (min-width: 992px) {
+  #hero-video-module {
+    height: calc(100svh - max(3.4vh, 42px));
+  }
+}
+
 /* Hero logo overlay — 70s broadcast flicker + analog jitter */
 @keyframes yugo-flicker {
   0%   { opacity: 0.91; }
