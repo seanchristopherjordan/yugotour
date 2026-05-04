@@ -472,6 +472,13 @@ export function BookingModal() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
+  // Trigger Turnstile once when the contact section becomes visible
+  useEffect(() => {
+    if (!formState.selectedTourDocId) return
+    const t = setTimeout(() => turnstileRef.current?.execute(), 150)
+    return () => clearTimeout(t)
+  }, [formState.selectedTourDocId])
+
   useEffect(() => {
     document.documentElement.classList.toggle('modal-active', isOpen)
     document.body.classList.toggle('modal-active', isOpen)
@@ -560,6 +567,7 @@ export function BookingModal() {
       // Always reset Turnstile after any attempt so a fresh token is ready for retries
       if (!succeeded) {
         turnstileRef.current?.reset()
+        setTimeout(() => turnstileRef.current?.execute(), 150)
       }
     }
   }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, turnstileToken])
@@ -1020,7 +1028,7 @@ export function BookingModal() {
                 <Turnstile
                   ref={turnstileRef}
                   siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
-                  options={{ theme: 'light', size: 'normal', appearance: 'invisible' }}
+                  options={{ theme: 'light', size: 'normal', appearance: 'execute' }}
                   onSuccess={(token) => setTurnstileToken(token)}
                   onError={() => setTurnstileToken(null)}
                   onExpire={() => { setTurnstileToken(null); turnstileRef.current?.reset() }}
