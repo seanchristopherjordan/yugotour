@@ -1020,7 +1020,7 @@ export function BookingModal() {
                 <Turnstile
                   ref={turnstileRef}
                   siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
-                  options={{ theme: 'light', size: 'normal', appearance: 'interaction-only' }}
+                  options={{ theme: 'light', size: 'normal', appearance: 'invisible' }}
                   onSuccess={(token) => setTurnstileToken(token)}
                   onError={() => setTurnstileToken(null)}
                   onExpire={() => { setTurnstileToken(null); turnstileRef.current?.reset() }}
