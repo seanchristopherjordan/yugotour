@@ -127,7 +127,7 @@ export function SimulatorSection({
             <button
               type="button"
               className="sim-sound-wrap"
-              onClick={handleSoundToggle}
+              onPointerDown={handleSoundToggle}
               aria-label={radioPlaying ? 'Mute radio' : 'Play radio'}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}

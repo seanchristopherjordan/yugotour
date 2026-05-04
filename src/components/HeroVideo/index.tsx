@@ -5,11 +5,13 @@ import { useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 
 export interface HeroVideoProps {
   videoUrl: string | null
-  posterUrl: string | null
+  mobileVideoUrl: string | null
+  posterDesktopUrl: string | null
+  posterMobileUrl: string | null
   logoUrl: string | null
 }
 
-export function HeroVideo({ videoUrl, posterUrl, logoUrl }: HeroVideoProps) {
+export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMobileUrl, logoUrl }: HeroVideoProps) {
   const { scrollY } = useScroll()
   const logoY = useMotionValue(0)
   const sectionRef = useRef<HTMLElement>(null)
@@ -17,12 +19,16 @@ export function HeroVideo({ videoUrl, posterUrl, logoUrl }: HeroVideoProps) {
 
   useEffect(() => {
     const video = videoRef.current
-    if (!video || !videoUrl) return
-    const tryPlay = () => { video.play().catch(() => {}) }
+    if (!video || (!videoUrl && !mobileVideoUrl)) return
+    const tryPlay = () => { if (video.paused) video.play().catch(() => {}) }
+    video.addEventListener('loadeddata', tryPlay, { once: true })
     video.addEventListener('canplay', tryPlay, { once: true })
     tryPlay()
-    return () => video.removeEventListener('canplay', tryPlay)
-  }, [videoUrl])
+    return () => {
+      video.removeEventListener('loadeddata', tryPlay)
+      video.removeEventListener('canplay', tryPlay)
+    }
+  }, [videoUrl, mobileVideoUrl])
 
   const scrollToIntro = useCallback(() => {
     const target = document.getElementById('intro-section')
@@ -89,28 +95,35 @@ export function HeroVideo({ videoUrl, posterUrl, logoUrl }: HeroVideoProps) {
       id="hero-video-module"
       className="relative w-full overflow-hidden bg-black"
     >
-      {/* Video fill */}
+      {/* Video fill — video only loads on desktop (≥992px); mobile shows poster only */}
       <div className="absolute inset-0 flex items-center justify-center">
-        {videoUrl ? (
+        {(videoUrl || mobileVideoUrl) ? (
           <video
             ref={videoRef}
-            src={videoUrl}
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            poster={posterUrl ?? undefined}
+            poster={posterDesktopUrl ?? undefined}
             className="block w-full h-full object-cover z-[1]"
             style={{ transform: 'scale(1.01)' }}
-          />
-        ) : posterUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={posterUrl}
-            alt="YugoTour Hero"
-            className="block w-full h-full object-cover z-[1]"
-          />
+          >
+            {mobileVideoUrl && <source src={mobileVideoUrl} media="(max-width: 991px)" type="video/webm" />}
+            {videoUrl && <source src={videoUrl} media="(min-width: 992px)" type="video/webm" />}
+          </video>
+        ) : (posterDesktopUrl || posterMobileUrl) ? (
+          <picture className="block w-full h-full">
+            {posterMobileUrl && (
+              <source srcSet={posterMobileUrl} media="(max-width: 991px)" />
+            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={posterDesktopUrl ?? posterMobileUrl ?? ''}
+              alt="YugoTour Hero"
+              className="block w-full h-full object-cover z-[1]"
+            />
+          </picture>
         ) : null}
       </div>
 

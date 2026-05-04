@@ -2154,6 +2154,22 @@ export interface SiteSetting {
      */
     favicon?: (number | null) | Media;
     /**
+     * WebM video for the homepage hero on desktop (≥992px). Recommended: ≤3 MB.
+     */
+    heroVideoDesktop?: (number | null) | Media;
+    /**
+     * WebM video for the homepage hero on mobile (<992px). Recommended: ≤1.7 MB.
+     */
+    heroVideoMobile?: (number | null) | Media;
+    /**
+     * Poster / fallback image shown before the video loads on desktop (≥992px). WebP recommended.
+     */
+    heroCoverDesktop?: (number | null) | Media;
+    /**
+     * Poster / fallback image shown before the video loads on mobile (<992px). WebP recommended.
+     */
+    heroCoverMobile?: (number | null) | Media;
+    /**
      * The video that plays inside the vintage TV on the homepage.
      */
     youtubeVideoUrl?: string | null;
@@ -2291,6 +2307,10 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         favicon?: T;
+        heroVideoDesktop?: T;
+        heroVideoMobile?: T;
+        heroCoverDesktop?: T;
+        heroCoverMobile?: T;
         youtubeVideoUrl?: T;
       };
   updatedAt?: T;

@@ -148,6 +148,42 @@ export const SiteSettings: GlobalConfig = {
               },
             },
             {
+              name: 'heroVideoDesktop',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Homepage Hero Video — Desktop',
+              admin: {
+                description: 'WebM video for the homepage hero on desktop (≥992px). Recommended: ≤3 MB.',
+              },
+            },
+            {
+              name: 'heroVideoMobile',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Homepage Hero Video — Mobile',
+              admin: {
+                description: 'WebM video for the homepage hero on mobile (<992px). Recommended: ≤1.7 MB.',
+              },
+            },
+            {
+              name: 'heroCoverDesktop',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Homepage Hero Cover Image — Desktop',
+              admin: {
+                description: 'Poster / fallback image shown before the video loads on desktop (≥992px). WebP recommended.',
+              },
+            },
+            {
+              name: 'heroCoverMobile',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Homepage Hero Cover Image — Mobile',
+              admin: {
+                description: 'Poster / fallback image shown before the video loads on mobile (<992px). WebP recommended.',
+              },
+            },
+            {
               name: 'youtubeVideoUrl',
               type: 'text',
               label: 'Homepage TV — YouTube URL',

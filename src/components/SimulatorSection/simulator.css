@@ -157,6 +157,7 @@
   background: transparent;
   border: none;
   padding: 0;
+  touch-action: manipulation;
 }
 
 @media (min-width: 992px) {
@@ -170,6 +171,9 @@
   transition: transform 300ms ease;
 }
 
-.sim-sound-btn:hover {
-  transform: scale(1.15);
+/* Only scale on true hover devices — avoids sticky hover state on iOS */
+@media (hover: hover) {
+  .sim-sound-btn:hover {
+    transform: scale(1.15);
+  }
 }
