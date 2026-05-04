@@ -2374,10 +2374,128 @@ html[data-theme='light'] {
 }
 @media (min-width: 992px) {
   .booking-submit-btn:not(:disabled):hover {
-    transform: scale(1.12);
+    transform: scale(1.02);
     filter: brightness(1.12);
   }
 }
+
+/* ── Booking submit spinner ───────────────────────────────────── */
+
+@keyframes bookingSpinnerRotate {
+  to { transform: rotate(360deg); }
+}
+
+.booking-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(252, 249, 235, 0.3);
+  border-top-color: #FCF9EB;
+  border-radius: 50%;
+  animation: bookingSpinnerRotate 700ms linear infinite;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BOOKING SUCCESS SCREEN
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Badge — centered horizontally, middle at 2/3 of viewport height  */
+.success-badge {
+  position: absolute;
+  height: 55vh;
+  width: auto;
+  left: 50%;
+  top: calc(18vh);
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ↓ EDIT: badge sizing on narrow mobile screens */
+@media (max-width: 550px) {
+  .success-badge {
+    width: 90vw;   /* switch to width-driven sizing */
+    height: auto;
+  }
+}
+
+/* ── Speech bubble positioning ──────────────────────────────────
+   FINE-TUNE THESE VALUES to reposition the speech bubble.
+   Each breakpoint is a separate block — edit independently.
+   ─────────────────────────────────────────────────────────────── */
+
+/* Desktop speech bubble (≥ 992px) */
+.success-bubble--desktop {
+  position: absolute;
+  display: none;          /* hidden by default; shown by media query below */
+  pointer-events: none;
+  user-select: none;
+
+  /* ↓ EDIT THESE to reposition on desktop */
+  width: 35vh;
+  height: 10vh;
+  left: 45%;
+  top: 37vh;
+  transform: translateX(-90%);
+}
+
+@media (min-width: 992px) {
+  .success-bubble--desktop { display: block; }
+  .success-bubble--mobile  { display: none !important; }
+}
+
+/* Mobile / tablet speech bubble (< 992px) */
+.success-bubble--mobile {
+  position: absolute;
+  display: block;         /* visible by default (mobile-first) */
+  pointer-events: none;
+  user-select: none;
+
+  /* ↓ EDIT THESE to reposition on mobile/tablet */
+  width: 50vw;
+  height: auto;
+  left: 57%;
+  top: 10vh;
+  transform: translateX(-50%);
+}
+
+/* ── Success text ────────────────────────────────────────────────
+   Two paragraphs of Fakt body text in yugo-cream.
+   Width matches the badge (40vh tall × auto width → driven by
+   min() below — adjust if the badge has an unusual aspect ratio).
+   ─────────────────────────────────────────────────────────────── */
+.success-text-container {
+  position: absolute;
+  /* ↓ EDIT top to shift text block up/down (desktop) */
+  top: calc(58vh + 21vh);
+  left: 50%;
+  transform: translateX(-50%);
+  /* ↓ EDIT width (desktop) */
+  width: min(47vh, 85vw);
+  text-align: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ↓ EDIT: success text positioning on mobile */
+@media (max-width: 550px) {
+  .success-text-container {
+    top: calc(47vh + 21vh);   /* ↓ EDIT: vertical position on mobile */
+    width: 85vw;               /* ↓ EDIT: width on mobile */
+  }
+}
+
+.success-text-line {
+  font-family: var(--font-fakt);
+  font-size: clamp(1.2rem, 2vw, 1.3rem);
+  color: var(--color-yugo-cream);
+  line-height: 1.55;
+  margin: 0 0 0.75em;
+}
+
+.success-text-line:last-child { margin-bottom: 0; }
+
+/* ── End success screen ─────────────────────────────────────────── */
 
 /* Confirmation dialog buttons */
 .booking-confirm-ok,

@@ -114,6 +114,24 @@ export const SiteSettings: GlobalConfig = {
                 placeholder: '20:00',
               },
             },
+            {
+              name: 'successLine1',
+              type: 'textarea' as const,
+              label: 'Booking Success — Confirmation Message',
+              defaultValue: 'The Marshal of Yugoslavia is pleased to confirm receipt of your booking request.',
+              admin: {
+                description: 'First paragraph shown on the booking success screen.',
+              },
+            },
+            {
+              name: 'successLine2',
+              type: 'textarea' as const,
+              label: 'Booking Success — Follow-up Message',
+              defaultValue: "We'll be in touch via email to firm up the details. Thank you for booking with Yugotour! <i>Ajmo!</i>",
+              admin: {
+                description: 'Second paragraph on the success screen. Basic HTML tags like <i> are supported.',
+              },
+            },
           ],
         },
         {

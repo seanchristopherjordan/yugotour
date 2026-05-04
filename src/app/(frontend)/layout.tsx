@@ -11,7 +11,7 @@ import { FloatingBookNow } from '@/components/FloatingBookNow'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
-import { BookingModalProvider, type BookingModalImages, type BookingTimeSettings } from '@/providers/BookingModal'
+import { BookingModalProvider, type BookingModalImages, type BookingTimeSettings, type BookingSuccessContent } from '@/providers/BookingModal'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getCachedGlobal } from '@/utilities/getGlobals'
@@ -109,10 +109,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       getMediaUrl('little-white-star.webp'),
       getMediaUrl('price-tag-icon.webp'),
       getMediaUrl('red-star.webp'),
-    ]).then(([headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo, iconComment, iconDate, iconEmail, iconName, iconPhone, iconTime, littleWhiteStar, priceTag, redStar]): BookingModalImages => ({
+      getMediaUrl('tito-success-badge.webp'),
+      getMediaUrl('tito-success-speech-bubble-desktop.webp'),
+      getMediaUrl('tito-success-speech-bubble-mobile.webp'),
+    ]).then(([headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo, iconComment, iconDate, iconEmail, iconName, iconPhone, iconTime, littleWhiteStar, priceTag, redStar, titoSuccessBadge, titoSuccessSpeechBubbleDesktop, titoSuccessSpeechBubbleMobile]): BookingModalImages => ({
       headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo,
       iconComment, iconDate, iconEmail, iconName, iconPhone, iconTime,
       littleWhiteStar, priceTag, redStar,
+      titoSuccessBadge, titoSuccessSpeechBubbleDesktop, titoSuccessSpeechBubbleMobile,
     })),
   ])
 
@@ -122,6 +126,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     tourTimeEnd: bookingTab?.tourTimeEnd ?? '17:00',
     airportTimeStart: bookingTab?.airportTimeStart ?? '08:00',
     airportTimeEnd: bookingTab?.airportTimeEnd ?? '20:00',
+  }
+  const successContent: BookingSuccessContent = {
+    line1: bookingTab?.successLine1 ?? 'The Marshal of Yugoslavia is pleased to confirm receipt of your booking request.',
+    line2: bookingTab?.successLine2 ?? "We'll be in touch via email to firm up the details. Thank you for booking with Yugotour! <i>Ajmo!</i>",
   }
   const faviconMedia = siteSettings.site?.favicon
   const faviconUrl =
@@ -156,7 +164,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body suppressHydrationWarning>
-        <BookingModalProvider tours={allTours} textureUrl={menuTextureUrl} images={bookingImages} timeSettings={timeSettings}>
+        <BookingModalProvider tours={allTours} textureUrl={menuTextureUrl} images={bookingImages} timeSettings={timeSettings} successContent={successContent}>
           <Providers>
             <AdminBar
               adminBarProps={{

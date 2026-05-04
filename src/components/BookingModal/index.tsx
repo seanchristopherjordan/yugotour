@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import { Turnstile } from '@marsidev/react-turnstile'
 import type { TurnstileInstance } from '@marsidev/react-turnstile'
 import { useBookingModal } from '@/providers/BookingModal'
@@ -427,7 +428,7 @@ function hasUserInput(state: FormState): boolean {
 }
 
 export function BookingModal() {
-  const { isOpen, close, tours, initialOpts, textureUrl, images, timeSettings } = useBookingModal()
+  const { isOpen, close, tours, initialOpts, textureUrl, images, timeSettings, successContent } = useBookingModal()
   const [formState, dispatch] = useReducer(formReducer, defaultForm)
   const [pendingCity, setPendingCity] = useState<'belgrade' | 'sarajevo' | null>(null)
   const [pendingTourId, setPendingTourId] = useState<string | null>(null)
@@ -435,6 +436,11 @@ export function BookingModal() {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const turnstileRef = useRef<TurnstileInstance>(null)
+  const [phase, setPhase] = useState<'form' | 'success'>('form')
+  const [showBadge, setShowBadge] = useState(false)
+  const [showBubble, setShowBubble] = useState(false)
+  const [showText, setShowText] = useState(false)
+  const successTimers = useRef<ReturnType<typeof setTimeout>[]>([])
   const tourTimeOpts = useMemo(
     () => generateTimeOpts(parseHour(timeSettings.tourTimeStart, 9), parseHour(timeSettings.tourTimeEnd, 17)),
     [timeSettings.tourTimeStart, timeSettings.tourTimeEnd],
@@ -445,6 +451,9 @@ export function BookingModal() {
   )
 
   useEffect(() => {
+    // Clear any in-flight success timers whenever the modal opens or closes
+    successTimers.current.forEach(clearTimeout)
+    successTimers.current = []
     if (!isOpen) return
     const init: Partial<FormState> = {}
     if (initialOpts.city) init.city = initialOpts.city
@@ -456,6 +465,10 @@ export function BookingModal() {
     setSubmitError(null)
     setTurnstileToken(null)
     turnstileRef.current?.reset()
+    setPhase('form')
+    setShowBadge(false)
+    setShowBubble(false)
+    setShowText(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
@@ -525,14 +538,28 @@ export function BookingModal() {
           turnstileToken,
         }),
       })
-      if (!res.ok) throw new Error('Failed')
-      close()
-    } catch {
-      setSubmitError('Something went wrong. Please try again.')
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({})) as { error?: string }
+        if (data.error === 'Security check failed') {
+          setTurnstileToken(null)
+          turnstileRef.current?.reset()
+          setSubmitError('Security verification failed. Please wait a moment and try again.')
+          return
+        }
+        throw new Error(data.error ?? 'Submission failed')
+      }
+      // ── Success: stagger the confirmation screen in ────────────────
+      setPhase('success')
+      const t1 = setTimeout(() => setShowBadge(true), 800)   // 500ms fade-out + 300ms pause
+      const t2 = setTimeout(() => setShowBubble(true), 1300) // badge animation = 500ms
+      const t3 = setTimeout(() => setShowText(true), 1800)   // bubble animation = 500ms
+      successTimers.current = [t1, t2, t3]
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
-  }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, close, turnstileToken])
+  }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, turnstileToken])
 
   // Shared select styles for tour + guests dropdowns
   const selectCls = [
@@ -578,8 +605,15 @@ export function BookingModal() {
       {/* 8px gap below close bar before scrollable content starts */}
       <div className="flex-none" style={{ height: '8px' }} aria-hidden="true" />
 
-      {/* Scrollable area — starts strictly below the close button */}
-      <div className="flex-1 min-h-0 overflow-y-auto booking-modal-body">
+      {/* Scrollable form area — fades out when success screen activates */}
+      <div
+        className="flex-1 min-h-0 overflow-y-auto booking-modal-body"
+        style={{
+          opacity: phase === 'success' ? 0 : 1,
+          transition: 'opacity 500ms ease',
+          pointerEvents: phase === 'success' ? 'none' : undefined,
+        }}
+      >
 
         {/* All content centered at form width */}
         <div className="flex flex-col items-center px-4 pt-2 pb-16">
@@ -1010,23 +1044,98 @@ export function BookingModal() {
                   textTransform: 'uppercase',
                 }}
               >
-                {images.littleWhiteStar
-                  // eslint-disable-next-line @next/next/no-img-element
-                  ? <img src={images.littleWhiteStar} width="16" height="16" alt="" aria-hidden="true" />
-                  : <span aria-hidden="true">★</span>
-                }
-                <span>{isSubmitting ? 'Submitting…' : 'Book My Yugotour!'}</span>
-                {images.littleWhiteStar
-                  // eslint-disable-next-line @next/next/no-img-element
-                  ? <img src={images.littleWhiteStar} width="16" height="16" alt="" aria-hidden="true" />
-                  : <span aria-hidden="true">★</span>
-                }
+                {isSubmitting ? (
+                  <div className="booking-spinner" />
+                ) : (
+                  <>
+                    {images.littleWhiteStar
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img src={images.littleWhiteStar} width="16" height="16" alt="" aria-hidden="true" />
+                      : <span aria-hidden="true">★</span>
+                    }
+                    <span>Book My Yugotour!</span>
+                    {images.littleWhiteStar
+                      // eslint-disable-next-line @next/next/no-img-element
+                      ? <img src={images.littleWhiteStar} width="16" height="16" alt="" aria-hidden="true" />
+                      : <span aria-hidden="true">★</span>
+                    }
+                  </>
+                )}
               </button>
           </div>
           </DrawerPanel>
 
         </div>
       </div>
+
+      {/* ── Success overlay ─────────────────────────────────────────── */}
+      {phase === 'success' && (
+        <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 2, pointerEvents: 'none' }}>
+
+          {/* Tito badge — wrapper div holds CSS position; motion.img handles animation only */}
+          {showBadge && images.titoSuccessBadge && (
+            <div className="success-badge">
+              <motion.img
+                src={images.titoSuccessBadge}
+                alt=""
+                aria-hidden="true"
+                style={{ height: '100%', width: 'auto', display: 'block' }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: [0.8, 1.1, 1.0], opacity: [0, 1, 1] }}
+                transition={{ duration: 0.5, times: [0, 0.6, 1], ease: 'easeOut' }}
+              />
+            </div>
+          )}
+
+          {/* Speech bubble — wrapper div holds CSS position; motion.img handles animation only */}
+          {showBubble && (
+            <>
+              {images.titoSuccessSpeechBubbleDesktop && (
+                <div className="success-bubble success-bubble--desktop">
+                  <motion.img
+                    src={images.titoSuccessSpeechBubbleDesktop}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: [0.8, 1.1, 1.0], opacity: [0, 1, 1] }}
+                    transition={{ duration: 0.5, times: [0, 0.6, 1], ease: 'easeOut' }}
+                  />
+                </div>
+              )}
+              {images.titoSuccessSpeechBubbleMobile && (
+                <div className="success-bubble success-bubble--mobile">
+                  <motion.img
+                    src={images.titoSuccessSpeechBubbleMobile}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ width: '100%', height: 'auto', display: 'block' }}
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: [0.8, 1.1, 1.0], opacity: [0, 1, 1] }}
+                    transition={{ duration: 0.5, times: [0, 0.6, 1], ease: 'easeOut' }}
+                  />
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Confirmation text — wrapper div holds CSS position; motion.div handles animation only */}
+          {showText && (
+            <div className="success-text-container">
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+              >
+                <p className="success-text-line">{successContent.line1}</p>
+                {/* eslint-disable-next-line react/no-danger */}
+                <p className="success-text-line" dangerouslySetInnerHTML={{ __html: successContent.line2 }} />
+              </motion.div>
+            </div>
+          )}
+
+        </div>
+      )}
 
       {/* Confirmation dialogs */}
       {pendingCity && (

@@ -2139,6 +2139,14 @@ export interface SiteSetting {
      * 24h HH:MM format. Last option in airport transfer time dropdowns.
      */
     airportTimeEnd?: string | null;
+    /**
+     * First paragraph shown on the booking success screen.
+     */
+    successLine1?: string | null;
+    /**
+     * Second paragraph on the success screen. Basic HTML tags like <i> are supported.
+     */
+    successLine2?: string | null;
   };
   site?: {
     /**
@@ -2276,6 +2284,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         tourTimeEnd?: T;
         airportTimeStart?: T;
         airportTimeEnd?: T;
+        successLine1?: T;
+        successLine2?: T;
       };
   site?:
     | T

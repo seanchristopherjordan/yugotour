@@ -4,7 +4,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react'
 import { BookingModal } from '@/components/BookingModal'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
 
-export type { BookingTour }
+export type { BookingTour, BookingSuccessContent }
 
 export interface OpenBookingOpts {
   payloadId?: string
@@ -26,6 +26,14 @@ export interface BookingModalImages {
   littleWhiteStar: string | null
   priceTag: string | null
   redStar: string | null
+  titoSuccessBadge: string | null
+  titoSuccessSpeechBubbleDesktop: string | null
+  titoSuccessSpeechBubbleMobile: string | null
+}
+
+export interface BookingSuccessContent {
+  line1: string
+  line2: string
 }
 
 export interface BookingTimeSettings {
@@ -40,6 +48,12 @@ const DEFAULT_IMAGES: BookingModalImages = {
   cityBelgrade: null, citySarajevo: null,
   iconComment: null, iconDate: null, iconEmail: null, iconName: null, iconPhone: null,
   iconTime: null, littleWhiteStar: null, priceTag: null, redStar: null,
+  titoSuccessBadge: null, titoSuccessSpeechBubbleDesktop: null, titoSuccessSpeechBubbleMobile: null,
+}
+
+const DEFAULT_SUCCESS: BookingSuccessContent = {
+  line1: 'The Marshal of Yugoslavia is pleased to confirm receipt of your booking request.',
+  line2: "We'll be in touch via email to firm up the details. Thank you for booking with Yugotour! <i>Ajmo!</i>",
 }
 
 const DEFAULT_TIME_SETTINGS: BookingTimeSettings = {
@@ -56,6 +70,7 @@ interface BookingModalContextValue {
   textureUrl: string | null
   images: BookingModalImages
   timeSettings: BookingTimeSettings
+  successContent: BookingSuccessContent
 }
 
 const BookingModalContext = createContext<BookingModalContextValue | null>(null)
@@ -65,12 +80,14 @@ export function BookingModalProvider({
   textureUrl,
   images = DEFAULT_IMAGES,
   timeSettings = DEFAULT_TIME_SETTINGS,
+  successContent = DEFAULT_SUCCESS,
   children,
 }: {
   tours: BookingTour[]
   textureUrl: string | null
   images?: BookingModalImages
   timeSettings?: BookingTimeSettings
+  successContent?: BookingSuccessContent
   children: React.ReactNode
 }) {
   const [isOpen, setIsOpen] = useState(false)
@@ -84,7 +101,7 @@ export function BookingModalProvider({
   const close = useCallback(() => setIsOpen(false), [])
 
   return (
-    <BookingModalContext.Provider value={{ isOpen, open, close, tours, initialOpts, textureUrl, images, timeSettings }}>
+    <BookingModalContext.Provider value={{ isOpen, open, close, tours, initialOpts, textureUrl, images, timeSettings, successContent }}>
       {children}
       <BookingModal />
     </BookingModalContext.Provider>
