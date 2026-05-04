@@ -196,7 +196,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
                     {photoUrl && (
                       <div className="tour-step-image-wrap">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={photoUrl} alt={step.title} className="tour-step-img" />
+                        <img src={photoUrl} alt={step.title} className="tour-step-img" loading="lazy" />
                       </div>
                     )}
                   </div>

@@ -45,7 +45,7 @@ export function TourDetailHeader({
           <picture>
             {desktopUrl && <source srcSet={desktopUrl} media="(min-width: 992px)" />}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={mobileUrl ?? desktopUrl ?? ''} alt="" aria-hidden="true" />
+            <img src={mobileUrl ?? desktopUrl ?? ''} alt="" aria-hidden="true" loading="eager" fetchPriority="high" />
           </picture>
         </div>
       )}

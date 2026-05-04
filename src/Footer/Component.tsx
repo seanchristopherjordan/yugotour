@@ -70,8 +70,11 @@ export async function Footer() {
             src={stampUrl}
             alt=""
             aria-hidden="true"
+            width={360}
+            height={360}
+            loading="lazy"
             className="absolute right-0 bottom-[20px] w-[280px] min-[992px]:w-[360px] opacity-60 min-[992px]:opacity-100 pointer-events-none z-[1]"
-            style={{ transform: 'translateX(15%)' }}
+            style={{ transform: 'translateX(15%)', height: 'auto' }}
           />
         )}
 
@@ -87,7 +90,11 @@ export async function Footer() {
                   <img
                     src={footerLogoUrl}
                     alt="Yugotour"
+                    width={190}
+                    height={55}
+                    loading="lazy"
                     className="block w-[110px] min-[992px]:w-[190px]"
+                    style={{ height: 'auto' }}
                   />
                 )}
               </div>
@@ -197,6 +204,9 @@ export async function Footer() {
                   <img
                     src={qrCodeUrl}
                     alt="Google Review QR Code"
+                    width={105}
+                    height={105}
+                    loading="lazy"
                     className="hidden min-[992px]:block w-[105px] mt-[20px]"
                     style={{ mixBlendMode: 'multiply' }}
                   />
@@ -325,6 +335,9 @@ function CityReviewIcons({
               <img
                 src={tripadvisorIconUrl}
                 alt="TripAdvisor"
+                width={32}
+                height={32}
+                loading="lazy"
                 className="w-[2rem] h-auto object-contain"
               />
             ) : (

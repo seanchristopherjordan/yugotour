@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { Tour } from '@/payload-types'
 
@@ -28,11 +29,13 @@ export function TourTile({ tour }: TourTileProps) {
         {/* Image + title area */}
         <div className="tile-image-wrap">
           {thumbnailUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={thumbnailUrl}
               alt={tour.title}
+              fill
               className="tile-bg-img"
+              style={{ objectFit: 'cover', objectPosition: 'center' }}
+              sizes="(min-width: 992px) 50vw, 100vw"
             />
           ) : (
             <div className="tile-bg-img" style={{ backgroundColor: '#212121' }} />

@@ -27,8 +27,9 @@ export async function Header() {
     getMediaUrl('menu-booknow.webp'),
   ])
 
-  // Preload all megamenu images so hover states are instant on first open
+  // Preload logo (LCP candidate) and megamenu images for instant hover
   const preloadImages = [
+    logoUrl,
     menuTextureUrl,
     menuDefaultUrl,
     menuBelgradeUrl,

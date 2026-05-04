@@ -1,0 +1,57 @@
+.reviews-section-outer {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  overflow: hidden;
+}
+
+.tales-section-title {
+  font-family: var(--font-cooper);
+  color: var(--color-yugo-cream);
+  font-size: clamp(3.8rem, 6vw, 5.5rem);
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  margin-bottom: 35px;
+}
+
+/* ── JotForm widget overrides ── */
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4,
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad {
+  background: transparent !important;
+}
+
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 p,
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 span:not([class*="button"]),
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 [class*="sc-"],
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad p,
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad span:not([class*="button"]),
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad [class*="sc-"] {
+  font-family: var(--font-fakt-pro), sans-serif !important;
+  color: #212121 !important;
+  line-height: 1.4 !important;
+  font-size: 1rem !important;
+}
+
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 button[class*="Arrow"],
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 [class*="NavigationButton"],
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad button[class*="Arrow"],
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad [class*="NavigationButton"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 button[class*="Arrow"] svg,
+#JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 [class*="NavigationButton"] svg,
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad button[class*="Arrow"] svg,
+#JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad [class*="NavigationButton"] svg {
+  fill: #212121 !important;
+  opacity: 1 !important;
+}
+
+/* Restore narrower container padding so JotForm shows 3+ tiles */
+@media (min-width: 992px) {
+  .reviews-section-outer .container {
+    padding-inline: 5.5rem;
+  }
+}

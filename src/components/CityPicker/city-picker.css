@@ -1,0 +1,72 @@
+@keyframes yugo-pulse-start-big {
+  0%, 100% { transform: scale(1.08); }
+  50%       { transform: scale(1);    }
+}
+@keyframes yugo-pulse-start-small {
+  0%, 100% { transform: scale(1);    }
+  50%       { transform: scale(1.08); }
+}
+
+/* Mobile-only full-bleed helper (flag ribbon + map) */
+@media (max-width: 991px) {
+  .vw-bleed {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+  }
+}
+
+/* City sign links — animated, hover-brightens */
+.city-sign-belgrade {
+  position: absolute;
+  display: block;
+  z-index: 10;
+  width: 28%;
+  top: -5%;
+  right: 6%;
+  animation: yugo-pulse-start-big 1200ms ease-in-out infinite;
+  transition: filter 0.2s ease-in-out;
+  will-change: transform;
+}
+.city-sign-sarajevo {
+  position: absolute;
+  display: block;
+  z-index: 10;
+  width: 28%;
+  bottom: 8.5%;
+  left: 17%;
+  animation: yugo-pulse-start-small 1200ms ease-in-out infinite;
+  transition: filter 0.2s ease-in-out;
+  will-change: transform;
+}
+.city-sign-belgrade:hover,
+.city-sign-sarajevo:hover { filter: brightness(1.15); }
+
+@media (max-width: 991px) {
+  .city-sign-belgrade { width: 43%; top: -18%;  right: 2%;  }
+  .city-sign-sarajevo { width: 43%; bottom: -6%; left: 13%; }
+}
+
+.city-sign-belgrade img,
+.city-sign-sarajevo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform-origin: center center;
+}
+
+/* Partizan girl — right edge, partial bleed on mobile */
+.partizan-girl {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 23vw;
+  max-width: 400px;
+  z-index: 15;
+  pointer-events: none;
+}
+@media (max-width: 991px) {
+  .partizan-girl {
+    width: 42vw;
+    right: -6vw;
+  }
+}

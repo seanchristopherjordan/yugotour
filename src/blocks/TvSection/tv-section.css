@@ -1,0 +1,76 @@
+/* Full-bleed breakout — same pattern as .image-slider-outer */
+.tv-section-outer {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.tv-container {
+  position: relative;
+  width: 100%;
+  background-color: #000;
+  line-height: 0; /* kills bottom whitespace under the overlay image */
+}
+
+/* Video layer — absolute, beneath the WebP overlay */
+.tv-video-layer {
+  position: absolute;
+  z-index: 1;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+/* Mobile positioning — consumed from CSS vars set in Component.tsx */
+@media (max-width: 991px) {
+  .tv-video-layer {
+    top: var(--tv-mob-top);
+    left: var(--tv-mob-left);
+    width: var(--tv-mob-width);
+  }
+  .tv-video-iframe {
+    transform: scale(var(--tv-mob-scale));
+  }
+}
+
+/* Desktop positioning */
+@media (min-width: 992px) {
+  .tv-video-layer {
+    top: var(--tv-desk-top);
+    left: var(--tv-desk-left);
+    width: var(--tv-desk-width);
+  }
+  .tv-video-iframe {
+    transform: scale(var(--tv-desk-scale));
+  }
+}
+
+.tv-video-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  transform-origin: center center;
+}
+
+/* TV overlay WebP — on top, lets pointer events through to the iframe */
+.tv-overlay {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  pointer-events: none;
+}
+
+.tv-overlay img {
+  filter: contrast(1.05) brightness(0.95);
+}
+
+/* Subtle glass reflection over the entire TV */
+.tv-glass-effect {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 50%);
+  pointer-events: none;
+  z-index: 15;
+}

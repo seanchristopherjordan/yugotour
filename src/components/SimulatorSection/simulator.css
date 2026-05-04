@@ -1,0 +1,175 @@
+.yugo-simulator-module {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #212121;
+}
+
+.sim-black-bar {
+  width: 100%;
+  height: 25px;
+  background: #212121;
+  position: relative;
+  z-index: 1;
+}
+
+.sim-bg-wrap {
+  position: relative;
+  width: 100%;
+  height: 190vw;
+}
+
+@media (min-width: 992px) {
+  .sim-bg-wrap { height: 100vh; }
+}
+
+.sim-bg-picture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Background images — mobile shows mobile, desktop shows desktop */
+.sim-bg-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 991px) {
+  .sim-bg-img { object-position: center top; }
+}
+@media (min-width: 992px) {
+  .sim-bg-img { object-position: center center; }
+}
+
+.sim-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 16%;
+}
+
+@media (min-width: 992px) {
+  .sim-content { padding-bottom: 0; }
+}
+
+.sim-headline {
+  font-family: var(--font-zipper);
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.85;
+  text-align: center;
+  margin: 0;
+  text-shadow: 0 0 10px #53FEFF, 0 0 5px #53FEFF;
+  font-size: clamp(5rem, 15vw, 8rem);
+  padding: 0 0 30px;
+  white-space: normal;
+}
+
+@media (min-width: 992px) {
+  .sim-headline {
+    font-size: clamp(4rem, 6vw, 7rem);
+    padding: 0 0 40px 0;
+    white-space: nowrap;
+  }
+}
+
+.sim-car-wrap {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-top: 2px solid #53FEFF;
+  border-bottom: 2px solid #53FEFF;
+  box-shadow: 0 0 10px 5px #53FEFF;
+}
+
+@media (min-width: 992px) {
+  .sim-car-wrap {
+    width: 40%;
+    border: 2px solid #53FEFF;
+    box-shadow: 0 0 10px 0px #53FEFF, 0 0 10px 0px #53FEFF;
+  }
+}
+
+.sim-drive-video {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 72%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.sim-car-interior {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sim-steering-wrap {
+  position: absolute;
+  z-index: 3;
+  cursor: pointer;
+  bottom: 2.6%;
+  left: 10.9%;
+  width: 37.4%;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.sim-steering-wheel {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sim-sound-wrap {
+  position: absolute;
+  z-index: 3;
+  cursor: pointer;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 1%;
+  width: 12%;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+@media (min-width: 992px) {
+  .sim-sound-wrap { width: 7%; }
+}
+
+.sim-sound-btn {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 300ms ease;
+}
+
+.sim-sound-btn:hover {
+  transform: scale(1.15);
+}

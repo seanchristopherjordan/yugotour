@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 
 import { cn } from '@/utilities/ui'
@@ -20,6 +20,19 @@ import { getMediaUrl } from '@/lib/getMediaUrl'
 import { draftMode } from 'next/headers'
 
 import './globals.css'
+import '@/components/BookingModal/booking-modal.css'
+import '@/components/HeroVideo/hero-video.css'
+import '@/components/CityPicker/city-picker.css'
+import '@/blocks/ImageSlider/image-slider.css'
+import '@/blocks/TvSection/tv-section.css'
+import '@/Footer/footer.css'
+import '@/components/TourListHeader/tour-list-header.css'
+import '@/components/IntroSection/tour-intro.css'
+import '@/components/TourTile/tour-tile.css'
+import '@/components/SimulatorSection/simulator.css'
+import '@/components/TourDetailHeader/tour-detail.css'
+import '@/components/FloatingBookNow/floating-book-now.css'
+import '@/components/TalesFromTheRoad/tales.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const faktPro = localFont({
@@ -154,6 +167,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <InitTheme />
+        <link rel="preconnect" href="https://media.yugotour-assets.workers.dev" />
         {faviconUrl ? (
           <link href={faviconUrl} rel="icon" />
         ) : (
@@ -181,6 +195,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </body>
     </html>
   )
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export const metadata: Metadata = {

@@ -1,8 +1,13 @@
 'use client'
 
 import React, { createContext, useCallback, useContext, useState } from 'react'
-import { BookingModal } from '@/components/BookingModal'
+import dynamic from 'next/dynamic'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
+
+const BookingModal = dynamic(
+  () => import('@/components/BookingModal').then((m) => ({ default: m.BookingModal })),
+  { ssr: false },
+)
 
 export type { BookingTour }
 

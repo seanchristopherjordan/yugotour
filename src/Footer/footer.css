@@ -1,0 +1,48 @@
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  column-gap: 20px;
+  row-gap: 0;
+  align-items: start;
+}
+
+@media (min-width: 992px) {
+  .footer-grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    column-gap: 40px;
+    row-gap: 0;
+    padding-top: 55px;
+  }
+}
+
+/* Subgrid: each column spans header row + content row */
+.footer-col {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 2;
+}
+
+/* Header zone: items float to bottom so logo baseline = h5 baseline */
+.footer-col-header {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 1.6rem;
+}
+
+@media (min-width: 992px) {
+  .footer-col-header {
+    padding-bottom: 2.2rem;
+  }
+}
+
+/* Strip the h5 own margin — header padding handles the gap */
+.footer-col-header h5 {
+  margin-bottom: 0;
+}
+
+/* Mobile: gap between column groups (3rd+ cols are group 2 and 3) */
+@media (max-width: 991px) {
+  .footer-col:nth-child(n+3) .footer-col-header {
+    padding-top: 40px;
+  }
+}

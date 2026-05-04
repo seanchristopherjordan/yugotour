@@ -1,0 +1,83 @@
+/* FAB fallback label (shown when book-now-button.webp is not yet uploaded) */
+.book-now-fab-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: var(--color-yugo-red);
+  color: var(--color-yugo-cream);
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes fabRock {
+  0%   { transform: rotate(-6deg); }
+  50%  { transform: rotate(6deg); }
+  100% { transform: rotate(-6deg); }
+}
+
+.book-now-fab {
+  position: fixed;
+  bottom: 22px;
+  left: 22px;
+  z-index: 9990;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  animation: fabRock 7500ms ease-in-out infinite;
+  transform-origin: center center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1000ms ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+.book-now-fab.book-now-fab--scrolled {
+  opacity: 1;
+  pointer-events: auto;
+}
+.book-now-fab-inner {
+  display: block;
+  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 300ms ease;
+}
+.book-now-fab img {
+  display: block;
+  width: 122px;
+  height: auto;
+}
+@media (max-width: 991px) {
+  .book-now-fab {
+    left: 12px;
+    bottom: 11px;
+  }
+  .book-now-fab img {
+    width: 95px;
+  }
+  .book-now-fab-fallback {
+    width: 70px;
+    height: 70px;
+    font-size: 1rem;
+  }
+}
+@media (min-width: 992px) {
+  .book-now-fab:hover .book-now-fab-inner {
+    transform: scale(1.18);
+    filter: brightness(1.15);
+  }
+}
+body.modal-active .book-now-fab {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}

@@ -1,0 +1,111 @@
+.tour-intro-section {
+  position: relative;
+  padding: 50px 0 0;
+  background-color: var(--color-yugo-cream);
+  clip-path: inset(0);
+}
+
+.tour-intro-section::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  background-image: var(--tour-bg);
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  background-position: top right;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tour-intro-section.belgrade::before {
+  height: 120vw;
+  top: 5px;
+  opacity: 0.8;
+}
+
+.tour-intro-section.sarajevo::before {
+  height: 80vw;
+  top: -20px;
+  opacity: 0.8;
+}
+
+@media (max-width: 991px) {
+  .tour-intro-section.belgrade::before {
+    height: 300vw;
+    top: 0;
+    opacity: 0.6;
+  }
+
+  .tour-intro-section.sarajevo::before {
+    height: 280vw;
+    top: 0;
+    opacity: 0.6;
+  }
+}
+
+.intro-headline {
+  font-family: var(--font-tungsten);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(3.8rem, 10vw, 7.5rem);
+  line-height: 0.8;
+  letter-spacing: 0;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+  transform: rotate(-1deg);
+  transform-origin: left center;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .intro-headline { font-size: clamp(3.4rem, 9vw, 6.75rem); }
+}
+
+.intro-headline span { display: inline; }
+.intro-headline .part-black { color: var(--color-yugo-black); }
+.intro-headline .part-red { color: var(--color-yugo-red); }
+.tour-intro-section.belgrade .intro-headline .part-red { display: block; }
+
+.intro-copy-rich {
+  position: relative;
+  z-index: 10;
+}
+
+.intro-copy-rich p {
+  font-family: var(--font-fakt);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  color: var(--color-yugo-black);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+  font-size: 1.092rem;
+}
+
+@media (min-width: 400px) {
+  .intro-copy-rich p { font-size: 1.248rem; }
+}
+
+@media (min-width: 992px) {
+  .intro-copy-rich p { font-size: 1.2rem; }
+}
+
+/* ── Tour Grid ── */
+
+.tour-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  padding: 20px 0 80px;
+  position: relative;
+  z-index: 50;
+}
+
+@media (min-width: 992px) {
+  .tour-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 37px;
+  }
+}
