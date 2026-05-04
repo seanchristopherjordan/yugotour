@@ -4,7 +4,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react'
 import { BookingModal } from '@/components/BookingModal'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
 
-export type { BookingTour, BookingSuccessContent }
+export type { BookingTour }
 
 export interface OpenBookingOpts {
   payloadId?: string
