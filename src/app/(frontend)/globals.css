@@ -2403,7 +2403,7 @@ html[data-theme='light'] {
 .success-badge {
   position: absolute;
   height: 55vh;
-  width: auto;
+  width: 50vh;
   left: 50%;
   top: calc(18vh);
   transform: translateX(-50%);
@@ -2439,12 +2439,12 @@ html[data-theme='light'] {
   transform: translateX(-90%);
 }
 
-@media (min-width: 992px) {
+@media (min-width: 765px) {
   .success-bubble--desktop { display: block; }
   .success-bubble--mobile  { display: none !important; }
 }
 
-/* Mobile / tablet speech bubble (< 992px) */
+/* Mobile / tablet speech bubble (< 765px) */
 .success-bubble--mobile {
   position: absolute;
   display: block;         /* visible by default (mobile-first) */
@@ -2471,7 +2471,7 @@ html[data-theme='light'] {
   left: 50%;
   transform: translateX(-50%);
   /* ↓ EDIT width (desktop) */
-  width: min(47vh, 85vw);
+  width: min(48vh, 85vw);
   text-align: center;
   pointer-events: none;
   user-select: none;

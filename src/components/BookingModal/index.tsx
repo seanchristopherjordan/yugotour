@@ -518,6 +518,10 @@ export function BookingModal() {
     if (!valid || !selectedTour || isSubmitting || !turnstileToken) return
     setIsSubmitting(true)
     setSubmitError(null)
+    // Capture and clear token immediately — it's single-use regardless of outcome
+    const token = turnstileToken
+    setTurnstileToken(null)
+    let succeeded = false
     try {
       const extras = formState.selectedExtras.map((title) => {
         const extra = selectedTour.extras.find((e) => e.title === title)
@@ -535,29 +539,28 @@ export function BookingModal() {
           airportDirection: hasAirport ? formState.airportDirection : undefined,
           flightTime: hasAirport ? formState.flightTime : undefined,
           comments: formState.comments,
-          turnstileToken,
+          turnstileToken: token,
         }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({})) as { error?: string }
-        if (data.error === 'Security check failed') {
-          setTurnstileToken(null)
-          turnstileRef.current?.reset()
-          setSubmitError('Security verification failed. Please wait a moment and try again.')
-          return
-        }
         throw new Error(data.error ?? 'Submission failed')
       }
+      succeeded = true
       // ── Success: stagger the confirmation screen in ────────────────
       setPhase('success')
-      const t1 = setTimeout(() => setShowBadge(true), 800)   // 500ms fade-out + 300ms pause
-      const t2 = setTimeout(() => setShowBubble(true), 1300) // badge animation = 500ms
-      const t3 = setTimeout(() => setShowText(true), 1800)   // bubble animation = 500ms
+      const t1 = setTimeout(() => setShowBadge(true), 800)
+      const t2 = setTimeout(() => setShowBubble(true), 1300)
+      const t3 = setTimeout(() => setShowText(true), 1800)
       successTimers.current = [t1, t2, t3]
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
     } finally {
       setIsSubmitting(false)
+      // Always reset Turnstile after any attempt so a fresh token is ready for retries
+      if (!succeeded) {
+        turnstileRef.current?.reset()
+      }
     }
   }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, turnstileToken])
 
