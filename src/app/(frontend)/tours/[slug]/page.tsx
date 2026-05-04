@@ -249,7 +249,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const tour = await queryTourBySlug({ slug })
   if (!tour) return {}
   return {
-    title: `${tour.title} — Yugotour`,
+    title: tour.title,
     description: tour.lede ?? undefined,
     openGraph: {
       title: `${tour.title} — Yugotour`,

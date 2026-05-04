@@ -14,7 +14,7 @@ import { getSimulatorAssets } from '@/lib/getSimulatorAssets'
 import RichText from '@/components/RichText'
 
 export const metadata: Metadata = {
-  title: 'Belgrade Tours — Yugotour',
+  title: 'Belgrade Tours',
   description:
     'Explore socialist Belgrade in a vintage Yugo. Brutalist architecture, Tito history, and scars of war — all from the back seat of a Yugoslav time machine.',
 }

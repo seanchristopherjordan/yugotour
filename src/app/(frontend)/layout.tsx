@@ -185,6 +185,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: {
+    default: 'Yugotour',
+    template: '%s — Yugotour',
+  },
   referrer: 'no-referrer',
   openGraph: mergeOpenGraph(),
   twitter: {
