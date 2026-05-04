@@ -550,8 +550,8 @@ export function BookingModal() {
       // ── Success: stagger the confirmation screen in ────────────────
       setPhase('success')
       const t1 = setTimeout(() => setShowBadge(true), 800)
-      const t2 = setTimeout(() => setShowBubble(true), 1300)
-      const t3 = setTimeout(() => setShowText(true), 1800)
+      const t2 = setTimeout(() => setShowBubble(true), 1160) // starts when badge is ~60% through
+      const t3 = setTimeout(() => setShowText(true), 1520)   // starts when bubble is ~60% through
       successTimers.current = [t1, t2, t3]
     } catch (err) {
       setSubmitError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
@@ -1084,8 +1084,8 @@ export function BookingModal() {
                 aria-hidden="true"
                 style={{ height: '100%', width: 'auto', display: 'block' }}
                 initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: [0.8, 1.1, 1.0], opacity: [0, 1, 1] }}
-                transition={{ duration: 0.5, times: [0, 0.6, 1], ease: 'easeOut' }}
+                animate={{ scale: [0.8, 1.32, 1.0], opacity: [0, 1, 1] }}
+                transition={{ duration: 0.6, times: [0, 0.6, 1], ease: 'easeOut' }}
               />
             </div>
           )}
@@ -1101,8 +1101,8 @@ export function BookingModal() {
                     aria-hidden="true"
                     style={{ width: '100%', height: 'auto', display: 'block' }}
                     initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: [0.8, 1.1, 1.0], opacity: [0, 1, 1] }}
-                    transition={{ duration: 0.5, times: [0, 0.6, 1], ease: 'easeOut' }}
+                    animate={{ scale: [0.8, 1.32, 1.0], opacity: [0, 1, 1] }}
+                    transition={{ duration: 0.6, times: [0, 0.6, 1], ease: 'easeOut' }}
                   />
                 </div>
               )}
@@ -1114,8 +1114,8 @@ export function BookingModal() {
                     aria-hidden="true"
                     style={{ width: '100%', height: 'auto', display: 'block' }}
                     initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: [0.8, 1.1, 1.0], opacity: [0, 1, 1] }}
-                    transition={{ duration: 0.5, times: [0, 0.6, 1], ease: 'easeOut' }}
+                    animate={{ scale: [0.8, 1.32, 1.0], opacity: [0, 1, 1] }}
+                    transition={{ duration: 0.6, times: [0, 0.6, 1], ease: 'easeOut' }}
                   />
                 </div>
               )}
@@ -1128,7 +1128,7 @@ export function BookingModal() {
               <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
               >
                 <p className="success-text-line">{successContent.line1}</p>
                 {/* eslint-disable-next-line react/no-danger */}
