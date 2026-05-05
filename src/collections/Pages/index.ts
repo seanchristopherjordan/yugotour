@@ -10,6 +10,12 @@ import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { ImageSlider } from '../../blocks/ImageSlider/config'
 import { TvSection } from '../../blocks/TvSection/config'
 import { ReviewsSection } from '../../blocks/ReviewsSection/config'
+import { TextContainer } from '../../blocks/TextContainer/config'
+import { FullBleedParallax } from '../../blocks/FullBleedParallax/config'
+import { FullBleedStatic } from '../../blocks/FullBleedStatic/config'
+import { ImageCarouselBlock } from '../../blocks/ImageCarouselBlock/config'
+import { FAQBlock } from '../../blocks/FAQBlock/config'
+import { VideoEmbed } from '../../blocks/VideoEmbed/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -75,7 +81,22 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, ImageSlider, TvSection, ReviewsSection],
+              blocks: [
+                TextContainer,
+                FullBleedParallax,
+                FullBleedStatic,
+                ImageCarouselBlock,
+                FAQBlock,
+                VideoEmbed,
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                ImageSlider,
+                TvSection,
+                ReviewsSection,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

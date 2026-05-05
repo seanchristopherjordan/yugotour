@@ -24,6 +24,10 @@ export const hero: Field = {
           value: 'none',
         },
         {
+          label: 'Page Hero',
+          value: 'pageHero',
+        },
+        {
           label: 'High Impact',
           value: 'highImpact',
         },
@@ -66,6 +70,36 @@ export const hero: Field = {
       },
       relationTo: 'media',
       required: true,
+    },
+    // pageHero fields
+    {
+      name: 'heroHeadline',
+      type: 'text',
+      label: 'Headline',
+      admin: {
+        condition: (_, { type } = {}) => type === 'pageHero',
+        description: 'Displayed in all-caps Tungsten Compressed across the header.',
+      },
+    },
+    {
+      name: 'heroImage',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Background Image',
+      admin: {
+        condition: (_, { type } = {}) => type === 'pageHero',
+        description: 'Full-bleed background image. Landscape orientation recommended.',
+      },
+    },
+    {
+      name: 'heroImageMobile',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Background Image (Mobile)',
+      admin: {
+        condition: (_, { type } = {}) => type === 'pageHero',
+        description: 'Optional portrait crop for mobile. Falls back to the desktop image if not set.',
+      },
     },
   ],
   label: false,

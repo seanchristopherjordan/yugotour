@@ -19,6 +19,7 @@ import { Header } from './Header/config'
 import { SiteSettings } from './SiteSettings/config'
 import { HomepageIntro } from './HomepageIntro/config'
 import { TourOrder } from './TourOrder/config'
+import { FAQ } from './FAQ/config'
 import { plugins as existingPlugins } from './plugins' // Renamed to avoid conflict
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -55,7 +56,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Tours, TourListPages, Sliders, Users, Bookings],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, SiteSettings, HomepageIntro, TourOrder],
+  globals: [Header, Footer, SiteSettings, HomepageIntro, TourOrder, FAQ],
   
   // --- PLUGINS SECTION ---
   plugins: [

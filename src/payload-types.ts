@@ -123,6 +123,7 @@ export interface Config {
     'site-settings': SiteSetting;
     'homepage-intro': HomepageIntro;
     'tour-order': TourOrder;
+    faq: Faq;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
@@ -130,6 +131,7 @@ export interface Config {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'homepage-intro': HomepageIntroSelect<false> | HomepageIntroSelect<true>;
     'tour-order': TourOrderSelect<false> | TourOrderSelect<true>;
+    faq: FaqSelect<false> | FaqSelect<true>;
   };
   locale: null;
   widgets: {
@@ -173,7 +175,7 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'pageHero' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
       root: {
         type: string;
@@ -214,8 +216,26 @@ export interface Page {
         }[]
       | null;
     media?: (number | null) | Media;
+    /**
+     * Displayed in all-caps Tungsten Compressed across the header.
+     */
+    heroHeadline?: string | null;
+    /**
+     * Full-bleed background image. Landscape orientation recommended.
+     */
+    heroImage?: (number | null) | Media;
+    /**
+     * Optional portrait crop for mobile. Falls back to the desktop image if not set.
+     */
+    heroImageMobile?: (number | null) | Media;
   };
   layout: (
+    | TextContainerBlock
+    | FullBleedParallaxBlock
+    | FullBleedStaticBlock
+    | ImageCarouselBlock
+    | FAQBlock
+    | VideoEmbedBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -251,7 +271,10 @@ export interface Post {
   id: number;
   title: string;
   heroImage?: (number | null) | Media;
-  content: {
+  /**
+   * Use this OR the Layout Blocks below — not both.
+   */
+  content?: {
     root: {
       type: string;
       children: {
@@ -265,7 +288,21 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
+  /**
+   * Build richer post content using blocks. Use this OR Body above.
+   */
+  layout?:
+    | (
+        | TextContainerBlock
+        | FullBleedParallaxBlock
+        | FullBleedStaticBlock
+        | ImageCarouselBlock
+        | FAQBlock
+        | VideoEmbedBlock
+        | MediaBlock
+      )[]
+    | null;
   relatedPosts?: (number | Post)[] | null;
   categories?: (number | Category)[] | null;
   meta?: {
@@ -414,6 +451,134 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextContainerBlock".
+ */
+export interface TextContainerBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  image?: {
+    media?: (number | null) | Media;
+    position?: ('none' | 'left' | 'right' | 'full') | null;
+    caption?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'textContainer';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FullBleedParallaxBlock".
+ */
+export interface FullBleedParallaxBlock {
+  /**
+   * Landscape image recommended. Will scroll with a parallax effect.
+   */
+  image: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'fullBleedParallax';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FullBleedStaticBlock".
+ */
+export interface FullBleedStaticBlock {
+  image: number | Media;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'fullBleedStatic';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageCarouselBlock".
+ */
+export interface ImageCarouselBlock {
+  /**
+   * Select a pre-configured slider from the Sliders collection.
+   */
+  slider: number | Slider;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageCarousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sliders".
+ */
+export interface Slider {
+  id: number;
+  /**
+   * Internal name (e.g. "Homepage Slider", "Belgrade Slider")
+   */
+  name: string;
+  /**
+   * Shown on mobile (< 992 px). Portrait orientation recommended (700 × 1100 px).
+   */
+  mobileImages?: (number | Media)[] | null;
+  /**
+   * Shown on desktop (≥ 992 px). Landscape orientation recommended (1200 × 750 px).
+   */
+  desktopImages?: (number | Media)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  /**
+   * Internal label only — not shown on the frontend.
+   */
+  label?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock".
+ */
+export interface VideoEmbedBlock {
+  /**
+   * Paste a YouTube video URL (e.g. https://www.youtube.com/watch?v=abc123)
+   */
+  youtubeUrl: string;
+  /**
+   * On mobile, videos are always full-width regardless of this setting.
+   */
+  position?: ('full' | 'left' | 'right') | null;
+  caption?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaBlock".
+ */
+export interface MediaBlock {
+  media: number | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -559,16 +724,6 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "MediaBlock".
- */
-export interface MediaBlock {
-  media: number | Media;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'mediaBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1014,27 +1169,6 @@ export interface TourListPage {
   createdAt: string;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sliders".
- */
-export interface Slider {
-  id: number;
-  /**
-   * Internal name (e.g. "Homepage Slider", "Belgrade Slider")
-   */
-  name: string;
-  /**
-   * Shown on mobile (< 992 px). Portrait orientation recommended (700 × 1100 px).
-   */
-  mobileImages?: (number | Media)[] | null;
-  /**
-   * Shown on desktop (≥ 992 px). Landscape orientation recommended (1200 × 750 px).
-   */
-  desktopImages?: (number | Media)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * Incoming tour booking requests. Use the city column to filter by destination.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1381,10 +1515,19 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        heroHeadline?: T;
+        heroImage?: T;
+        heroImageMobile?: T;
       };
   layout?:
     | T
     | {
+        textContainer?: T | TextContainerBlockSelect<T>;
+        fullBleedParallax?: T | FullBleedParallaxBlockSelect<T>;
+        fullBleedStatic?: T | FullBleedStaticBlockSelect<T>;
+        imageCarousel?: T | ImageCarouselBlockSelect<T>;
+        faqBlock?: T | FAQBlockSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1407,6 +1550,70 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextContainerBlock_select".
+ */
+export interface TextContainerBlockSelect<T extends boolean = true> {
+  content?: T;
+  image?:
+    | T
+    | {
+        media?: T;
+        position?: T;
+        caption?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FullBleedParallaxBlock_select".
+ */
+export interface FullBleedParallaxBlockSelect<T extends boolean = true> {
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FullBleedStaticBlock_select".
+ */
+export interface FullBleedStaticBlockSelect<T extends boolean = true> {
+  image?: T;
+  caption?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageCarouselBlock_select".
+ */
+export interface ImageCarouselBlockSelect<T extends boolean = true> {
+  slider?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  label?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock_select".
+ */
+export interface VideoEmbedBlockSelect<T extends boolean = true> {
+  youtubeUrl?: T;
+  position?: T;
+  caption?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1532,6 +1739,17 @@ export interface PostsSelect<T extends boolean = true> {
   title?: T;
   heroImage?: T;
   content?: T;
+  layout?:
+    | T
+    | {
+        textContainer?: T | TextContainerBlockSelect<T>;
+        fullBleedParallax?: T | FullBleedParallaxBlockSelect<T>;
+        fullBleedStatic?: T | FullBleedStaticBlockSelect<T>;
+        imageCarousel?: T | ImageCarouselBlockSelect<T>;
+        faqBlock?: T | FAQBlockSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockSelect<T>;
+        mediaBlock?: T | MediaBlockSelect<T>;
+      };
   relatedPosts?: T;
   categories?: T;
   meta?:
@@ -2267,6 +2485,36 @@ export interface TourOrder {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq".
+ */
+export interface Faq {
+  id: number;
+  items?:
+    | {
+        question: string;
+        answer?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2398,6 +2646,22 @@ export interface TourOrderSelect<T extends boolean = true> {
     | T
     | {
         tour?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq_select".
+ */
+export interface FaqSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
         id?: T;
       };
   updatedAt?: T;

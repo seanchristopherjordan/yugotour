@@ -10,14 +10,14 @@ import 'swiper/css/pagination'
 
 export interface ImageSliderBlockProps {
   blockType: 'imageSlider'
-  mobileImages?: (string | Media)[] | null
-  desktopImages?: (string | Media)[] | null
+  mobileImages?: (string | number | Media)[] | null
+  desktopImages?: (string | number | Media)[] | null
   label?: string | null
 }
 
-function resolveMedia(images?: (string | Media)[] | null): Media[] {
+function resolveMedia(images?: (string | number | Media)[] | null): Media[] {
   if (!images) return []
-  return images.filter((img): img is Media => typeof img !== 'string' && img !== null)
+  return images.filter((img): img is Media => typeof img === 'object' && img !== null)
 }
 
 export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlockProps) {

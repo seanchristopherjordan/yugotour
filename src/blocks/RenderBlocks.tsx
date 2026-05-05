@@ -10,6 +10,12 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
 import { TvSectionBlock } from '@/blocks/TvSection/Component'
 import { ReviewsSectionBlock } from '@/blocks/ReviewsSection/Component'
+import { TextContainerBlock } from '@/blocks/TextContainer/Component'
+import { FullBleedParallaxBlock } from '@/blocks/FullBleedParallax/Component'
+import { FullBleedStaticBlock } from '@/blocks/FullBleedStatic/Component'
+import { ImageCarouselBlockComponent } from '@/blocks/ImageCarouselBlock/Component'
+import { FAQBlockComponent } from '@/blocks/FAQBlock/Component'
+import { VideoEmbedBlock } from '@/blocks/VideoEmbed/Component'
 
 const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => ({ default: m.FormBlock })))
 
@@ -22,6 +28,12 @@ const blockComponents = {
   imageSlider: ImageSliderBlock,
   tvSection: TvSectionBlock,
   reviewsSection: ReviewsSectionBlock,
+  textContainer: TextContainerBlock,
+  fullBleedParallax: FullBleedParallaxBlock,
+  fullBleedStatic: FullBleedStaticBlock,
+  imageCarousel: ImageCarouselBlockComponent,
+  faqBlock: FAQBlockComponent,
+  videoEmbed: VideoEmbedBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -41,7 +53,7 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
-              const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection'])
+              const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection', 'fullBleedParallax', 'fullBleedStatic', 'imageCarousel'])
               const isFullBleed = fullBleedTypes.has(blockType)
               const followsFullBleed = index > 0 && fullBleedTypes.has(blocks[index - 1]?.blockType ?? '')
               const wrapperClass = isFullBleed ? '' : followsFullBleed ? 'mb-16' : 'my-16'

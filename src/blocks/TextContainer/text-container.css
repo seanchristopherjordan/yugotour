@@ -1,0 +1,105 @@
+.text-container-outer {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Body text */
+.text-container-rich p {
+  font-family: var(--font-fakt);
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: var(--color-yugo-black);
+  margin-bottom: 1.2rem;
+}
+
+.text-container-rich p:last-child {
+  margin-bottom: 0;
+}
+
+/* H2 headings */
+.text-container-rich h2 {
+  font-family: var(--font-grotesk);
+  font-weight: 600;
+  color: var(--color-yugo-blue);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.text-container-rich h2:first-child {
+  margin-top: 0;
+}
+
+/* Links */
+.text-container-rich a {
+  color: var(--color-yugo-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.text-container-rich a:hover {
+  color: var(--color-yugo-red);
+}
+
+/* Inline image — float variants */
+.text-container-figure {
+  margin: 0;
+}
+
+.text-container-figure--left {
+  float: left;
+  width: 42%;
+  margin-right: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.text-container-figure--right {
+  float: right;
+  width: 42%;
+  margin-left: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.text-container-figure--full {
+  width: 100%;
+  margin-top: 1.8rem;
+  clear: both;
+}
+
+.text-container-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.text-container-caption {
+  font-family: var(--font-fakt);
+  font-size: 0.82rem;
+  color: var(--color-yugo-black);
+  opacity: 0.55;
+  margin-top: 0.4rem;
+  font-style: italic;
+}
+
+.text-container-clearfix {
+  clear: both;
+}
+
+/* Mobile: always full width, no float */
+@media (max-width: 991px) {
+  .text-container-figure--left,
+  .text-container-figure--right {
+    float: none;
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .text-container-rich p {
+    font-size: 1.092rem;
+  }
+}

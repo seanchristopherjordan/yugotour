@@ -14,6 +14,12 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
 import { Code } from '../../blocks/Code/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { TextContainer } from '../../blocks/TextContainer/config'
+import { FullBleedParallax } from '../../blocks/FullBleedParallax/config'
+import { FullBleedStatic } from '../../blocks/FullBleedStatic/config'
+import { ImageCarouselBlock } from '../../blocks/ImageCarouselBlock/config'
+import { FAQBlock } from '../../blocks/FAQBlock/config'
+import { VideoEmbed } from '../../blocks/VideoEmbed/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
 import { revalidateDelete, revalidatePost } from './hooks/revalidatePost'
@@ -96,8 +102,28 @@ export const Posts: CollectionConfig<'posts'> = {
                   ]
                 },
               }),
-              label: false,
-              required: true,
+              label: 'Body (single rich-text)',
+              admin: {
+                description: 'Use this OR the Layout Blocks below — not both.',
+              },
+            },
+            {
+              name: 'layout',
+              type: 'blocks',
+              label: 'Layout Blocks',
+              blocks: [
+                TextContainer,
+                FullBleedParallax,
+                FullBleedStatic,
+                ImageCarouselBlock,
+                FAQBlock,
+                VideoEmbed,
+                MediaBlock,
+              ],
+              admin: {
+                initCollapsed: true,
+                description: 'Build richer post content using blocks. Use this OR Body above.',
+              },
             },
           ],
           label: 'Content',
