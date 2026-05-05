@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { anyone } from '../../access/anyone'
+import { sendBookingEmails } from './hooks/sendBookingEmails'
 
 export const Bookings: CollectionConfig = {
   slug: 'bookings',
@@ -123,4 +124,7 @@ export const Bookings: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    afterChange: [sendBookingEmails],
+  },
 }

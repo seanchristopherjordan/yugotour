@@ -1,4 +1,5 @@
 import { s3Storage } from '@payloadcms/storage-s3'
+// import { resendAdapter } from '@payloadcms/email-resend'  // TODO: uncomment when DNS is live
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import sharp from 'sharp'
 import path from 'path'
@@ -7,6 +8,8 @@ import { fileURLToPath } from 'url'
 
 import { Bookings } from './collections/Bookings'
 import { Categories } from './collections/Categories'
+import { ContactMessages } from './collections/ContactMessages'
+import { EmailTemplates } from './collections/EmailTemplates'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
@@ -23,6 +26,7 @@ import { FAQ } from './FAQ/config'
 import { plugins as existingPlugins } from './plugins' // Renamed to avoid conflict
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { seedEmailTemplates } from './seed/emailTemplates'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -48,13 +52,18 @@ export default buildConfig({
       ],
     },
   },
+  // email: resendAdapter({            // TODO: uncomment when DNS is live
+  //   defaultFromAddress: 'noreply@yugotour.com',
+  //   defaultFromName: 'Yugotour',
+  //   apiKey: process.env.RESEND_API_KEY ?? '',
+  // }),
   editor: defaultLexical,
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Tours, TourListPages, Sliders, Users, Bookings],
+  collections: [Pages, Posts, Media, Categories, Tours, TourListPages, Sliders, Users, Bookings, ContactMessages, EmailTemplates],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer, SiteSettings, HomepageIntro, TourOrder, FAQ],
   
@@ -87,6 +96,9 @@ export default buildConfig({
     }),
   ],
   
+  onInit: async (payload) => {
+    await seedEmailTemplates(payload)
+  },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
