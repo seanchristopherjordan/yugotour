@@ -1,7 +1,7 @@
 'use client'
 
 import { animate, motion, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion'
-import { useEffect, useLayoutEffect, useRef, useCallback } from 'react'
+import { useEffect, useLayoutEffect, useRef, useCallback, useState } from 'react'
 
 export interface HeroVideoProps {
   videoUrl: string | null
@@ -14,21 +14,49 @@ export interface HeroVideoProps {
 export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMobileUrl, logoUrl }: HeroVideoProps) {
   const { scrollY } = useScroll()
   const logoY = useMotionValue(0)
+  const logoOpacity = useMotionValue(0)
+  const [flickering, setFlickering] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const video = videoRef.current
-    if (!video || (!videoUrl && !mobileVideoUrl)) return
-    const tryPlay = () => { if (video.paused) video.play().catch(() => {}) }
-    video.addEventListener('loadeddata', tryPlay, { once: true })
-    video.addEventListener('canplay', tryPlay, { once: true })
-    tryPlay()
-    return () => {
-      video.removeEventListener('loadeddata', tryPlay)
-      video.removeEventListener('canplay', tryPlay)
+    if (!video || (!videoUrl && !mobileVideoUrl)) {
+      animate(logoOpacity, 1, { duration: 0 })
+      return
     }
-  }, [videoUrl, mobileVideoUrl])
+
+    const startVideo = () => {
+      video.play().catch(() => {})
+      setFlickering(true)
+    }
+
+    const isCached = video.readyState >= 3
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    if (isCached) {
+      timers.push(setTimeout(() => {
+        animate(logoOpacity, 1, { duration: 0.3, ease: 'easeIn' })
+        startVideo()
+      }, 500))
+    } else {
+      timers.push(setTimeout(() => {
+        animate(logoOpacity, 1, { duration: 0.7, ease: 'easeIn' })
+      }, 1000))
+      timers.push(setTimeout(() => {
+        if (video.readyState >= 3) {
+          startVideo()
+        } else {
+          video.addEventListener('canplay', startVideo, { once: true })
+        }
+      }, 2200))
+    }
+
+    return () => {
+      timers.forEach(clearTimeout)
+      video.removeEventListener('canplay', startVideo)
+    }
+  }, [videoUrl, mobileVideoUrl, logoOpacity])
 
   const scrollToIntro = useCallback(() => {
     const target = document.getElementById('intro-section')
@@ -100,7 +128,6 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
         {(videoUrl || mobileVideoUrl) ? (
           <video
             ref={videoRef}
-            autoPlay
             muted
             loop
             playsInline
@@ -131,13 +158,13 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
       {logoUrl && (
         <motion.div
           className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
-          style={{ y: logoY, willChange: 'transform' }}
+          style={{ y: logoY, opacity: logoOpacity, willChange: 'transform' }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={logoUrl}
             alt="YugoTour"
-            className="yugo-logo-flicker h-auto"
+            className={`yugo-logo-base h-auto${flickering ? ' yugo-logo-flicker' : ''}`}
             style={{ mixBlendMode: 'screen' }}
           />
         </motion.div>

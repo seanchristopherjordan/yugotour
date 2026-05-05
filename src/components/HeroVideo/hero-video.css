@@ -33,18 +33,28 @@
   100% { transform: translate(0, 0); }
 }
 
-.yugo-logo-flicker {
+/* Sizing, filter and opacity — applied in both the static and flickering phases */
+.yugo-logo-base {
   width: 80vw;
   filter: blur(0.7px) brightness(1.1) drop-shadow(0 0 6px rgba(252, 249, 235, 0.4));
   opacity: 0.8;
   will-change: filter, opacity, transform;
+}
+
+@media (min-width: 992px) {
+  .yugo-logo-base {
+    width: 35vw;
+    filter: blur(0.8px) brightness(1.04) drop-shadow(0 0 4px rgba(252, 249, 235, 0.3));
+  }
+}
+
+/* Flicker + jitter animations — added only once the video starts playing */
+.yugo-logo-flicker {
   animation: yugo-flicker 0.15s infinite, yugo-jitter 0.2s infinite;
 }
 
 @media (min-width: 992px) {
   .yugo-logo-flicker {
-    width: 35vw;
-    filter: blur(0.8px) brightness(1.04) drop-shadow(0 0 4px rgba(252, 249, 235, 0.3));
     animation: yugo-flicker 0.15s infinite, yugo-jitter 0.3s infinite;
   }
 }
