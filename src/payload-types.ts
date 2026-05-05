@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     tours: Tour;
     'tour-list-pages': TourListPage;
+    sliders: Slider;
     users: User;
     bookings: Booking;
     redirects: Redirect;
@@ -98,6 +99,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     tours: ToursSelect<false> | ToursSelect<true>;
     'tour-list-pages': TourListPagesSelect<false> | TourListPagesSelect<true>;
+    sliders: SlidersSelect<false> | SlidersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     bookings: BookingsSelect<false> | BookingsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -1003,15 +1005,32 @@ export interface TourListPage {
    */
   backgroundImage?: (number | null) | Media;
   /**
+   * Select the slider to display on this page. Manage slider images in the Sliders collection.
+   */
+  slider?: (number | null) | Slider;
+  showTales?: boolean | null;
+  showSimulator?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sliders".
+ */
+export interface Slider {
+  id: number;
+  /**
+   * Internal name (e.g. "Homepage Slider", "Belgrade Slider")
+   */
+  name: string;
+  /**
    * Shown on mobile (< 992 px). Portrait orientation recommended (700 × 1100 px).
    */
-  carouselMobileImages?: (number | Media)[] | null;
+  mobileImages?: (number | Media)[] | null;
   /**
    * Shown on desktop (≥ 992 px). Landscape orientation recommended (1200 × 750 px).
    */
-  carouselDesktopImages?: (number | Media)[] | null;
-  showTales?: boolean | null;
-  showSimulator?: boolean | null;
+  desktopImages?: (number | Media)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1260,6 +1279,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tour-list-pages';
         value: number | TourListPage;
+      } | null)
+    | ({
+        relationTo: 'sliders';
+        value: number | Slider;
       } | null)
     | ({
         relationTo: 'users';
@@ -1704,10 +1727,20 @@ export interface TourListPagesSelect<T extends boolean = true> {
   layer3Mobile?: T;
   layer4Mobile?: T;
   backgroundImage?: T;
-  carouselMobileImages?: T;
-  carouselDesktopImages?: T;
+  slider?: T;
   showTales?: T;
   showSimulator?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sliders_select".
+ */
+export interface SlidersSelect<T extends boolean = true> {
+  name?: T;
+  mobileImages?: T;
+  desktopImages?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2170,6 +2203,10 @@ export interface SiteSetting {
      */
     heroCoverMobile?: (number | null) | Media;
     /**
+     * The image slider displayed on the homepage. Manage slides in the Sliders collection.
+     */
+    homepageSlider?: (number | null) | Slider;
+    /**
      * The video that plays inside the vintage TV on the homepage.
      */
     youtubeVideoUrl?: string | null;
@@ -2311,6 +2348,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         heroVideoMobile?: T;
         heroCoverDesktop?: T;
         heroCoverMobile?: T;
+        homepageSlider?: T;
         youtubeVideoUrl?: T;
       };
   updatedAt?: T;

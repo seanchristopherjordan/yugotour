@@ -184,6 +184,15 @@ export const SiteSettings: GlobalConfig = {
               },
             },
             {
+              name: 'homepageSlider',
+              type: 'relationship',
+              relationTo: 'sliders',
+              label: 'Homepage Slider',
+              admin: {
+                description: 'The image slider displayed on the homepage. Manage slides in the Sliders collection.',
+              },
+            },
+            {
               name: 'youtubeVideoUrl',
               type: 'text',
               label: 'Homepage TV — YouTube URL',

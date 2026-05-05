@@ -38,9 +38,15 @@ function resolveMediaDesktopUrl(field: number | Media | null | undefined): strin
   return doc.sizes?.xlarge?.url ?? doc.sizes?.large?.url ?? doc.url ?? null
 }
 
-function resolveMediaList(field: unknown): Media[] {
-  if (!Array.isArray(field)) return []
-  return field.filter((img): img is Media => typeof img !== 'number' && img !== null)
+type SliderDoc = {
+  id: number
+  mobileImages?: (number | Media)[] | null
+  desktopImages?: (number | Media)[] | null
+}
+
+function resolveSliderImages(images?: (number | Media)[] | null): Media[] {
+  if (!images) return []
+  return images.filter((img): img is Media => typeof img !== 'number' && img !== null)
 }
 
 const FALLBACK_HEADLINE_BLACK =
@@ -111,15 +117,15 @@ export default async function SarajevoToursPage() {
     '/tour-headers/sarajevo-list-page-background.webp'
 
   const p = page as typeof page & {
-    carouselMobileImages?: Media[] | null
-    carouselDesktopImages?: Media[] | null
+    slider?: number | SliderDoc | null
     showTales?: boolean | null
     showSimulator?: boolean | null
   }
 
-  const hasCarousel =
-    (resolveMediaList(p?.carouselMobileImages).length > 0) ||
-    (resolveMediaList(p?.carouselDesktopImages).length > 0)
+  const sliderDoc  = p?.slider && typeof p.slider === 'object' ? (p.slider as SliderDoc) : null
+  const sliderMobile  = resolveSliderImages(sliderDoc?.mobileImages)
+  const sliderDesktop = resolveSliderImages(sliderDoc?.desktopImages)
+  const hasSlider     = sliderMobile.length > 0 || sliderDesktop.length > 0
 
   const showTales    = p?.showTales    !== false
   const showSim      = p?.showSimulator !== false
@@ -177,11 +183,11 @@ export default async function SarajevoToursPage() {
         </div>
       </section>
 
-      {hasCarousel && (
+      {hasSlider && (
         <ImageSliderBlock
           blockType="imageSlider"
-          mobileImages={resolveMediaList(p?.carouselMobileImages)}
-          desktopImages={resolveMediaList(p?.carouselDesktopImages)}
+          mobileImages={sliderMobile}
+          desktopImages={sliderDesktop}
         />
       )}
 
