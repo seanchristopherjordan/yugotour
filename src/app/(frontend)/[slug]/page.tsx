@@ -65,9 +65,13 @@ export default async function Page({ params: paramsPromise }: Args) {
   }
 
   const { hero, layout } = page
+  const isPageHero = (hero as { type?: string })?.type === 'pageHero'
 
   return (
-    <article className="pt-16 pb-24">
+    <article
+      className={isPageHero ? 'pb-24' : 'pt-16 pb-24'}
+      style={{ backgroundImage: "url('/textures/texture-cream.webp')", backgroundRepeat: 'repeat' }}
+    >
       <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />

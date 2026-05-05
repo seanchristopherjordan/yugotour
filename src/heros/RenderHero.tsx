@@ -2,16 +2,7 @@ import React from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { HighImpactHero } from '@/heros/HighImpact'
-import { LowImpactHero } from '@/heros/LowImpact'
-import { MediumImpactHero } from '@/heros/MediumImpact'
 import { PageHeader } from '@/components/PageHeader'
-
-const heroes = {
-  highImpact: HighImpactHero,
-  lowImpact: LowImpactHero,
-  mediumImpact: MediumImpactHero,
-}
 
 export const RenderHero: React.FC<Page['hero']> = (props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,9 +21,5 @@ export const RenderHero: React.FC<Page['hero']> = (props) => {
     )
   }
 
-  const HeroToRender = heroes[type as keyof typeof heroes]
-
-  if (!HeroToRender) return null
-
-  return <HeroToRender {...props} />
+  return null
 }
