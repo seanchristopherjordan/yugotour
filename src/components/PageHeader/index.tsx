@@ -36,7 +36,6 @@ export function PageHeader({ heroHeadline, heroImage, heroImageMobile }: PageHea
           />
         </>
       )}
-      <div className="page-header-overlay" aria-hidden="true" />
       <div className="container page-header-content">
         {heroHeadline && <h1 className="page-header-headline">{heroHeadline}</h1>}
       </div>

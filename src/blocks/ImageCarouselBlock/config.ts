@@ -3,7 +3,7 @@ import type { Block } from 'payload'
 export const ImageCarouselBlock: Block = {
   slug: 'imageCarousel',
   interfaceName: 'ImageCarouselBlock',
-  labels: { singular: 'Image Carousel', plural: 'Image Carousels' },
+  labels: { singular: 'Image Slider', plural: 'Image Sliders' },
   fields: [
     {
       name: 'slider',

@@ -43,14 +43,6 @@
   }
 }
 
-/* Dark overlay */
-.page-header-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 1;
-}
-
 /* Content — bottom anchored at 15% from the bottom of the header.
    Text grows upward on wrap; the bottom edge stays fixed. */
 .page-header-content {

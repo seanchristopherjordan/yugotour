@@ -287,12 +287,12 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
    );
 
    -- FAQ global tables
-   CREATE TABLE IF NOT EXISTS "globals_faq" (
+   CREATE TABLE IF NOT EXISTS "faq" (
     "id" serial PRIMARY KEY NOT NULL,
     "updated_at" timestamp(3) with time zone,
     "created_at" timestamp(3) with time zone
    );
-   CREATE TABLE IF NOT EXISTS "globals_faq_items" (
+   CREATE TABLE IF NOT EXISTS "faq_items" (
     "_order" integer NOT NULL,
     "_parent_id" integer NOT NULL,
     "id" varchar PRIMARY KEY NOT NULL,
@@ -401,8 +401,8 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
    ALTER TABLE "_posts_v_blocks_media_block" ADD CONSTRAINT "_posts_v_blocks_media_block_media_id_media_id_fk" FOREIGN KEY ("media_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
    ALTER TABLE "_posts_v_blocks_media_block" ADD CONSTRAINT "_posts_v_blocks_media_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_posts_v"("id") ON DELETE cascade ON UPDATE no action;
 
-   -- Foreign key constraints: globals_faq_items
-   ALTER TABLE "globals_faq_items" ADD CONSTRAINT "globals_faq_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."globals_faq"("id") ON DELETE cascade ON UPDATE no action;
+   -- Foreign key constraints: faq_items
+   ALTER TABLE "faq_items" ADD CONSTRAINT "faq_items_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."faq"("id") ON DELETE cascade ON UPDATE no action;
 
    -- Foreign key constraints: pages hero new columns
    ALTER TABLE "pages" ADD CONSTRAINT "pages_hero_hero_image_id_media_id_fk" FOREIGN KEY ("hero_hero_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;
@@ -529,9 +529,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
    CREATE INDEX IF NOT EXISTS "_posts_v_blocks_media_block_path_idx" ON "_posts_v_blocks_media_block" USING btree ("_path");
    CREATE INDEX IF NOT EXISTS "_posts_v_blocks_media_block_media_idx" ON "_posts_v_blocks_media_block" USING btree ("media_id");
 
-   -- Indexes: globals_faq_items
-   CREATE INDEX IF NOT EXISTS "globals_faq_items_order_idx" ON "globals_faq_items" USING btree ("_order");
-   CREATE INDEX IF NOT EXISTS "globals_faq_items_parent_id_idx" ON "globals_faq_items" USING btree ("_parent_id");
+   -- Indexes: faq_items
+   CREATE INDEX IF NOT EXISTS "faq_items_order_idx" ON "faq_items" USING btree ("_order");
+   CREATE INDEX IF NOT EXISTS "faq_items_parent_id_idx" ON "faq_items" USING btree ("_parent_id");
 
    -- Indexes: pages hero
    CREATE INDEX IF NOT EXISTS "pages_hero_hero_image_idx" ON "pages" USING btree ("hero_hero_image_id");
@@ -574,8 +574,8 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
    DROP TABLE IF EXISTS "_posts_v_blocks_faq_block" CASCADE;
    DROP TABLE IF EXISTS "_posts_v_blocks_video_embed" CASCADE;
    DROP TABLE IF EXISTS "_posts_v_blocks_media_block" CASCADE;
-   DROP TABLE IF EXISTS "globals_faq_items" CASCADE;
-   DROP TABLE IF EXISTS "globals_faq" CASCADE;
+   DROP TABLE IF EXISTS "faq_items" CASCADE;
+   DROP TABLE IF EXISTS "faq" CASCADE;
    DROP TABLE IF EXISTS "sliders_rels" CASCADE;
    DROP TABLE IF EXISTS "sliders" CASCADE;
    ALTER TABLE "pages" DROP COLUMN IF EXISTS "hero_hero_headline";
