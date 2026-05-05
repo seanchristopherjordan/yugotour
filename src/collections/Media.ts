@@ -17,8 +17,6 @@ const dirname = path.dirname(filename)
 
 export const Media: CollectionConfig = {
   slug: 'media',
-  // Keep folders: true if you want to organize your vintage car photos into folders in the admin UI
-  folders: true, 
   access: {
     create: authenticated,
     delete: authenticated,
