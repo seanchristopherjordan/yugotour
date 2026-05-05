@@ -3,16 +3,17 @@ import { getMediaUrl } from '@/lib/getMediaUrl'
 import { IntroSection } from './index'
 
 export async function IntroSectionServer() {
-  const [intro, textureUrl, textureRedUrl, spomentikUrl, tripadvisorBadgeUrl, carsDesktopUrl, carsMobileUrl] =
+  const [intro, spomentikUrl, tripadvisorBadgeUrl, carsDesktopUrl, carsMobileUrl] =
     await Promise.all([
       getCachedGlobal('homepage-intro', 0)(),
-      getMediaUrl('texture-cream.webp'),
-      getMediaUrl('texture-red.webp'),
       getMediaUrl('halftoned-spomenik.webp'),
       getMediaUrl('tripadvisor-travelers-choice-badge.webp'),
       getMediaUrl('yugos-desktop.webp'),
       getMediaUrl('yugos-mobile.webp'),
     ])
+
+  const textureUrl = '/textures/texture-cream.webp'
+  const textureRedUrl = '/textures/texture-red.webp'
 
   const preloadImages = [tripadvisorBadgeUrl, carsMobileUrl].filter(Boolean) as string[]
 

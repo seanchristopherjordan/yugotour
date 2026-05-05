@@ -4,6 +4,7 @@ import type { Media, Page, Post, Config } from '../payload-types'
 
 import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
+import { getCachedGlobal } from './getGlobals'
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   const serverUrl = getServerSideURL()
@@ -19,16 +20,25 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
   return url
 }
 
+async function getSiteTitle(): Promise<string> {
+  const settings = await getCachedGlobal('site-settings', 0)()
+  const site = settings.site as Record<string, unknown> | undefined
+  return (site?.siteTitle as string | undefined) ?? 'Yugotour'
+}
+
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
 }): Promise<Metadata> => {
   const { doc } = args
 
-  const ogImage = getImageURL(doc?.meta?.image)
+  const [ogImage, siteName] = await Promise.all([
+    Promise.resolve(getImageURL(doc?.meta?.image)),
+    getSiteTitle(),
+  ])
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Payload Website Template'
-    : 'Payload Website Template'
+    ? `${doc.meta.title} | ${siteName}`
+    : siteName
 
   return {
     description: doc?.meta?.description,
@@ -41,6 +51,7 @@ export const generateMeta = async (args: {
             },
           ]
         : undefined,
+      siteName,
       title,
       url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
     }),

@@ -32,14 +32,12 @@ const navLinkClass =
 export async function Footer() {
   const [
     siteSettings,
-    textureRedUrl,
     stampUrl,
     footerLogoUrl,
     qrCodeUrl,
     tripadvisorIconUrl,
   ] = await Promise.all([
     getCachedGlobal('site-settings', 0)(),
-    getMediaUrl('texture-red.webp'),
     getMediaUrl('jugotura-logo.webp'),
     getMediaUrl('yugotour-footer-logo.webp'),
     getMediaUrl('yugotour-googlereview-qrcode.webp'),
@@ -56,7 +54,7 @@ export async function Footer() {
         id="colophon"
         className="relative overflow-hidden pt-[40px] font-fakt"
         style={{
-          backgroundImage: textureRedUrl ? `url('${textureRedUrl}')` : undefined,
+          backgroundImage: `url('/textures/texture-red.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

@@ -1,4 +1,3 @@
-import { getMediaUrl } from '@/lib/getMediaUrl'
 import { TalesFromTheRoad } from '@/components/TalesFromTheRoad'
 
 export interface ReviewsSectionBlockProps {
@@ -7,6 +6,5 @@ export interface ReviewsSectionBlockProps {
 }
 
 export async function ReviewsSectionBlock({}: ReviewsSectionBlockProps) {
-  const textureUrl = await getMediaUrl('texture-gold.webp')
-  return <TalesFromTheRoad textureUrl={textureUrl} />
+  return <TalesFromTheRoad textureUrl="/textures/texture-gold.webp" />
 }

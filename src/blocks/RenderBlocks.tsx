@@ -1,15 +1,17 @@
 import React, { Fragment } from 'react'
+import dynamic from 'next/dynamic'
 
 import type { Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
-import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
 import { TvSectionBlock } from '@/blocks/TvSection/Component'
 import { ReviewsSectionBlock } from '@/blocks/ReviewsSection/Component'
+
+const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => ({ default: m.FormBlock })))
 
 const blockComponents = {
   archive: ArchiveBlock,

@@ -1,4 +1,5 @@
 import { withPayload } from '@payloadcms/next/withPayload'
+import withBundleAnalyzer from '@next/bundle-analyzer'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -6,6 +7,8 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 import { redirects } from './redirects'
+
+const analyze = process.env.ANALYZE === 'true'
 
 const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
@@ -48,9 +51,25 @@ const nextConfig: NextConfig = {
   },
   reactStrictMode: true,
   redirects,
-  turbopack: {
-    root: path.resolve(dirname),
-  },
+  headers: async () => [
+    {
+      source: '/textures/:file*',
+      headers: [
+        { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+      ],
+    },
+  ],
+  // Turbopack is used for normal dev/build; disabled when running bundle analysis
+  // since @next/bundle-analyzer requires webpack.
+  ...(analyze ? {} : {
+    turbopack: {
+      root: path.resolve(dirname),
+    },
+  }),
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+const config = analyze
+  ? withBundleAnalyzer({ enabled: true, openAnalyzer: true })(nextConfig)
+  : nextConfig
+
+export default withPayload(config, { devBundleServerPackages: false })

@@ -9,7 +9,6 @@ import { TourTile } from '@/components/TourTile'
 import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
 import { TalesFromTheRoad } from '@/components/TalesFromTheRoad'
 import { SimulatorSection } from '@/components/SimulatorSection'
-import { getMediaUrl } from '@/lib/getMediaUrl'
 import { getSimulatorAssets } from '@/lib/getSimulatorAssets'
 import RichText from '@/components/RichText'
 
@@ -75,7 +74,7 @@ function FallbackBody() {
 export default async function BelgradeToursPage() {
   const payload = await getPayload({ config: configPromise })
 
-  const [pageResult, toursResult, orderResult, talesTextureUrl, sim] = await Promise.all([
+  const [pageResult, toursResult, orderResult, sim] = await Promise.all([
     payload.find({
       collection: 'tour-list-pages',
       where: { city: { equals: 'belgrade' } },
@@ -89,9 +88,9 @@ export default async function BelgradeToursPage() {
       depth: 1,
     }),
     payload.findGlobal({ slug: 'tour-order', depth: 1 }),
-    getMediaUrl('texture-gold.webp'),
     getSimulatorAssets(),
   ])
+  const talesTextureUrl = '/textures/texture-gold.webp'
 
   const page = pageResult.docs[0] ?? null
   const allTours = toursResult.docs

@@ -184,6 +184,25 @@ export const SiteSettings: GlobalConfig = {
               },
             },
             {
+              name: 'siteTitle',
+              type: 'text',
+              label: 'Site Title',
+              defaultValue: 'Yugotour',
+              admin: {
+                description: 'Used in browser tab titles and OpenGraph metadata (e.g. "Tour Name — Yugotour").',
+                placeholder: 'Yugotour',
+              },
+            },
+            {
+              name: 'siteDescription',
+              type: 'textarea',
+              label: 'Site Description',
+              admin: {
+                description: 'Default meta description used when a page has no specific description set.',
+                placeholder: 'Drive Yugoslavia in a vintage Yugo.',
+              },
+            },
+            {
               name: 'homepageSlider',
               type: 'relationship',
               relationTo: 'sliders',

@@ -12,7 +12,6 @@ import { TourDetailHeader } from '@/components/TourDetailHeader'
 import { TourFullBleedImage } from '@/components/TourFullBleedImage'
 import { TvSectionBlock, type TvSectionBlockProps } from '@/blocks/TvSection/Component'
 import { BookNowButton } from '@/components/BookNowButton'
-import { getMediaUrl } from '@/lib/getMediaUrl'
 
 function mediaUrl(field: number | Media | null | undefined): string | null {
   if (!field || typeof field === 'number') return null
@@ -36,11 +35,11 @@ type Args = { params: Promise<{ slug?: string }> }
 export default async function TourPage({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   const url = `/tours/${slug}`
-  const [tour, tvBlock, textureCreamUrl] = await Promise.all([
+  const [tour, tvBlock] = await Promise.all([
     queryTourBySlug({ slug }),
     queryTvBlock(),
-    getMediaUrl('texture-cream.webp'),
   ])
+  const textureCreamUrl = '/textures/texture-cream.webp'
 
   if (!tour) return <PayloadRedirects url={url} />
 

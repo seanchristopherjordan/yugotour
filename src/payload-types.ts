@@ -2203,6 +2203,14 @@ export interface SiteSetting {
      */
     heroCoverMobile?: (number | null) | Media;
     /**
+     * Used in browser tab titles and OpenGraph metadata (e.g. "Tour Name — Yugotour").
+     */
+    siteTitle?: string | null;
+    /**
+     * Default meta description used when a page has no specific description set.
+     */
+    siteDescription?: string | null;
+    /**
      * The image slider displayed on the homepage. Manage slides in the Sliders collection.
      */
     homepageSlider?: (number | null) | Slider;
@@ -2348,6 +2356,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         heroVideoMobile?: T;
         heroCoverDesktop?: T;
         heroCoverMobile?: T;
+        siteTitle?: T;
+        siteDescription?: T;
         homepageSlider?: T;
         youtubeVideoUrl?: T;
       };

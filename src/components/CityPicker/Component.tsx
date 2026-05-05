@@ -4,7 +4,6 @@ import { CityPicker } from './index'
 
 export async function CityPickerServer() {
   const [
-    textureUrl,
     starUrl,
     flagRibbonUrl,
     mapDoc,
@@ -12,7 +11,6 @@ export async function CityPickerServer() {
     sarajevoSignDoc,
     partizanGirlDoc,
   ] = await Promise.all([
-    getMediaUrl('texture-blue.webp'),
     getMediaUrl('star.webp'),
     getMediaUrl('flag-ribbon.webp'),
     getMediaDoc('yugo-map.webp'),
@@ -20,6 +18,8 @@ export async function CityPickerServer() {
     getMediaDoc('sarajevo-sign.webp'),
     getMediaDoc('partizan-girl.webp'),
   ])
+
+  const textureUrl = '/textures/texture-blue.webp'
 
   return (
     <CityPicker

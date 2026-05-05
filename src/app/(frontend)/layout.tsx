@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 
 import { cn } from '@/utilities/ui'
-import { GeistMono } from 'geist/font/mono'
-import { GeistSans } from 'geist/font/sans'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
@@ -42,9 +40,7 @@ const faktPro = localFont({
     { path: './fonts/FaktPro-Medium.woff2', weight: '500', style: 'normal' },
     { path: './fonts/FaktPro-MediumItalic.woff2', weight: '500', style: 'italic' },
     { path: './fonts/FaktPro-SemiBold.woff2', weight: '600', style: 'normal' },
-    { path: './fonts/FaktPro-SemiBoldItalic.woff2', weight: '600', style: 'italic' },
     { path: './fonts/FaktPro-Bold.woff2', weight: '700', style: 'normal' },
-    { path: './fonts/FaktPro-BoldItalic.woff2', weight: '700', style: 'italic' },
   ],
   variable: '--font-fakt-pro',
   display: 'swap',
@@ -102,10 +98,9 @@ const steelfishBold = localFont({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const [siteSettings, allTours, menuTextureUrl, bookNowButtonUrl, bookingImages] = await Promise.all([
+  const [siteSettings, allTours, bookNowButtonUrl, bookingImages] = await Promise.all([
     getCachedGlobal('site-settings', 1)(),
     getAllToursForBooking(),
-    getMediaUrl('texture-blue.webp'),
     getMediaUrl('book-now-button.webp'),
     Promise.all([
       getMediaUrl('booking-form-header.webp'),
@@ -151,8 +146,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       className={cn(
-        GeistSans.variable,
-        GeistMono.variable,
         faktPro.variable,
         flArtGrotesk.variable,
         cooperBlackPro.variable,
@@ -178,7 +171,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body suppressHydrationWarning>
-        <BookingModalProvider tours={allTours} textureUrl={menuTextureUrl} images={bookingImages} timeSettings={timeSettings} successContent={successContent}>
+        <BookingModalProvider tours={allTours} textureUrl="/textures/texture-blue.webp" images={bookingImages} timeSettings={timeSettings} successContent={successContent}>
           <Providers>
             <AdminBar
               adminBarProps={{
@@ -202,16 +195,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  title: {
-    default: 'Yugotour',
-    template: '%s — Yugotour',
-  },
-  referrer: 'no-referrer',
-  openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-    creator: '@payloadcms',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getCachedGlobal('site-settings', 0)()
+  const site = settings.site as Record<string, unknown> | undefined
+  const siteTitle = (site?.siteTitle as string | undefined) ?? 'Yugotour'
+  const siteDescription = (site?.siteDescription as string | undefined) ?? undefined
+
+  return {
+    metadataBase: new URL(getServerSideURL()),
+    title: {
+      default: siteTitle,
+      template: `%s — ${siteTitle}`,
+    },
+    description: siteDescription,
+    referrer: 'no-referrer',
+    openGraph: mergeOpenGraph({ siteName: siteTitle, title: siteTitle, description: siteDescription ?? '' }),
+    twitter: {
+      card: 'summary_large_image',
+    },
+  }
 }

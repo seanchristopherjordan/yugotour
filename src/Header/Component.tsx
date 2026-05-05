@@ -6,8 +6,6 @@ export async function Header() {
   const [
     siteSettings,
     logoUrl,
-    navTextureUrl,
-    menuTextureUrl,
     menuDefaultUrl,
     menuBelgradeUrl,
     menuSarajevoUrl,
@@ -17,8 +15,6 @@ export async function Header() {
   ] = await Promise.all([
     getCachedGlobal('site-settings', 0)(),
     getMediaUrl('yugotour-header-logo.webp'),
-    getMediaUrl('texture-cream.webp'),
-    getMediaUrl('texture-blue.webp'),
     getMediaUrl('menu-default.webp'),
     getMediaUrl('menu-belgrade.webp'),
     getMediaUrl('menu-sarajevo.webp'),
@@ -26,6 +22,9 @@ export async function Header() {
     getMediaUrl('menu-aboutus.webp'),
     getMediaUrl('menu-booknow.webp'),
   ])
+
+  const navTextureUrl = '/textures/texture-cream.webp'
+  const menuTextureUrl = '/textures/texture-blue.webp'
 
   // Preload logo (LCP candidate) and megamenu images for instant hover
   const preloadImages = [
