@@ -9,7 +9,8 @@ type EmailTemplate = Record<string, any>
 import * as React from 'react'
 
 export type TemplateKey =
-  | 'booking_guest_confirmation'
+  | 'booking_guest_confirmation_belgrade'
+  | 'booking_guest_confirmation_sarajevo'
   | 'booking_staff_belgrade'
   | 'booking_staff_sarajevo'
   | 'contact_staff_notification'

@@ -19,8 +19,20 @@ const defaultBody = (text: string) => ({
 
 const templates = [
   {
-    name: 'Booking – Guest Confirmation',
-    templateKey: 'booking_guest_confirmation',
+    name: 'Booking – Guest Confirmation (Belgrade)',
+    templateKey: 'booking_guest_confirmation_belgrade',
+    fromName: 'Yugotour',
+    fromEmail: 'bookings@send.yugotour.com',
+    subject: 'Your Yugotour booking is confirmed — {{tour_name}}',
+    preheader: "We've received your booking. Here are the details.",
+    body: defaultBody(
+      "Hi {{guest_name}},\n\nThank you for booking with Yugotour! We've received your request for the {{tour_name}} in {{city}} on {{tour_date}} for {{group_size}} guest(s).\n\nWe'll be in touch shortly to confirm your exact start time. In the meantime, if you have any questions, feel free to reply to this email.\n\nSee you soon!\nThe Yugotour Team",
+    ),
+    recipients: [],
+  },
+  {
+    name: 'Booking – Guest Confirmation (Sarajevo)',
+    templateKey: 'booking_guest_confirmation_sarajevo',
     fromName: 'Yugotour',
     fromEmail: 'bookings@send.yugotour.com',
     subject: 'Your Yugotour booking is confirmed — {{tour_name}}',
