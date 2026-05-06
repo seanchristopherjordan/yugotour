@@ -22,7 +22,7 @@ const templates = [
     name: 'Booking – Guest Confirmation',
     templateKey: 'booking_guest_confirmation',
     fromName: 'Yugotour',
-    fromEmail: 'bookings@yugotour.com',
+    fromEmail: 'bookings@send.yugotour.com',
     subject: 'Your Yugotour booking is confirmed — {{tour_name}}',
     preheader: "We've received your booking. Here are the details.",
     body: defaultBody(
@@ -34,7 +34,7 @@ const templates = [
     name: 'Booking – Staff Notification (Belgrade)',
     templateKey: 'booking_staff_belgrade',
     fromName: 'Yugotour Bookings',
-    fromEmail: 'bookings@yugotour.com',
+    fromEmail: 'bookings@send.yugotour.com',
     subject: 'New Belgrade booking — {{guest_name}} · {{tour_date}}',
     preheader: 'A new booking request has arrived.',
     body: defaultBody(
@@ -46,7 +46,7 @@ const templates = [
     name: 'Booking – Staff Notification (Sarajevo)',
     templateKey: 'booking_staff_sarajevo',
     fromName: 'Yugotour Bookings',
-    fromEmail: 'bookings@yugotour.com',
+    fromEmail: 'bookings@send.yugotour.com',
     subject: 'New Sarajevo booking — {{guest_name}} · {{tour_date}}',
     preheader: 'A new booking request has arrived.',
     body: defaultBody(
@@ -58,7 +58,7 @@ const templates = [
     name: 'Contact Form – Staff Notification',
     templateKey: 'contact_staff_notification',
     fromName: 'Yugotour Website',
-    fromEmail: 'noreply@yugotour.com',
+    fromEmail: 'noreply@send.yugotour.com',
     subject: 'New contact message from {{sender_name}}',
     preheader: 'Someone has sent a message via the contact form.',
     body: defaultBody(

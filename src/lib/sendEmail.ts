@@ -92,8 +92,8 @@ export async function sendEmail(
   }
 
   const from = template.fromName
-    ? `${template.fromName} <${template.fromEmail ?? 'noreply@yugotour.com'}>`
-    : (template.fromEmail ?? 'noreply@yugotour.com')
+    ? `${template.fromName} <${template.fromEmail ?? 'noreply@send.yugotour.com'}>`
+    : (template.fromEmail ?? 'noreply@send.yugotour.com')
 
   await Promise.all(
     toAddresses.map((to) =>
