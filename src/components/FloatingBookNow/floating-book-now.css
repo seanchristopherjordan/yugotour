@@ -28,7 +28,7 @@
 
 .book-now-fab {
   position: fixed;
-  top: 14px;
+  bottom: 22px;
   right: 15px;
   z-index: 9990;
   background: transparent;
@@ -59,7 +59,7 @@
 }
 @media (max-width: 991px) {
   .book-now-fab {
-    top: 10px;
+    bottom: 11px;
     right: 10px;
   }
   .book-now-fab img {

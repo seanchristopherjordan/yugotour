@@ -12,7 +12,7 @@ export const Bookings: CollectionConfig = {
     group: 'Comms',
     description: 'Incoming tour booking requests.',
     components: {
-      beforeList: ['@/collections/Bookings/components/CityFilterBar#CityFilterBar'],
+      beforeList: ['@/collections/Bookings/components/CityFilterBar'],
     },
   },
   access: {

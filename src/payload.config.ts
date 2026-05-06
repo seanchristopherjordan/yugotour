@@ -44,7 +44,6 @@ export default buildConfig({
         Icon: '@/components/AdminIcon',
       },
     },
-    defaultRoute: '/collections/bookings',
     importMap: {
       baseDir: path.resolve(dirname),
     },

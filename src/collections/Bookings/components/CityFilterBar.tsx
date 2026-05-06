@@ -1,6 +1,5 @@
 'use client'
-import React, { Suspense } from 'react'
-import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import React from 'react'
 
 const FILTER_KEY = 'where[city][equals]'
 
@@ -10,20 +9,23 @@ const filters = [
   { label: 'Belgrade', value: 'belgrade' },
 ] as const
 
-function CityFilterBarInner() {
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+function CityFilterBar() {
+  const [currentCity, setCurrentCity] = React.useState('')
 
-  const currentCity = searchParams.get(FILTER_KEY) ?? ''
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    setCurrentCity(params.get(FILTER_KEY) ?? '')
+  }, [])
 
   const applyFilter = (value: string) => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(window.location.search)
     params.delete(FILTER_KEY)
     params.delete('page')
     if (value) params.set(FILTER_KEY, value)
     const qs = params.toString()
-    router.push(qs ? `${pathname}?${qs}` : pathname)
+    window.location.href = qs
+      ? `${window.location.pathname}?${qs}`
+      : window.location.pathname
   }
 
   return (
@@ -56,10 +58,4 @@ function CityFilterBarInner() {
   )
 }
 
-export function CityFilterBar() {
-  return (
-    <Suspense fallback={null}>
-      <CityFilterBarInner />
-    </Suspense>
-  )
-}
+export default CityFilterBar
