@@ -70,12 +70,14 @@ export async function sendEmail(
   const logoUrl = mediaUrl(template.logo as number | Media | null | undefined)
   const signatureUrl = mediaUrl(template.signature as number | Media | null | undefined)
 
+  const isGuestConfirmation = templateKey.startsWith('booking_guest_confirmation')
   const html = await render(
     React.createElement(EmailLayout, {
       preheader: template.preheader ?? undefined,
       logoUrl,
       signatureUrl,
       bodyHtml,
+      variant: isGuestConfirmation ? 'guest' : 'staff',
     }),
   )
 
