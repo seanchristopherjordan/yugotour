@@ -57,6 +57,7 @@
   font-size: 1.15rem;
   margin: 0;
   opacity: 0.9;
+  letter-spacing: -0.015em;
 }
 
 /* City cards */
@@ -123,6 +124,7 @@
   cursor: pointer;
   outline: none;
   transition: border-color 0.2s ease;
+  letter-spacing: -0.015em;
 }
 .booking-select:focus {
   border-color: var(--color-yugo-red);
@@ -190,6 +192,7 @@
   font-size: 0.93rem;
   color: var(--color-yugo-black);
   line-height: 1.35;
+  letter-spacing: -0.015em;
 }
 .booking-check-icon {
   flex-shrink: 0;
@@ -225,6 +228,7 @@
   font-size: 0.93rem;
   color: var(--color-yugo-black);
   line-height: 1.35;
+  letter-spacing: -0.015em;
 }
 .booking-checkbox-wrap {
   position: relative;
@@ -286,6 +290,7 @@
   font-size: 0.82rem;
   color: var(--color-form-muted);
   margin: 0;
+  letter-spacing: -0.015em;
 }
 .booking-radio-row {
   display: flex;
@@ -300,6 +305,7 @@
   font-family: var(--font-fakt);
   font-size: 0.9rem;
   color: var(--color-yugo-black);
+  letter-spacing: -0.015em;
 }
 .booking-radio-input {
   position: absolute;
@@ -361,12 +367,14 @@
   color: var(--color-yugo-black);
   outline: none;
   width: 90px;
+  letter-spacing: -0.015em;
 }
 .booking-time-label {
   font-family: var(--font-fakt);
   font-size: 0.82rem;
   color: var(--color-form-muted);
   white-space: nowrap;
+  letter-spacing: -0.015em;
 }
 
 /* Total price */
@@ -417,6 +425,7 @@
   font-size: 1rem;
   color: var(--color-yugo-black);
   margin: 0 0 6px;
+  letter-spacing: -0.015em;
 }
 .booking-group-body {
   font-family: var(--font-fakt);
@@ -424,6 +433,7 @@
   color: var(--color-form-dark);
   line-height: 1.55;
   margin: 0;
+  letter-spacing: -0.015em;
 }
 
 /* Contact form rows */
@@ -484,6 +494,7 @@
   color: #212121;
   outline: none;
   min-width: 0;
+  letter-spacing: -0.015em;
 }
 .booking-input::placeholder {
   color: var(--color-form-border-hover);
@@ -521,6 +532,7 @@
   resize: vertical;
   min-height: 90px;
   line-height: 1.5;
+  letter-spacing: -0.015em;
 }
 .booking-textarea::placeholder {
   color: var(--color-form-border-hover);
@@ -653,6 +665,7 @@
   color: var(--color-yugo-cream);
   line-height: 1.3;
   margin: 0 0 0.75em;
+  letter-spacing: -0.015em;
 }
 
 .success-text-line:last-child { margin-bottom: 0; }

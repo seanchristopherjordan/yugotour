@@ -1,5 +1,5 @@
 import { s3Storage } from '@payloadcms/storage-s3'
-// import { resendAdapter } from '@payloadcms/email-resend'  // TODO: uncomment when DNS is live
+import { resendAdapter } from '@payloadcms/email-resend'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import sharp from 'sharp'
 import path from 'path'
@@ -52,11 +52,11 @@ export default buildConfig({
       ],
     },
   },
-  // email: resendAdapter({            // TODO: uncomment when DNS is live
-  //   defaultFromAddress: 'noreply@yugotour.com',
-  //   defaultFromName: 'Yugotour',
-  //   apiKey: process.env.RESEND_API_KEY ?? '',
-  // }),
+  email: resendAdapter({
+    defaultFromAddress: 'noreply@yugotour.com',
+    defaultFromName: 'Yugotour',
+    apiKey: process.env.YUGOTOUR_RESEND_KEY ?? '',
+  }),
   editor: defaultLexical,
   db: postgresAdapter({
     pool: {

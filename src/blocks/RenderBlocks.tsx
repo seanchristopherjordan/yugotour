@@ -59,7 +59,7 @@ export const RenderBlocks: React.FC<{
               const isFullBleed = fullBleedTypes.has(blockType)
               const followsFullBleed = index > 0 && fullBleedTypes.has(blocks[index - 1]?.blockType ?? '')
               const isFirst = index === 0
-              const wrapperClass = isFullBleed ? '' : followsFullBleed ? 'mb-16' : isFirst ? 'mt-7 mb-16' : 'my-16'
+              const wrapperClass = isFullBleed ? '' : followsFullBleed ? 'mb-16' : isFirst ? 'mt-8 mb-16' : 'my-16'
 
               return (
                 <div className={wrapperClass} key={index}>

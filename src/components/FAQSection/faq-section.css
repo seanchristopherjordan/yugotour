@@ -112,6 +112,7 @@
   line-height: 1.5;
   color: var(--color-yugo-black);
   margin-bottom: 0.8rem;
+  letter-spacing: -0.015em;
 }
 
 .faq-answer-rich p:last-child {
