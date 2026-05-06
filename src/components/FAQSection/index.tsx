@@ -21,10 +21,10 @@ const faqConverters: JSXConvertersFunction<FAQNodeTypes> = ({ defaultConverters 
     },
   }),
   blocks: {
-    htmlEmbed: ({ node }) => (
+    htmlEmbed: ({ node }: { node: SerializedBlockNode<{ html?: string | null }> }) => (
       <div
         className="faq-html-embed"
-        dangerouslySetInnerHTML={{ __html: (node as SerializedBlockNode<{ html?: string | null }>).fields.html ?? '' }}
+        dangerouslySetInnerHTML={{ __html: node.fields.html ?? '' }}
       />
     ),
   },
