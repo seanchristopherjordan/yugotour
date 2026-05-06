@@ -1126,6 +1126,7 @@ export interface Booking {
   totalPrice?: number | null;
   date: string;
   startTime?: string | null;
+  pickupSpot?: string | null;
   extras?:
     | {
         title?: string | null;
@@ -2006,6 +2007,7 @@ export interface BookingsSelect<T extends boolean = true> {
   totalPrice?: T;
   date?: T;
   startTime?: T;
+  pickupSpot?: T;
   extras?:
     | T
     | {

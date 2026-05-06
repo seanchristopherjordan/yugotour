@@ -113,6 +113,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       getMediaUrl('inline-icon-email.webp'),
       getMediaUrl('inline-icon-name.webp'),
       getMediaUrl('inline-icon-phone.webp'),
+      getMediaUrl('inline-icon-pickup.webp'),
       getMediaUrl('inline-icon-time.webp'),
       getMediaUrl('little-white-star.webp'),
       getMediaUrl('price-tag-icon.webp'),
@@ -120,9 +121,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       getMediaUrl('tito-success-badge.webp'),
       getMediaUrl('tito-success-speech-bubble-desktop.webp'),
       getMediaUrl('tito-success-speech-bubble-mobile.webp'),
-    ]).then(([headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo, iconComment, iconDate, iconEmail, iconName, iconPhone, iconTime, littleWhiteStar, priceTag, redStar, titoSuccessBadge, titoSuccessSpeechBubbleDesktop, titoSuccessSpeechBubbleMobile]): BookingModalImages => ({
+    ]).then(([headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo, iconComment, iconDate, iconEmail, iconName, iconPhone, iconPickup, iconTime, littleWhiteStar, priceTag, redStar, titoSuccessBadge, titoSuccessSpeechBubbleDesktop, titoSuccessSpeechBubbleMobile]): BookingModalImages => ({
       headerImage, headerImageMobile, checkmarkCircle, cityBelgrade, citySarajevo,
-      iconComment, iconDate, iconEmail, iconName, iconPhone, iconTime,
+      iconComment, iconDate, iconEmail, iconName, iconPhone, iconPickup, iconTime,
       littleWhiteStar, priceTag, redStar,
       titoSuccessBadge, titoSuccessSpeechBubbleDesktop, titoSuccessSpeechBubbleMobile,
     })),

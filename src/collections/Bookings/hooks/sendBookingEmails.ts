@@ -40,6 +40,7 @@ export const sendBookingEmails: CollectionAfterChangeHook = async ({ doc, operat
     total_price: doc.totalPrice != null ? `€${doc.totalPrice}` : '',
     comments: doc.comments ?? '',
     optional_extras: buildOptionalExtras(doc),
+    pickup_spot: doc.pickupSpot ?? '',
   }
 
   await Promise.all([

@@ -102,13 +102,14 @@ interface FormState {
   phone: string
   date: string
   startTime: string
+  pickupSpot: string
   comments: string
 }
 
 const defaultForm: FormState = {
   city: null, selectedTourDocId: null, guests: 2, selectedExtras: [],
   airportDirection: 'pickup', flightTime: '', name: '', email: '',
-  phone: '', date: '', startTime: '', comments: '',
+  phone: '', date: '', startTime: '', pickupSpot: '', comments: '',
 }
 
 type FormAction =
@@ -124,7 +125,7 @@ type FormAction =
 function formReducer(state: FormState, action: FormAction): FormState {
   switch (action.type) {
     case 'SET_CITY':
-      return { ...state, city: action.city, selectedTourDocId: null, selectedExtras: [], airportDirection: 'pickup', flightTime: '' }
+      return { ...state, city: action.city, selectedTourDocId: null, selectedExtras: [], airportDirection: 'pickup', flightTime: '', pickupSpot: '' }
     case 'SET_TOUR':
       return { ...state, selectedTourDocId: action.tourDocId, selectedExtras: [], airportDirection: 'pickup', flightTime: '' }
     case 'SET_GUESTS':
@@ -423,6 +424,7 @@ function hasUserInput(state: FormState): boolean {
     || !!state.phone.trim()
     || !!state.date.trim()
     || !!state.startTime.trim()
+    || !!state.pickupSpot.trim()
     || !!state.comments.trim()
   )
 }
@@ -542,6 +544,7 @@ export function BookingModal() {
           city: formState.city, tourTitle: selectedTour.title, tourId: selectedTour.tourId,
           guests: formState.guests, totalPrice,
           date: formState.date, startTime: formState.startTime,
+          pickupSpot: formState.city === 'sarajevo' && formState.pickupSpot.trim() ? formState.pickupSpot.trim() : undefined,
           extras,
           airportDirection: hasAirport ? formState.airportDirection : undefined,
           flightTime: hasAirport ? formState.flightTime : undefined,
@@ -966,43 +969,95 @@ export function BookingModal() {
           <DrawerPanel isOpen={!!formState.selectedTourDocId} className={MAX_FORM_W}>
           <div className={`${FORM_CARD} bg-[#fcf9ea]`}>
 
-              <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-4">
-                <InputField
-                  imgSrc={images.iconName}
-                  placeholder="Your Name"
-                  value={formState.name}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'name', value: v })}
-                />
-                <InputField
-                  imgSrc={images.iconEmail}
-                  type="email"
-                  placeholder="Email"
-                  value={formState.email}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })}
-                />
-              </div>
-
-              <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-4">
-                <InputField
-                  imgSrc={images.iconPhone}
-                  type="tel"
-                  placeholder="Phone (recommended)"
-                  value={formState.phone}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'phone', value: v })}
-                />
-                <DateInputField
-                  imgSrc={images.iconDate}
-                  value={formState.date}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'date', value: v })}
-                />
-                <TimeSelectField
-                  imgSrc={images.iconTime}
-                  placeholder="Preferred Start Time"
-                  value={formState.startTime}
-                  onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'startTime', value: v })}
-                  options={tourTimeOpts}
-                />
-              </div>
+              {formState.city === 'sarajevo' ? (
+                <>
+                  {/* Sarajevo: Name / Email / Phone all on row 1 */}
+                  <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-4">
+                    <InputField
+                      imgSrc={images.iconName}
+                      placeholder="Your Name"
+                      value={formState.name}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'name', value: v })}
+                    />
+                    <InputField
+                      imgSrc={images.iconEmail}
+                      type="email"
+                      placeholder="Email"
+                      value={formState.email}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })}
+                    />
+                    <InputField
+                      imgSrc={images.iconPhone}
+                      type="tel"
+                      placeholder="Phone (recommended)"
+                      value={formState.phone}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'phone', value: v })}
+                    />
+                  </div>
+                  {/* Sarajevo: Date / Pick-up Spot / Start Time on row 2 */}
+                  <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-4">
+                    <DateInputField
+                      imgSrc={images.iconDate}
+                      value={formState.date}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'date', value: v })}
+                    />
+                    <InputField
+                      imgSrc={images.iconPickup}
+                      placeholder="Pick-up Spot (optional)"
+                      value={formState.pickupSpot}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'pickupSpot', value: v })}
+                    />
+                    <TimeSelectField
+                      imgSrc={images.iconTime}
+                      placeholder="Preferred Start Time"
+                      value={formState.startTime}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'startTime', value: v })}
+                      options={tourTimeOpts}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Belgrade: Name / Email on row 1 */}
+                  <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-4 mb-4">
+                    <InputField
+                      imgSrc={images.iconName}
+                      placeholder="Your Name"
+                      value={formState.name}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'name', value: v })}
+                    />
+                    <InputField
+                      imgSrc={images.iconEmail}
+                      type="email"
+                      placeholder="Email"
+                      value={formState.email}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })}
+                    />
+                  </div>
+                  {/* Belgrade: Phone / Date / Start Time on row 2 */}
+                  <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-4">
+                    <InputField
+                      imgSrc={images.iconPhone}
+                      type="tel"
+                      placeholder="Phone (recommended)"
+                      value={formState.phone}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'phone', value: v })}
+                    />
+                    <DateInputField
+                      imgSrc={images.iconDate}
+                      value={formState.date}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'date', value: v })}
+                    />
+                    <TimeSelectField
+                      imgSrc={images.iconTime}
+                      placeholder="Preferred Start Time"
+                      value={formState.startTime}
+                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'startTime', value: v })}
+                      options={tourTimeOpts}
+                    />
+                  </div>
+                </>
+              )}
 
               <div className="mb-[10px]">
                 <div className={`${INPUT_ROW} items-start`}>

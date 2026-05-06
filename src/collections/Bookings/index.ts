@@ -85,6 +85,11 @@ export const Bookings: CollectionConfig = {
       type: 'text',
       label: 'Preferred Start Time',
     },
+    {
+      name: 'pickupSpot',
+      type: 'text',
+      label: 'Pick-up Spot (Sarajevo)',
+    },
     // ── Extras ───────────────────────────────────────────────────
     {
       name: 'extras',

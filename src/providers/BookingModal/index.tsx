@@ -27,6 +27,7 @@ export interface BookingModalImages {
   iconEmail: string | null
   iconName: string | null
   iconPhone: string | null
+  iconPickup: string | null
   iconTime: string | null
   littleWhiteStar: string | null
   priceTag: string | null
@@ -51,7 +52,7 @@ export interface BookingTimeSettings {
 const DEFAULT_IMAGES: BookingModalImages = {
   headerImage: null, headerImageMobile: null, checkmarkCircle: null,
   cityBelgrade: null, citySarajevo: null,
-  iconComment: null, iconDate: null, iconEmail: null, iconName: null, iconPhone: null,
+  iconComment: null, iconDate: null, iconEmail: null, iconName: null, iconPhone: null, iconPickup: null,
   iconTime: null, littleWhiteStar: null, priceTag: null, redStar: null,
   titoSuccessBadge: null, titoSuccessSpeechBubbleDesktop: null, titoSuccessSpeechBubbleMobile: null,
 }

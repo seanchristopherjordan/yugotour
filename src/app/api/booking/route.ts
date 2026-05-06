@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
         totalPrice: body.totalPrice ?? undefined,
         date: body.date,
         startTime: body.startTime || undefined,
+        pickupSpot: body.pickupSpot || undefined,
         extras: body.extras || [],
         airportDirection: body.airportDirection || undefined,
         flightTime: body.flightTime || undefined,
