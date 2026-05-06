@@ -68,6 +68,16 @@ export async function up({ db }: MigrateUpArgs): Promise<void> {
    CREATE INDEX IF NOT EXISTS "contact_messages_created_at_idx" ON "contact_messages" USING btree ("created_at");
    CREATE INDEX IF NOT EXISTS "contact_messages_status_idx" ON "contact_messages" USING btree ("status");
 
+   -- payload_locked_documents_rels columns for new collections
+   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN IF NOT EXISTS "contact_messages_id" integer;
+   ALTER TABLE "payload_locked_documents_rels" ADD COLUMN IF NOT EXISTS "email_templates_id" integer;
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_contact_messages_id_fk"
+    FOREIGN KEY ("contact_messages_id") REFERENCES "public"."contact_messages"("id") ON DELETE cascade ON UPDATE no action;
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_email_templates_id_fk"
+    FOREIGN KEY ("email_templates_id") REFERENCES "public"."email_templates"("id") ON DELETE cascade ON UPDATE no action;
+   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_contact_messages_id_idx" ON "payload_locked_documents_rels" USING btree ("contact_messages_id");
+   CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_email_templates_id_idx" ON "payload_locked_documents_rels" USING btree ("email_templates_id");
+
   `)
 }
 
