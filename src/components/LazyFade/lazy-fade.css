@@ -1,0 +1,6 @@
+img[loading="lazy"] {
+  transition: opacity 700ms ease;
+}
+img[loading="lazy"]:not(.lazy-revealed) {
+  opacity: 0;
+}

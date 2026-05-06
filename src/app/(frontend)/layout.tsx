@@ -6,6 +6,7 @@ import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
 import { FloatingBookNow } from '@/components/FloatingBookNow'
+import { LazyFade } from '@/components/LazyFade'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
@@ -30,6 +31,7 @@ import '@/components/TourTile/tour-tile.css'
 import '@/components/SimulatorSection/simulator.css'
 import '@/components/TourDetailHeader/tour-detail.css'
 import '@/components/FloatingBookNow/floating-book-now.css'
+import '@/components/LazyFade/lazy-fade.css'
 import '@/components/TalesFromTheRoad/tales.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
@@ -101,7 +103,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const [siteSettings, allTours, bookNowButtonUrl, bookingImages] = await Promise.all([
     getCachedGlobal('site-settings', 1)(),
     getAllToursForBooking(),
-    getMediaUrl('book-now-button.webp'),
+    getMediaUrl('booknowbutton.webp'),
     Promise.all([
       getMediaUrl('booking-form-header.webp'),
       getMediaUrl('booking-form-header-mobile.webp'),
@@ -184,6 +186,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {children}
             <Footer />
             <FloatingBookNow imageUrl={bookNowButtonUrl} />
+            <LazyFade />
           </Providers>
         </BookingModalProvider>
       </body>

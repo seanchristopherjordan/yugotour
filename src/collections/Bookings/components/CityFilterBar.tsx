@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { Suspense } from 'react'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 
 const FILTER_KEY = 'where[city][equals]'
@@ -10,7 +10,7 @@ const filters = [
   { label: 'Belgrade', value: 'belgrade' },
 ] as const
 
-export function CityFilterBar() {
+function CityFilterBarInner() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -53,5 +53,13 @@ export function CityFilterBar() {
         )
       })}
     </div>
+  )
+}
+
+export function CityFilterBar() {
+  return (
+    <Suspense fallback={null}>
+      <CityFilterBarInner />
+    </Suspense>
   )
 }
