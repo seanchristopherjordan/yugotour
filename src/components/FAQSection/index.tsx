@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import type { DefaultNodeTypes, DefaultTypedEditorState, SerializedBlockNode } from '@payloadcms/richtext-lexical'
 import {
   JSXConvertersFunction,
@@ -8,6 +8,18 @@ import {
   RichText as ConvertRichText,
 } from '@payloadcms/richtext-lexical/react'
 import './faq-section.css'
+
+// Recursively extract plain text from a Lexical serialized node tree,
+// including htmlEmbed blocks (stripped of tags).
+function extractText(node: any): string {
+  if (!node) return ''
+  if (typeof node.text === 'string') return node.text
+  if (node.fields?.blockType === 'htmlEmbed' && typeof node.fields?.html === 'string') {
+    return node.fields.html.replace(/<[^>]+>/g, ' ')
+  }
+  if (Array.isArray(node.children)) return node.children.map(extractText).join(' ')
+  return ''
+}
 
 type FAQNodeTypes = DefaultNodeTypes | SerializedBlockNode<{ html?: string | null }>
 
@@ -41,19 +53,56 @@ interface FAQSectionProps {
 }
 
 export function FAQSection({ items }: FAQSectionProps) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const [openKey, setOpenKey] = useState<string | number | null>(null)
+  const [filterQuery, setFilterQuery] = useState('')
+
+  // Build searchable strings once per items array
+  const searchIndex = useMemo(
+    () =>
+      items.map((item, i) => ({
+        item,
+        key: item.id ?? i,
+        searchText: [
+          item.question,
+          item.answer ? extractText((item.answer as any).root) : '',
+        ]
+          .join(' ')
+          .toLowerCase(),
+      })),
+    [items],
+  )
+
+  const visibleItems = useMemo(() => {
+    const q = filterQuery.trim().toLowerCase()
+    if (q.length < 4) return searchIndex
+    return searchIndex.filter(({ searchText }) => searchText.includes(q))
+  }, [filterQuery, searchIndex])
 
   if (!items.length) return null
 
   return (
     <div className="faq-section container">
-      {items.map((item, index) => {
-        const isOpen = openIndex === index
+      <div className="faq-filter-wrap">
+        <input
+          type="search"
+          className="faq-filter"
+          placeholder="Filter"
+          value={filterQuery}
+          onChange={(e) => {
+            setFilterQuery(e.target.value)
+            setOpenKey(null)
+          }}
+          autoComplete="off"
+          spellCheck={false}
+        />
+      </div>
+      {visibleItems.map(({ item, key }) => {
+        const isOpen = openKey === key
         return (
-          <div key={item.id ?? index} className="faq-item">
+          <div key={key} className="faq-item">
             <button
               className="faq-question"
-              onClick={() => setOpenIndex(isOpen ? null : index)}
+              onClick={() => setOpenKey(isOpen ? null : key)}
               aria-expanded={isOpen}
               type="button"
             >
