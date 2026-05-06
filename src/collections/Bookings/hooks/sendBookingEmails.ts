@@ -1,6 +1,26 @@
 import type { CollectionAfterChangeHook } from 'payload'
 import { sendEmail } from '@/lib/sendEmail'
 
+function buildOptionalExtras(doc: Record<string, any>): string {
+  const extras = (doc.extras ?? []) as { title: string }[]
+  if (!extras.length) return ''
+
+  const guestCount = parseInt(String(doc.guests ?? '1'), 10) || 1
+  const cars = Math.ceil(guestCount / 3)
+  const carLabel = cars === 1 ? 'car' : 'cars'
+  const direction = doc.airportDirection === 'dropoff' ? 'Drop-off' : 'Pick-up'
+  const flightTime = doc.flightTime ? ` ${doc.flightTime}` : ''
+
+  return extras
+    .map((extra) => {
+      if (extra.title.toLowerCase().includes('airport')) {
+        return `Airport ${direction} ${cars} ${carLabel}${flightTime}`
+      }
+      return extra.title
+    })
+    .join(', ')
+}
+
 export const sendBookingEmails: CollectionAfterChangeHook = async ({ doc, operation }) => {
   if (operation !== 'create') return doc
 
@@ -19,6 +39,7 @@ export const sendBookingEmails: CollectionAfterChangeHook = async ({ doc, operat
     start_time: doc.startTime ?? '',
     total_price: doc.totalPrice != null ? `€${doc.totalPrice}` : '',
     comments: doc.comments ?? '',
+    optional_extras: buildOptionalExtras(doc),
   }
 
   await Promise.all([
