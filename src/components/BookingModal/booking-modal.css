@@ -78,7 +78,7 @@
     transition: transform 400ms cubic-bezier(0.4, 0, 0, 1);
   }
   .booking-city-card:not(.booking-city-card--selected):hover img {
-    transform: scale(1.20);
+    transform: scale(1.12);
   }
 }
 

@@ -73,7 +73,7 @@
 }
 @media (min-width: 992px) {
   .book-now-fab:hover .book-now-fab-inner {
-    transform: scale(1.18);
+    transform: scale(1.11);
     filter: brightness(1.15);
   }
 }
