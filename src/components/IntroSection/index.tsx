@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { animate, motion, useScroll, useTransform } from 'framer-motion'
+import { useRef, useCallback } from 'react'
 
 export interface IntroSectionProps {
   headlineTop: string
@@ -46,6 +46,20 @@ export function IntroSection({
   // scrollPercent = (distance + vh) / (sectionH + vh)  →  0..1
   // moveAmount = scrollPercent * 33  →  translateY 0% .. -33%
   const spomentikY = useTransform(scrollYProgress, [0, 1], ['0%', '-33%'])
+
+  const scrollToCityPicker = useCallback(() => {
+    const target = document.getElementById('city-picker')
+    if (!target) return
+    const targetY = target.getBoundingClientRect().top + window.scrollY
+    const controls = animate(window.scrollY, targetY, {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => window.scrollTo(0, v),
+    })
+    const cancel = () => controls.stop()
+    window.addEventListener('touchstart', cancel, { once: true, passive: true })
+    window.addEventListener('wheel', cancel, { once: true, passive: true })
+  }, [])
 
   return (
     <section
@@ -93,7 +107,7 @@ export function IntroSection({
         <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%] mb-[10px] min-[992px]:mb-0">
           {/* Staggered two-line headline */}
           <h2
-            className="font-tungsten uppercase pt-[18px] mb-[18px] min-[992px]:mb-[1rem] leading-[0.75] table mx-auto text-left min-[992px]:block min-[992px]:mx-0"
+            className="font-tungsten uppercase pt-[14px] min-[992px]:pt-[18px] mb-[12px] min-[992px]:mb-[1rem] leading-[0.75] table mx-auto text-left min-[992px]:block min-[992px]:mx-0"
             style={{ transform: 'rotate(-1deg)', transformOrigin: 'left center' }}
           >
             <span
@@ -152,7 +166,7 @@ export function IntroSection({
                 src={carsMobileUrl ?? carsDesktopUrl ?? ''}
                 alt="Yugoslav Cars"
                 loading="lazy"
-                className="block mx-auto h-auto w-[104%] max-w-full min-[601px]:max-w-[85%] min-[992px]:max-w-[68%]"
+                className="block mx-auto h-auto w-[99%] max-w-full min-[601px]:max-w-[85%] min-[992px]:max-w-[68%]"
               />
             </picture>
           </div>
@@ -160,7 +174,7 @@ export function IntroSection({
 
         {/* Row 3: How it works — pulled up over the cars on desktop */}
         <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%]">
-          <div className="mt-[1px] min-[992px]:mt-[-35px] min-[1200px]:mt-[-70px] pb-[10px] pl-0 min-[992px]:pl-[95px] min-[992px]:flex min-[992px]:items-baseline">
+          <div className="-mt-[20px] min-[992px]:mt-[-35px] min-[1200px]:mt-[-70px] pb-[6px] min-[992px]:pb-[10px] pl-0 min-[992px]:pl-[95px] min-[992px]:flex min-[992px]:items-baseline">
             {howItWorksTitle && (
               <p className="font-fakt font-bold text-yugo-black leading-[1.4] text-[1.092rem] min-[400px]:text-[1.248rem] min-[992px]:text-[1.2rem] mb-[0.25rem] min-[992px]:mb-0 min-[992px]:mr-[15px] min-[992px]:flex-shrink-0">
                 {howItWorksTitle}
@@ -188,7 +202,7 @@ export function IntroSection({
         {/* Scroll-to-city-picker caret */}
         <div className="flex justify-center mt-[1px] min-[992px]:mt-[6px] pb-[5px]">
           <motion.button
-            onClick={() => document.getElementById('city-picker')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={scrollToCityPicker}
             aria-label="Scroll to city picker"
             className="cursor-pointer border-none bg-transparent p-0"
             whileHover={{ filter: 'brightness(0.7)' }}
