@@ -93,7 +93,7 @@ export function IntroSection({
         <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%] mb-[10px] min-[992px]:mb-0">
           {/* Staggered two-line headline */}
           <h2
-            className="font-tungsten uppercase pt-[18px] mb-[30px] min-[992px]:mb-[1rem] leading-[0.75] table mx-auto text-left min-[992px]:block min-[992px]:mx-0"
+            className="font-tungsten uppercase pt-[18px] mb-[18px] min-[992px]:mb-[1rem] leading-[0.75] table mx-auto text-left min-[992px]:block min-[992px]:mx-0"
             style={{ transform: 'rotate(-1deg)', transformOrigin: 'left center' }}
           >
             <span
@@ -160,7 +160,7 @@ export function IntroSection({
 
         {/* Row 3: How it works — pulled up over the cars on desktop */}
         <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%]">
-          <div className="mt-[5px] min-[992px]:mt-[-35px] min-[1200px]:mt-[-70px] pb-[10px] pl-0 min-[992px]:pl-[95px] min-[992px]:flex min-[992px]:items-baseline">
+          <div className="mt-[3px] min-[992px]:mt-[-35px] min-[1200px]:mt-[-70px] pb-[10px] pl-0 min-[992px]:pl-[95px] min-[992px]:flex min-[992px]:items-baseline">
             {howItWorksTitle && (
               <p className="font-fakt font-bold text-yugo-black leading-[1.4] text-[1.092rem] min-[400px]:text-[1.248rem] min-[992px]:text-[1.2rem] mb-[0.25rem] min-[992px]:mb-0 min-[992px]:mr-[15px] min-[992px]:flex-shrink-0">
                 {howItWorksTitle}
@@ -186,7 +186,7 @@ export function IntroSection({
         </div>
 
         {/* Scroll-to-city-picker caret */}
-        <div className="flex justify-center mt-[10px] pb-[8px]">
+        <div className="flex justify-center mt-[6px] pb-[5px]">
           <motion.button
             onClick={() => document.getElementById('city-picker')?.scrollIntoView({ behavior: 'smooth' })}
             aria-label="Scroll to city picker"
@@ -198,7 +198,7 @@ export function IntroSection({
               animate={{ y: [0, 7, 0] }}
               transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+              <svg width="38" height="38" viewBox="0 0 38 38" fill="none" style={{ opacity: 0.4 }}>
                 <circle cx="19" cy="19" r="18" stroke="#003882" strokeWidth="1.5" />
                 <path d="M12 16.5L19 23.5L26 16.5" stroke="#003882" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

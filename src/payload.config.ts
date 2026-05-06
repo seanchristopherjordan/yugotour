@@ -39,7 +39,12 @@ export default buildConfig({
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/BeforeDashboard'],
+      graphics: {
+        Logo: '@/components/AdminLogo',
+        Icon: '@/components/AdminIcon',
+      },
     },
+    defaultRoute: '/collections/bookings',
     importMap: {
       baseDir: path.resolve(dirname),
     },
