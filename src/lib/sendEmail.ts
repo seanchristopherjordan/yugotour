@@ -32,6 +32,7 @@ export async function sendEmail(
   templateKey: TemplateKey,
   variables: TemplateVariables,
   overrideTo?: string | string[],
+  replyTo?: string,
 ): Promise<void> {
   const payload = await getPayload({ config: configPromise })
 
@@ -95,9 +96,11 @@ export async function sendEmail(
     ? `${template.fromName} <${template.fromEmail ?? 'noreply@send.yugotour.com'}>`
     : (template.fromEmail ?? 'noreply@send.yugotour.com')
 
+  const resolvedReplyTo = replyTo ?? 'info@yugotour.com'
+
   await Promise.all(
     toAddresses.map((to) =>
-      payload.sendEmail({ from, to, subject, html }).catch((err) => {
+      payload.sendEmail({ from, to, subject, html, replyTo: resolvedReplyTo }).catch((err) => {
         payload.logger.error(`sendEmail: failed sending to ${to}: ${err}`)
       }),
     ),

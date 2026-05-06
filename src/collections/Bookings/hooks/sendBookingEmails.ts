@@ -43,9 +43,11 @@ export const sendBookingEmails: CollectionAfterChangeHook = async ({ doc, operat
     pickup_spot: doc.pickupSpot ?? '',
   }
 
+  const guestReplyTo = city === 'sarajevo' ? 'sarajevo@yugotour.com' : 'info@yugotour.com'
+
   await Promise.all([
     // Guest confirmation — to: is always the booker's email
-    sendEmail('booking_guest_confirmation', variables, doc.email).catch((err) =>
+    sendEmail('booking_guest_confirmation', variables, doc.email, guestReplyTo).catch((err) =>
       console.error('[sendBookingEmails] guest confirmation failed:', err),
     ),
     // Staff notification — to: comes from the template's recipients array
