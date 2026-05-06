@@ -104,7 +104,7 @@ export function IntroSection({
       <div className="container relative z-[5]">
 
         {/* Row 1: headline + body — 9/12-col offset on desktop */}
-        <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%] mb-[10px] min-[992px]:mb-0">
+        <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%] mb-0">
           {/* Staggered two-line headline */}
           <h2
             className="font-tungsten uppercase pt-[14px] min-[992px]:pt-[18px] mb-[12px] min-[992px]:mb-[1rem] leading-[0.75] table mx-auto text-left min-[992px]:block min-[992px]:mx-0"
