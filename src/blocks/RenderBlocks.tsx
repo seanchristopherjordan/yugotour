@@ -16,6 +16,7 @@ import { FullBleedStaticBlock } from '@/blocks/FullBleedStatic/Component'
 import { ImageCarouselBlockComponent } from '@/blocks/ImageCarouselBlock/Component'
 import { FAQBlockComponent } from '@/blocks/FAQBlock/Component'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/Component'
+import { ContactBlockComponent } from '@/blocks/ContactBlock/Component'
 
 const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => ({ default: m.FormBlock })))
 
@@ -34,6 +35,7 @@ const blockComponents = {
   imageCarousel: ImageCarouselBlockComponent,
   faqBlock: FAQBlockComponent,
   videoEmbed: VideoEmbedBlock,
+  contactBlock: ContactBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{

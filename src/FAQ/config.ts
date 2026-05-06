@@ -1,5 +1,6 @@
-import type { GlobalConfig } from 'payload'
+import type { GlobalConfig, Block } from 'payload'
 import {
+  BlocksFeature,
   BoldFeature,
   ItalicFeature,
   LinkFeature,
@@ -7,8 +8,22 @@ import {
   UnderlineFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+
 import { authenticated } from '@/access/authenticated'
 import { revalidateFAQ } from './hooks/revalidateFAQ'
+
+const HtmlEmbedBlock: Block = {
+  slug: 'htmlEmbed',
+  labels: { singular: 'HTML Embed', plural: 'HTML Embeds' },
+  fields: [
+    {
+      name: 'html',
+      type: 'code',
+      label: 'HTML Code',
+      admin: { language: 'html' },
+    },
+  ],
+}
 
 export const FAQ: GlobalConfig = {
   slug: 'faq',
@@ -30,6 +45,11 @@ export const FAQ: GlobalConfig = {
         singular: 'Question',
         plural: 'Questions',
       },
+      admin: {
+        components: {
+          RowLabel: '@/FAQ/RowLabel#RowLabel',
+        },
+      },
       fields: [
         {
           name: 'question',
@@ -50,6 +70,7 @@ export const FAQ: GlobalConfig = {
               LinkFeature({
                 enabledCollections: ['pages', 'posts'],
               }),
+              BlocksFeature({ blocks: [HtmlEmbedBlock] }),
             ],
           }),
         },

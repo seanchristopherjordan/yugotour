@@ -1,9 +1,34 @@
 'use client'
 
 import { useState } from 'react'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import RichText from '@/components/RichText'
+import type { DefaultNodeTypes, DefaultTypedEditorState, SerializedBlockNode } from '@payloadcms/richtext-lexical'
+import {
+  JSXConvertersFunction,
+  LinkJSXConverter,
+  RichText as ConvertRichText,
+} from '@payloadcms/richtext-lexical/react'
 import './faq-section.css'
+
+type FAQNodeTypes = DefaultNodeTypes | SerializedBlockNode<{ html?: string | null }>
+
+const faqConverters: JSXConvertersFunction<FAQNodeTypes> = ({ defaultConverters }) => ({
+  ...defaultConverters,
+  ...LinkJSXConverter({
+    internalDocToHref: ({ linkNode }) => {
+      const { value, relationTo } = linkNode.fields.doc!
+      if (typeof value !== 'object') throw new Error('Expected value to be an object')
+      return relationTo === 'posts' ? `/posts/${value.slug}` : `/${value.slug}`
+    },
+  }),
+  blocks: {
+    htmlEmbed: ({ node }) => (
+      <div
+        className="faq-html-embed"
+        dangerouslySetInnerHTML={{ __html: (node as SerializedBlockNode<{ html?: string | null }>).fields.html ?? '' }}
+      />
+    ),
+  },
+})
 
 interface FAQItem {
   question: string
@@ -41,10 +66,9 @@ export function FAQSection({ items }: FAQSectionProps) {
               <div className="faq-answer-inner">
                 <div className="faq-answer-body">
                   {item.answer != null && (
-                    <RichText
-                      data={item.answer}
-                      enableGutter={false}
-                      enableProse={false}
+                    <ConvertRichText
+                      data={item.answer as DefaultTypedEditorState}
+                      converters={faqConverters}
                       className="faq-answer-rich"
                     />
                   )}

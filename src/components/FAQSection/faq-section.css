@@ -28,8 +28,9 @@
   font-family: var(--font-fakt);
   font-weight: 500;
   color: var(--color-yugo-blue);
-  font-size: clamp(1.155rem, 1.65vw, 1.485rem);
-  line-height: 1.3;
+  font-size: clamp(2rem, 3.63vw, 2.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
   flex: 1;
 }
 
@@ -75,7 +76,7 @@
 /* Answer body text */
 .faq-answer-rich p {
   font-family: var(--font-fakt);
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1.5;
   color: var(--color-yugo-black);
   margin-bottom: 0.8rem;
@@ -93,6 +94,6 @@
 
 @media (min-width: 992px) {
   .faq-answer-rich p {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 }

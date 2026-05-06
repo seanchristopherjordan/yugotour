@@ -1,4 +1,9 @@
-.contact-page-title {
+.contact-block {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+.contact-block-title {
   font-family: var(--font-tungsten);
   font-weight: 700;
   text-transform: uppercase;
@@ -9,7 +14,7 @@
   margin: 0 0 1.5rem;
 }
 
-.contact-page-lede {
+.contact-block-lede {
   font-family: var(--font-fakt);
   font-size: 1.1rem;
   line-height: 1.5;

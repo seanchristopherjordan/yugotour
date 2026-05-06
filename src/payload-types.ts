@@ -531,6 +531,7 @@ export interface Page {
     | ImageCarouselBlock
     | FAQBlock
     | VideoEmbedBlock
+    | ContactBlock
     | CallToActionBlock
     | ContentBlock
     | MediaBlock
@@ -556,6 +557,17 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  heading?: string | null;
+  lede?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1773,6 +1785,7 @@ export interface PagesSelect<T extends boolean = true> {
         imageCarousel?: T | ImageCarouselBlockSelect<T>;
         faqBlock?: T | FAQBlockSelect<T>;
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
+        contactBlock?: T | ContactBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1794,6 +1807,16 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  heading?: T;
+  lede?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
