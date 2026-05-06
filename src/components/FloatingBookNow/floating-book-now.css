@@ -1,4 +1,4 @@
-/* FAB fallback label (shown when book-now-button.webp is not yet uploaded) */
+/* FAB fallback label (shown when booknowbutton.webp is not yet uploaded) */
 .book-now-fab-fallback {
   display: flex;
   align-items: center;
@@ -28,23 +28,24 @@
 
 .book-now-fab {
   position: fixed;
-  bottom: 22px;
-  left: 22px;
+  top: 14px;
+  right: 15px;
   z-index: 9990;
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  animation: fabRock 7500ms ease-in-out infinite;
+  animation: fabRock 5625ms ease-in-out infinite;
   transform-origin: center center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 1000ms ease;
+  transition: opacity 200ms ease;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
 }
-.book-now-fab.book-now-fab--scrolled {
+.book-now-fab.book-now-fab--visible {
   opacity: 1;
   pointer-events: auto;
+  transition: opacity 700ms ease;
 }
 .book-now-fab-inner {
   display: block;
@@ -53,16 +54,16 @@
 }
 .book-now-fab img {
   display: block;
-  width: 122px;
+  width: 140px;
   height: auto;
 }
 @media (max-width: 991px) {
   .book-now-fab {
-    left: 12px;
-    bottom: 11px;
+    top: 10px;
+    right: 10px;
   }
   .book-now-fab img {
-    width: 95px;
+    width: 109px;
   }
   .book-now-fab-fallback {
     width: 70px;

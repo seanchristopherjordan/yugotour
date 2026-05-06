@@ -1146,9 +1146,12 @@ export function BookingModal() {
                 alt=""
                 aria-hidden="true"
                 style={{ height: '100%', width: 'auto', display: 'block' }}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: [0.8, 1.32, 1.0], opacity: [0, 1, 1] }}
-                transition={{ duration: 0.6, times: [0, 0.6, 1], ease: 'easeOut' }}
+                initial={{ scale: 0.3, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  scale: { type: 'spring', damping: 6, stiffness: 280, mass: 0.8 },
+                  opacity: { duration: 0.2, ease: 'easeOut' },
+                }}
               />
             </div>
           )}
@@ -1163,9 +1166,12 @@ export function BookingModal() {
                     alt=""
                     aria-hidden="true"
                     style={{ width: '100%', height: 'auto', display: 'block' }}
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: [0.8, 1.32, 1.0], opacity: [0, 1, 1] }}
-                    transition={{ duration: 0.6, times: [0, 0.6, 1], ease: 'easeOut' }}
+                    initial={{ scale: 0.3, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      scale: { type: 'spring', damping: 6, stiffness: 280, mass: 0.8 },
+                      opacity: { duration: 0.2, ease: 'easeOut' },
+                    }}
                   />
                 </div>
               )}
@@ -1176,9 +1182,12 @@ export function BookingModal() {
                     alt=""
                     aria-hidden="true"
                     style={{ width: '100%', height: 'auto', display: 'block' }}
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: [0.8, 1.32, 1.0], opacity: [0, 1, 1] }}
-                    transition={{ duration: 0.6, times: [0, 0.6, 1], ease: 'easeOut' }}
+                    initial={{ scale: 0.3, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{
+                      scale: { type: 'spring', damping: 6, stiffness: 280, mass: 0.8 },
+                      opacity: { duration: 0.2, ease: 'easeOut' },
+                    }}
                   />
                 </div>
               )}

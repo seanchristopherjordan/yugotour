@@ -27,7 +27,7 @@ export function EmailLayout({ preheader, logoUrl, signatureUrl, bodyHtml }: Emai
         <Container style={containerStyle}>
           {logoUrl && (
             <Section style={logoSection}>
-              <Img src={logoUrl} alt="Yugotour" width={180} style={{ display: 'block' }} />
+              <Img src={logoUrl} alt="Yugotour" width={108} style={{ display: 'block' }} />
             </Section>
           )}
 
@@ -57,13 +57,13 @@ export function EmailLayout({ preheader, logoUrl, signatureUrl, bodyHtml }: Emai
 
 const bodyStyle: React.CSSProperties = {
   backgroundColor: '#f5f0e8',
-  fontFamily: 'Arial, Helvetica, sans-serif',
+  fontFamily: 'Georgia, "Times New Roman", Times, serif',
   margin: 0,
   padding: '24px 0',
 }
 
 const containerStyle: React.CSSProperties = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#fbf9ec',
   maxWidth: '600px',
   margin: '0 auto',
   borderRadius: '4px',
@@ -72,14 +72,15 @@ const containerStyle: React.CSSProperties = {
 
 const logoSection: React.CSSProperties = {
   backgroundColor: '#003882',
-  padding: '24px 32px',
+  padding: '14px 32px',
 }
 
 const contentSection: React.CSSProperties = {
   padding: '32px',
-  color: '#1a1a1a',
+  color: '#212121',
   fontSize: '15px',
   lineHeight: '1.6',
+  fontFamily: 'Georgia, "Times New Roman", Times, serif',
 }
 
 const signatureSection: React.CSSProperties = {

@@ -25,6 +25,7 @@ export function CityPicker({
 }: CityPickerProps) {
   return (
     <section
+      id="city-picker"
       className="relative overflow-hidden pt-[40px] pb-[40px] max-[991px]:pb-[67px]"
       style={{
         backgroundImage: textureUrl ? `url('${textureUrl}')` : undefined,
