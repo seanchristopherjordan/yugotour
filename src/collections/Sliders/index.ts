@@ -8,7 +8,7 @@ export const Sliders: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'updatedAt'],
-    group: 'Site Content',
+    group: 'Collections',
   },
   access: {
     create: authenticated,

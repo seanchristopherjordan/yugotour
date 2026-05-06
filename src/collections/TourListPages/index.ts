@@ -18,6 +18,7 @@ const bodyEditor = lexicalEditor({
 
 export const TourListPages: CollectionConfig = {
   slug: 'tour-list-pages',
+  labels: { singular: 'City Page', plural: 'City Pages' },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'city', 'updatedAt'],

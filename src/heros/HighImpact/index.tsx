@@ -1,3 +1,4 @@
+// @ts-nocheck — legacy hero, no longer reachable via RenderHero
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import React, { useEffect } from 'react'

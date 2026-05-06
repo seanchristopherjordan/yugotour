@@ -5,10 +5,11 @@ import { sendBookingEmails } from './hooks/sendBookingEmails'
 
 export const Bookings: CollectionConfig = {
   slug: 'bookings',
+  labels: { singular: 'Booking Entry', plural: 'Booking Entries' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['city', 'tourTitle', 'date', 'guests', 'name', 'totalPrice'],
-    group: 'Bookings',
+    group: 'Comms',
     description: 'Incoming tour booking requests. Use the city column to filter by destination.',
   },
   access: {

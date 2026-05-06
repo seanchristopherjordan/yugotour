@@ -6,10 +6,11 @@ import { sendContactNotification } from './hooks/sendContactNotification'
 export const ContactMessages: CollectionConfig = {
   slug: 'contact-messages',
   defaultSort: '-createdAt',
+  labels: { singular: 'Contact Entry', plural: 'Contact Entries' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'email', 'message', 'status', 'createdAt'],
-    group: 'Bookings',
+    group: 'Comms',
     description: 'Incoming contact form submissions.',
     listSearchableFields: ['name', 'email'],
   },

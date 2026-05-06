@@ -12,7 +12,8 @@ import { revalidateFAQ } from './hooks/revalidateFAQ'
 
 export const FAQ: GlobalConfig = {
   slug: 'faq',
-  label: 'FAQ',
+  label: 'FAQs',
+  admin: { group: 'Collections' },
   access: {
     read: () => true,
     update: authenticated,

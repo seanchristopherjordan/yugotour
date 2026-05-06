@@ -20,10 +20,11 @@ function bodyDescription(key: string): string {
 
 export const EmailTemplates: CollectionConfig = {
   slug: 'email-templates',
+  labels: { singular: 'Booking Setting', plural: 'Booking Settings' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'templateKey', 'fromEmail', 'updatedAt'],
-    group: 'Settings',
+    group: 'Comms',
     description: 'Editable templates for automated emails. Use {{variable}} tokens to insert booking or contact data.',
   },
   access: {

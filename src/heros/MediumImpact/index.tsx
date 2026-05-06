@@ -1,3 +1,4 @@
+// @ts-nocheck — legacy hero, no longer reachable via RenderHero
 import React from 'react'
 
 import type { Page } from '@/payload-types'

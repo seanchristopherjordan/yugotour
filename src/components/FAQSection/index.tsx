@@ -39,14 +39,16 @@ export function FAQSection({ items }: FAQSectionProps) {
             </button>
             <div className={`faq-answer-wrapper${isOpen ? ' faq-answer-wrapper--open' : ''}`}>
               <div className="faq-answer-inner">
-                {item.answer != null && (
-                  <RichText
-                    data={item.answer}
-                    enableGutter={false}
-                    enableProse={false}
-                    className="faq-answer-rich"
-                  />
-                )}
+                <div className="faq-answer-body">
+                  {item.answer != null && (
+                    <RichText
+                      data={item.answer}
+                      enableGutter={false}
+                      enableProse={false}
+                      className="faq-answer-rich"
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -3,9 +3,10 @@ import { revalidateHomepageIntro } from './hooks/revalidateHomepageIntro'
 
 export const HomepageIntro: GlobalConfig = {
   slug: 'homepage-intro',
-  label: 'Homepage — Intro Section',
+  label: 'Homepage',
   access: { read: () => true },
   admin: {
+    group: 'Site',
     description: 'Text content for the intro section below the hero video.',
   },
   fields: [

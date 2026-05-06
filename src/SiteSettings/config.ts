@@ -53,6 +53,7 @@ export const SiteSettings: GlobalConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Site',
     description:
       'Global links, contact info, and social profiles used across the header, footer, and megamenu.',
   },

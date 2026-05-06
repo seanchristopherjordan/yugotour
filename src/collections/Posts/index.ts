@@ -53,7 +53,9 @@ export const Posts: CollectionConfig<'posts'> = {
       description: true,
     },
   },
+  labels: { singular: 'Blog Post', plural: 'Blog Posts' },
   admin: {
+    group: 'Collections',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>

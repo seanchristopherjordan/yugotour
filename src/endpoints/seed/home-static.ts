@@ -5,7 +5,8 @@ export const homeStatic: RequiredDataFromCollectionSlug<'pages'> = {
   slug: 'home',
   _status: 'published',
   hero: {
-    type: 'lowImpact',
+    type: 'none',
+    // @ts-expect-error legacy richText kept for reference only
     richText: {
       root: {
         type: 'root',

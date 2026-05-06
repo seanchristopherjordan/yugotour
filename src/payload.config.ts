@@ -63,9 +63,25 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Tours, TourListPages, Sliders, Users, Bookings, ContactMessages, EmailTemplates],
+  collections: [
+    // Collections
+    Posts, Media, Users, Sliders, Categories,
+    // Site
+    Pages,
+    // Tours
+    Tours, TourListPages,
+    // Comms
+    ContactMessages, Bookings, EmailTemplates,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer, SiteSettings, HomepageIntro, TourOrder, FAQ],
+  globals: [
+    // Collections
+    FAQ,
+    // Site
+    Header, Footer, SiteSettings, HomepageIntro,
+    // Tours
+    TourOrder,
+  ],
   
   // --- PLUGINS SECTION ---
   plugins: [
