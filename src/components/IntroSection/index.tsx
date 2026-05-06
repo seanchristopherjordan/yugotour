@@ -174,7 +174,7 @@ export function IntroSection({
 
         {/* Row 3: How it works — pulled up over the cars on desktop */}
         <div className="w-full min-[992px]:w-3/4 min-[992px]:ml-[8.333%]">
-          <div className="-mt-[20px] min-[992px]:mt-[-35px] min-[1200px]:mt-[-70px] pb-[6px] min-[992px]:pb-[10px] pl-0 min-[992px]:pl-[95px] min-[992px]:flex min-[992px]:items-baseline">
+          <div className="-mt-[35px] min-[992px]:mt-[-35px] min-[1200px]:mt-[-70px] pb-[0] min-[992px]:pb-[10px] pl-0 min-[992px]:pl-[95px] min-[992px]:flex min-[992px]:items-baseline">
             {howItWorksTitle && (
               <p className="font-fakt font-bold text-yugo-black leading-[1.4] text-[1.092rem] min-[400px]:text-[1.248rem] min-[992px]:text-[1.2rem] mb-[0.25rem] min-[992px]:mb-0 min-[992px]:mr-[15px] min-[992px]:flex-shrink-0">
                 {howItWorksTitle}
@@ -200,7 +200,7 @@ export function IntroSection({
         </div>
 
         {/* Scroll-to-city-picker caret */}
-        <div className="flex justify-center mt-[1px] min-[992px]:mt-[6px] pb-[5px]">
+        <div className="flex justify-center -mt-[1px] min-[992px]:mt-[6px] pb-[5px]">
           <motion.button
             onClick={scrollToCityPicker}
             aria-label="Scroll to city picker"

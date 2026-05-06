@@ -3,6 +3,7 @@ import configPromise from '@payload-config'
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 import { render } from '@react-email/render'
 import { EmailLayout } from '@/email/EmailLayout'
+import { getMediaUrl } from '@/lib/getMediaUrl'
 import type { Media } from '@/payload-types'
 // EmailTemplate will be available after next dev regenerates payload-types.ts
 type EmailTemplate = Record<string, any>
@@ -67,7 +68,9 @@ export async function sendEmail(
   // Substitute variables inside the HTML too (they appear in text nodes)
   const bodyHtml = substituteVariables(rawBodyHtml, variables)
 
-  const logoUrl = mediaUrl(template.logo as number | Media | null | undefined)
+  const logoUrl =
+    mediaUrl(template.logo as number | Media | null | undefined) ??
+    (await getMediaUrl('yugotour-logo-email.png'))
   const signatureUrl = mediaUrl(template.signature as number | Media | null | undefined)
 
   const isGuestConfirmation = templateKey.startsWith('booking_guest_confirmation')
