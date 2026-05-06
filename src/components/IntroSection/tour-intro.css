@@ -81,7 +81,7 @@
   -webkit-font-smoothing: antialiased;
   color: var(--color-yugo-black);
   line-height: 1.4;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   margin-bottom: 1.5rem;
   font-size: 1.092rem;
 }

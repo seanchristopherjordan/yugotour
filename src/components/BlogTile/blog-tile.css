@@ -83,7 +83,7 @@
   color: var(--color-yugo-black);
   opacity: 0.5;
   display: block;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 .blog-tile-excerpt {
@@ -97,5 +97,5 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   opacity: 0.75;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }

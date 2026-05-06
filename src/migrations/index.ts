@@ -4,6 +4,7 @@ import * as migration_20260506_email_templates_contact_messages from './20260506
 import * as migration_20260506_fix_hero_schema from './20260506_fix_hero_schema';
 import * as migration_20260506_add_pickup_spot from './20260506_add_pickup_spot';
 import * as migration_20260506_add_page_hero_enum from './20260506_add_page_hero_enum';
+import * as migration_20260506_email_template_keys from './20260506_email_template_keys';
 
 export const migrations = [
   {
@@ -35,5 +36,10 @@ export const migrations = [
     up: migration_20260506_add_page_hero_enum.up,
     down: migration_20260506_add_page_hero_enum.down,
     name: '20260506_add_page_hero_enum',
+  },
+  {
+    up: migration_20260506_email_template_keys.up,
+    down: migration_20260506_email_template_keys.down,
+    name: '20260506_email_template_keys',
   },
 ];

@@ -273,14 +273,14 @@
 /* ── Fakt body text — global letter-spacing ── */
 /* Applies to any element using the font-fakt Tailwind utility class. */
 .font-fakt:not(h1, h2, h3, h4, h5, h6) {
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 /* Catch-all for Payload richtext rendered via <RichText> — covers all current
    and future blocks that use that component. */
 .payload-richtext p,
 .payload-richtext li {
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 /* Scroll lock when megamenu is open */

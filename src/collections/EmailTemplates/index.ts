@@ -50,7 +50,8 @@ export const EmailTemplates: CollectionConfig = {
       required: true,
       unique: true,
       options: [
-        { label: 'Booking – Guest Confirmation', value: 'booking_guest_confirmation' },
+        { label: 'Booking – Guest Confirmation (Belgrade)', value: 'booking_guest_confirmation_belgrade' },
+        { label: 'Booking – Guest Confirmation (Sarajevo)', value: 'booking_guest_confirmation_sarajevo' },
         { label: 'Booking – Staff Notification (Belgrade)', value: 'booking_staff_belgrade' },
         { label: 'Booking – Staff Notification (Sarajevo)', value: 'booking_staff_sarajevo' },
         { label: 'Contact Form – Staff Notification', value: 'contact_staff_notification' },
