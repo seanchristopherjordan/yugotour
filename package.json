@@ -5,7 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--no-deprecation payload migrate && cross-env NODE_OPTIONS=--no-deprecation next build",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "build": "node -e \"if(process.env.VERCEL_ENV==='production'){require('child_process').execSync('npm run migrate',{stdio:'inherit'})}\" && cross-env NODE_OPTIONS=--no-deprecation next build",
     "analyze": "cross-env NODE_OPTIONS=--no-deprecation ANALYZE=true next build --webpack",
     "postbuild": "next-sitemap --config next-sitemap.config.cjs",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --port 3001",

@@ -10,7 +10,10 @@ export const Bookings: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['city', 'tourTitle', 'date', 'guests', 'name', 'totalPrice'],
     group: 'Comms',
-    description: 'Incoming tour booking requests. Use the city column to filter by destination.',
+    description: 'Incoming tour booking requests.',
+    components: {
+      beforeList: ['@/collections/Bookings/components/CityFilterBar#CityFilterBar'],
+    },
   },
   access: {
     create: anyone,

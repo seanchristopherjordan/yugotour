@@ -3,6 +3,7 @@ import * as migration_20260505_new_blocks_faq from './20260505_new_blocks_faq';
 import * as migration_20260506_email_templates_contact_messages from './20260506_email_templates_contact_messages';
 import * as migration_20260506_fix_hero_schema from './20260506_fix_hero_schema';
 import * as migration_20260506_add_pickup_spot from './20260506_add_pickup_spot';
+import * as migration_20260506_add_page_hero_enum from './20260506_add_page_hero_enum';
 
 export const migrations = [
   {
@@ -29,5 +30,10 @@ export const migrations = [
     up: migration_20260506_add_pickup_spot.up,
     down: migration_20260506_add_pickup_spot.down,
     name: '20260506_add_pickup_spot',
+  },
+  {
+    up: migration_20260506_add_page_hero_enum.up,
+    down: migration_20260506_add_page_hero_enum.down,
+    name: '20260506_add_page_hero_enum',
   },
 ];
