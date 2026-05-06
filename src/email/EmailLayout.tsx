@@ -61,7 +61,7 @@ export function EmailLayout({ preheader, logoUrl, signatureUrl, bodyHtml, varian
 
 const bodyStyleGuest: React.CSSProperties = {
   backgroundColor: '#c6363b',
-  fontFamily: 'Georgia, "Times New Roman", Times, serif',
+  fontFamily: 'Arial, Helvetica, sans-serif',
   margin: 0,
   padding: '24px 0',
 }
@@ -84,7 +84,7 @@ const contentSectionGuest: React.CSSProperties = {
   color: '#212121',
   fontSize: '15px',
   lineHeight: '1.6',
-  fontFamily: 'Georgia, "Times New Roman", Times, serif',
+  fontFamily: 'Arial, Helvetica, sans-serif',
 }
 
 // ── Staff styles (original) ───────────────────────────────────────────────────
