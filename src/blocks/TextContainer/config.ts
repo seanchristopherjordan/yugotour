@@ -40,6 +40,20 @@ export const TextContainer: Block = {
           ],
         },
         {
+          name: 'widthPercent',
+          type: 'number',
+          label: 'Width (%)',
+          defaultValue: 42,
+          min: 15,
+          max: 75,
+          admin: {
+            description: 'Percentage of the container width the image occupies. Left/Right positions only.',
+            condition: (_, siblingData) =>
+              siblingData?.position === 'left' || siblingData?.position === 'right',
+            step: 1,
+          },
+        },
+        {
           name: 'caption',
           type: 'text',
           label: 'Caption (optional)',

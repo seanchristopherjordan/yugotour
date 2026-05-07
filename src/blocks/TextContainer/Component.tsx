@@ -6,6 +6,7 @@ import './text-container.css'
 interface TextContainerImage {
   media?: { url?: string | null; alt?: string | null } | string | null
   position?: 'none' | 'left' | 'right' | 'full' | null
+  widthPercent?: number | null
   caption?: string | null
 }
 
@@ -22,12 +23,18 @@ export function TextContainerBlock({ content, image }: TextContainerBlockProps) 
     image?.media && typeof image.media === 'object' ? image.media : null
   const hasImage = Boolean(mediaObj?.url)
   const position = image?.position ?? 'none'
+  const floatWidth = (position === 'left' || position === 'right')
+    ? `${image?.widthPercent ?? 42}%`
+    : undefined
 
   return (
     <div className="text-container-outer">
       <div className="container text-container-inner">
         {hasImage && (position === 'left' || position === 'right') && (
-          <figure className={`text-container-figure text-container-figure--${position}`}>
+          <figure
+            className={`text-container-figure text-container-figure--${position}`}
+            style={floatWidth ? { width: floatWidth } : undefined}
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={mediaObj!.url!}

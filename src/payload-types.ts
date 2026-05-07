@@ -349,6 +349,10 @@ export interface TextContainerBlock {
   image?: {
     media?: (number | null) | Media;
     position?: ('none' | 'left' | 'right' | 'full') | null;
+    /**
+     * Percentage of the container width the image occupies. Left/Right positions only.
+     */
+    widthPercent?: number | null;
     caption?: string | null;
   };
   id?: string | null;
@@ -1588,6 +1592,7 @@ export interface TextContainerBlockSelect<T extends boolean = true> {
     | {
         media?: T;
         position?: T;
+        widthPercent?: T;
         caption?: T;
       };
   id?: T;
