@@ -67,9 +67,15 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
   const isPageHero = (hero as { type?: string })?.type === 'pageHero'
 
+  const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection', 'fullBleedParallax', 'fullBleedStatic', 'imageCarousel', 'simulatorBlock'])
+  const lastBlock = layout?.[layout.length - 1] as { blockType?: string } | undefined
+  const endsWithFullBleed = fullBleedTypes.has(lastBlock?.blockType ?? '')
+
   return (
     <article
-      className={isPageHero ? 'pb-24' : 'pt-16 pb-24'}
+      className={isPageHero
+        ? (endsWithFullBleed ? '' : 'pb-24')
+        : (endsWithFullBleed ? 'pt-16' : 'pt-16 pb-24')}
       style={{ backgroundImage: "url('/textures/texture-cream.webp')", backgroundRepeat: 'repeat' }}
     >
       <PageClient />
