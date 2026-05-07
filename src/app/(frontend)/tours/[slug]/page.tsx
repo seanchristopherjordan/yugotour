@@ -78,7 +78,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
     : []
 
   // Resolve the array-of-relationship extras (depth: 2 populates extra.image too)
-  const resolvedExtras: OptionalExtraItem[] = await Promise.all(
+  const rawResolvedExtras = await Promise.all(
     (t.extras ?? []).map(async (item) => {
       const ex = typeof item.extra === 'object' && item.extra !== null ? item.extra : null
       if (!ex || typeof ex.title !== 'string') return null
@@ -90,14 +90,17 @@ export default async function TourPage({ params: paramsPromise }: Args) {
       }
       return {
         id: ex.id != null ? String(ex.id) : null,
-        title: ex.title,
+        title: ex.title as string,
         priceGroup: ex.priceGroup ?? null,
         priceSolo: ex.priceSolo ?? null,
         descriptionHtml,
         imageUrl: mediaUrl(ex.image),
       }
     }),
-  ).then((arr) => arr.filter((e): e is OptionalExtraItem => e !== null))
+  )
+  const resolvedExtras: OptionalExtraItem[] = rawResolvedExtras.filter(
+    (e): e is OptionalExtraItem => e !== null,
+  )
 
   const steps = (t.steps ?? []) as Array<{
     id?: string | null
