@@ -50,7 +50,7 @@ export const OptionalExtras: CollectionConfig = {
       type: 'text',
       label: 'Price — Group / PP',
       admin: {
-        description: 'e.g. "15" or "30 per car". For Airport extras, enter the per-car price here.',
+        description: 'Numeric only, e.g. "15". For Airport extras, enter the per-car rate here.',
         width: '50%',
       },
     },

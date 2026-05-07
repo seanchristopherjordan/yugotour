@@ -21,13 +21,19 @@ function isAirportExtra(title: string) {
   return title.toLowerCase().includes('airport')
 }
 
+function parseRawPrice(s: string | null | undefined): number {
+  if (!s) return 0
+  return parseFloat(s.replace(/[^0-9.]/g, '')) || 0
+}
+
 function formatPrice(extra: OptionalExtraItem): string {
   if (isAirportExtra(extra.title)) {
-    return extra.priceGroup ? `€${extra.priceGroup} per car` : ''
+    const price = parseRawPrice(extra.priceGroup)
+    return price ? `€${price} per car` : ''
   }
-  const group = extra.priceGroup?.trim()
-  const solo = extra.priceSolo?.trim()
-  if (group && solo) return `€${group} pp / €${solo} single`
+  const group = parseRawPrice(extra.priceGroup)
+  const solo = parseRawPrice(extra.priceSolo)
+  if (group && solo && solo !== group) return `€${group} pp / €${solo} single`
   if (group) return `€${group}`
   if (solo) return `€${solo}`
   return ''
