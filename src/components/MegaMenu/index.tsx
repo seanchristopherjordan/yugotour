@@ -138,7 +138,7 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
 
         {/* Nav body — bottom-aligned */}
         <nav
-          className="mt-auto flex flex-col pt-[60px] pb-[60px]"
+          className="mt-auto flex flex-col pt-[60px] pb-[70px]"
           style={{ paddingLeft: 'clamp(32px, 6vw, 94px)' }}
         >
           {/* Main links */}
