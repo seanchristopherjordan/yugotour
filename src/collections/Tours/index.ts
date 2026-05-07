@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, CollectionSlug } from 'payload'
 import { slugField } from 'payload'
 import {
   FixedToolbarFeature,
@@ -183,7 +183,7 @@ export const Tours: CollectionConfig = {
                 {
                   name: 'extra',
                   type: 'relationship',
-                  relationTo: 'optional-extras',
+                  relationTo: 'optional-extras' as unknown as CollectionSlug,
                   required: true,
                   filterOptions: ({ data }) => {
                     const city = (data as Record<string, unknown>)?.city
