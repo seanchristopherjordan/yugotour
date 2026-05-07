@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   width: 110px;
-  height: 110px;
+  height: 80px;
   border-radius: 50%;
   background: var(--color-yugo-red);
   color: var(--color-yugo-cream);
@@ -28,14 +28,14 @@
 
 .book-now-fab {
   position: fixed;
-  bottom: 22px;
+  bottom: 19px;
   right: 15px;
   z-index: 9990;
   background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
-  animation: fabRock 5625ms ease-in-out infinite;
+  animation: fabRock 5200ms ease-in-out infinite;
   transform-origin: center center;
   opacity: 0;
   pointer-events: none;
@@ -54,7 +54,7 @@
 }
 .book-now-fab img {
   display: block;
-  width: 140px;
+  width: 155px;
   height: auto;
 }
 @media (max-width: 991px) {
@@ -63,11 +63,11 @@
     right: 10px;
   }
   .book-now-fab img {
-    width: 109px;
+    width: 120px;
   }
   .book-now-fab-fallback {
     width: 70px;
-    height: 70px;
+    height: 55px;
     font-size: 1rem;
   }
 }
