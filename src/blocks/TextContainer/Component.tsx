@@ -10,14 +10,31 @@ interface TextContainerImage {
   caption?: string | null
 }
 
+interface SpacingConfig {
+  top?: 'standard' | 'none' | 'custom' | null
+  topCustom?: number | null
+  bottom?: 'standard' | 'none' | 'custom' | null
+  bottomCustom?: number | null
+}
+
+function resolveSpacing(type?: string | null, custom?: number | null): string {
+  if (type === 'none') return '0'
+  if (type === 'custom' && custom != null) return `${custom}rem`
+  return '2.5rem'
+}
+
 interface TextContainerBlockProps {
   content?: DefaultTypedEditorState | null
   image?: TextContainerImage | null
+  spacing?: SpacingConfig | null
   disableInnerContainer?: boolean
 }
 
-export function TextContainerBlock({ content, image }: TextContainerBlockProps) {
+export function TextContainerBlock({ content, image, spacing }: TextContainerBlockProps) {
   if (!content) return null
+
+  const paddingTop    = resolveSpacing(spacing?.top, spacing?.topCustom)
+  const paddingBottom = resolveSpacing(spacing?.bottom, spacing?.bottomCustom)
 
   const mediaObj =
     image?.media && typeof image.media === 'object' ? image.media : null
@@ -27,9 +44,11 @@ export function TextContainerBlock({ content, image }: TextContainerBlockProps) 
     ? `${image?.widthPercent ?? 42}%`
     : undefined
 
+  const innerClass = `container text-container-inner${position === 'left' || position === 'right' ? ` text-container-inner--${position}` : ''}`
+
   return (
-    <div className="text-container-outer">
-      <div className="container text-container-inner">
+    <div className="text-container-outer" style={{ paddingTop, paddingBottom }}>
+      <div className={innerClass}>
         {hasImage && (position === 'left' || position === 'right') && (
           <figure
             className={`text-container-figure text-container-figure--${position}`}

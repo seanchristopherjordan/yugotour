@@ -346,6 +346,15 @@ export interface TextContainerBlock {
     };
     [k: string]: unknown;
   };
+  /**
+   * Override the default top/bottom padding of this block.
+   */
+  spacing?: {
+    top?: ('standard' | 'none' | 'custom') | null;
+    topCustom?: number | null;
+    bottom?: ('standard' | 'none' | 'custom') | null;
+    bottomCustom?: number | null;
+  };
   image?: {
     media?: (number | null) | Media;
     position?: ('none' | 'left' | 'right' | 'full') | null;
@@ -545,6 +554,7 @@ export interface Page {
     | FormBlock
     | TvSectionBlock
     | ReviewsSectionBlock
+    | SimulatorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -944,6 +954,15 @@ export interface ReviewsSectionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'reviewsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SimulatorBlock".
+ */
+export interface SimulatorBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'simulatorBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1587,6 +1606,14 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface TextContainerBlockSelect<T extends boolean = true> {
   content?: T;
+  spacing?:
+    | T
+    | {
+        top?: T;
+        topCustom?: T;
+        bottom?: T;
+        bottomCustom?: T;
+      };
   image?:
     | T
     | {
@@ -1833,6 +1860,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         tvSection?: T | TvSectionBlockSelect<T>;
         reviewsSection?: T | ReviewsSectionBlockSelect<T>;
+        simulatorBlock?: T | SimulatorBlockSelect<T>;
       };
   meta?:
     | T
@@ -1951,6 +1979,14 @@ export interface TvSectionBlockSelect<T extends boolean = true> {
  */
 export interface ReviewsSectionBlockSelect<T extends boolean = true> {
   label?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SimulatorBlock_select".
+ */
+export interface SimulatorBlockSelect<T extends boolean = true> {
   id?: T;
   blockName?: T;
 }

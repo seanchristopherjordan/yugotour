@@ -16,6 +16,7 @@ import { ImageCarouselBlock } from '../../blocks/ImageCarouselBlock/config'
 import { FAQBlock } from '../../blocks/FAQBlock/config'
 import { VideoEmbed } from '../../blocks/VideoEmbed/config'
 import { ContactBlock } from '../../blocks/ContactBlock/config'
+import { SimulatorBlock } from '../../blocks/SimulatorBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -97,6 +98,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FormBlock,
                 TvSection,
                 ReviewsSection,
+                SimulatorBlock,
               ],
               required: true,
               admin: {

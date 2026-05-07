@@ -17,6 +17,7 @@ import { ImageCarouselBlockComponent } from '@/blocks/ImageCarouselBlock/Compone
 import { FAQBlockComponent } from '@/blocks/FAQBlock/Component'
 import { VideoEmbedBlock } from '@/blocks/VideoEmbed/Component'
 import { ContactBlockComponent } from '@/blocks/ContactBlock/Component'
+import { SimulatorBlockComponent } from '@/blocks/SimulatorBlock/Component'
 
 const FormBlock = dynamic(() => import('@/blocks/Form/Component').then((m) => ({ default: m.FormBlock })))
 
@@ -36,6 +37,7 @@ const blockComponents = {
   faqBlock: FAQBlockComponent,
   videoEmbed: VideoEmbedBlock,
   contactBlock: ContactBlockComponent,
+  simulatorBlock: SimulatorBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{
@@ -55,7 +57,7 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
-              const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection', 'fullBleedParallax', 'fullBleedStatic', 'imageCarousel'])
+              const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection', 'fullBleedParallax', 'fullBleedStatic', 'imageCarousel', 'simulatorBlock'])
               const isFullBleed = fullBleedTypes.has(blockType)
               const followsFullBleed = index > 0 && fullBleedTypes.has(blocks[index - 1]?.blockType ?? '')
               const isFirst = index === 0

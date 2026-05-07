@@ -88,7 +88,7 @@
   clear: both;
 }
 
-/* Mobile: always full width, no float */
+/* Mobile: full width, no float, flex ordering */
 @media (max-width: 991px) {
   .text-container-figure--left,
   .text-container-figure--right {
@@ -96,10 +96,24 @@
     width: 100%;
     margin-right: 0;
     margin-left: 0;
-    margin-bottom: 1.5rem;
   }
 
-  .text-container-rich p {
-    font-size: 1.092rem;
+  /* Flex column so we can control image/text order independently */
+  .text-container-inner--left,
+  .text-container-inner--right {
+    display: flex;
+    flex-direction: column;
   }
+
+  /* Left: image first, then text */
+  .text-container-inner--left .text-container-figure { order: 0; margin-bottom: 1.5rem; }
+  .text-container-inner--left .text-container-rich   { order: 1; }
+
+  /* Right: text first, then image */
+  .text-container-inner--right .text-container-rich  { order: 0; }
+  .text-container-inner--right .text-container-figure { order: 1; margin-top: 1.5rem; }
+
+  .text-container-clearfix { display: none; }
+
+  .text-container-rich p { font-size: 1.092rem; }
 }
