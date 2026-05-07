@@ -74,6 +74,7 @@ export interface Config {
     categories: Category;
     pages: Page;
     tours: Tour;
+    'optional-extras': OptionalExtra;
     'tour-list-pages': TourListPage;
     'contact-messages': ContactMessage;
     bookings: Booking;
@@ -97,6 +98,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     tours: ToursSelect<false> | ToursSelect<true>;
+    'optional-extras': OptionalExtrasSelect<false> | OptionalExtrasSelect<true>;
     'tour-list-pages': TourListPagesSelect<false> | TourListPagesSelect<true>;
     'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     bookings: BookingsSelect<false> | BookingsSelect<true>;
@@ -995,16 +997,11 @@ export interface Tour {
    */
   fullBleedImage?: (number | null) | Media;
   /**
-   * Optional upgrades guests can add during booking.
+   * Select optional extras available for this tour. Drag rows to reorder. Options are filtered to match the tour's city.
    */
   extras?:
     | {
-        title: string;
-        /**
-         * e.g. "15" or "30 per car"
-         */
-        priceGroup?: string | null;
-        priceSolo?: string | null;
+        extra: number | OptionalExtra;
         id?: string | null;
       }[]
     | null;
@@ -1038,6 +1035,38 @@ export interface Tour {
    */
   generateSlug?: boolean | null;
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "optional-extras".
+ */
+export interface OptionalExtra {
+  id: number;
+  title: string;
+  city: 'belgrade' | 'sarajevo';
+  /**
+   * Numeric only, e.g. "15". For Airport extras, enter the per-car rate here.
+   */
+  priceGroup?: string | null;
+  priceSolo?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1109,7 +1138,7 @@ export interface ContactMessage {
   createdAt: string;
 }
 /**
- * Incoming tour booking requests. Use the city column to filter by destination.
+ * Incoming tour booking requests.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bookings".
@@ -1157,7 +1186,8 @@ export interface EmailTemplate {
    * Determines when this template is sent. Each type can only have one template.
    */
   templateKey:
-    | 'booking_guest_confirmation'
+    | 'booking_guest_confirmation_belgrade'
+    | 'booking_guest_confirmation_sarajevo'
     | 'booking_staff_belgrade'
     | 'booking_staff_sarajevo'
     | 'contact_staff_notification';
@@ -1426,6 +1456,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'tours';
         value: number | Tour;
+      } | null)
+    | ({
+        relationTo: 'optional-extras';
+        value: number | OptionalExtra;
       } | null)
     | ({
         relationTo: 'tour-list-pages';
@@ -1937,9 +1971,7 @@ export interface ToursSelect<T extends boolean = true> {
   extras?:
     | T
     | {
-        title?: T;
-        priceGroup?: T;
-        priceSolo?: T;
+        extra?: T;
         id?: T;
       };
   steps?:
@@ -1952,6 +1984,20 @@ export interface ToursSelect<T extends boolean = true> {
       };
   generateSlug?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "optional-extras_select".
+ */
+export interface OptionalExtrasSelect<T extends boolean = true> {
+  title?: T;
+  city?: T;
+  priceGroup?: T;
+  priceSolo?: T;
+  description?: T;
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
 }

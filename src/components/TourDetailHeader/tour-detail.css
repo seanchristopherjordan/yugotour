@@ -177,7 +177,7 @@
     display: block;
     width: 1.5px;
     background: rgba(33, 33, 33, 0.2);
-    margin: 0 28px;
+    margin: 0 17px;
     flex-shrink: 0;
     align-self: stretch;
   }
@@ -204,18 +204,23 @@
 
 @media (min-width: 992px) {
   .tour-ibar-item--duration,
-  .tour-ibar-item--price,
+  .tour-ibar-item--price {
+    width: auto;
+    flex: 0 0 8%;
+    max-width: 11.5%;
+  }
+
   .tour-ibar-item--includes {
     width: auto;
-    flex: 0 0 12.75%;
-    max-width: 12.75%;
+    flex: 0 0 18%;
+    max-width: 18%;
   }
 
   .tour-ibar-item--extras {
     width: auto;
-    flex: 0 0 21.75%;
-    max-width: 21.75%;
-    padding-right: 35px;
+    flex: 0 0 22%;
+    max-width: 22%;
+    padding-right: 10px;
     /* Info icon is positioned absolutely within this column */
     position: relative;
   }
@@ -224,14 +229,14 @@
 .tour-ibar-label {
   font-family: var(--font-grotesk);
   font-weight: 700;
-  font-size: 0.58rem;
+  font-size: 0.6rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(33, 33, 33, 0.55);
 }
 
 @media (min-width: 992px) {
-  .tour-ibar-label { font-size: 0.65rem; }
+  .tour-ibar-label { font-size: 0.72rem; }
 }
 
 @media (max-width: 991px) {
@@ -241,7 +246,7 @@
 .tour-ibar-sublabel {
   font-family: var(--font-grotesk);
   font-weight: 700;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(252, 249, 235, 0.55);
@@ -303,6 +308,7 @@
     flex: 1;
     justify-content: flex-end;
     align-items: center;
+    margin-left: 30px;
   }
 }
 
