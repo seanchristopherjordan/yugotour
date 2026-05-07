@@ -960,6 +960,15 @@ export interface ReviewsSectionBlock {
  * via the `definition` "SimulatorBlock".
  */
 export interface SimulatorBlock {
+  /**
+   * Override the default top/bottom margin of this block.
+   */
+  spacing?: {
+    top?: ('standard' | 'none' | 'custom') | null;
+    topCustom?: number | null;
+    bottom?: ('standard' | 'none' | 'custom') | null;
+    bottomCustom?: number | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'simulatorBlock';
@@ -1987,6 +1996,14 @@ export interface ReviewsSectionBlockSelect<T extends boolean = true> {
  * via the `definition` "SimulatorBlock_select".
  */
 export interface SimulatorBlockSelect<T extends boolean = true> {
+  spacing?:
+    | T
+    | {
+        top?: T;
+        topCustom?: T;
+        bottom?: T;
+        bottomCustom?: T;
+      };
   id?: T;
   blockName?: T;
 }
