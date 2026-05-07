@@ -30,7 +30,7 @@ export default async function HomePage() {
   const { isEnabled: draft } = await draftMode()
   const [page, siteSettings] = await Promise.all([
     queryHomePage(),
-    getCachedGlobal('site-settings', 1)(),
+    getCachedGlobal('site-settings', 2)(),
   ])
 
   const site = (siteSettings as typeof siteSettings & { homepageSlider?: number | SliderDoc | null }).site
