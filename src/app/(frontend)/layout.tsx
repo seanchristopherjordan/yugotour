@@ -33,6 +33,7 @@ import '@/components/TourDetailHeader/tour-detail.css'
 import '@/components/FloatingBookNow/floating-book-now.css'
 import '@/components/LazyFade/lazy-fade.css'
 import '@/components/TalesFromTheRoad/tales.css'
+import '@/components/OptionalExtrasModal/optional-extras-modal.css'
 import { getServerSideURL } from '@/utilities/getURL'
 
 const faktPro = localFont({

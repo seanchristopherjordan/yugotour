@@ -194,8 +194,13 @@
 .tour-ibar-item--duration,
 .tour-ibar-item--price { width: calc(50% - 8px); }
 
-.tour-ibar-item--includes,
-.tour-ibar-item--extras { width: 100%; }
+.tour-ibar-item--includes { width: 100%; }
+
+/* position: relative allows the info icon button to be placed absolutely */
+.tour-ibar-item--extras {
+  width: 100%;
+  position: relative;
+}
 
 @media (min-width: 992px) {
   .tour-ibar-item--duration,
@@ -211,6 +216,8 @@
     flex: 0 0 21.75%;
     max-width: 21.75%;
     padding-right: 35px;
+    /* Info icon is positioned absolutely within this column */
+    position: relative;
   }
 }
 

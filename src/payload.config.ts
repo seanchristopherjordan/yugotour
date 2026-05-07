@@ -14,6 +14,7 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Tours } from './collections/Tours'
+import { OptionalExtras } from './collections/OptionalExtras'
 import { TourListPages } from './collections/TourListPages'
 import { Sliders } from './collections/Sliders'
 import { Users } from './collections/Users'
@@ -70,7 +71,7 @@ export default buildConfig({
     // Site
     Pages,
     // Tours
-    Tours, TourListPages,
+    Tours, OptionalExtras, TourListPages,
     // Comms
     ContactMessages, Bookings, EmailTemplates,
   ],

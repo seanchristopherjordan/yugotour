@@ -3,15 +3,17 @@ import { cache } from 'react'
 import { draftMode } from 'next/headers'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
 import type { Media, Tour } from '@/payload-types'
 import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
-import Link from 'next/link'
 import RichText from '@/components/RichText'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import { TourDetailHeader } from '@/components/TourDetailHeader'
 import { TourFullBleedImage } from '@/components/TourFullBleedImage'
 import { TvSectionBlock, type TvSectionBlockProps } from '@/blocks/TvSection/Component'
 import { BookNowButton } from '@/components/BookNowButton'
+import { OptionalExtrasSection, type OptionalExtraItem } from '@/components/OptionalExtrasModal'
+import { getMediaUrl } from '@/lib/getMediaUrl'
 
 function mediaUrl(field: number | Media | null | undefined): string | null {
   if (!field || typeof field === 'number') return null
@@ -32,12 +34,28 @@ export async function generateStaticParams() {
 
 type Args = { params: Promise<{ slug?: string }> }
 
+type RawExtraRef = {
+  id?: string | null
+  extra?:
+    | {
+        id?: number | string | null
+        title?: string | null
+        priceGroup?: string | null
+        priceSolo?: string | null
+        description?: unknown
+        image?: number | Media | null
+      }
+    | number
+    | null
+}
+
 export default async function TourPage({ params: paramsPromise }: Args) {
   const { slug = '' } = await paramsPromise
   const url = `/tours/${slug}`
-  const [tour, tvBlock] = await Promise.all([
+  const [tour, tvBlock, infoIconUrl] = await Promise.all([
     queryTourBySlug({ slug }),
     queryTvBlock(),
+    getMediaUrl('information-icon.webp'),
   ])
   const textureCreamUrl = '/textures/texture-cream.webp'
 
@@ -46,7 +64,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
   type TourExtended = Tour & {
     mapEmbedUrl?: string | null
     fullBleedImage?: number | Media | null
-    extras?: Array<{ id?: string | null; title: string; priceGroup?: string | null; priceSolo?: string | null }>
+    extras?: RawExtraRef[]
   }
   const t = tour as TourExtended
 
@@ -59,12 +77,27 @@ export default async function TourPage({ params: paramsPromise }: Args) {
     ? t.includes.split('\n').map((s) => s.trim()).filter(Boolean)
     : []
 
-  const extras = (t.extras ?? []) as Array<{
-    id?: string | null
-    title: string
-    priceGroup?: string | null
-    priceSolo?: string | null
-  }>
+  // Resolve the array-of-relationship extras (depth: 2 populates extra.image too)
+  const resolvedExtras: OptionalExtraItem[] = await Promise.all(
+    (t.extras ?? []).map(async (item) => {
+      const ex = typeof item.extra === 'object' && item.extra !== null ? item.extra : null
+      if (!ex || typeof ex.title !== 'string') return null
+      let descriptionHtml = ''
+      if (ex.description) {
+        try {
+          descriptionHtml = await convertLexicalToHTML({ data: ex.description as never })
+        } catch { /* swallow — description is optional */ }
+      }
+      return {
+        id: ex.id != null ? String(ex.id) : null,
+        title: ex.title,
+        priceGroup: ex.priceGroup ?? null,
+        priceSolo: ex.priceSolo ?? null,
+        descriptionHtml,
+        imageUrl: mediaUrl(ex.image),
+      }
+    }),
+  ).then((arr) => arr.filter((e): e is OptionalExtraItem => e !== null))
 
   const steps = (t.steps ?? []) as Array<{
     id?: string | null
@@ -131,19 +164,19 @@ export default async function TourPage({ params: paramsPromise }: Args) {
                     ))}
                   </ul>
                 </div>
-                {extras.length > 0 && <div className="tour-ibar-sep" aria-hidden="true" />}
+                {resolvedExtras.length > 0 && <div className="tour-ibar-sep" aria-hidden="true" />}
               </>
             )}
-            {extras.length > 0 && (
-              <div className="tour-ibar-item tour-ibar-item--extras">
-                <span className="tour-ibar-label">Optional Extras</span>
-                <ul className="tour-ibar-list">
-                  {extras.map((ex, i) => (
-                    <li key={ex.id ?? i}>{ex.title}</li>
-                  ))}
-                </ul>
-              </div>
+
+            {/* Extras column — client component renders label + list + info icon + modal */}
+            {resolvedExtras.length > 0 && (
+              <OptionalExtrasSection
+                tourTitle={t.title}
+                extras={resolvedExtras}
+                infoIconUrl={infoIconUrl}
+              />
             )}
+
             <div className="tour-ibar-book">
               <BookNowButton
                 payloadId={tourPayloadId}

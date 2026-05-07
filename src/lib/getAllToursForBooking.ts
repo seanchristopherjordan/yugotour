@@ -19,6 +19,19 @@ export interface BookingTour {
   }>
 }
 
+type RawExtraRef = {
+  id?: string | null
+  extra?:
+    | {
+        id?: number | string | null
+        title?: string | null
+        priceGroup?: string | null
+        priceSolo?: string | null
+      }
+    | number
+    | null
+}
+
 export const getAllToursForBooking = unstable_cache(
   async (): Promise<BookingTour[]> => {
     const payload = await getPayload({ config: configPromise })
@@ -26,10 +39,12 @@ export const getAllToursForBooking = unstable_cache(
       collection: 'tours',
       draft: false,
       limit: 500,
+      depth: 1, // resolve the optional-extras relationship inside extras[]
       pagination: false,
     })
     return result.docs.map((doc) => {
       const d = doc as unknown as Record<string, unknown>
+      const rawExtras = (d.extras ?? []) as RawExtraRef[]
       return {
         id: doc.id,
         title: doc.title as string,
@@ -39,7 +54,18 @@ export const getAllToursForBooking = unstable_cache(
         priceSolo: (d.priceSolo as number) ?? null,
         duration: (d.duration as string) ?? null,
         includes: (d.includes as string) ?? null,
-        extras: (d.extras ?? []) as BookingTour['extras'],
+        extras: rawExtras
+          .map((item) => {
+            const ex = typeof item.extra === 'object' && item.extra !== null ? item.extra : null
+            if (!ex || !ex.title) return null
+            return {
+              id: ex.id != null ? String(ex.id) : null,
+              title: ex.title,
+              priceGroup: ex.priceGroup ?? null,
+              priceSolo: ex.priceSolo ?? null,
+            }
+          })
+          .filter((e): e is NonNullable<typeof e> => e !== null),
       }
     })
   },

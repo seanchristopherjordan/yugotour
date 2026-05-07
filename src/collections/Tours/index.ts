@@ -174,31 +174,22 @@ export const Tours: CollectionConfig = {
             {
               name: 'extras',
               type: 'array',
-              label: 'Add-on Extras',
+              label: 'Optional Extras',
               admin: {
                 description:
-                  'Optional upgrades guests can add during booking.',
+                  'Select optional extras available for this tour. Drag rows to reorder. Options are filtered to match the tour\'s city.',
               },
               fields: [
                 {
-                  name: 'title',
-                  type: 'text',
+                  name: 'extra',
+                  type: 'relationship',
+                  relationTo: 'optional-extras',
                   required: true,
-                },
-                {
-                  name: 'priceGroup',
-                  type: 'text',
-                  label: 'Price — Group',
-                  admin: {
-                    description: 'e.g. "15" or "30 per car"',
-                    width: '50%',
+                  filterOptions: ({ data }) => {
+                    const city = (data as Record<string, unknown>)?.city
+                    if (!city) return true
+                    return { city: { equals: city } }
                   },
-                },
-                {
-                  name: 'priceSolo',
-                  type: 'text',
-                  label: 'Price — Solo',
-                  admin: { width: '50%' },
                 },
               ],
             },
