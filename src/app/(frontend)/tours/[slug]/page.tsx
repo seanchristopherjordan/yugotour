@@ -57,9 +57,12 @@ export default async function TourPage({ params: paramsPromise }: Args) {
     queryTvBlock(),
     getMediaUrl('information-icon.webp'),
   ])
-  const textureCreamUrl = '/textures/texture-cream.webp'
-
   if (!tour) return <PayloadRedirects url={url} />
+  const cityTours = await queryToursInCity({ city: (tour as { city: string }).city })
+  const currentIndex = cityTours.findIndex((ct) => ct.slug === slug)
+  const prevSlug = currentIndex > 0 ? (cityTours[currentIndex - 1]?.slug ?? null) : null
+  const nextSlug = currentIndex < cityTours.length - 1 ? (cityTours[currentIndex + 1]?.slug ?? null) : null
+  const textureCreamUrl = '/textures/texture-cream.webp'
 
   type TourExtended = Omit<Tour, 'extras'> & {
     mapEmbedUrl?: string | null
@@ -122,6 +125,8 @@ export default async function TourPage({ params: paramsPromise }: Args) {
         lede={t.lede}
         desktopUrl={headerDesktopUrl}
         mobileUrl={headerMobileUrl}
+        prevSlug={prevSlug}
+        nextSlug={nextSlug}
       />
 
       {/* ── Info Bar (red texture — duration / price / includes / extras / book) ── */}
@@ -304,6 +309,21 @@ const queryTourBySlug = cache(async ({ slug }: { slug: string }) => {
     where: { slug: { equals: slug } },
   })
   return result.docs?.[0] ?? null
+})
+
+const queryToursInCity = cache(async ({ city }: { city: string }) => {
+  const payload = await getPayload({ config: configPromise })
+  const result = await payload.find({
+    collection: 'tours',
+    draft: false,
+    limit: 1000,
+    pagination: false,
+    overrideAccess: false,
+    sort: 'tourId',
+    where: { city: { equals: city } },
+    select: { slug: true, tourId: true },
+  })
+  return result.docs
 })
 
 // Fetch the TvSection block from the homepage layout so the tour detail page
