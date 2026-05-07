@@ -57,7 +57,8 @@
 @media (min-width: 1280px) { .tile-image-wrap { flex-basis: 67%; } }
 @media (min-width: 1400px) { .tile-image-wrap { flex-basis: 69%; } }
 
-.tile-bg-img {
+/* .tile-image-wrap parent raises specificity above img[loading="lazy"] in lazy-fade.css */
+.tile-image-wrap .tile-bg-img {
   position: absolute;
   top: 0;
   left: 0;
@@ -67,7 +68,7 @@
   object-position: center;
   display: block;
   z-index: 1;
-  transition: transform 400ms ease-out;
+  transition: transform 400ms ease-out, opacity 700ms ease;
 }
 
 .tile-gradient {
