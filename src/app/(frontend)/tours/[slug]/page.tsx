@@ -61,7 +61,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
 
   if (!tour) return <PayloadRedirects url={url} />
 
-  type TourExtended = Tour & {
+  type TourExtended = Omit<Tour, 'extras'> & {
     mapEmbedUrl?: string | null
     fullBleedImage?: number | Media | null
     extras?: RawExtraRef[]
