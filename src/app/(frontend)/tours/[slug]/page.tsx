@@ -98,9 +98,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
       }
     }),
   )
-  const resolvedExtras: OptionalExtraItem[] = rawResolvedExtras.filter(
-    (e): e is OptionalExtraItem => e !== null,
-  )
+  const resolvedExtras = rawResolvedExtras.filter(Boolean) as OptionalExtraItem[]
 
   const steps = (t.steps ?? []) as Array<{
     id?: string | null
