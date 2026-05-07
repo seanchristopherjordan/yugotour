@@ -30,12 +30,6 @@ function richDoc(...paragraphs: string[]) {
 
 // ── Tour data ─────────────────────────────────────────────────────────────────
 
-interface TourExtra {
-  title: string
-  priceGroup?: string
-  priceSolo?: string
-}
-
 interface TourStep {
   title: string
   description?: ReturnType<typeof richDoc>
@@ -51,18 +45,8 @@ interface TourSeed {
   priceSolo: number
   includes: string
   introText?: ReturnType<typeof richDoc>
-  extras: TourExtra[]
   steps?: TourStep[]
 }
-
-const BELGRADE_SHARED_EXTRAS: TourExtra[] = [
-  { title: 'Airport Dropoff / Pickup', priceGroup: '30 per car' },
-  { title: 'Genex Tower inside visit', priceGroup: '15', priceSolo: '20' },
-  { title: "Tito's Blue Train", priceGroup: '15', priceSolo: '20' },
-  { title: 'Museum of Yugoslavia and Mausoleum of Tito', priceGroup: '15', priceSolo: '20' },
-  { title: 'Blok 61/62/63', priceGroup: '15', priceSolo: '20' },
-  { title: 'Rudo Towers inside visit', priceGroup: '15', priceSolo: '20' },
-]
 
 const TOURS: TourSeed[] = [
   // ── BELGRADE ──────────────────────────────────────────────────────────────
@@ -77,13 +61,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 65,
     priceSolo: 95,
     includes: 'Drink & Snack\nMuseum of Yugoslavia and Mausoleum of Tito',
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '30 per car' },
-      { title: 'Genex Tower inside visit', priceGroup: '15', priceSolo: '20' },
-      { title: "Tito's Blue Train", priceGroup: '15', priceSolo: '20' },
-      { title: 'Blok 61/62/63', priceGroup: '15', priceSolo: '20' },
-      { title: 'Rudo Towers inside visit', priceGroup: '15', priceSolo: '20' },
-    ],
   },
 
   {
@@ -96,7 +73,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 65,
     priceSolo: 95,
     includes: 'Drink & Snack',
-    extras: BELGRADE_SHARED_EXTRAS,
   },
 
   {
@@ -109,7 +85,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 45,
     priceSolo: 75,
     includes: 'Drink & Snack',
-    extras: BELGRADE_SHARED_EXTRAS,
   },
 
   {
@@ -122,12 +97,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 65,
     priceSolo: 95,
     includes: "Drink & Snack\nMuseum of Yugoslavia and Mausoleum of Tito\nTito's Blue Train",
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '30 per car' },
-      { title: 'Genex Tower inside visit', priceGroup: '15', priceSolo: '20' },
-      { title: 'Blok 61/62/63', priceGroup: '15', priceSolo: '20' },
-      { title: 'Rudo Towers inside visit', priceGroup: '15', priceSolo: '20' },
-    ],
   },
 
   {
@@ -140,7 +109,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 100,
     priceSolo: 150,
     includes: 'Drink & Snack\nEntrance to Avala Tower',
-    extras: BELGRADE_SHARED_EXTRAS,
   },
 
   {
@@ -154,13 +122,6 @@ const TOURS: TourSeed[] = [
     priceSolo: 150,
     includes:
       "Drink & Snack\nTito's Blue Train\nMuseum of Banjica Concentration Camp (if available)",
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '30 per car' },
-      { title: 'Genex Tower inside visit', priceGroup: '15', priceSolo: '20' },
-      { title: 'Museum of Yugoslavia and Mausoleum of Tito', priceGroup: '15', priceSolo: '20' },
-      { title: 'Blok 61/62/63', priceGroup: '15', priceSolo: '20' },
-      { title: 'Rudo Towers inside visit', priceGroup: '15', priceSolo: '20' },
-    ],
   },
 
   {
@@ -173,13 +134,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 100,
     priceSolo: 150,
     includes: "Drink & Snack\nEntrance to Avala Tower\nTito's Blue Train",
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '30 per car' },
-      { title: 'Genex Tower inside visit', priceGroup: '15', priceSolo: '20' },
-      { title: 'Museum of Yugoslavia and Mausoleum of Tito', priceGroup: '15', priceSolo: '20' },
-      { title: 'Blok 61/62/63', priceGroup: '15', priceSolo: '20' },
-      { title: 'Rudo Towers inside visit', priceGroup: '15', priceSolo: '20' },
-    ],
   },
 
   // ── SARAJEVO ──────────────────────────────────────────────────────────────
@@ -194,10 +148,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 50,
     priceSolo: 75,
     includes: 'EX-YU Rock Center\nHistory Museum\nCiglane Funicular',
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '20 per car' },
-      { title: 'Trebević cable car', priceGroup: '15', priceSolo: '15' },
-    ],
   },
 
   {
@@ -210,10 +160,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 75,
     priceSolo: 100,
     includes: 'Olympic Museum',
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '20 per car' },
-      { title: 'Trebević cable car', priceGroup: '15', priceSolo: '15' },
-    ],
   },
 
   {
@@ -226,10 +172,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 75,
     priceSolo: 100,
     includes: 'Coffee at Gradska Kafana',
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '20 per car' },
-      { title: 'Smetovi Spomenik', priceGroup: '15', priceSolo: '20' },
-    ],
   },
 
   {
@@ -242,10 +184,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 75,
     priceSolo: 100,
     includes: "Tito's Nuclear Bunker\nNeretva Battle Museum",
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '20 per car' },
-      { title: 'Mostar transfer and walking tour', priceGroup: '30', priceSolo: '40' },
-    ],
   },
 
   {
@@ -258,10 +196,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 100,
     priceSolo: 140,
     includes: 'Museum entrance\nNational Park entrance',
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '20 per car' },
-      { title: 'Hike in Sutjeska National Park', priceGroup: '30', priceSolo: '40' },
-    ],
     introText: richDoc(
       'The Battle of Sutjeska in June 1943 was a true turning point in the war effort of the Yugoslav Partisans against the German-Italian occupiers during the Second World War. Marshall Tito and the Partisan main force once again managed to break through Axis encirclement, proving that they were a formidable fighting force that could not easily be defeated. The legacy of this battle became a key component in post-war Yugoslav identity, and to that end a large memorial complex was built in the Sutjeska valley. Join this Yugotour to explore the wartime history and post-war legacy of the Battle of Sutjeska.',
     ),
@@ -327,10 +261,6 @@ const TOURS: TourSeed[] = [
     priceGroup: 55,
     priceSolo: 80,
     includes: 'Historical Museum\nTunnel Museum',
-    extras: [
-      { title: 'Airport Dropoff / Pickup', priceGroup: '20 per car' },
-      { title: 'Trebević cable car', priceGroup: '15', priceSolo: '15' },
-    ],
   },
 ]
 
@@ -359,7 +289,7 @@ export async function seedTours({
 
     await payload.create({
       collection: 'tours',
-      data: tour as RequiredDataFromCollectionSlug<'tours'>,
+      data: tour as unknown as RequiredDataFromCollectionSlug<'tours'>,
       req,
     })
 
