@@ -52,7 +52,7 @@ export function TextContainerBlock({ content, image, spacing }: TextContainerBlo
         {hasImage && (position === 'left' || position === 'right') && (
           <figure
             className={`text-container-figure text-container-figure--${position}`}
-            style={floatWidth ? { width: floatWidth } : undefined}
+            style={floatWidth ? { '--tc-img-width': floatWidth } as React.CSSProperties : undefined}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

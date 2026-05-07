@@ -7,7 +7,7 @@
 .text-container-rich p {
   font-family: var(--font-fakt);
   font-size: 1.2rem;
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--color-yugo-black);
   margin-bottom: 1.2rem;
   letter-spacing: -0.01em;
@@ -52,12 +52,14 @@
 
 .text-container-figure--left {
   float: left;
+  width: var(--tc-img-width, 42%);
   margin-right: 2rem;
   margin-bottom: 1.2rem;
 }
 
 .text-container-figure--right {
   float: right;
+  width: var(--tc-img-width, 42%);
   margin-left: 2rem;
   margin-bottom: 1.2rem;
 }
@@ -115,5 +117,5 @@
 
   .text-container-clearfix { display: none; }
 
-  .text-container-rich p { font-size: 1.092rem; }
+  .text-container-rich p { font-size: 1.092rem; line-height: 1.5; }
 }
