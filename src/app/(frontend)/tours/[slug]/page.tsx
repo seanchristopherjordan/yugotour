@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { cache } from 'react'
 import { draftMode } from 'next/headers'
+import Link from 'next/link'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { convertLexicalToHTML } from '@payloadcms/richtext-lexical/html'
@@ -125,8 +126,6 @@ export default async function TourPage({ params: paramsPromise }: Args) {
         lede={t.lede}
         desktopUrl={headerDesktopUrl}
         mobileUrl={headerMobileUrl}
-        prevSlug={prevSlug}
-        nextSlug={nextSlug}
       />
 
       {/* ── Info Bar (red texture — duration / price / includes / extras / book) ── */}
@@ -271,6 +270,25 @@ export default async function TourPage({ params: paramsPromise }: Args) {
             </BookNowButton>
           </div>
         </section>
+      )}
+
+      {/* ── Prev / Next tour navigation ─────────────────────── */}
+      {(prevSlug || nextSlug) && (
+        <div
+          className="tour-page-body"
+          style={{ ...creamBg, paddingTop: 0, paddingBottom: 0 }}
+        >
+          <div className="container">
+            <div className="tour-tour-nav">
+              {prevSlug
+                ? <Link href={`/tours/${prevSlug}`} className="tour-tour-nav__link">← Previous Tour</Link>
+                : <span />}
+              {nextSlug
+                ? <Link href={`/tours/${nextSlug}`} className="tour-tour-nav__link">Next Tour →</Link>
+                : <span />}
+            </div>
+          </div>
+        </div>
       )}
 
       {/* ── Full-bleed parallax image (after map) ───────────── */}

@@ -15,9 +15,9 @@
   background-color: var(--color-yugo-black);
 }
 
-/* Mobile: 75% viewport height */
+/* Mobile: 82% viewport height */
 @media (max-width: 991px) {
-  .tour-page-header { height: 75svh; }
+  .tour-page-header { height: 82svh; }
 }
 
 /* Static fill — no extra height needed since header has no parallax */
@@ -45,33 +45,6 @@
   inset: 0;
   z-index: 2;
   background: rgba(0, 0, 0, 0.6);
-}
-
-/* Back-to-tours — Fakt Pro Medium, positioned outside container margins */
-.tour-page-back-link {
-  font-family: var(--font-fakt);
-  font-weight: 400;
-  font-size: 1.1rem;
-  letter-spacing: 0.01em;
-  color: var(--color-yugo-cream);
-  text-decoration: none;
-  position: absolute;
-  top: 80px;
-  left: 1.5rem;
-  z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding-bottom: 2px;
-  opacity: 0.75;
-}
-
-@media (min-width: 992px) {
-  .tour-page-back-link { font-size: 1rem; }
-}
-
-@media (max-width: 991px) {
-  .tour-page-back-link { left: 1.07rem; }
 }
 
 /* Main content block — bottom-anchored so title grows upward on wrap */
@@ -134,38 +107,6 @@
   font-size: clamp(1.15rem, 0.2rem + 1.5vw, 1.7rem);
   line-height: 1.35;
   margin: 0 0 20px;
-}
-
-/* Prev/Next tour navigation — bottom corners of hero */
-.tour-page-nav-prev,
-.tour-page-nav-next {
-  font-family: var(--font-fakt);
-  font-weight: 400;
-  font-size: 1.1rem;
-  letter-spacing: 0.01em;
-  color: var(--color-yugo-cream);
-  text-decoration: none;
-  position: absolute;
-  bottom: 15px;
-  z-index: 10;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding-bottom: 2px;
-  opacity: 0.75;
-}
-
-.tour-page-nav-prev { left: 1.5rem; }
-.tour-page-nav-next { right: 1.5rem; }
-
-@media (min-width: 992px) {
-  .tour-page-nav-prev,
-  .tour-page-nav-next { font-size: 1rem; }
-}
-
-@media (max-width: 991px) {
-  .tour-page-nav-prev { left: 1.07rem; }
-  .tour-page-nav-next { right: 1.07rem; }
 }
 
 /* ── Info Bar (red texture, sits immediately below hero) ──── */
@@ -598,4 +539,46 @@
   object-fit: cover;
   object-position: 15% center;
   display: block;
+}
+
+/* ── Prev / Next tour navigation (end of page) ────────────── */
+
+.tour-tour-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 56px;
+}
+
+.tour-tour-nav__link {
+  font-family: var(--font-fakt);
+  font-weight: 400;
+  font-size: 1.092rem;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  color: var(--color-yugo-red);
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+@media (min-width: 400px) {
+  .tour-tour-nav__link { font-size: 1.248rem; }
+}
+
+@media (min-width: 992px) {
+  .tour-tour-nav__link { font-size: 1.2rem; }
+
+  .tour-tour-nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background: var(--color-yugo-red);
+    transition: width 200ms ease-in-out;
+  }
+
+  .tour-tour-nav__link:hover::after { width: 100%; }
 }
