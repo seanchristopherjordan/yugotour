@@ -124,8 +124,8 @@
 .opt-extras-item__title {
   font-family: var(--font-fakt-pro);
   font-weight: 700;
-  font-size: 1.4rem;
-  letter-spacing: 0.01em;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: var(--color-yugo-cream);
   margin: 0 0 0.3rem;
