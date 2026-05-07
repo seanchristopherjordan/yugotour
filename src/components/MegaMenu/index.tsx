@@ -180,7 +180,7 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
 
           {/* Secondary links — 2-column grid */}
           <div
-            className="grid gap-x-[1px] gap-y-[1.4rem] mb-[1.4rem]"
+            className="grid gap-x-[1px] gap-y-[1.4rem] max-[991px]:gap-y-[1.1rem] mb-[1.4rem] max-[991px]:mb-[1.1rem]"
             style={{ gridTemplateColumns: '140px 140px' }}
           >
             {SECONDARY_LINKS.map((link) => (
