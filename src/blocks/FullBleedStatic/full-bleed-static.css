@@ -6,6 +6,12 @@
   background-color: var(--color-yugo-black);
 }
 
+.full-bleed-static picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .full-bleed-static-img {
   width: 100%;
   height: 100%;
@@ -25,6 +31,15 @@
 
 @media (max-width: 991px) {
   .full-bleed-static {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: unset;
+  }
+
+  .full-bleed-static picture {
+    height: auto;
+  }
+
+  .full-bleed-static-img {
+    height: auto;
+    object-fit: initial;
   }
 }
