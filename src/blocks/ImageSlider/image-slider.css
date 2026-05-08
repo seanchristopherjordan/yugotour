@@ -89,10 +89,25 @@
   pointer-events: none;
 }
 
-/* ── Desktop slide: 3px rounded corners ── */
+/* ── Desktop slide: 3px rounded corners + dim non-active slides ── */
 @media (min-width: 992px) {
   .image-slider-slide {
     border-radius: 3px;
     overflow: hidden;
+  }
+
+  .image-slider-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 1;
+    transition: opacity 500ms ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .image-slider-slide.swiper-slide-active::after {
+    opacity: 0;
   }
 }
