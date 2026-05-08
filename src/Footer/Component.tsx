@@ -237,7 +237,7 @@ export async function Footer() {
 
           {/* Footer bottom */}
           <div className="mt-[40px] pb-[30px]">
-            <p className="font-fakt text-[1.04rem] min-[402px]:text-[1.144rem] min-[992px]:text-[1.1rem] leading-[1.4] m-0 text-black/35">
+            <p className="font-fakt text-[1.04rem] min-[402px]:text-[1.144rem] min-[992px]:text-[1.1rem] leading-[1.4] tracking-[-0.01em] m-0 text-black/35">
               Site by Sean J
               <br />
               Copyright © {year} Yugotour
