@@ -10,7 +10,13 @@ export const FullBleedStatic: Block = {
       type: 'upload',
       relationTo: 'media',
       required: true,
-      label: 'Image',
+      label: 'Image (Desktop)',
+    },
+    {
+      name: 'imageMobile',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Image (Mobile, optional — falls back to desktop)',
     },
     {
       name: 'caption',
