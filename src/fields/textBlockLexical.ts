@@ -16,7 +16,7 @@ export const textBlockLexical = lexicalEditor({
     BoldFeature(),
     ItalicFeature(),
     UnderlineFeature(),
-    HeadingFeature({ enabledHeadingSizes: ['h2'] }),
+    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2'] }),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
     }),

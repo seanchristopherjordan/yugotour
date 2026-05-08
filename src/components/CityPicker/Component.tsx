@@ -31,7 +31,7 @@ export async function CityPickerServer() {
       belgradSignUrl={belgradSignDoc?.url ?? null}
       sarajevoSignUrl={sarajevoSignDoc?.url ?? null}
       partizanGirlUrl={partizanGirlDoc?.url ?? null}
-      partizanGirlMobileUrl={partizanGirlDoc?.sizes?.small?.url ?? partizanGirlDoc?.url ?? null}
+      partizanGirlMobileUrl={partizanGirlDoc?.url ?? null}
     />
   )
 }

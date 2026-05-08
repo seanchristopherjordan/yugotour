@@ -17,6 +17,22 @@
   margin-bottom: 0;
 }
 
+/* H1 headings — Cooper Black, ~2× H2 */
+.text-container-rich h1 {
+  font-family: var(--font-cooper);
+  font-weight: 400;
+  color: var(--color-yugo-blue);
+  font-size: clamp(2.8rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.text-container-rich h1:first-child {
+  margin-top: 0;
+}
+
 /* H2 headings */
 .text-container-rich h2 {
   font-family: var(--font-grotesk);
