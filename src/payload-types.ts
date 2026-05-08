@@ -387,6 +387,7 @@ export interface FullBleedParallaxBlock {
  */
 export interface FullBleedStaticBlock {
   image: number | Media;
+  imageMobile?: (number | null) | Media;
   caption?: string | null;
   id?: string | null;
   blockName?: string | null;
@@ -1649,6 +1650,7 @@ export interface FullBleedParallaxBlockSelect<T extends boolean = true> {
  */
 export interface FullBleedStaticBlockSelect<T extends boolean = true> {
   image?: T;
+  imageMobile?: T;
   caption?: T;
   id?: T;
   blockName?: T;

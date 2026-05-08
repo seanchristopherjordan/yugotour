@@ -65,7 +65,7 @@
 .cookie-btn {
   font-family: var(--font-grotesk);
   font-weight: 300;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   letter-spacing: -0.01em;
   line-height: 1;
   background: transparent;
@@ -86,13 +86,16 @@
 /* ── Mobile ────────────────────────────────────────────────────── */
 @media (max-width: 991px) {
   .cookie-wrapper {
-    bottom: 6;
-    left: 6;
-    right: 6;
+    position: fixed; /* or absolute */
+    max-width: 450px;
+    bottom: 10px;    /* '6' usually needs a unit like px or rem */
+    left: 8px;
+    right: 8px;
+    margin-inline: auto; /* This centers it within the left/right bounds */
     display: flex;
     justify-content: center;
-    padding: 0;
   }
+
 
   .cookie-card {
     width: 100%;
@@ -106,15 +109,15 @@
   }
 
   .cookie-content {
-    padding: 1.9rem 1.2rem 1.1rem 1rem;
+    padding: 1.9rem 1.1rem 1.2rem 1rem;
   }
 
   .cookie-heading {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .cookie-btn {
-    font-size: 1rem;
-    padding: 0.7rem 1rem;
+    font-size: 1.2rem;
+    padding: 0.7rem 0.7rem;
   }
 }
