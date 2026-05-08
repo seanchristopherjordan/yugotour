@@ -34,6 +34,7 @@ import '@/components/FloatingBookNow/floating-book-now.css'
 import '@/components/LazyFade/lazy-fade.css'
 import '@/components/TalesFromTheRoad/tales.css'
 import '@/components/OptionalExtrasModal/optional-extras-modal.css'
+import '@/components/CookieBanner/cookie-banner.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { CookieBanner } from '@/components/CookieBanner/CookieBanner'
 
