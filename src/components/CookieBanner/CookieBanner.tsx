@@ -25,6 +25,11 @@ export function CookieBanner({ kolaciUrl }: CookieBannerProps) {
     setVisible(false)
   }
 
+  function reject() {
+    localStorage.setItem(STORAGE_KEY, '0')
+    setVisible(false)
+  }
+
   return (
     <div className="cookie-wrapper">
       <div className="cookie-card">
@@ -42,9 +47,7 @@ export function CookieBanner({ kolaciUrl }: CookieBannerProps) {
           <p className="cookie-heading">This site uses kolači.</p>
 
           <div className="cookie-buttons">
-            {/* Manage — left */}
-            <button className="cookie-btn">Manage</button>
-            {/* Accept — right */}
+            <button className="cookie-btn" onClick={reject}>Reject</button>
             <button className="cookie-btn" onClick={accept}>Accept</button>
           </div>
         </div>

@@ -285,10 +285,12 @@ function DateInputField({
   imgSrc,
   value,
   onChange,
+  error,
 }: {
   imgSrc: string | null
   value: string
   onChange: (v: string) => void
+  error?: boolean
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -306,6 +308,7 @@ function DateInputField({
   return (
     <div
       className={`${INPUT_ROW} relative cursor-pointer`}
+      style={error ? { boxShadow: '0 0 0 3px #C25E5E' } : undefined}
       tabIndex={0}
       role="button"
       aria-label="Date of Tour"
@@ -345,15 +348,17 @@ function TimeSelectField({
   value,
   onChange,
   options,
+  error,
 }: {
   imgSrc: string | null
   placeholder: string
   value: string
   onChange: (v: string) => void
   options: Array<{ value: string; label: string }>
+  error?: boolean
 }) {
   return (
-    <div className={INPUT_ROW}>
+    <div className={INPUT_ROW} style={error ? { boxShadow: '0 0 0 3px #C25E5E' } : undefined}>
       {imgSrc && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={imgSrc} width="18" height="18" alt="" aria-hidden="true" className="flex-shrink-0" />
@@ -389,15 +394,17 @@ function InputField({
   type = 'text',
   value,
   onChange,
+  error,
 }: {
   imgSrc: string | null
   placeholder: string
   type?: string
   value: string
   onChange: (v: string) => void
+  error?: boolean
 }) {
   return (
-    <div className={INPUT_ROW}>
+    <div className={INPUT_ROW} style={error ? { boxShadow: '0 0 0 3px #C25E5E' } : undefined}>
       {imgSrc && (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={imgSrc} width="18" height="18" alt="" aria-hidden="true" className="flex-shrink-0" />
@@ -438,6 +445,7 @@ export function BookingModal() {
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const turnstileRef = useRef<TurnstileInstance>(null)
+  const [fieldErrors, setFieldErrors] = useState<Set<string>>(new Set())
   const [phase, setPhase] = useState<'form' | 'success'>('form')
   const [showBadge, setShowBadge] = useState(false)
   const [showBubble, setShowBubble] = useState(false)
@@ -464,6 +472,7 @@ export function BookingModal() {
       if (tour) { init.city = tour.city; init.selectedTourDocId = initialOpts.payloadId }
     }
     dispatch({ type: 'RESET', init })
+    setFieldErrors(new Set())
     setSubmitError(null)
     setTurnstileToken(null)
     turnstileRef.current?.reset()
@@ -574,6 +583,24 @@ export function BookingModal() {
       }
     }
   }, [valid, selectedTour, isSubmitting, formState, guestCount, totalPrice, hasAirport, turnstileToken])
+
+  function clearError(field: string) {
+    setFieldErrors((prev) => { const n = new Set(prev); n.delete(field); return n })
+  }
+
+  function handleButtonClick() {
+    const errors = new Set<string>()
+    if (!formState.name.trim()) errors.add('name')
+    if (!emailRegex.test(formState.email)) errors.add('email')
+    if (!formState.date.trim()) errors.add('date')
+    if (!formState.startTime.trim()) errors.add('startTime')
+    if (errors.size > 0) {
+      setFieldErrors(errors)
+      return
+    }
+    setFieldErrors(new Set())
+    handleSubmit()
+  }
 
   // Shared select styles for tour + guests dropdowns
   const selectCls = [
@@ -977,14 +1004,16 @@ export function BookingModal() {
                       imgSrc={images.iconName}
                       placeholder="Your Name"
                       value={formState.name}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'name', value: v })}
+                      error={fieldErrors.has('name')}
+                      onChange={(v) => { clearError('name'); dispatch({ type: 'SET_FIELD', field: 'name', value: v }) }}
                     />
                     <InputField
                       imgSrc={images.iconEmail}
                       type="email"
                       placeholder="Email"
                       value={formState.email}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })}
+                      error={fieldErrors.has('email')}
+                      onChange={(v) => { clearError('email'); dispatch({ type: 'SET_FIELD', field: 'email', value: v }) }}
                     />
                     <InputField
                       imgSrc={images.iconPhone}
@@ -999,7 +1028,8 @@ export function BookingModal() {
                     <DateInputField
                       imgSrc={images.iconDate}
                       value={formState.date}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'date', value: v })}
+                      error={fieldErrors.has('date')}
+                      onChange={(v) => { clearError('date'); dispatch({ type: 'SET_FIELD', field: 'date', value: v }) }}
                     />
                     <InputField
                       imgSrc={images.iconPickup}
@@ -1011,7 +1041,8 @@ export function BookingModal() {
                       imgSrc={images.iconTime}
                       placeholder="Preferred Start Time"
                       value={formState.startTime}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'startTime', value: v })}
+                      error={fieldErrors.has('startTime')}
+                      onChange={(v) => { clearError('startTime'); dispatch({ type: 'SET_FIELD', field: 'startTime', value: v }) }}
                       options={tourTimeOpts}
                     />
                   </div>
@@ -1024,14 +1055,16 @@ export function BookingModal() {
                       imgSrc={images.iconName}
                       placeholder="Your Name"
                       value={formState.name}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'name', value: v })}
+                      error={fieldErrors.has('name')}
+                      onChange={(v) => { clearError('name'); dispatch({ type: 'SET_FIELD', field: 'name', value: v }) }}
                     />
                     <InputField
                       imgSrc={images.iconEmail}
                       type="email"
                       placeholder="Email"
                       value={formState.email}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'email', value: v })}
+                      error={fieldErrors.has('email')}
+                      onChange={(v) => { clearError('email'); dispatch({ type: 'SET_FIELD', field: 'email', value: v }) }}
                     />
                   </div>
                   {/* Belgrade: Phone / Date / Start Time on row 2 */}
@@ -1046,13 +1079,15 @@ export function BookingModal() {
                     <DateInputField
                       imgSrc={images.iconDate}
                       value={formState.date}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'date', value: v })}
+                      error={fieldErrors.has('date')}
+                      onChange={(v) => { clearError('date'); dispatch({ type: 'SET_FIELD', field: 'date', value: v }) }}
                     />
                     <TimeSelectField
                       imgSrc={images.iconTime}
                       placeholder="Preferred Start Time"
                       value={formState.startTime}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'startTime', value: v })}
+                      error={fieldErrors.has('startTime')}
+                      onChange={(v) => { clearError('startTime'); dispatch({ type: 'SET_FIELD', field: 'startTime', value: v }) }}
                       options={tourTimeOpts}
                     />
                   </div>
@@ -1092,13 +1127,12 @@ export function BookingModal() {
 
               <button
                 type="button"
-                disabled={!valid || !turnstileToken || isSubmitting}
-                onClick={handleSubmit}
+                disabled={isSubmitting}
+                onClick={handleButtonClick}
                 className={[
                   'booking-submit-btn',
                   'flex items-center justify-center gap-[12px] w-full mt-[16px]',
-                  'px-[20px] py-[14px] rounded-[6px] border-none',
-                  valid && turnstileToken && !isSubmitting ? 'cursor-pointer' : 'opacity-40 cursor-not-allowed',
+                  'px-[20px] py-[14px] rounded-[6px] border-none cursor-pointer',
                 ].join(' ')}
                 style={{
                   background: '#C25E5E',
