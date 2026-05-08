@@ -132,7 +132,7 @@
 }
 
 @media (min-width: 440px) {
-  .tile-intro-text { font-size: 1.15rem; }
+  .tile-intro-text { font-size: 1.11rem; }
 }
 
 .tile-info-lines {
@@ -190,5 +190,5 @@
 }
 
 @media (min-width: 440px) {
-  .tile-info-extras { font-size: 1.1rem; }
+  .tile-info-extras { font-size: 1.08rem; }
 }
