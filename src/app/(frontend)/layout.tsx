@@ -35,6 +35,7 @@ import '@/components/LazyFade/lazy-fade.css'
 import '@/components/TalesFromTheRoad/tales.css'
 import '@/components/OptionalExtrasModal/optional-extras-modal.css'
 import { getServerSideURL } from '@/utilities/getURL'
+import { CookieBanner } from '@/components/CookieBanner/CookieBanner'
 
 const faktPro = localFont({
   src: [
@@ -99,12 +100,19 @@ const steelfishBold = localFont({
   display: 'swap',
 })
 
+const cooperBoldCondensed = localFont({
+  src: './fonts/CooperBlackEFCE-BoldCon.woff',
+  variable: '--font-cooper-bold-condensed',
+  display: 'swap',
+})
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const [siteSettings, allTours, bookNowButtonUrl, bookingImages] = await Promise.all([
+  const [siteSettings, allTours, bookNowButtonUrl, kolaciUrl, bookingImages] = await Promise.all([
     getCachedGlobal('site-settings', 1)(),
     getAllToursForBooking(),
     getMediaUrl('booknowbutton.webp'),
+    getMediaUrl('kolaci.webp'),
     Promise.all([
       getMediaUrl('booking-form-header.webp'),
       getMediaUrl('booking-form-header-mobile.webp'),
@@ -158,6 +166,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         tungstenCompressed.variable,
         zipperStd.variable,
         steelfishBold.variable,
+        cooperBoldCondensed.variable,
       )}
       lang="en"
       suppressHydrationWarning
@@ -187,6 +196,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             {children}
             <Footer />
             <FloatingBookNow imageUrl={bookNowButtonUrl} />
+            <CookieBanner kolaciUrl={kolaciUrl} />
             <LazyFade />
           </Providers>
         </BookingModalProvider>
