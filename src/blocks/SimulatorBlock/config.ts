@@ -9,7 +9,7 @@ export const SimulatorBlock: Block = {
       name: 'spacing',
       type: 'group',
       label: 'Vertical Spacing',
-      admin: { description: 'Override the default top/bottom margin of this block.' },
+      admin: { description: 'Override the default top/bottom margin of this block.', collapsed: true },
       fields: [
         {
           name: 'top',

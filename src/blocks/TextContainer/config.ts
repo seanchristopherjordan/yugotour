@@ -17,7 +17,7 @@ export const TextContainer: Block = {
       name: 'spacing',
       type: 'group',
       label: 'Vertical Spacing',
-      admin: { description: 'Override the default top/bottom padding of this block.' },
+      admin: { description: 'Override the default top/bottom padding of this block.', collapsed: true },
       fields: [
         {
           name: 'top',
@@ -69,6 +69,7 @@ export const TextContainer: Block = {
       name: 'image',
       type: 'group',
       label: 'Inline Image (optional)',
+      admin: { collapsed: true },
       fields: [
         {
           name: 'media',
