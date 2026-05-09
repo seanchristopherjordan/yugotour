@@ -86,14 +86,11 @@
 /* ── Mobile ────────────────────────────────────────────────────── */
 @media (max-width: 991px) {
   .cookie-wrapper {
-    position: fixed; /* or absolute */
-    max-width: 400px;
-    bottom: 30px;    /* '6' usually needs a unit like px or rem */
-    left: 8px;
-    right: 8px;
-    margin-inline: auto; /* This centers it within the left/right bounds */
-    display: flex;
-    justify-content: center;
+    bottom: 30px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: min(400px, calc(100vw - 16px));
   }
 
 
