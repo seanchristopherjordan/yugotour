@@ -1,5 +1,6 @@
 import {
   BoldFeature,
+  EXPERIMENTAL_TableFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -7,7 +8,6 @@ import {
   LinkFeature,
   OrderedListFeature,
   ParagraphFeature,
-  TableFeature,
   UnderlineFeature,
   UnorderedListFeature,
   lexicalEditor,
@@ -22,7 +22,7 @@ export const textBlockLexical = lexicalEditor({
     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2'] }),
     UnorderedListFeature(),
     OrderedListFeature(),
-    TableFeature(),
+    EXPERIMENTAL_TableFeature(),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
     }),
