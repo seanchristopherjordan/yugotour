@@ -1,30 +1,20 @@
 .tour-tile {
   width: 100%;
   border-radius: 5px;
+  overflow: hidden;
   container-type: inline-size;
   container-name: tile;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   position: relative;
-}
-
-/* Hover shadow via opacity — avoids box-shadow repaint on every frame */
-.tour-tile::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 5px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-  opacity: 0;
-  transition: opacity 400ms ease;
-  pointer-events: none;
+  /* GPU compositing layer — isolates repaint to this tile only */
+  transform: translateZ(0);
+  transition: box-shadow 400ms ease;
 }
 
 @media (min-width: 992px) {
   .tour-tile:hover {
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
     z-index: 10;
-  }
-  .tour-tile:hover::after {
-    opacity: 1;
   }
 }
 
@@ -37,10 +27,9 @@
   overflow: hidden;
   position: relative;
   border-radius: 5px;
-  isolation: isolate;
 }
 
-/* Hover brightness via opacity — avoids filter repaint on every frame */
+/* Brightness overlay — opacity transition is compositor-only on the GPU layer */
 .tour-tile-inner::after {
   content: '';
   position: absolute;
@@ -49,7 +38,7 @@
   opacity: 0;
   transition: opacity 400ms ease;
   pointer-events: none;
-  z-index: 100;
+  z-index: 10;
 }
 
 @media (min-width: 992px) {
