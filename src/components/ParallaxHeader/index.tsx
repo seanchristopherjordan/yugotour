@@ -20,6 +20,7 @@ export interface ParallaxHeaderProps {
 export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: ParallaxHeaderProps) {
   const { scrollY } = useScroll()
   const isMobileRef = useRef(false)
+  const capRef = useRef(900)
 
   const titleY = useMotionValue(0)
   const l2Y = useMotionValue(0)
@@ -28,7 +29,12 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
 
   useEffect(() => {
     const update = () => {
-      isMobileRef.current = window.innerWidth < 992
+      const mob = window.innerWidth < 992
+      isMobileRef.current = mob
+      // Cap = header height: layers stop updating once header is off-screen
+      capRef.current = mob
+        ? window.innerHeight
+        : window.innerWidth * (762 / 2400)
     }
     update()
     window.addEventListener('resize', update, { passive: true })
@@ -37,7 +43,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     const mobile = isMobileRef.current
-    const cy = y
+    const cy = Math.min(y, capRef.current)
 
     if (mobile) {
       l2Y.set(cy * 0.78)
