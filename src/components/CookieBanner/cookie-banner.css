@@ -87,10 +87,12 @@
 @media (max-width: 991px) {
   .cookie-wrapper {
     bottom: 30px;
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    width: min(400px, calc(100vw - 16px));
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-width: 400px;
+    margin-inline: auto;
+    transform: none;
   }
 
 
