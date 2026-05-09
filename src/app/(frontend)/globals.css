@@ -299,6 +299,7 @@ body.modal-active {
 /* Prevent FOUC on theme load — opacity set by InitTheme once theme is known */
 html {
   opacity: 0;
+  overflow-x: hidden;
 }
 
 html[data-theme='dark'],

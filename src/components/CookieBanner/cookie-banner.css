@@ -4,16 +4,16 @@
   bottom: 1.25rem;
   right: 2.25rem;
   z-index: 9999;
+  width: 550px;
 }
 
 /* ── Card ──────────────────────────────────────────────────────── */
 .cookie-card {
   display: flex;
   overflow: hidden;
-  width: 550px;
+  width: 100%;
   background: #FCF9EB;
   border-radius: 10px;
-  box-shadow: none;
   box-shadow: 0 0 0 3px #212121;
 }
 
@@ -84,7 +84,7 @@
 }
 
 /* ── Mobile ────────────────────────────────────────────────────── */
-@media (max-width: 991px) {
+@media (max-width: 599px) {
   .cookie-wrapper {
     bottom: 30px;
     left: 0;
