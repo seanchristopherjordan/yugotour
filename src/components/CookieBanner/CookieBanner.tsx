@@ -44,7 +44,7 @@ export function CookieBanner({ kolaciUrl }: CookieBannerProps) {
 
         {/* Content */}
         <div className="cookie-content">
-          <p className="cookie-heading">This site uses kolači.</p>
+          <p className="cookie-heading">This site uses keksići.</p>
 
           <div className="cookie-buttons">
             <button className="cookie-btn" onClick={reject}>Reject</button>

@@ -39,7 +39,9 @@ export function TourListHeader({
   const l4m = layer4MobileUrl ?? fallback(city, 'mobile-header-layer-4.webp')
 
   const { scrollY } = useScroll()
+  const headerRef = useRef<HTMLElement>(null)
   const isMobileRef = useRef(false)
+  const capRef = useRef(900)
 
   const titleY = useMotionValue(0)
   const l2Y    = useMotionValue(0)
@@ -47,22 +49,25 @@ export function TourListHeader({
   const l4Y    = useMotionValue(0)
 
   useEffect(() => {
-    const update = () => { isMobileRef.current = window.innerWidth < 992 }
+    const update = () => {
+      isMobileRef.current = window.innerWidth < 992
+      capRef.current = headerRef.current?.offsetHeight ?? 900
+    }
     update()
     window.addEventListener('resize', update, { passive: true })
     return () => window.removeEventListener('resize', update)
   }, [])
 
   useMotionValueEvent(scrollY, 'change', (y) => {
-    const cy = Math.min(y, 1200)
+    const cy = Math.min(y, capRef.current)
     if (isMobileRef.current) {
       titleY.set(cy * 0.6)
-      l2Y.set(cy * 0.2)
-      l3Y.set(cy * 0.7)
-      l4Y.set(cy * 0.9)
+      l2Y.set(cy * 0.3)
+      l3Y.set(cy * 0.5)
+      l4Y.set(cy * 0.7)
     } else {
-      titleY.set(cy * 0.31)
-      l2Y.set(cy * 0.39)
+      titleY.set(cy * 0.45)
+      l2Y.set(cy * 0.3)
       l3Y.set(cy * 0.6)
       l4Y.set(0)
     }
@@ -83,7 +88,7 @@ export function TourListHeader({
   }, [])
 
   return (
-    <header className="tour-header">
+    <header ref={headerRef} className="tour-header">
       {/* Layer 3 — Background */}
       <motion.div className="header-layer layer-3" style={{ y: l3Y }}>
         <picture>
