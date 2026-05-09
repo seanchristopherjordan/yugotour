@@ -5,8 +5,10 @@ import {
   InlineToolbarFeature,
   ItalicFeature,
   LinkFeature,
+  OrderedListFeature,
   ParagraphFeature,
   UnderlineFeature,
+  UnorderedListFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
@@ -17,6 +19,8 @@ export const textBlockLexical = lexicalEditor({
     ItalicFeature(),
     UnderlineFeature(),
     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2'] }),
+    UnorderedListFeature(),
+    OrderedListFeature(),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
     }),

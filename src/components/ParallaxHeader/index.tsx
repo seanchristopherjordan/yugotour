@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { motion, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, useTransform, useScroll } from 'framer-motion'
 
 export interface ParallaxLayer {
   url: string
@@ -19,37 +19,21 @@ export interface ParallaxHeaderProps {
 
 export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: ParallaxHeaderProps) {
   const { scrollY } = useScroll()
-  const isMobileRef = useRef(false)
-
-  const titleY = useMotionValue(0)
-  const l2Y = useMotionValue(0)
-  const l3Y = useMotionValue(0)
-  const l4Y = useMotionValue(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const update = () => {
-      isMobileRef.current = window.innerWidth < 992
-    }
+    const update = () => setIsMobile(window.innerWidth < 992)
     update()
     window.addEventListener('resize', update, { passive: true })
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  useMotionValueEvent(scrollY, 'change', (y) => {
-    const mobile = isMobileRef.current
-    const cy = Math.min(y, 1200)
-
-    if (mobile) {
-      l2Y.set(cy * 0.3)
-      titleY.set(cy * 0.4)
-      l3Y.set(cy * 0.5)
-      l4Y.set(cy * 0.7)
-    } else {
-      titleY.set(cy * 0.31)
-      l2Y.set(cy * 0.39)
-      l3Y.set(cy * 0.6)
-    }
-  })
+  // Rates match previous implementation — output rounded to whole pixels to eliminate subpixel jitter
+  const CAP = 1200
+  const titleY = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * (isMobile ? 0.4  : 0.31)))
+  const l2Y    = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * (isMobile ? 0.3  : 0.39)))
+  const l3Y    = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * (isMobile ? 0.5  : 0.6)))
+  const l4Y    = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * 0.7))
 
   // Shared classes
   const layerBase = 'absolute inset-0 pointer-events-none overflow-hidden'
