@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { motion, useMotionValue, useAnimationFrame, useScroll } from 'framer-motion'
+import { motion, useTransform, useScroll } from 'framer-motion'
 
 export interface ParallaxLayer {
   url: string
@@ -30,20 +30,13 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  const titleY = useMotionValue(0)
-  const l2Y    = useMotionValue(0)
-  const l3Y    = useMotionValue(0)
-  const l4Y    = useMotionValue(0)
-
   const CAP = 1200
-  useAnimationFrame(() => {
-    const cy = Math.min(scrollY.get(), CAP)
-    const mob = isMobileRef.current
-    titleY.set(Math.round(cy * (mob ? 0.4  : 0.31)))
-    l2Y.set(   Math.round(cy * (mob ? 0.3  : 0.39)))
-    l3Y.set(   Math.round(cy * (mob ? 0.5  : 0.6)))
-    l4Y.set(   Math.round(cy * 0.7))
-  })
+  const mob = isMobileRef.current
+  const scrollYCapped = useTransform(scrollY, (v) => Math.min(v, CAP))
+  const titleY = useTransform(scrollYCapped, (v) => v * (mob ? 0.4  : 0.31))
+  const l2Y    = useTransform(scrollYCapped, (v) => v * (mob ? 0.3  : 0.39))
+  const l3Y    = useTransform(scrollYCapped, (v) => v * (mob ? 0.5  : 0.6))
+  const l4Y    = useTransform(scrollYCapped, (v) => v * 0.7)
 
   // overflow-hidden removed from animated layers — parent header already clips,
   // and overflow:hidden on composited elements forces software clipping every frame
