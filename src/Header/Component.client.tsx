@@ -15,14 +15,19 @@ export interface HeaderClientProps {
 
 export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderClientProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isNavHidden, setIsNavHidden] = useState(false)
+  const navRef = useRef<HTMLElement>(null)
+  const isMenuOpenRef = useRef(false)
   const lastScrollY = useRef(0)
   const ticking = useRef(false)
 
-  // Nav hide-on-scroll-down — mirrors handleNavScroll from custom-javascript.js
+  useEffect(() => {
+    isMenuOpenRef.current = isMenuOpen
+  }, [isMenuOpen])
+
+  // Nav hide-on-scroll-down — direct DOM toggle, no React re-render
   useEffect(() => {
     function onScroll() {
-      if (isMenuOpen) return
+      if (isMenuOpenRef.current) return
       if (ticking.current) return
 
       requestAnimationFrame(() => {
@@ -31,7 +36,12 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
           ticking.current = false
           return
         }
-        setIsNavHidden(currentY > lastScrollY.current && currentY > 100)
+        const shouldHide = currentY > lastScrollY.current && currentY > 100
+        if (navRef.current) {
+          navRef.current.style.transform = shouldHide
+            ? 'translateY(calc(-100% - 40px))'
+            : 'translateY(0)'
+        }
         lastScrollY.current = currentY
         ticking.current = false
       })
@@ -40,7 +50,7 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
 
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [isMenuOpen])
+  }, [])
 
   // Scroll lock while megamenu is open
   useEffect(() => {
@@ -55,11 +65,8 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
   return (
     <>
       <header
-        className={[
-          'fixed top-0 w-full z-[9999] overflow-visible',
-          'transition-transform duration-[750ms] ease-[cubic-bezier(0.16,1,0.3,1)]',
-          isNavHidden ? '-translate-y-[calc(100%+40px)]' : 'translate-y-0',
-        ].join(' ')}
+        ref={navRef}
+        className="fixed top-0 w-full z-[9999] overflow-visible transition-transform duration-[750ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
       >
         <nav
             className="relative flex items-center overflow-visible border-b border-black/10 min-h-[45px] min-[992px]:min-h-[42px] [filter:drop-shadow(0_4px_6px_rgba(0,0,0,0.07))_drop-shadow(0_2px_2px_rgba(0,0,0,0.06))]"
