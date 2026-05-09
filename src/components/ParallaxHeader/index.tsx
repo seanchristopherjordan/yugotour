@@ -46,14 +46,14 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
     const cy = Math.min(y, capRef.current)
 
     if (mobile) {
-      l2Y.set(cy * 0.78)
-      titleY.set(cy * 0.35)
-      l3Y.set(cy * 0.53)
-      l4Y.set(cy * 0.45)
+      l2Y.set(cy * 0.1)
+      titleY.set(cy * 0.3)
+      l3Y.set(cy * 0.5)
+      l4Y.set(cy * 0.8)
     } else {
-      titleY.set(cy * 0.35)
-      l2Y.set(cy * 0.7)
-      l3Y.set(cy * 0.45)
+      titleY.set(cy * 0.2)
+      l2Y.set(cy * 0.5)
+      l3Y.set(cy * 0.8)
     }
   })
 
