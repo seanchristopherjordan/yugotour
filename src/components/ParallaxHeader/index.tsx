@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { motion, useTransform, useScroll } from 'framer-motion'
+import { useEffect, useRef } from 'react'
+import { motion, useMotionValue, useAnimationFrame, useScroll } from 'framer-motion'
 
 export interface ParallaxLayer {
   url: string
@@ -19,24 +19,35 @@ export interface ParallaxHeaderProps {
 
 export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: ParallaxHeaderProps) {
   const { scrollY } = useScroll()
-  const [isMobile, setIsMobile] = useState(false)
+  const isMobileRef = useRef(false)
 
   useEffect(() => {
-    const update = () => setIsMobile(window.innerWidth < 992)
+    const update = () => {
+      isMobileRef.current = window.innerWidth < 992
+    }
     update()
     window.addEventListener('resize', update, { passive: true })
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  // Rates match previous implementation — output rounded to whole pixels to eliminate subpixel jitter
-  const CAP = 1200
-  const titleY = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * (isMobile ? 0.4  : 0.31)))
-  const l2Y    = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * (isMobile ? 0.3  : 0.39)))
-  const l3Y    = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * (isMobile ? 0.5  : 0.6)))
-  const l4Y    = useTransform(scrollY, (y) => Math.round(Math.min(y, CAP) * 0.7))
+  const titleY = useMotionValue(0)
+  const l2Y    = useMotionValue(0)
+  const l3Y    = useMotionValue(0)
+  const l4Y    = useMotionValue(0)
 
-  // Shared classes
-  const layerBase = 'absolute inset-0 pointer-events-none overflow-hidden'
+  const CAP = 1200
+  useAnimationFrame(() => {
+    const cy = Math.min(scrollY.get(), CAP)
+    const mob = isMobileRef.current
+    titleY.set(Math.round(cy * (mob ? 0.4  : 0.31)))
+    l2Y.set(   Math.round(cy * (mob ? 0.3  : 0.39)))
+    l3Y.set(   Math.round(cy * (mob ? 0.5  : 0.6)))
+    l4Y.set(   Math.round(cy * 0.7))
+  })
+
+  // overflow-hidden removed from animated layers — parent header already clips,
+  // and overflow:hidden on composited elements forces software clipping every frame
+  const layerBase = 'absolute inset-0 pointer-events-none'
   const imgBase =
     'w-full h-full object-cover object-top block min-[992px]:h-auto'
 

@@ -106,6 +106,31 @@
   clear: both;
 }
 
+/* Tables */
+.text-container-rich table {
+  font-family: var(--font-fakt);
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: var(--color-yugo-black);
+  letter-spacing: -0.01em;
+  border-collapse: collapse;
+  background: none;
+  margin-bottom: 1.2rem;
+}
+
+.text-container-rich th,
+.text-container-rich td {
+  background: none;
+  border: none;
+  padding: 4px 12px 4px 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.text-container-rich th {
+  font-weight: 600;
+}
+
 /* Mobile: full width, no float, flex ordering */
 @media (max-width: 991px) {
   .text-container-figure--left,
