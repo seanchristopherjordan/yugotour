@@ -45,17 +45,17 @@
   flex: 0 0 46%;
 }
 
-@media (min-width: 370px)  { .tile-image-wrap { flex-basis: 50.5%; } }
-@media (min-width: 400px)  { .tile-image-wrap { flex-basis: 54.5%; } }
-@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 51.5%; } }
-@media (min-width: 480px)  { .tile-image-wrap { flex-basis: 56%; } }
+@media (min-width: 370px)  { .tile-image-wrap { flex-basis: 53%; } }
+@media (min-width: 400px)  { .tile-image-wrap { flex-basis: 55%; } }
+@media (min-width: 440px)  { .tile-image-wrap { flex-basis: 52.5%; } }
+@media (min-width: 480px)  { .tile-image-wrap { flex-basis: 59%; } }
 @media (min-width: 520px)  { .tile-image-wrap { flex-basis: 65%; } }
 @media (min-width: 630px)  { .tile-image-wrap { flex-basis: 74%; } }
-@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 71%; } }
-@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 49%; } }
-@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 50%; } }
-@media (min-width: 1280px) { .tile-image-wrap { flex-basis: 65%; } }
-@media (min-width: 1400px) { .tile-image-wrap { flex-basis: 69%; } }
+@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 66%; } }
+@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 55%; } }
+@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 56%; } }
+@media (min-width: 1280px) { .tile-image-wrap { flex-basis: 66%; } }
+@media (min-width: 1400px) { .tile-image-wrap { flex-basis: 70%; } }
 
 /* .tile-image-wrap parent raises specificity above img[loading="lazy"] in lazy-fade.css */
 .tile-image-wrap .tile-bg-img {
@@ -96,7 +96,7 @@
   line-height: 0.95;
   letter-spacing: -0.01em;
   margin: 0;
-  font-size: 7.5cqi;
+  font-size: 8.5cqi;
   @apply line-clamp-4;
 }
 

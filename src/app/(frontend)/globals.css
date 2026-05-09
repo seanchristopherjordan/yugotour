@@ -90,6 +90,13 @@
     }
   }
 
+  @media (min-width: 992px) and (max-width: 1279px) {
+    .container {
+      padding-inline: 4.5rem; 
+    }
+  }
+
+
   @media (min-width: 992px) {
     .container {
       max-width: var(--breakpoint-lg);
