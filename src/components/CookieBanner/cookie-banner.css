@@ -88,7 +88,7 @@
   .cookie-wrapper {
     position: fixed; /* or absolute */
     max-width: 400px;
-    bottom: 10px;    /* '6' usually needs a unit like px or rem */
+    bottom: 30px;    /* '6' usually needs a unit like px or rem */
     left: 8px;
     right: 8px;
     margin-inline: auto; /* This centers it within the left/right bounds */
