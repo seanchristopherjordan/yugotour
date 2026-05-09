@@ -37,7 +37,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
 
   useMotionValueEvent(scrollY, 'change', (y) => {
     const mobile = isMobileRef.current
-    const cy = Math.min(y, 2000)
+    const cy = y
 
     if (mobile) {
       l2Y.set(cy * 0.78)
