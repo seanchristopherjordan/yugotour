@@ -51,17 +51,20 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
     }
   })
 
-  // Shared classes
-  const layerBase = 'absolute inset-0 pointer-events-none overflow-hidden'
-  const imgBase =
-    'w-full h-full object-cover object-top block min-[992px]:h-auto'
+  const layerBase = 'absolute inset-0 pointer-events-none'
+  const imgBase = 'absolute inset-0 w-full h-full object-cover object-top'
+  const gpu = {
+    willChange: 'transform' as const,
+    transform: 'translateZ(0)',
+    backfaceVisibility: 'hidden' as const,
+  }
 
   return (
     <header
       className="relative w-full overflow-hidden bg-[#FCF9EB] z-10 h-screen min-[992px]:h-auto min-[992px]:[aspect-ratio:2400/762]"
     >
       {/* Layer 3 — background (z-1 both breakpoints) */}
-      <motion.div className={`${layerBase} z-[1]`} style={{ y: l3Y }}>
+      <motion.div className={`${layerBase} z-[1]`} style={{ y: l3Y, ...gpu }}>
         <picture>
           {layer3.mobileUrl && (
             <source srcSet={layer3.mobileUrl} media="(max-width: 991px)" />
@@ -74,7 +77,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
       {layer4 && (
         <motion.div
           className={`${layerBase} z-[1] min-[992px]:hidden`}
-          style={{ y: l4Y }}
+          style={{ y: l4Y, ...gpu }}
         >
           <img
             className={imgBase}
@@ -87,7 +90,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
       {/* Layer 2 — midground (z-4 mobile / z-2 desktop) */}
       <motion.div
         className={`${layerBase} z-[4] min-[992px]:z-[2]`}
-        style={{ y: l2Y }}
+        style={{ y: l2Y, ...gpu }}
       >
         <picture>
           {layer2.mobileUrl && (
@@ -100,7 +103,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
       {/* Text layer — always z-3, sandwiched between layers 2 and 1 */}
       <motion.div
         className="absolute left-0 w-full z-[3] flex pointer-events-none top-[22%] justify-center min-[992px]:top-[17%] min-[992px]:items-start min-[992px]:justify-start"
-        style={{ y: titleY }}
+        style={{ y: titleY, ...gpu }}
       >
         <div className="w-full flex justify-center min-[992px]:justify-start min-[992px]:pl-[max(12vw,100px)] min-[992px]:pr-[15px]">
           <h1
