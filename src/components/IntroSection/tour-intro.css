@@ -1,3 +1,22 @@
+@keyframes bounce-arrow {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(7px); }
+}
+
+.intro-scroll-btn {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  transition: filter 0.3s ease;
+}
+
+.intro-scroll-btn:hover { filter: brightness(0.7); }
+
+.intro-scroll-icon {
+  animation: bounce-arrow 1.8s ease-in-out infinite;
+}
+
 .tour-intro-section {
   position: relative;
   padding: 50px 0 0;

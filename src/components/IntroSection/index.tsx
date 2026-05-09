@@ -201,23 +201,18 @@ export function IntroSection({
 
         {/* Scroll-to-city-picker caret */}
         <div className="flex justify-center -mt-[1px] min-[992px]:mt-[6px] pb-[5px]">
-          <motion.button
+          <button
             onClick={scrollToCityPicker}
             aria-label="Scroll to city picker"
-            className="cursor-pointer border-none bg-transparent p-0"
-            whileHover={{ filter: 'brightness(0.7)' }}
-            transition={{ duration: 0.3 }}
+            className="intro-scroll-btn"
           >
-            <motion.div
-              animate={{ y: [0, 7, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-            >
+            <div className="intro-scroll-icon">
               <svg width="38" height="38" viewBox="0 0 38 38" fill="none" style={{ opacity: 0.4 }}>
                 <circle cx="19" cy="19" r="18" stroke="#003882" strokeWidth="1.5" />
                 <path d="M12 16.5L19 23.5L26 16.5" stroke="#003882" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </motion.div>
-          </motion.button>
+            </div>
+          </button>
         </div>
 
       </div>

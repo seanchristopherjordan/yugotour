@@ -69,7 +69,6 @@ export function TourListHeader({
       titleY.set(cy * 0.45)
       l2Y.set(cy * 0.3)
       l3Y.set(cy * 0.6)
-      l4Y.set(0)
     }
   })
 
@@ -94,14 +93,14 @@ export function TourListHeader({
         <picture>
           <source srcSet={l3m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={l3d} alt="" />
+          <img src={l3d} alt="" loading="eager" decoding="async" />
         </picture>
       </motion.div>
 
       {/* Layer 4 — Deep Background (mobile only) */}
       <motion.div className="header-layer layer-4" style={{ y: l4Y }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={l4m} alt="" />
+        <img src={l4m} alt="" loading="eager" decoding="async" />
       </motion.div>
 
       {/* Layer 2 — Midground */}
@@ -109,7 +108,7 @@ export function TourListHeader({
         <picture>
           <source srcSet={l2m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={l2d} alt="" />
+          <img src={l2d} alt="" loading="eager" decoding="async" />
         </picture>
       </motion.div>
 
@@ -125,22 +124,17 @@ export function TourListHeader({
         <picture>
           <source srcSet={l1m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={l1d} alt="" />
+          <img src={l1d} alt="" loading="eager" decoding="async" />
         </picture>
       </div>
 
       {/* Scroll-down button */}
-      <motion.button
+      <button
         onClick={scrollToContent}
         aria-label="Scroll to content"
-        className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2 cursor-pointer border-none bg-transparent p-0"
-        whileHover={{ filter: 'brightness(1.2)' }}
-        transition={{ duration: 0.3 }}
+        className="scroll-arrow-btn absolute bottom-8 left-1/2 z-20 -translate-x-1/2"
       >
-        <motion.div
-          animate={{ y: [0, 7, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-        >
+        <div className="scroll-arrow-icon">
           <svg
             width="38"
             height="38"
@@ -158,8 +152,8 @@ export function TourListHeader({
               strokeLinejoin="round"
             />
           </svg>
-        </motion.div>
-      </motion.button>
+        </div>
+      </button>
     </header>
   )
 }
