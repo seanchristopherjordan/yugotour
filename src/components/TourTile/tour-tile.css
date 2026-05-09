@@ -51,10 +51,10 @@
 @media (min-width: 480px)  { .tile-image-wrap { flex-basis: 56%; } }
 @media (min-width: 520px)  { .tile-image-wrap { flex-basis: 65%; } }
 @media (min-width: 630px)  { .tile-image-wrap { flex-basis: 74%; } }
-@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 72%; } }
-@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 50%; } }
-@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 55%; } }
-@media (min-width: 1280px) { .tile-image-wrap { flex-basis: 67%; } }
+@media (min-width: 768px)  { .tile-image-wrap { flex-basis: 71%; } }
+@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 49%; } }
+@media (min-width: 1200px) { .tile-image-wrap { flex-basis: 50%; } }
+@media (min-width: 1280px) { .tile-image-wrap { flex-basis: 65%; } }
 @media (min-width: 1400px) { .tile-image-wrap { flex-basis: 69%; } }
 
 /* .tile-image-wrap parent raises specificity above img[loading="lazy"] in lazy-fade.css */
@@ -128,11 +128,11 @@
   color: var(--color-yugo-cream);
   margin: 0 0 10px 0;
   @apply line-clamp-4;
-  font-size: 1rem;
+  font-size: 0.96rem;
 }
 
 @media (min-width: 440px) {
-  .tile-intro-text { font-size: 1.11rem; }
+  .tile-intro-text { font-size: 1.08rem; }
 }
 
 .tile-info-lines {
@@ -148,12 +148,12 @@
   letter-spacing: -0.01rem;
   line-height: 1.15;
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   @apply line-clamp-3;
 }
 
 @media (min-width: 440px) {
-  .tile-info-line { font-size: 1.1rem; }
+  .tile-info-line { font-size: 1.01rem; }
 }
 
 .tile-info-line .info-sep {
@@ -183,12 +183,12 @@
   text-transform: uppercase;
   letter-spacing: -0.01rem;
   line-height: 1.2;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 @media (min-width: 440px) {
-  .tile-info-extras { font-size: 1.08rem; }
+  .tile-info-extras { font-size: 1rem; }
 }
