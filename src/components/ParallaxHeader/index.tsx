@@ -41,13 +41,13 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
 
     if (mobile) {
       l2Y.set(cy * 0.78)
-      titleY.set(cy * 0.65)
+      titleY.set(cy * 0.35)
       l3Y.set(cy * 0.53)
-      l4Y.set(cy * 0.4)
+      l4Y.set(cy * 0.45)
     } else {
-      titleY.set(cy * 0.6)
-      l2Y.set(cy * 0.8)
-      l3Y.set(cy * 0.4)
+      titleY.set(cy * 0.35)
+      l2Y.set(cy * 0.7)
+      l3Y.set(cy * 0.45)
     }
   })
 
@@ -61,7 +61,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
 
   return (
     <header
-      className="relative w-full overflow-hidden bg-[#FCF9EB] z-10 h-[100svh] min-[992px]:h-auto min-[992px]:[aspect-ratio:2400/762]"
+      className="relative w-full overflow-hidden bg-[#FCF9EB] z-10 h-screen min-[992px]:h-auto min-[992px]:[aspect-ratio:2400/762]"
     >
       {/* Layer 3 — background (z-1 both breakpoints) */}
       <motion.div className={`${layerBase} z-[1]`} style={{ y: l3Y, ...gpu }}>
