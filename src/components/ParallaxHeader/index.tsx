@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import './parallax-header.css'
+import { motion, useMotionValue, useMotionValueEvent, useScroll } from 'framer-motion'
 
 export interface ParallaxLayer {
   url: string
@@ -18,69 +18,89 @@ export interface ParallaxHeaderProps {
 }
 
 export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: ParallaxHeaderProps) {
-  const headerRef = useRef<HTMLElement>(null)
+  const { scrollY } = useScroll()
+  const isMobileRef = useRef(false)
+
+  const titleY = useMotionValue(0)
+  const l2Y = useMotionValue(0)
+  const l3Y = useMotionValue(0)
+  const l4Y = useMotionValue(0)
 
   useEffect(() => {
-    const header = headerRef.current
-    if (!header) return
-
-    let current = 0
-    let rafId: number
-
-    const tick = () => {
-      const target = Math.min(window.scrollY, 1200)
-      current += (target - current) * 0.15
-      header.style.setProperty('--ph-scroll', current.toFixed(2))
-      rafId = requestAnimationFrame(tick)
+    const update = () => {
+      isMobileRef.current = window.innerWidth < 992
     }
-
-    rafId = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafId)
+    update()
+    window.addEventListener('resize', update, { passive: true })
+    return () => window.removeEventListener('resize', update)
   }, [])
 
-  const imgBase = 'w-full h-full object-cover object-top block min-[992px]:h-auto'
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    const mobile = isMobileRef.current
+    const cy = Math.min(y, 1200)
+
+    if (mobile) {
+      l2Y.set(cy * 0.3)
+      titleY.set(cy * 0.4)
+      l3Y.set(cy * 0.5)
+      l4Y.set(cy * 0.7)
+    } else {
+      titleY.set(cy * 0.31)
+      l2Y.set(cy * 0.39)
+      l3Y.set(cy * 0.6)
+    }
+  })
+
+  // Shared classes
+  const layerBase = 'absolute inset-0 pointer-events-none overflow-hidden'
+  const imgBase =
+    'w-full h-full object-cover object-top block min-[992px]:h-auto'
 
   return (
     <header
-      ref={headerRef}
       className="relative w-full overflow-hidden bg-[#FCF9EB] z-10 h-screen min-[992px]:h-auto min-[992px]:[aspect-ratio:2400/762]"
     >
       {/* Layer 3 — background (z-1 both breakpoints) */}
-      <div className="parallax-layer parallax-l3 z-[1]">
+      <motion.div className={`${layerBase} z-[1]`} style={{ y: l3Y }}>
         <picture>
           {layer3.mobileUrl && (
             <source srcSet={layer3.mobileUrl} media="(max-width: 991px)" />
           )}
           <img className={imgBase} src={layer3.url} alt={layer3.alt} />
         </picture>
-      </div>
+      </motion.div>
 
       {/* Layer 4 — mobile-only deep background (hidden on desktop) */}
       {layer4 && (
-        <div className="parallax-layer parallax-l4 z-[1] min-[992px]:hidden">
+        <motion.div
+          className={`${layerBase} z-[1] min-[992px]:hidden`}
+          style={{ y: l4Y }}
+        >
           <img
             className={imgBase}
             src={layer4.mobileUrl ?? layer4.url}
             alt={layer4.alt}
           />
-        </div>
+        </motion.div>
       )}
 
       {/* Layer 2 — midground (z-4 mobile / z-2 desktop) */}
-      <div className="parallax-layer parallax-l2 z-[4] min-[992px]:z-[2]">
+      <motion.div
+        className={`${layerBase} z-[4] min-[992px]:z-[2]`}
+        style={{ y: l2Y }}
+      >
         <picture>
           {layer2.mobileUrl && (
             <source srcSet={layer2.mobileUrl} media="(max-width: 991px)" />
           )}
-          <img className={imgBase} src={layer2.url} alt={layer2.url} />
+          <img className={imgBase} src={layer2.url} alt={layer2.alt} />
         </picture>
-      </div>
+      </motion.div>
 
-      {/* Text layer — z-3, sandwiched between layers 2 and 1 */}
-      <div
-        className="parallax-title absolute left-0 w-full z-[3] flex pointer-events-none
-          top-[22%] justify-center
-          min-[992px]:top-[17%] min-[992px]:items-start min-[992px]:justify-start"
+      {/* Text layer — always z-3, sandwiched between layers 2 and 1 */}
+      <motion.div
+        className="absolute left-0 w-full z-[3] flex pointer-events-none top-[22%] justify-center min-[992px]:top-[17%] min-[992px]:items-start min-[992px]:justify-start"
+        style={{ y: titleY }}
       >
         <div className="w-full flex justify-center min-[992px]:justify-start min-[992px]:pl-[max(12vw,100px)] min-[992px]:pr-[15px]">
           <h1
@@ -90,15 +110,17 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
               min-[992px]:text-[clamp(9rem,12vw,23rem)] min-[992px]:leading-[0.9]
               min-[992px]:tracking-[-0.01em] min-[992px]:whitespace-nowrap
               min-[992px]:inline-block min-[992px]:w-auto min-[992px]:text-left"
-            style={{ textShadow: '0 0 6px rgba(0,0,0,0.05), 0 0 3px rgba(0,0,0,0.05)' }}
+            style={{
+              textShadow: '0 0 6px rgba(0,0,0,0.05), 0 0 3px rgba(0,0,0,0.05)',
+            }}
           >
             {title}
           </h1>
         </div>
-      </div>
+      </motion.div>
 
       {/* Layer 1 — foreground, no parallax (z-5 mobile / z-4 desktop) */}
-      <div className="parallax-layer z-[5] min-[992px]:z-[4]">
+      <div className={`${layerBase} z-[5] min-[992px]:z-[4]`}>
         <picture>
           {layer1.mobileUrl && (
             <source srcSet={layer1.mobileUrl} media="(max-width: 991px)" />

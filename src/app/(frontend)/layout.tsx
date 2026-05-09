@@ -185,7 +185,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body suppressHydrationWarning>
-        <BookingModalProvider tours={allTours} textureUrl="/textures/texture-red.webp" images={bookingImages} timeSettings={timeSettings} successContent={successContent}>
+        <BookingModalProvider tours={allTours} textureUrl="/textures/texture-blue.webp" images={bookingImages} timeSettings={timeSettings} successContent={successContent}>
           <Providers>
             <AdminBar
               adminBarProps={{
