@@ -306,4 +306,19 @@ html[data-theme='light'] {
   opacity: initial;
 }
 
+/* ── Scrollbar styling ───────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(33, 33, 33, 0.45);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(33, 33, 33, 0.7);
+}
+
 } /* end @layer components */

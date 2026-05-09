@@ -69,7 +69,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
           {layer3.mobileUrl && (
             <source srcSet={layer3.mobileUrl} media="(max-width: 991px)" />
           )}
-          <img className={imgBase} src={layer3.url} alt={layer3.alt} />
+          <img className={imgBase} src={layer3.url} alt={layer3.alt} decoding="sync" loading="eager" />
         </picture>
       </motion.div>
 
@@ -83,6 +83,8 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
             className={imgBase}
             src={layer4.mobileUrl ?? layer4.url}
             alt={layer4.alt}
+            decoding="sync"
+            loading="eager"
           />
         </motion.div>
       )}
@@ -96,7 +98,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
           {layer2.mobileUrl && (
             <source srcSet={layer2.mobileUrl} media="(max-width: 991px)" />
           )}
-          <img className={imgBase} src={layer2.url} alt={layer2.alt} />
+          <img className={imgBase} src={layer2.url} alt={layer2.alt} decoding="sync" loading="eager" />
         </picture>
       </motion.div>
 
@@ -128,7 +130,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
           {layer1.mobileUrl && (
             <source srcSet={layer1.mobileUrl} media="(max-width: 991px)" />
           )}
-          <img className={imgBase} src={layer1.url} alt={layer1.alt} />
+          <img className={imgBase} src={layer1.url} alt={layer1.alt} decoding="sync" loading="eager" />
         </picture>
       </div>
     </header>
