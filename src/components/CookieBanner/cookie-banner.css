@@ -87,19 +87,20 @@
 @media (max-width: 991px) {
   .cookie-wrapper {
     bottom: 30px;
-    left: 8px;
-    right: 8px;
+    left: 0;
+    right: 0;
+    padding: 0 8px;
     width: auto;
-    max-width: 400px;
-    margin-inline: auto;
+    max-width: none;
     transform: none;
   }
 
-
   .cookie-card {
     width: 100%;
-    border-radius: 14px 14px 14px 14px;
-    border-bottom: none;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 14px;
   }
 
   .cookie-image {

@@ -1,18 +1,30 @@
 .tour-tile {
   width: 100%;
   border-radius: 5px;
-  overflow: hidden;
   container-type: inline-size;
   container-name: tile;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   position: relative;
-  transition: box-shadow 400ms ease;
+}
+
+/* Hover shadow via opacity — avoids box-shadow repaint on every frame */
+.tour-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
 }
 
 @media (min-width: 992px) {
   .tour-tile:hover {
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
     z-index: 10;
+  }
+  .tour-tile:hover::after {
+    opacity: 1;
   }
 }
 
@@ -25,12 +37,24 @@
   overflow: hidden;
   position: relative;
   border-radius: 5px;
-  transition: filter 400ms ease;
+  isolation: isolate;
+}
+
+/* Hover brightness via opacity — avoids filter repaint on every frame */
+.tour-tile-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.13);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+  z-index: 100;
 }
 
 @media (min-width: 992px) {
-  .tour-tile-inner:hover {
-    filter: brightness(1.15);
+  .tour-tile-inner:hover::after {
+    opacity: 1;
   }
   .tour-tile:hover .tile-bg-img {
     transform: scale(1.14);
