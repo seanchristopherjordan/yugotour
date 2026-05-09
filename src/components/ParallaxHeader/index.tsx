@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
 import './parallax-header.css'
 
 export interface ParallaxLayer {
@@ -15,11 +18,33 @@ export interface ParallaxHeaderProps {
 }
 
 export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: ParallaxHeaderProps) {
+  const headerRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+
+    let current = 0
+    let rafId: number
+
+    const tick = () => {
+      const target = Math.min(window.scrollY, 1200)
+      current += (target - current) * 0.15
+      header.style.setProperty('--ph-scroll', current.toFixed(2))
+      rafId = requestAnimationFrame(tick)
+    }
+
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
+  }, [])
+
   const imgBase = 'w-full h-full object-cover object-top block min-[992px]:h-auto'
 
   return (
-    <header className="relative w-full overflow-hidden bg-[#FCF9EB] z-10 h-screen min-[992px]:h-auto min-[992px]:[aspect-ratio:2400/762]">
-
+    <header
+      ref={headerRef}
+      className="relative w-full overflow-hidden bg-[#FCF9EB] z-10 h-screen min-[992px]:h-auto min-[992px]:[aspect-ratio:2400/762]"
+    >
       {/* Layer 3 — background (z-1 both breakpoints) */}
       <div className="parallax-layer parallax-l3 z-[1]">
         <picture>
@@ -47,7 +72,7 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
           {layer2.mobileUrl && (
             <source srcSet={layer2.mobileUrl} media="(max-width: 991px)" />
           )}
-          <img className={imgBase} src={layer2.url} alt={layer2.alt} />
+          <img className={imgBase} src={layer2.url} alt={layer2.url} />
         </picture>
       </div>
 
@@ -81,7 +106,6 @@ export function ParallaxHeader({ title, layer1, layer2, layer3, layer4 }: Parall
           <img className={imgBase} src={layer1.url} alt={layer1.alt} />
         </picture>
       </div>
-
     </header>
   )
 }

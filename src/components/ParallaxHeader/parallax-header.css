@@ -4,41 +4,22 @@
   pointer-events: none;
 }
 
-/* ─── keyframes defined at top level so they're always parsed ─── */
-/* Desktop rates: title 0.31, l2 0.39, l3 0.60 (× 1200px cap) */
-@keyframes ph-l3-desk    { to { transform: translateY(720px); } }
-@keyframes ph-l2-desk    { to { transform: translateY(468px); } }
-@keyframes ph-title-desk { to { transform: translateY(372px); } }
+.parallax-l3,
+.parallax-l2,
+.parallax-title,
+.parallax-l4 {
+  will-change: transform;
+}
 
-/* Mobile rates: title 0.40, l2 0.30, l3 0.50, l4 0.70 */
-@keyframes ph-l3-mob    { to { transform: translateY(600px); } }
-@keyframes ph-l2-mob    { to { transform: translateY(360px); } }
-@keyframes ph-title-mob { to { transform: translateY(480px); } }
-@keyframes ph-l4-mob    { to { transform: translateY(840px); } }
+/* Desktop rates (--ph-scroll is capped at 1200) */
+.parallax-l3    { transform: translateY(calc(var(--ph-scroll, 0) * 0.6px)); }
+.parallax-l2    { transform: translateY(calc(var(--ph-scroll, 0) * 0.39px)); }
+.parallax-title { transform: translateY(calc(var(--ph-scroll, 0) * 0.31px)); }
+.parallax-l4    { transform: translateY(calc(var(--ph-scroll, 0) * 0.7px)); }
 
-/* ─── scroll-driven animations — Safari falls back to static layers ─── */
-@supports (animation-timeline: scroll()) {
-  .parallax-l3,
-  .parallax-l2,
-  .parallax-title,
-  .parallax-l4 {
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-timeline: scroll(root);
-    animation-range: 0px 1200px;
-  }
-
-  @media (min-width: 992px) {
-    .parallax-l3    { animation-name: ph-l3-desk; }
-    .parallax-l2    { animation-name: ph-l2-desk; }
-    .parallax-title { animation-name: ph-title-desk; }
-    /* l4 is desktop-hidden — no animation needed */
-  }
-
-  @media (max-width: 991px) {
-    .parallax-l3    { animation-name: ph-l3-mob; }
-    .parallax-l2    { animation-name: ph-l2-mob; }
-    .parallax-title { animation-name: ph-title-mob; }
-    .parallax-l4    { animation-name: ph-l4-mob; }
-  }
+/* Mobile rate overrides */
+@media (max-width: 991px) {
+  .parallax-l3    { transform: translateY(calc(var(--ph-scroll, 0) * 0.5px)); }
+  .parallax-l2    { transform: translateY(calc(var(--ph-scroll, 0) * 0.3px)); }
+  .parallax-title { transform: translateY(calc(var(--ph-scroll, 0) * 0.4px)); }
 }
