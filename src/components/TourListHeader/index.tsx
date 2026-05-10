@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
-import { animate } from 'framer-motion'
+import { animate, motion, useScroll, useMotionValue, useMotionValueEvent } from 'framer-motion'
 
 export interface TourListHeaderProps {
   title: string
@@ -38,7 +38,37 @@ export function TourListHeader({
   const l3m = layer3MobileUrl ?? fallback(city, 'mobile-header-layer-3.webp')
   const l4m = layer4MobileUrl ?? fallback(city, 'mobile-header-layer-4.webp')
 
+  const { scrollY } = useScroll()
+  const isMobileRef = useRef(false)
   const isProgrammaticRef = useRef(false)
+
+  const titleY = useMotionValue(0)
+  const l2Y    = useMotionValue(0)
+  const l3Y    = useMotionValue(0)
+  const l4Y    = useMotionValue(0)
+
+  useEffect(() => {
+    const update = () => { isMobileRef.current = window.innerWidth < 992 }
+    update()
+    window.addEventListener('resize', update, { passive: true })
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
+  useMotionValueEvent(scrollY, 'change', (y) => {
+    if (isProgrammaticRef.current) return
+    const cy = Math.min(y, 900)
+    if (isMobileRef.current) {
+      titleY.set(cy * 0.6)
+      l2Y.set(cy * 0.3)
+      l3Y.set(cy * 0.5)
+      l4Y.set(cy * 0.7)
+    } else {
+      titleY.set(cy * 0.45)
+      l2Y.set(cy * 0.3)
+      l3Y.set(cy * 0.6)
+      l4Y.set(0)
+    }
+  })
 
   const scrollToContent = useCallback(() => {
     const target = document.getElementById('tour-list-intro')
@@ -59,35 +89,35 @@ export function TourListHeader({
   return (
     <header className="tour-header">
       {/* Layer 3 — Background */}
-      <div className="header-layer layer-3">
+      <motion.div className="header-layer layer-3" style={{ y: l3Y }}>
         <picture>
           <source srcSet={l3m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={l3d} alt="" loading="eager" decoding="async" />
         </picture>
-      </div>
+      </motion.div>
 
       {/* Layer 4 — Deep Background (mobile only) */}
-      <div className="header-layer layer-4">
+      <motion.div className="header-layer layer-4" style={{ y: l4Y }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={l4m} alt="" loading="eager" decoding="async" />
-      </div>
+      </motion.div>
 
       {/* Layer 2 — Midground */}
-      <div className="header-layer layer-2">
+      <motion.div className="header-layer layer-2" style={{ y: l2Y }}>
         <picture>
           <source srcSet={l2m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={l2d} alt="" loading="eager" decoding="async" />
         </picture>
-      </div>
+      </motion.div>
 
       {/* Title text layer */}
-      <div className="header-text-layer">
+      <motion.div className="header-text-layer" style={{ y: titleY }}>
         <div className="container">
           <h1 className="tour-title">{title.toUpperCase()}</h1>
         </div>
-      </div>
+      </motion.div>
 
       {/* Layer 1 — Foreground (no parallax, in front of text) */}
       <div className="header-layer layer-1">
@@ -98,7 +128,32 @@ export function TourListHeader({
         </picture>
       </div>
 
-      {/* Scroll-down button — temporarily removed for isolation testing */}
+      {/* Scroll-down button */}
+      <button
+        onClick={scrollToContent}
+        aria-label="Scroll to content"
+        className="scroll-arrow-btn absolute bottom-8 left-1/2 z-20 -translate-x-1/2"
+      >
+        <div className="scroll-arrow-icon">
+          <svg
+            width="38"
+            height="38"
+            viewBox="0 0 38 38"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="opacity-50"
+          >
+            <circle cx="19" cy="19" r="18" stroke="white" strokeWidth="1.5" />
+            <path
+              d="M12 16.5L19 23.5L26 16.5"
+              stroke="white"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      </button>
     </header>
   )
 }

@@ -109,7 +109,7 @@ export function BookingModalProvider({
   return (
     <BookingModalContext.Provider value={{ isOpen, open, close, tours, initialOpts, textureUrl, images, timeSettings, successContent }}>
       {children}
-      {/* <BookingModal /> — disabled for isolation testing */}
+      <BookingModal />
     </BookingModalContext.Provider>
   )
 }

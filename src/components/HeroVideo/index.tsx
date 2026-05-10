@@ -18,6 +18,7 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
   const [flickering, setFlickering] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const hasStartedRef = useRef(false)
 
   useEffect(() => {
     const video = videoRef.current
@@ -29,6 +30,7 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
     const startVideo = () => {
       video.play().catch(() => {})
       setFlickering(true)
+      hasStartedRef.current = true
     }
 
     const isCached = video.readyState >= 3
@@ -52,9 +54,23 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
       }, 2200))
     }
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!hasStartedRef.current) return
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.1 },
+    )
+    observer.observe(video)
+
     return () => {
       timers.forEach(clearTimeout)
       video.removeEventListener('canplay', startVideo)
+      observer.disconnect()
     }
   }, [videoUrl, mobileVideoUrl, logoOpacity])
 

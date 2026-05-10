@@ -33,7 +33,18 @@ export function SimulatorSection({
   useEffect(() => {
     const video = driveVideoRef.current
     if (!video || !driveVideoUrl) return
-    video.play().catch(() => {})
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.1 },
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
   }, [driveVideoUrl])
 
   function handleSteeringClick() {

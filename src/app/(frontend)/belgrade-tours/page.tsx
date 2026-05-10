@@ -126,7 +126,7 @@ export default async function BelgradeToursPage() {
   const hasSlider     = sliderMobile.length > 0 || sliderDesktop.length > 0
 
   const showTales    = p?.showTales    !== false
-  const showSim      = false // disabled for isolation testing
+  const showSim      = p?.showSimulator !== false
 
   return (
     <>
