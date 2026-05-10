@@ -297,9 +297,10 @@ body.modal-active {
 }
 
 /* Prevent FOUC on theme load — opacity set by InitTheme once theme is known */
+/* overflow-x: clip (not hidden) — clip doesn't create a scroll container, so Firefox APZ stays active */
 html {
   opacity: 0;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 html[data-theme='dark'],
