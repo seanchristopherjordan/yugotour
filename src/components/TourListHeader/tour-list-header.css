@@ -128,4 +128,10 @@
     word-break: break-word;
     padding: 0 !important;
   }
+
+  /* Disable JS parallax on mobile — layers stay fixed, no per-scroll transform */
+  .header-layer,
+  .header-text-layer {
+    transform: none !important;
+  }
 }
