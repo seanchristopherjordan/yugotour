@@ -19,6 +19,7 @@
 #JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4,
 #JFWebsiteWidget-019d5feef4297bba973ed40b64c5f91f4cad {
   background: transparent !important;
+  contain: layout style paint;
 }
 
 #JFWebsiteWidget-019d5f672eff751aaabdf254da1d85f411f4 p,
