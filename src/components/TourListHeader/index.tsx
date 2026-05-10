@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
-import { animate } from 'framer-motion'
 
 export interface TourListHeaderProps {
   title: string
@@ -80,17 +79,7 @@ export function TourListHeader({
   }, [])
 
   const scrollToContent = useCallback(() => {
-    const target = document.getElementById('tour-list-intro')
-    if (!target) return
-    const targetY = target.getBoundingClientRect().top + window.scrollY
-    const controls = animate(window.scrollY, targetY, {
-      duration: 1.2,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (v) => window.scrollTo(0, v),
-    })
-    const cancel = () => controls.stop()
-    window.addEventListener('touchstart', cancel, { once: true, passive: true })
-    window.addEventListener('wheel', cancel, { once: true, passive: true })
+    document.getElementById('tour-list-intro')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [])
 
   return (
