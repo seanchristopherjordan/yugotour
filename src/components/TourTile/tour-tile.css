@@ -46,7 +46,7 @@
 @media (min-width: 520px)  { .tile-image-wrap { flex-basis: 65%; } }
 @media (min-width: 630px)  { .tile-image-wrap { flex-basis: 74%; } }
 @media (min-width: 768px)  { .tile-image-wrap { flex-basis: 66%; } }
-@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 55%; } }
+@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 55%; will-change: transform; } }
 @media (min-width: 1200px) { .tile-image-wrap { flex-basis: 56%; } }
 @media (min-width: 1280px) { .tile-image-wrap { flex-basis: 66%; } }
 @media (min-width: 1400px) { .tile-image-wrap { flex-basis: 70%; } }
