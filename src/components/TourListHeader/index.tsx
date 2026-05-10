@@ -128,32 +128,7 @@ export function TourListHeader({
         </picture>
       </div>
 
-      {/* Scroll-down button */}
-      <button
-        onClick={scrollToContent}
-        aria-label="Scroll to content"
-        className="scroll-arrow-btn absolute bottom-8 left-1/2 z-20 -translate-x-1/2"
-      >
-        <div className="scroll-arrow-icon">
-          <svg
-            width="38"
-            height="38"
-            viewBox="0 0 38 38"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="opacity-50"
-          >
-            <circle cx="19" cy="19" r="18" stroke="white" strokeWidth="1.5" />
-            <path
-              d="M12 16.5L19 23.5L26 16.5"
-              stroke="white"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-      </button>
+      {/* Scroll-down button — temporarily removed for isolation testing */}
     </header>
   )
 }
