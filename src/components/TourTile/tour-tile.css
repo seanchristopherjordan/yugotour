@@ -20,8 +20,8 @@
   text-decoration: none;
   width: 100%;
   aspect-ratio: 1 / 1;
-  overflow: visible;
-  clip-path: inset(0 round 5px);
+  overflow: hidden;
+  border-radius: 5px;
   position: relative;
 }
 
@@ -31,12 +31,9 @@
   }
 }
 
-/* Red bar height = 100% minus flex-basis of image area */
-/* clip-path instead of overflow:hidden — overflow:hidden forces SW clipping of composited children in Firefox */
 .tile-image-wrap {
   position: relative;
-  overflow: visible;
-  clip-path: inset(0);
+  overflow: hidden;
   background-color: var(--color-yugo-black);
   flex: 0 0 46%;
 }
