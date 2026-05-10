@@ -32,9 +32,11 @@
 }
 
 /* Red bar height = 100% minus flex-basis of image area */
+/* clip-path instead of overflow:hidden — overflow:hidden forces SW clipping of composited children in Firefox */
 .tile-image-wrap {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  clip-path: inset(0);
   background-color: var(--color-yugo-black);
   flex: 0 0 46%;
 }
@@ -46,7 +48,7 @@
 @media (min-width: 520px)  { .tile-image-wrap { flex-basis: 65%; } }
 @media (min-width: 630px)  { .tile-image-wrap { flex-basis: 74%; } }
 @media (min-width: 768px)  { .tile-image-wrap { flex-basis: 66%; } }
-@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 55%; will-change: transform; } }
+@media (min-width: 992px)  { .tile-image-wrap { flex-basis: 55%; } }
 @media (min-width: 1200px) { .tile-image-wrap { flex-basis: 56%; } }
 @media (min-width: 1280px) { .tile-image-wrap { flex-basis: 66%; } }
 @media (min-width: 1400px) { .tile-image-wrap { flex-basis: 70%; } }
