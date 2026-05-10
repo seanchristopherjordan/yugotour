@@ -20,18 +20,31 @@ interface CityWidgetProps {
 function CityWidget({ city, widgetId, showLabel }: CityWidgetProps) {
   useEffect(() => {
     const scriptId = `jotform-widget-${widgetId}`
+    const containerId = `JFWebsiteWidget-${widgetId}`
+    const container = document.getElementById(containerId)
+    if (!container) return
 
-    // Always remove any existing instance so the script re-runs on SPA navigation
-    const existing = document.getElementById(scriptId)
-    if (existing) existing.remove()
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return
+        observer.disconnect()
 
-    const script = document.createElement('script')
-    script.id = scriptId
-    script.src = `https://www.jotform.com/website-widgets/embed/${widgetId}`
-    script.async = true
-    document.body.appendChild(script)
+        // Always remove any existing instance so the script re-runs on SPA navigation
+        const existing = document.getElementById(scriptId)
+        if (existing) existing.remove()
+
+        const script = document.createElement('script')
+        script.id = scriptId
+        script.src = `https://www.jotform.com/website-widgets/embed/${widgetId}`
+        script.async = true
+        document.body.appendChild(script)
+      },
+      { rootMargin: '200px' },
+    )
+    observer.observe(container)
 
     return () => {
+      observer.disconnect()
       const s = document.getElementById(scriptId)
       if (s) s.remove()
     }

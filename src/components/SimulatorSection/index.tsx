@@ -98,7 +98,6 @@ export function SimulatorSection({
               <video
                 ref={driveVideoRef}
                 src={driveVideoUrl}
-                autoPlay
                 muted
                 loop
                 playsInline
