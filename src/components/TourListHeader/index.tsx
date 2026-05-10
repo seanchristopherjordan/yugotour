@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
+import { animate } from 'framer-motion'
 
 export interface TourListHeaderProps {
   title: string
@@ -44,7 +45,8 @@ export function TourListHeader({
   const l4Ref     = useRef<HTMLDivElement>(null)
   const isMobileRef = useRef(false)
   const capRef      = useRef(900)
-  const rafRef      = useRef<number>(0)
+  const rafRef             = useRef<number>(0)
+  const isProgrammaticRef  = useRef(false)
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -55,6 +57,7 @@ export function TourListHeader({
     window.addEventListener('resize', updateDimensions, { passive: true })
 
     const onScroll = () => {
+      if (isProgrammaticRef.current) return
       cancelAnimationFrame(rafRef.current)
       rafRef.current = requestAnimationFrame(() => {
         const y = Math.min(window.scrollY, capRef.current)
@@ -79,7 +82,19 @@ export function TourListHeader({
   }, [])
 
   const scrollToContent = useCallback(() => {
-    document.getElementById('tour-list-intro')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const target = document.getElementById('tour-list-intro')
+    if (!target) return
+    isProgrammaticRef.current = true
+    const targetY = target.getBoundingClientRect().top + window.scrollY
+    const controls = animate(window.scrollY, targetY, {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => window.scrollTo(0, v),
+      onComplete: () => { isProgrammaticRef.current = false },
+    })
+    const cancel = () => { isProgrammaticRef.current = false; controls.stop() }
+    window.addEventListener('touchstart', cancel, { once: true, passive: true })
+    window.addEventListener('wheel', cancel, { once: true, passive: true })
   }, [])
 
   return (

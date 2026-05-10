@@ -35,27 +35,26 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  animation: fabRock 5200ms ease-in-out infinite;
   transform-origin: center center;
   opacity: 0;
   pointer-events: none;
   transition: opacity 200ms ease;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
-}
-.book-now-fab.book-now-fab--visible {
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 700ms ease;
-}
-.book-now-fab-inner {
-  display: block;
-  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
-              filter 300ms ease;
 }
 .book-now-fab img {
   display: block;
   width: 155px;
   height: auto;
+}
+.book-now-fab.book-now-fab--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 700ms ease;
+  animation: fabRock 5200ms ease-in-out infinite;
+}
+.book-now-fab-inner {
+  display: block;
+  transition: transform 360ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 300ms ease;
 }
 @media (max-width: 991px) {
   .book-now-fab {

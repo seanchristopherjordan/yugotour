@@ -25,9 +25,8 @@
   border-radius: 5px;
 }
 
-/* Brightness overlay — opacity pre-promoted so transition stays on compositor */
-.tour-tile-inner::after {
-  content: '';
+/* Brightness overlay — real DOM element so Firefox can GPU-composite opacity */
+.tile-hover-overlay {
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.13);
@@ -39,7 +38,7 @@
 }
 
 @media (min-width: 992px) {
-  .tour-tile-inner:hover::after {
+  .tour-tile-inner:hover .tile-hover-overlay {
     opacity: 1;
   }
 }

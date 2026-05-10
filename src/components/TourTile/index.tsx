@@ -25,6 +25,7 @@ export function TourTile({ tour }: TourTileProps) {
   return (
     <article className="tour-tile">
       <Link href={href} className="tour-tile-inner">
+        <div className="tile-hover-overlay" aria-hidden="true" />
 
         {/* Image + title area */}
         <div className="tile-image-wrap">
