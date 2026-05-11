@@ -55,7 +55,7 @@ export default buildConfig({
     },
   },
   email: resendAdapter({
-    defaultFromAddress: 'noreply@send.yugotour.com',
+    defaultFromAddress: 'info@yugotour.com',
     defaultFromName: 'Yugotour',
     apiKey: process.env.YUGOTOUR_RESEND_KEY ?? '',
   }),

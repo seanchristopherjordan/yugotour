@@ -16,7 +16,11 @@ export const Users: CollectionConfig = {
     defaultColumns: ['name', 'email'],
     useAsTitle: 'name',
   },
-  auth: true,
+  auth: {
+    verify: true,
+    maxLoginAttempts: 5,
+    lockTime: 600000,
+  },
   fields: [
     {
       name: 'name',
