@@ -15,7 +15,6 @@
   line-height: 1.2;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.35);
   pointer-events: none;
   user-select: none;
 }
