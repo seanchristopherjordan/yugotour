@@ -17,7 +17,6 @@ export const Users: CollectionConfig = {
     useAsTitle: 'name',
   },
   auth: {
-    verify: true,
     maxLoginAttempts: 5,
     lockTime: 600000,
   },
