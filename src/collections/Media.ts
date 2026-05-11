@@ -78,6 +78,10 @@ export const Media: CollectionConfig = {
     staticDir: 'media',
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    formatOptions: {
+      format: 'webp',
+      options: { quality: 92 },
+    },
     imageSizes: [
       {
         name: 'thumbnail',
