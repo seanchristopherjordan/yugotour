@@ -1,7 +1,7 @@
 import { TourFullBleedImage } from '@/components/TourFullBleedImage'
 
 interface FullBleedParallaxBlockProps {
-  image?: { url?: string | null; alt?: string | null } | string | null
+  image?: { url?: string | null; alt?: string | null; focalX?: number | null; focalY?: number | null } | string | null
   disableInnerContainer?: boolean
 }
 
@@ -11,5 +11,12 @@ export function FullBleedParallaxBlock({ image }: FullBleedParallaxBlockProps) {
 
   if (!imageUrl) return null
 
-  return <TourFullBleedImage imageUrl={imageUrl} alt={imageObj?.alt ?? ''} />
+  return (
+    <TourFullBleedImage
+      imageUrl={imageUrl}
+      alt={imageObj?.alt ?? ''}
+      focalX={imageObj?.focalX ?? null}
+      focalY={imageObj?.focalY ?? null}
+    />
+  )
 }

@@ -6,9 +6,11 @@ import { useRef } from 'react'
 interface TourFullBleedImageProps {
   imageUrl: string
   alt?: string
+  focalX?: number | null
+  focalY?: number | null
 }
 
-export function TourFullBleedImage({ imageUrl, alt = '' }: TourFullBleedImageProps) {
+export function TourFullBleedImage({ imageUrl, alt = '', focalX, focalY }: TourFullBleedImageProps) {
   const sectionRef = useRef<HTMLElement>(null)
 
   const { scrollYProgress } = useScroll({
@@ -23,7 +25,13 @@ export function TourFullBleedImage({ imageUrl, alt = '' }: TourFullBleedImagePro
     <section ref={sectionRef} className="tour-full-bleed">
       <motion.div className="tour-full-bleed-inner" style={{ y: imgY }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={imageUrl} alt={alt} className="tour-full-bleed-img" loading="lazy" />
+        <img
+          src={imageUrl}
+          alt={alt}
+          className="tour-full-bleed-img"
+          loading="lazy"
+          style={{ objectPosition: `${focalX ?? 50}% ${focalY ?? 50}%` }}
+        />
       </motion.div>
     </section>
   )
