@@ -171,19 +171,19 @@
   .tour-ibar-item--price {
     width: auto;
     flex: 0 0 8%;
-    max-width: 12.5%;
+    max-width: 13.5%;
   }
 
   .tour-ibar-item--includes {
     width: auto;
     flex: 0 0 18%;
-    max-width: 16%;
+    max-width: 15%;
   }
 
   .tour-ibar-item--extras {
     width: auto;
     flex: 0 0 22%;
-    max-width: 22%;
+    max-width: 21%;
     padding-right: 10px;
     /* Info icon is positioned absolutely within this column */
     position: relative;
