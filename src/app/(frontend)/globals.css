@@ -256,9 +256,7 @@
 
 /* ── Body text link style ────────────────────────────────────────────────── */
 /* Applies to inline links within richtext blocks and Fakt-font prose content. */
-.payload-richtext a,
-.font-fakt p a,
-.font-fakt li a {
+.payload-richtext a {
   color: #212121;
   text-decoration: underline;
   text-decoration-color: #212121;
@@ -266,9 +264,7 @@
   transition: color 200ms ease, text-decoration-color 200ms ease;
 }
 
-.payload-richtext a:hover,
-.font-fakt p a:hover,
-.font-fakt li a:hover {
+.payload-richtext a:hover {
   color: #C6363C;
   text-decoration-color: #C6363C;
 }
