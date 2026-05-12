@@ -1,11 +1,17 @@
 'use client'
 
+import React from 'react'
+
 interface TourDetailHeaderProps {
   city: 'belgrade' | 'sarajevo'
   title: string
   lede?: string | null
   desktopUrl?: string | null
   mobileUrl?: string | null
+  desktopFocalX?: number | null
+  desktopFocalY?: number | null
+  mobileFocalX?: number | null
+  mobileFocalY?: number | null
 }
 
 export function TourDetailHeader({
@@ -14,9 +20,18 @@ export function TourDetailHeader({
   lede,
   desktopUrl,
   mobileUrl,
+  desktopFocalX,
+  desktopFocalY,
+  mobileFocalX,
+  mobileFocalY,
 }: TourDetailHeaderProps) {
   const cityLabel = city.charAt(0).toUpperCase() + city.slice(1)
   const hasBg     = desktopUrl || mobileUrl
+
+  const focalVars = {
+    '--focal-desktop': `${desktopFocalX ?? 50}% ${desktopFocalY ?? 50}%`,
+    '--focal-mobile': `${mobileFocalX ?? desktopFocalX ?? 50}% ${mobileFocalY ?? desktopFocalY ?? 50}%`,
+  } as React.CSSProperties
 
   return (
     <section className="tour-page-header">
@@ -25,7 +40,7 @@ export function TourDetailHeader({
           <picture>
             {desktopUrl && <source srcSet={desktopUrl} media="(min-width: 992px)" />}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={mobileUrl ?? desktopUrl ?? ''} alt="" aria-hidden="true" loading="eager" fetchPriority="high" />
+            <img src={mobileUrl ?? desktopUrl ?? ''} alt="" aria-hidden="true" loading="eager" fetchPriority="high" style={focalVars} />
           </picture>
         </div>
       )}

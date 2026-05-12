@@ -37,6 +37,7 @@ function resolveMediaDesktopUrl(field: number | Media | null | undefined): strin
   return doc.sizes?.xlarge?.url ?? doc.sizes?.large?.url ?? doc.url ?? null
 }
 
+
 type SliderDoc = {
   id: number
   mobileImages?: (number | Media)[] | null

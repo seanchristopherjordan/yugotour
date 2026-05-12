@@ -72,8 +72,10 @@ export default async function TourPage({ params: paramsPromise }: Args) {
   }
   const t = tour as TourExtended
 
-  const headerDesktopUrl = mediaUrl(t.headerDesktop)
-  const headerMobileUrl  = mediaUrl(t.headerMobile)
+  const headerDesktopObj = typeof t.headerDesktop === 'object' && t.headerDesktop !== null ? t.headerDesktop as Media : null
+  const headerMobileObj  = typeof t.headerMobile  === 'object' && t.headerMobile  !== null ? t.headerMobile  as Media : null
+  const headerDesktopUrl = headerDesktopObj?.url ?? null
+  const headerMobileUrl  = headerMobileObj?.url  ?? null
   const fullBleedImageObj = typeof t.fullBleedImage === 'object' && t.fullBleedImage !== null ? t.fullBleedImage as Media : null
   const fullBleedUrl     = fullBleedImageObj?.url ?? null
   const fullBleedFocalX  = fullBleedImageObj?.focalX ?? null
@@ -129,6 +131,10 @@ export default async function TourPage({ params: paramsPromise }: Args) {
         lede={t.lede}
         desktopUrl={headerDesktopUrl}
         mobileUrl={headerMobileUrl}
+        desktopFocalX={headerDesktopObj?.focalX ?? null}
+        desktopFocalY={headerDesktopObj?.focalY ?? null}
+        mobileFocalX={headerMobileObj?.focalX ?? null}
+        mobileFocalY={headerMobileObj?.focalY ?? null}
       />
 
       {/* ── Info Bar (red texture — duration / price / includes / extras / book) ── */}
