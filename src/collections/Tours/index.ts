@@ -5,6 +5,13 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields'
 
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
@@ -227,6 +234,23 @@ export const Tours: CollectionConfig = {
                 },
               ],
             },
+          ],
+        },
+
+        // ─── SEO ─────────────────────────────────────────────────
+        {
+          name: 'meta',
+          label: 'SEO',
+          fields: [
+            OverviewField({
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+              imagePath: 'meta.image',
+            }),
+            MetaTitleField({ hasGenerateFn: true }),
+            MetaImageField({ relationTo: 'media' }),
+            MetaDescriptionField({}),
+            PreviewField({ hasGenerateFn: true, titlePath: 'meta.title', descriptionPath: 'meta.description' }),
           ],
         },
       ],

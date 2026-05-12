@@ -10,11 +10,60 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
+import { GenerateDescription } from '@payloadcms/plugin-seo/types'
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Yugotour` : 'Yugotour'
+// Recursively extract plain text from a Lexical JSON node tree
+function lexicalToText(node: unknown): string {
+  if (!node || typeof node !== 'object') return ''
+  const n = node as Record<string, unknown>
+  if (typeof n.text === 'string') return n.text
+  const children = Array.isArray(n.children) ? n.children : Array.isArray((n.root as Record<string, unknown>)?.children) ? (n.root as Record<string, unknown>).children as unknown[] : null
+  if (children) return children.map(lexicalToText).join(' ').replace(/\s+/g, ' ').trim()
+  return ''
+}
+
+function truncate(text: string, max = 160): string {
+  const clean = text.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()
+  return clean.length <= max ? clean : clean.slice(0, max - 1).replace(/\s\S*$/, '') + '…'
+}
+
+const generateTitle: GenerateTitle = ({ doc }) => {
+  const d = doc as Record<string, unknown>
+  const city = d?.city as string | undefined
+  const cityLabel = city === 'belgrade' ? 'Belgrade' : city === 'sarajevo' ? 'Sarajevo' : null
+  if (!d?.title) return 'Yugotour'
+  return cityLabel
+    ? `${d.title} | ${cityLabel} | Yugotour`
+    : `${d.title} | Yugotour`
+}
+
+const generateDescription: GenerateDescription = ({ doc }) => {
+  const d = doc as Record<string, unknown>
+
+  // Tours — use the lede field
+  if (typeof d.lede === 'string' && d.lede) return truncate(d.lede)
+
+  // TourListPages — combine headline parts
+  if (typeof d.introHeaderBlack === 'string' || typeof d.introHeaderRed === 'string') {
+    const combined = [d.introHeaderBlack, d.introHeaderRed].filter(Boolean).join(' ')
+    if (combined) return truncate(combined)
+  }
+
+  // Posts — use the content richtext field
+  if (d.content) return truncate(lexicalToText(d.content))
+
+  // Pages — use the first content-type block in layout
+  if (Array.isArray(d.layout)) {
+    for (const block of d.layout) {
+      const b = block as Record<string, unknown>
+      if (b.blockType === 'content' && b.richText) return truncate(lexicalToText(b.richText))
+      if (b.blockType === 'textContainer' && b.content) return truncate(lexicalToText(b.content))
+    }
+  }
+
+  return ''
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -53,6 +102,7 @@ export const plugins: Plugin[] = [
   }),
   seoPlugin({
     generateTitle,
+    generateDescription,
     generateURL,
   }),
   formBuilderPlugin({
