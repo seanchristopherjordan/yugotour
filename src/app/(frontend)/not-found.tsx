@@ -17,7 +17,7 @@ export default function NotFound() {
           textTransform: 'uppercase',
         }}
       >
-        OPA!
+        E JBG
       </p>
 
       <p
