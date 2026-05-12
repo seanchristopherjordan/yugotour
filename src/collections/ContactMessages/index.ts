@@ -15,7 +15,7 @@ export const ContactMessages: CollectionConfig = {
     listSearchableFields: ['name', 'email'],
   },
   access: {
-    create: anyone,
+    create: () => false, // submissions only via /api/contact (overrideAccess: true)
     read: authenticated,
     update: authenticated,
     delete: authenticated,

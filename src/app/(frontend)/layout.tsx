@@ -11,6 +11,7 @@ import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
 import { Providers } from '@/providers'
 import { BookingModalProvider, type BookingModalImages, type BookingTimeSettings, type BookingSuccessContent } from '@/providers/BookingModal'
+import { ContactModalProvider } from '@/providers/ContactModal'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getCachedGlobal } from '@/utilities/getGlobals'
@@ -185,6 +186,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
       </head>
       <body suppressHydrationWarning>
+        <ContactModalProvider
+          textureUrl="/textures/texture-blue.webp"
+          images={{
+            iconName: bookingImages.iconName,
+            iconEmail: bookingImages.iconEmail,
+            iconComment: bookingImages.iconComment,
+          }}
+        >
         <BookingModalProvider tours={allTours} textureUrl="/textures/texture-blue.webp" images={bookingImages} timeSettings={timeSettings} successContent={successContent}>
           <Providers>
             <AdminBar
@@ -201,6 +210,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <LazyFade />
           </Providers>
         </BookingModalProvider>
+        </ContactModalProvider>
       </body>
     </html>
   )

@@ -2,6 +2,7 @@ import { getCachedGlobal } from '@/utilities/getGlobals'
 import { getMediaUrl } from '@/lib/getMediaUrl'
 import Link from 'next/link'
 import { FooterBookNowLink } from './BookNowLink'
+import { FooterContactLink } from './ContactLink'
 
 const NAV_LINKS = [
   { label: 'Belgrade Tours', href: '/belgrade-tours' },
@@ -11,7 +12,6 @@ const NAV_LINKS = [
   { label: 'FAQs', href: '/faqs' },
   // { label: 'Blog', href: '/blog' },           // TEMP HIDDEN
   // { label: 'Media', href: '/media' },         // TEMP HIDDEN
-  // { label: 'Contact Us', href: '/contact' },  // TEMP HIDDEN
 ]
 
 const FINE_PRINT_LINKS = [
@@ -146,6 +146,9 @@ export async function Footer() {
                 <ul className="list-none p-0 m-0">
                   <li className="mb-[1.2rem] min-[992px]:mb-[1.55rem]">
                     <FooterBookNowLink />
+                  </li>
+                  <li className="mb-[1.2rem] min-[992px]:mb-[1.55rem]">
+                    <FooterContactLink />
                   </li>
                   {NAV_LINKS.map(({ label, href }) => (
                     <li key={href} className="mb-[1.2rem] min-[992px]:mb-[1.55rem] last:mb-0">

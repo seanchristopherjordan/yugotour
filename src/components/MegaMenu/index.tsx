@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { useBookingModal } from '@/providers/BookingModal'
+import { useContactModal } from '@/providers/ContactModal'
 
 export interface MegaMenuImages {
   default: string | null
@@ -36,7 +37,6 @@ const MAIN_LINKS = [
 ]
 
 const SECONDARY_LINKS = [
-  { label: 'Contact', href: '/contact' },
   // { label: 'Blog', href: '/blog' },       // TEMP HIDDEN
   { label: 'FAQs', href: '/faqs' },
   // { label: 'Media', href: '/media' },     // TEMP HIDDEN
@@ -44,6 +44,7 @@ const SECONDARY_LINKS = [
 
 export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: MegaMenuProps) {
   const { open: openBooking } = useBookingModal()
+  const { open: openContact } = useContactModal()
   // Mirrors the layerA/layerB crossfade logic from custom-javascript.js exactly
   const [activeSlot, setActiveSlot] = useState<'a' | 'b' | null>(null)
   const [imgA, setImgA] = useState<string | null>(null)
@@ -183,6 +184,16 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
             className="grid gap-x-[1px] gap-y-[1.4rem] max-[991px]:gap-y-[1.1rem] mb-[1.4rem] max-[991px]:mb-[1.1rem]"
             style={{ gridTemplateColumns: '140px 140px' }}
           >
+            {/* Contact — opens modal */}
+            <button
+              type="button"
+              className="relative w-fit font-fakt text-[1.2rem] text-yugo-cream no-underline leading-[1.4] group bg-transparent border-none p-0 cursor-pointer text-left"
+              onClick={() => { openContact(); onClose() }}
+            >
+              Contact
+              <span className="absolute bottom-[-2px] left-0 h-[2px] w-0 bg-yugo-cream transition-[width] duration-300 group-hover:w-full" />
+            </button>
+
             {SECONDARY_LINKS.map((link) => (
               <Link
                 key={link.href}
