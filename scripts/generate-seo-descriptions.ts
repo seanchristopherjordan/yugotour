@@ -39,8 +39,7 @@ async function main() {
   })
 
   const targets = posts.filter((post) => {
-    const desc = (post as Record<string, unknown> & { meta?: { description?: string | null } })
-      ?.meta?.description
+    const desc = (post as unknown as { meta?: { description?: string | null } })?.meta?.description
     return !desc || desc.trim() === ''
   })
 
@@ -52,7 +51,7 @@ async function main() {
   }
 
   for (const post of targets) {
-    const rawText = lexicalToText((post as Record<string, unknown>).content)
+    const rawText = lexicalToText((post as unknown as Record<string, unknown>).content)
     const excerpt = rawText.replace(/\s+/g, ' ').trim().slice(0, 1200)
 
     if (!excerpt) {
