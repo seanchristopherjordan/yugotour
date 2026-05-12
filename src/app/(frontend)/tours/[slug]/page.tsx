@@ -74,7 +74,10 @@ export default async function TourPage({ params: paramsPromise }: Args) {
 
   const headerDesktopUrl = mediaUrl(t.headerDesktop)
   const headerMobileUrl  = mediaUrl(t.headerMobile)
-  const fullBleedUrl     = mediaUrl(t.fullBleedImage)
+  const fullBleedImageObj = typeof t.fullBleedImage === 'object' && t.fullBleedImage !== null ? t.fullBleedImage as Media : null
+  const fullBleedUrl     = fullBleedImageObj?.url ?? null
+  const fullBleedFocalX  = fullBleedImageObj?.focalX ?? null
+  const fullBleedFocalY  = fullBleedImageObj?.focalY ?? null
   const mapEmbedUrl      = t.mapEmbedUrl ?? null
 
   const includesList = t.includes
@@ -292,7 +295,7 @@ export default async function TourPage({ params: paramsPromise }: Args) {
       )}
 
       {/* ── Full-bleed parallax image (after map) ───────────── */}
-      {fullBleedUrl && <TourFullBleedImage imageUrl={fullBleedUrl} />}
+      {fullBleedUrl && <TourFullBleedImage imageUrl={fullBleedUrl} focalX={fullBleedFocalX} focalY={fullBleedFocalY} />}
 
       {/* ── Television section ──────────────────────────────── */}
       {tvBlock && <TvSectionBlock {...tvBlock} />}
