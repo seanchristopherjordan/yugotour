@@ -10,7 +10,7 @@ export default function NotFound() {
         style={{
           fontFamily: 'var(--font-tungsten-compressed)',
           fontWeight: 700,
-          fontSize: 'clamp(8rem, 28vw, 25rem)',
+          fontSize: 'clamp(11rem, 28vw, 25rem)',
           lineHeight: 0.85,
           color: '#D4B96A',
           margin: 0,
@@ -24,7 +24,7 @@ export default function NotFound() {
         style={{
           fontFamily: 'var(--font-tungsten-compressed)',
           fontWeight: 700,
-          fontSize: 'clamp(8rem, 28vw, 25rem)',
+          fontSize: 'clamp(5rem, 14vw, 13rem)',
           lineHeight: 0.85,
           color: '#212121',
           margin: '0 0 1.5rem',
@@ -64,7 +64,7 @@ export default function NotFound() {
           display: 'inline-block',
         }}
       >
-        Go Home.
+        Go Home
       </Link>
     </div>
   )
