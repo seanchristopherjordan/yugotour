@@ -10,9 +10,11 @@ export const sendContactNotification: CollectionAfterChangeHook = async ({ doc, 
     message: doc.message ?? '',
   }
 
-  sendEmail('contact_staff_notification', variables).catch((err) =>
-    console.error('[sendContactNotification] failed:', err),
-  )
+  try {
+    await sendEmail('contact_staff_notification', variables)
+  } catch (err) {
+    console.error('[sendContactNotification] failed:', err)
+  }
 
   return doc
 }

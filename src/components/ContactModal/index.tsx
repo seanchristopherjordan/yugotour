@@ -202,6 +202,25 @@ export function ContactModal({
       <div className="flex-1 min-h-0 overflow-y-auto booking-modal-body">
         <div className="flex flex-col items-center px-4 pt-2 pb-16">
 
+          {/* Header image — identical to booking modal */}
+          {(images.headerImage || images.headerImageMobile) && (
+            <div className={`${MAX_FORM_W} mb-[10px] overflow-hidden rounded-[8px]`}>
+              <picture>
+                {images.headerImageMobile && (
+                  <source media="(max-width: 767px)" srcSet={images.headerImageMobile} />
+                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={images.headerImage ?? images.headerImageMobile ?? ''}
+                  alt=""
+                  aria-hidden="true"
+                  className="w-full block"
+                  style={{ display: 'block' }}
+                />
+              </picture>
+            </div>
+          )}
+
           {/* Heading — same Zipper font, same sizing class, no stars, no subheading */}
           <div className={`text-center mb-[30px] ${MAX_FORM_W}`}>
             <h2

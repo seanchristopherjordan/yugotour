@@ -189,6 +189,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ContactModalProvider
           textureUrl="/textures/texture-blue.webp"
           images={{
+            headerImage: bookingImages.headerImage,
+            headerImageMobile: bookingImages.headerImageMobile,
             iconName: bookingImages.iconName,
             iconEmail: bookingImages.iconEmail,
             iconComment: bookingImages.iconComment,

@@ -9,6 +9,8 @@ const ContactModal = dynamic(
 )
 
 export interface ContactModalImages {
+  headerImage: string | null
+  headerImageMobile: string | null
   iconName: string | null
   iconEmail: string | null
   iconComment: string | null
