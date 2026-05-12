@@ -7,7 +7,12 @@
       "Bash(npm view *)",
       "Bash(npm run *)",
       "Bash(node -e ' *)",
-      "Bash(xargs grep -l \"headerImage\\\\|parallax\\\\|focalX\\\\|focalY\")"
+      "Bash(xargs grep -l \"headerImage\\\\|parallax\\\\|focalX\\\\|focalY\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(pnpm tsx *)",
+      "Bash(npx tsx *)"
     ]
   }
 }

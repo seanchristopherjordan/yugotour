@@ -1063,6 +1063,14 @@ export interface Tour {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1148,6 +1156,14 @@ export interface TourListPage {
   slider?: (number | null) | Slider;
   showTales?: boolean | null;
   showSimulator?: boolean | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -2042,6 +2058,13 @@ export interface ToursSelect<T extends boolean = true> {
         photo?: T;
         id?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -2082,6 +2105,13 @@ export interface TourListPagesSelect<T extends boolean = true> {
   slider?: T;
   showTales?: T;
   showSimulator?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

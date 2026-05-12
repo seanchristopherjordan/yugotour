@@ -24,7 +24,7 @@ export default function NotFound() {
         style={{
           fontFamily: 'var(--font-tungsten-compressed)',
           fontWeight: 700,
-          fontSize: 'clamp(5rem, 7vw, 8rem)',
+          fontSize: 'clamp(5.5rem, 7vw, 8rem)',
           lineHeight: 0.85,
           color: '#212121',
           margin: '0 0 1.5rem',
