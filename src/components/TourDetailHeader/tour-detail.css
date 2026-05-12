@@ -50,7 +50,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /* Main content block — bottom-anchored so title grows upward on wrap */
