@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <div
       className="flex flex-col items-center justify-center text-center px-6"
-      style={{ minHeight: '60vh', paddingTop: '6rem', paddingBottom: '6rem' }}
+      style={{ minHeight: '60vh', paddingTop: '4rem', paddingBottom: '4rem' }}
     >
       <p
         style={{
@@ -24,7 +24,7 @@ export default function NotFound() {
         style={{
           fontFamily: 'var(--font-tungsten-compressed)',
           fontWeight: 700,
-          fontSize: 'clamp(5rem, 14vw, 13rem)',
+          fontSize: 'clamp(5rem, 12vw, 11rem)',
           lineHeight: 0.85,
           color: '#212121',
           margin: '0 0 1.5rem',

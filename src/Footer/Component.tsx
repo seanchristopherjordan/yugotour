@@ -9,14 +9,14 @@ const NAV_LINKS = [
   { label: 'About Us', href: '/about-us' },
   { label: 'Yugopedia', href: '/yugopedia' },
   { label: 'FAQs', href: '/faqs' },
-  { label: 'Blog', href: '/blog' },
-  { label: 'Media', href: '/media' },
-  { label: 'Contact Us', href: '/contact' },
+  // { label: 'Blog', href: '/blog' },           // TEMP HIDDEN
+  // { label: 'Media', href: '/media' },         // TEMP HIDDEN
+  // { label: 'Contact Us', href: '/contact' },  // TEMP HIDDEN
 ]
 
 const FINE_PRINT_LINKS = [
   { label: 'Terms of Service', href: '/terms-of-service' },
-  { label: 'Accessibility', href: '/accessibility' },
+  // { label: 'Accessibility', href: '/accessibility' }, // TEMP HIDDEN
 ]
 
 const h5Class =
