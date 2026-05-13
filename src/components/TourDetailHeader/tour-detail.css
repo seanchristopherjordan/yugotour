@@ -45,6 +45,25 @@
   }
 }
 
+/* Back to Tours link — top-left of hero, above the overlay */
+.tour-page-back-link {
+  position: absolute;
+  top: 22px;
+  left: 20px;
+  z-index: 3;
+  font-family: var(--font-fakt);
+  font-size: 1rem;
+  color: var(--color-yugo-cream);
+  text-decoration: none;
+}
+
+@media (min-width: 992px) {
+  .tour-page-back-link {
+    top: 28px;
+    left: 30px;
+  }
+}
+
 /* Flat 50% black overlay */
 .tour-page-header-overlay {
   position: absolute;

@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 
 interface TourDetailHeaderProps {
   city: 'belgrade' | 'sarajevo'
@@ -46,6 +47,11 @@ export function TourDetailHeader({
       )}
 
       <div className="tour-page-header-overlay" />
+
+      <Link href={`/${city}-tours`} className="tour-page-back-link group relative">
+        ← Back to Tours
+        <span className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-yugo-cream transition-[width] duration-200 ease-in-out group-hover:w-full" />
+      </Link>
 
       <div className="tour-page-header-content">
         <div className="container">
