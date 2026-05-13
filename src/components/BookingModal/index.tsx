@@ -735,15 +735,6 @@ export function BookingModal() {
                           <div style={{ aspectRatio: '3/2', minHeight: '80px', background: '#3a5a7c' }} />
                         )
                       }
-                      {/* Darkener — fades in on the unselected tile */}
-                      <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                          background: 'rgba(0,0,0,0.35)',
-                          opacity: isDimmed ? 1 : 0,
-                          transition: 'opacity 300ms ease',
-                        }}
-                      />
                       {/* City name overlay */}
                       <div
                         className="absolute inset-0 flex items-start justify-center"
@@ -763,24 +754,29 @@ export function BookingModal() {
                           {cityLabel}
                         </span>
                       </div>
+                      {/* Darkener — last in DOM so it covers both image and city name */}
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background: 'rgba(0,0,0,0.35)',
+                          opacity: isDimmed ? 1 : 0,
+                          transition: 'opacity 300ms ease',
+                        }}
+                      />
                     </div>
                   </button>
 
                   {/* Selected badge — green circle with cream checkmark */}
                   {isSelected && (
                     <div
-                      className="absolute z-10 flex items-center justify-center pointer-events-none"
+                      className="absolute z-10 flex items-center justify-center pointer-events-none w-10 h-10 -top-3 -right-3 min-[480px]:w-12 min-[480px]:h-12 min-[480px]:-top-4 min-[480px]:-right-4"
                       style={{
-                        top: '-16px',
-                        right: '-16px',
-                        width: '48px',
-                        height: '48px',
                         background: '#22c55e',
                         borderRadius: '50%',
                         boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
                       }}
                     >
-                      <svg width="24" height="19" viewBox="0 0 14 11" fill="none" aria-hidden="true">
+                      <svg style={{ width: '50%', height: 'auto' }} viewBox="0 0 14 11" fill="none" aria-hidden="true">
                         <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#FCF9EB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
