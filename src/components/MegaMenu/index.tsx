@@ -29,8 +29,8 @@ export interface MegaMenuProps {
 }
 
 const MAIN_LINKS = [
-  { label: 'belgrade', href: '/belgrade-tours', imgKey: 'belgrade' as keyof MegaMenuImages },
-  { label: 'sarajevo', href: '/sarajevo-tours', imgKey: 'sarajevo' as keyof MegaMenuImages },
+  { label: 'belgrade tours', href: '/belgrade-tours', imgKey: 'belgrade' as keyof MegaMenuImages },
+  { label: 'sarajevo tours', href: '/sarajevo-tours', imgKey: 'sarajevo' as keyof MegaMenuImages },
   { label: 'yugopedia', href: '/yugopedia', imgKey: 'yugopedia' as keyof MegaMenuImages },
   { label: 'about us', href: '/about-us', imgKey: 'aboutUs' as keyof MegaMenuImages },
   { label: 'book now', href: '#book', imgKey: 'bookNow' as keyof MegaMenuImages, isBookNow: true },
@@ -151,7 +151,7 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
                     id="menuBookNow"
                     type="button"
                     className={mainLinkClass}
-                    style={{ fontSize: 'clamp(3.4rem, 1rem + 3.5vw, 5.5rem)' }}
+                    style={{ fontSize: 'clamp(3.23rem, 0.95rem + 3.325vw, 5.225rem)' }}
                     onMouseEnter={() => handleLinkEnter(link.imgKey)}
                     onMouseLeave={handleLinkLeave}
                     onClick={() => {
@@ -167,7 +167,7 @@ export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: M
                   <Link
                     href={link.href}
                     className={mainLinkClass}
-                    style={{ fontSize: 'clamp(3.4rem, 1rem + 3.5vw, 5.5rem)' }}
+                    style={{ fontSize: 'clamp(3.23rem, 0.95rem + 3.325vw, 5.225rem)' }}
                     onMouseEnter={() => handleLinkEnter(link.imgKey)}
                     onMouseLeave={handleLinkLeave}
                     onClick={onClose}

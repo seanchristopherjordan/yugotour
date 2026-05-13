@@ -105,8 +105,8 @@ export function HeaderClient({ logoUrl, navTextureUrl, megaMenuProps }: HeaderCl
 
             {/* Desktop city links */}
             <div className="hidden min-[992px]:flex items-center">
-              <NavLink href="/belgrade-tours">belgrade</NavLink>
-              <NavLink href="/sarajevo-tours">sarajevo</NavLink>
+              <NavLink href="/belgrade-tours">belgrade tours</NavLink>
+              <NavLink href="/sarajevo-tours">sarajevo tours</NavLink>
             </div>
 
             {/* Hamburger trigger */}
