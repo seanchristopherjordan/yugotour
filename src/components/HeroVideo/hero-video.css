@@ -1,3 +1,8 @@
+/* Hide WebKit's native start-playback button on iOS Chrome (Safari doesn't show it) */
+#hero-video-module video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
 /*
   Pre-hydration height — mirrors the useLayoutEffect calculation in index.tsx.
   Prevents the section collapsing to 0px before JS runs and revealing content below.
