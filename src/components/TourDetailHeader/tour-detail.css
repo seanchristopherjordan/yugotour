@@ -45,23 +45,30 @@
   }
 }
 
-/* Back to Tours link — top-left of hero, above the overlay */
+/* Back-to-tours — Fakt Pro Medium, positioned outside container margins */
 .tour-page-back-link {
-  position: absolute;
-  top: 22px;
-  left: 20px;
-  z-index: 3;
   font-family: var(--font-fakt);
-  font-size: 1rem;
+  font-weight: 500;
+  font-size: 1.04rem;
+  letter-spacing: 0.01em;
   color: var(--color-yugo-cream);
   text-decoration: none;
+  position: absolute;
+  top: 88px;
+  left: 1.5rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding-bottom: 2px;
 }
 
 @media (min-width: 992px) {
-  .tour-page-back-link {
-    top: 28px;
-    left: 30px;
-  }
+  .tour-page-back-link { font-size: 1.1rem; }
+}
+
+@media (max-width: 991px) {
+  .tour-page-back-link { left: 1.07rem; }
 }
 
 /* Flat 50% black overlay */
