@@ -704,6 +704,7 @@ export function BookingModal() {
             {(['belgrade', 'sarajevo'] as const).map((city) => {
               const img = cityImg[city]
               const isSelected = formState.city === city
+              const isDimmed = formState.city !== null && !isSelected
               const cityLabel = city === 'belgrade' ? 'Belgrade' : 'Sarajevo'
               return (
                 <div key={city} className="relative">
@@ -734,6 +735,15 @@ export function BookingModal() {
                           <div style={{ aspectRatio: '3/2', minHeight: '80px', background: '#3a5a7c' }} />
                         )
                       }
+                      {/* Darkener — fades in on the unselected tile */}
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          background: 'rgba(0,0,0,0.35)',
+                          opacity: isDimmed ? 1 : 0,
+                          transition: 'opacity 300ms ease',
+                        }}
+                      />
                       {/* City name overlay */}
                       <div
                         className="absolute inset-0 flex items-start justify-center"
@@ -761,16 +771,16 @@ export function BookingModal() {
                     <div
                       className="absolute z-10 flex items-center justify-center pointer-events-none"
                       style={{
-                        top: '-10px',
-                        right: '-10px',
-                        width: '28px',
-                        height: '28px',
+                        top: '-16px',
+                        right: '-16px',
+                        width: '48px',
+                        height: '48px',
                         background: '#22c55e',
                         borderRadius: '50%',
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.35)',
                       }}
                     >
-                      <svg width="14" height="11" viewBox="0 0 14 11" fill="none" aria-hidden="true">
+                      <svg width="24" height="19" viewBox="0 0 14 11" fill="none" aria-hidden="true">
                         <path d="M1.5 5.5L5.5 9.5L12.5 1.5" stroke="#FCF9EB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
