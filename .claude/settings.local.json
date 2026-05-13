@@ -15,7 +15,8 @@
       "Bash(npx tsx *)",
       "Bash(cat redirects.ts)",
       "Bash(cat redirects.js)",
-      "Bash(grep -E \"not-found|\\\\\\\\[\")"
+      "Bash(grep -E \"not-found|\\\\\\\\[\")",
+      "PowerShell(Rename-Item *)"
     ]
   }
 }

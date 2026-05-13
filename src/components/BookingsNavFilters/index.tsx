@@ -3,9 +3,9 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 
 const filters = [
-  { label: 'All Cities', href: '/admin/collections/bookings' },
-  { label: 'Belgrade', href: '/admin/collections/bookings?where[city][equals]=belgrade' },
-  { label: 'Sarajevo', href: '/admin/collections/bookings?where[city][equals]=sarajevo' },
+  { label: 'All Cities', href: '/yugo-ulaz/collections/bookings' },
+  { label: 'Belgrade', href: '/yugo-ulaz/collections/bookings?where[city][equals]=belgrade' },
+  { label: 'Sarajevo', href: '/yugo-ulaz/collections/bookings?where[city][equals]=sarajevo' },
 ]
 
 export default function BookingsNavFilters() {
