@@ -47,8 +47,7 @@ export async function sendEmail(
 
   const template = result.docs[0] as EmailTemplate | undefined
   if (!template) {
-    payload.logger.error(`sendEmail: no template found for key "${templateKey}"`)
-    return
+    throw new Error(`sendEmail: no template found for key "${templateKey}"`)
   }
 
   const subject = substituteVariables(template.subject ?? '', variables)
@@ -91,8 +90,7 @@ export async function sendEmail(
   }
 
   if (!toAddresses.length) {
-    payload.logger.warn(`sendEmail: no recipients for template "${templateKey}" — email not sent`)
-    return
+    throw new Error(`sendEmail: no recipients configured for template "${templateKey}"`)
   }
 
   const from = template.fromName

@@ -61,11 +61,13 @@ export async function POST(req: NextRequest) {
       },
     })
 
+    console.log('[contact] sending notification email...')
     await sendEmail('contact_staff_notification', {
       sender_name: trimmedName,
       sender_email: trimmedEmail,
       message: trimmedMessage,
     })
+    console.log('[contact] notification email sent successfully')
 
     return NextResponse.json({ success: true })
   } catch (err) {
