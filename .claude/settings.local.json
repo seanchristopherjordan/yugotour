@@ -12,7 +12,10 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Bash(pnpm tsx *)",
-      "Bash(npx tsx *)"
+      "Bash(npx tsx *)",
+      "Bash(cat redirects.ts)",
+      "Bash(cat redirects.js)",
+      "Bash(grep -E \"not-found|\\\\\\\\[\")"
     ]
   }
 }
