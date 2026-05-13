@@ -58,6 +58,14 @@ const nextConfig: NextConfig = {
         { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
       ],
     },
+    {
+      source: '/(.*)',
+      headers: [
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
+      ],
+    },
   ],
   // Turbopack is used for normal dev/build; disabled when running bundle analysis
   // since @next/bundle-analyzer requires webpack.
