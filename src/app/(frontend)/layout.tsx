@@ -38,6 +38,7 @@ import '@/components/OptionalExtrasModal/optional-extras-modal.css'
 import '@/components/CookieBanner/cookie-banner.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { CookieBanner } from '@/components/CookieBanner/CookieBanner'
+import Script from 'next/script'
 
 const faktPro = localFont({
   src: [
@@ -185,6 +186,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </>
         )}
       </head>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-1F5QQJVZ8S"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-1F5QQJVZ8S');
+        `}
+      </Script>
       <body suppressHydrationWarning>
         <ContactModalProvider
           textureUrl="/textures/texture-blue.webp"
