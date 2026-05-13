@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { sendEmail } from '@/lib/sendEmail'
 
 export async function POST(req: NextRequest) {
   try {
@@ -44,16 +45,26 @@ export async function POST(req: NextRequest) {
 
     const payload = await getPayload({ config: configPromise })
 
+    const trimmedName = String(name).trim()
+    const trimmedEmail = String(email).trim()
+    const trimmedMessage = String(message).trim()
+
     await payload.create({
       collection: 'contact-messages',
       overrideAccess: true,
       data: {
-        name: String(name).trim(),
-        email: String(email).trim(),
-        message: String(message).trim(),
+        name: trimmedName,
+        email: trimmedEmail,
+        message: trimmedMessage,
         status: 'new',
         ipAddress: ip,
       },
+    })
+
+    await sendEmail('contact_staff_notification', {
+      sender_name: trimmedName,
+      sender_email: trimmedEmail,
+      message: trimmedMessage,
     })
 
     return NextResponse.json({ success: true })

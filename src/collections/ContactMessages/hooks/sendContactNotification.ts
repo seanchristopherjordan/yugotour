@@ -1,20 +1,7 @@
 import type { CollectionAfterChangeHook } from 'payload'
-import { sendEmail } from '@/lib/sendEmail'
 
-export const sendContactNotification: CollectionAfterChangeHook = async ({ doc, operation }) => {
-  if (operation !== 'create') return doc
-
-  const variables = {
-    sender_name: doc.name ?? '',
-    sender_email: doc.email ?? '',
-    message: doc.message ?? '',
-  }
-
-  try {
-    await sendEmail('contact_staff_notification', variables)
-  } catch (err) {
-    console.error('[sendContactNotification] failed:', err)
-  }
-
+// Email is sent directly in /api/contact/route.ts to ensure it completes before
+// the serverless function returns. This hook is intentionally a no-op.
+export const sendContactNotification: CollectionAfterChangeHook = async ({ doc }) => {
   return doc
 }
