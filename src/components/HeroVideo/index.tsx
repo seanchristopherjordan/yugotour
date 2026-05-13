@@ -6,53 +6,108 @@ import { useEffect, useLayoutEffect, useRef, useCallback, useState } from 'react
 export interface HeroVideoProps {
   videoUrl: string | null
   mobileVideoUrl: string | null
+  mobileH265Url: string | null
+  mobileH264Url: string | null
+  desktopH265Url: string | null
+  desktopH264Url: string | null
   posterDesktopUrl: string | null
   posterMobileUrl: string | null
   logoUrl: string | null
 }
 
-export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMobileUrl, logoUrl }: HeroVideoProps) {
+export function HeroVideo({
+  videoUrl,
+  mobileVideoUrl,
+  mobileH265Url,
+  mobileH264Url,
+  desktopH265Url,
+  desktopH264Url,
+  posterDesktopUrl,
+  posterMobileUrl,
+  logoUrl,
+}: HeroVideoProps) {
   const { scrollY } = useScroll()
   const logoY = useMotionValue(0)
   const logoOpacity = useMotionValue(0)
   const [flickering, setFlickering] = useState(false)
+  const [videoFailed, setVideoFailed] = useState(false)
+  const [sourceSet, setSourceSet] = useState<'mobile' | 'desktop' | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const hasStartedRef = useRef(false)
 
+  // Determine mobile vs desktop once on mount — avoids <source media> which iOS ignores
   useEffect(() => {
+    setSourceSet(window.innerWidth < 992 ? 'mobile' : 'desktop')
+  }, [])
+
+  // Set up video playback once sources are rendered into the DOM
+  useEffect(() => {
+    if (sourceSet === null) return
+
     const video = videoRef.current
-    if (!video || (!videoUrl && !mobileVideoUrl)) {
+    const hasSrc =
+      sourceSet === 'mobile'
+        ? mobileVideoUrl || mobileH265Url || mobileH264Url
+        : videoUrl || desktopH265Url || desktopH264Url
+
+    if (!video || !hasSrc) {
+      // No video available — show logo immediately without flicker
       animate(logoOpacity, 1, { duration: 0 })
       return
     }
 
+    // Reload now that <source> elements are in the DOM
+    video.load()
+
+    const handleError = () => {
+      // All sources failed — show logo without flicker
+      animate(logoOpacity, 1, { duration: 0.3, ease: 'easeIn' })
+      setVideoFailed(true)
+    }
+
     const startVideo = () => {
-      video.play().catch(() => {})
-      setFlickering(true)
-      hasStartedRef.current = true
+      video
+        .play()
+        .then(() => {
+          setFlickering(true)
+          hasStartedRef.current = true
+        })
+        .catch(() => {
+          // Autoplay blocked or codec error — show logo without flicker
+          animate(logoOpacity, 1, { duration: 0.3, ease: 'easeIn' })
+          setVideoFailed(true)
+        })
     }
 
     const isCached = video.readyState >= 3
     const timers: ReturnType<typeof setTimeout>[] = []
 
     if (isCached) {
-      timers.push(setTimeout(() => {
-        animate(logoOpacity, 1, { duration: 0.3, ease: 'easeIn' })
-        startVideo()
-      }, 500))
-    } else {
-      timers.push(setTimeout(() => {
-        animate(logoOpacity, 1, { duration: 0.7, ease: 'easeIn' })
-      }, 1000))
-      timers.push(setTimeout(() => {
-        if (video.readyState >= 3) {
+      timers.push(
+        setTimeout(() => {
+          animate(logoOpacity, 1, { duration: 0.3, ease: 'easeIn' })
           startVideo()
-        } else {
-          video.addEventListener('canplay', startVideo, { once: true })
-        }
-      }, 2200))
+        }, 500),
+      )
+    } else {
+      timers.push(
+        setTimeout(() => {
+          animate(logoOpacity, 1, { duration: 0.7, ease: 'easeIn' })
+        }, 1000),
+      )
+      timers.push(
+        setTimeout(() => {
+          if (video.readyState >= 3) {
+            startVideo()
+          } else {
+            video.addEventListener('canplay', startVideo, { once: true })
+          }
+        }, 2200),
+      )
     }
+
+    video.addEventListener('error', handleError, { once: true })
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -70,9 +125,10 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
     return () => {
       timers.forEach(clearTimeout)
       video.removeEventListener('canplay', startVideo)
+      video.removeEventListener('error', handleError)
       observer.disconnect()
     }
-  }, [videoUrl, mobileVideoUrl, logoOpacity])
+  }, [sourceSet, videoUrl, mobileVideoUrl, mobileH265Url, mobileH264Url, desktopH265Url, desktopH264Url, logoOpacity])
 
   const scrollToIntro = useCallback(() => {
     const target = document.getElementById('intro-section')
@@ -83,8 +139,6 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
       ease: [0.22, 1, 0.36, 1],
       onUpdate: (v) => window.scrollTo(0, v),
     })
-    // Cancel programmatic scroll if the user touches or wheels — prevents
-    // the animation fighting manual scroll on mobile.
     const cancel = () => controls.stop()
     window.addEventListener('touchstart', cancel, { once: true, passive: true })
     window.addEventListener('wheel', cancel, { once: true, passive: true })
@@ -95,24 +149,13 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
     logoY.set(y * 0.4)
   })
 
-  // Position the section flush with the nav bottom regardless of what
-  // in-flow elements sit above it (e.g. Payload AdminBar when logged in).
-  // The AdminBar uses an async auth check, so we also watch it via
-  // ResizeObserver in case it appears after initial mount.
   useLayoutEffect(() => {
     const el = sectionRef.current
     if (!el) return
 
     const update = () => {
-      // nav: height 3.4vh, min-height 45px mobile / 42px desktop (≥992px)
       const navMinHeight = window.innerWidth < 992 ? 45 : 42
       const navHeight = Math.max(window.innerHeight * 0.034, navMinHeight)
-      // Temporarily zero our margin to read the natural flow offset
-      // (= AdminBar height when logged in, 0 otherwise).
-      // Use getBoundingClientRect + scrollY to get the absolute document
-      // position — getBoundingClientRect alone is viewport-relative and
-      // produces a huge wrong value when called mid-scroll (e.g. when
-      // the mobile address bar shows/hides and fires a resize event).
       el.style.marginTop = '0px'
       const naturalTop = el.getBoundingClientRect().top + window.scrollY
       el.style.marginTop = `${Math.max(0, navHeight - naturalTop)}px`
@@ -121,7 +164,6 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
 
     update()
 
-    // Re-run when the AdminBar appears/disappears (auth is async)
     const observer = new ResizeObserver(update)
     const adminBar = document.querySelector('.admin-bar')
     if (adminBar) observer.observe(adminBar)
@@ -133,27 +175,45 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
     }
   }, [])
 
+  const poster =
+    sourceSet === 'mobile'
+      ? (posterMobileUrl ?? posterDesktopUrl ?? undefined)
+      : (posterDesktopUrl ?? undefined)
+
   return (
     <section
       ref={sectionRef}
       id="hero-video-module"
       className="relative w-full overflow-hidden bg-black"
     >
-      {/* Video fill — video only loads on desktop (≥992px); mobile shows poster only */}
       <div className="absolute inset-0 flex items-center justify-center">
-        {(videoUrl || mobileVideoUrl) ? (
+        {(videoUrl || mobileVideoUrl || mobileH265Url || mobileH264Url || desktopH265Url || desktopH264Url) ? (
           <video
             ref={videoRef}
             muted
             loop
             playsInline
+            autoPlay
             preload="auto"
-            poster={posterDesktopUrl ?? undefined}
+            poster={poster}
             className="block w-full h-full object-cover z-[1]"
             style={{ transform: 'scale(1.01)' }}
           >
-            {mobileVideoUrl && <source src={mobileVideoUrl} media="(max-width: 991px)" type="video/webm" />}
-            {videoUrl && <source src={videoUrl} media="(min-width: 992px)" type="video/webm" />}
+            {/* Sources injected only once we know the viewport — avoids iOS ignoring <source media> */}
+            {sourceSet === 'mobile' && (
+              <>
+                {mobileVideoUrl && <source src={mobileVideoUrl} type="video/webm" />}
+                {mobileH265Url && <source src={mobileH265Url} type='video/mp4; codecs="hvc1"' />}
+                {mobileH264Url && <source src={mobileH264Url} type="video/mp4" />}
+              </>
+            )}
+            {sourceSet === 'desktop' && (
+              <>
+                {videoUrl && <source src={videoUrl} type="video/webm" />}
+                {desktopH265Url && <source src={desktopH265Url} type='video/mp4; codecs="hvc1"' />}
+                {desktopH264Url && <source src={desktopH264Url} type="video/mp4" />}
+              </>
+            )}
           </video>
         ) : (posterDesktopUrl || posterMobileUrl) ? (
           <picture className="block w-full h-full">
@@ -170,7 +230,7 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
         ) : null}
       </div>
 
-      {/* Logo overlay — parallax on the wrapper, flicker+jitter on the img */}
+      {/* Logo overlay — parallax wrapper; flicker+jitter only while video is playing */}
       {logoUrl && (
         <motion.div
           className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
@@ -185,6 +245,7 @@ export function HeroVideo({ videoUrl, mobileVideoUrl, posterDesktopUrl, posterMo
           />
         </motion.div>
       )}
+
       {/* Scroll-down arrow */}
       <motion.button
         onClick={scrollToIntro}
