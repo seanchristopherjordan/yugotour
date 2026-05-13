@@ -193,7 +193,6 @@ export function HeroVideo({
             muted
             loop
             playsInline
-            autoPlay
             preload="auto"
             poster={poster}
             className="block w-full h-full object-cover z-[1]"
