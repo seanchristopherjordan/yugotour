@@ -10,11 +10,16 @@ interface Props {
   url: string
 }
 
+const stripTrailingSlash = (s: string) => (s.length > 1 && s.endsWith('/') ? s.slice(0, -1) : s)
+
 /* This component helps us with SSR based dynamic redirects */
 export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url }) => {
   const redirects = await getCachedRedirects()()
 
-  const redirectItem = redirects.find((redirect) => redirect.from === url)
+  const normalizedUrl = stripTrailingSlash(url)
+  const redirectItem = redirects.find(
+    (redirect) => stripTrailingSlash(redirect.from ?? '') === normalizedUrl,
+  )
 
   if (redirectItem) {
     if (redirectItem.to?.url) {
