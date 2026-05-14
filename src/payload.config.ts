@@ -34,10 +34,10 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   serverURL: getServerSideURL(),
+  routes: {
+    admin: '/yugo-ulaz',
+  },
   admin: {
-    routes: {
-      admin: '/yugo-ulaz',
-    },
     meta: {
       titleSuffix: '- Yugotour',
     },

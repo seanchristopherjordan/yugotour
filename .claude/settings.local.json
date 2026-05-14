@@ -16,7 +16,10 @@
       "Bash(cat redirects.ts)",
       "Bash(cat redirects.js)",
       "Bash(grep -E \"not-found|\\\\\\\\[\")",
-      "PowerShell(Rename-Item *)"
+      "PowerShell(Rename-Item *)",
+      "PowerShell(New-Item *)",
+      "PowerShell(Copy-Item *)",
+      "PowerShell(Remove-Item *)"
     ]
   }
 }
