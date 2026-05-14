@@ -35,14 +35,31 @@ type RawExtraRef = {
 export const getAllToursForBooking = unstable_cache(
   async (): Promise<BookingTour[]> => {
     const payload = await getPayload({ config: configPromise })
-    const result = await payload.find({
-      collection: 'tours',
-      draft: false,
-      limit: 500,
-      depth: 1, // resolve the optional-extras relationship inside extras[]
-      pagination: false,
-    })
-    return result.docs.map((doc) => {
+
+    const [result, tourOrder] = await Promise.all([
+      payload.find({
+        collection: 'tours',
+        draft: false,
+        limit: 500,
+        depth: 1, // resolve the optional-extras relationship inside extras[]
+        pagination: false,
+      }),
+      payload.findGlobal({ slug: 'tour-order', depth: 0 }),
+    ])
+
+    // Build a position map keyed by tour ID from the ordered global arrays.
+    // depth:0 means each `tour` field is the raw numeric ID.
+    const orderMap: Record<string, number> = {}
+    type OrderRow = { tour: number | { id: number } | null }
+    const to = tourOrder as unknown as { belgrade?: OrderRow[]; sarajevo?: OrderRow[] }
+    for (const [, rows] of Object.entries({ belgrade: to.belgrade, sarajevo: to.sarajevo })) {
+      rows?.forEach((row, i) => {
+        const id = row.tour == null ? null : typeof row.tour === 'object' ? row.tour.id : row.tour
+        if (id != null) orderMap[String(id)] = i
+      })
+    }
+
+    const docs = result.docs.map((doc) => {
       const d = doc as unknown as Record<string, unknown>
       const rawExtras = (d.extras ?? []) as RawExtraRef[]
       return {
@@ -68,7 +85,14 @@ export const getAllToursForBooking = unstable_cache(
           .filter((e): e is NonNullable<typeof e> => e !== null),
       }
     })
+
+    // Tours in the order list sort by their index; anything not listed goes to the bottom.
+    return docs.sort((a, b) => {
+      const ai = orderMap[String(a.id)] ?? Infinity
+      const bi = orderMap[String(b.id)] ?? Infinity
+      return ai - bi
+    })
   },
   ['booking-tours'],
-  { tags: ['tours'] },
+  { tags: ['tours', 'tour-order'] },
 )

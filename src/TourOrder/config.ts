@@ -1,9 +1,13 @@
 import type { GlobalConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { revalidateTourOrder } from './hooks/revalidateTourOrder'
 
 export const TourOrder: GlobalConfig = {
   slug: 'tour-order',
+  hooks: {
+    afterChange: [revalidateTourOrder],
+  },
   admin: {
     group: 'Tours',
     description:
