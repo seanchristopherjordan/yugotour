@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
 import { draftMode } from 'next/headers'
 import configPromise from '@payload-config'
 import { getPayload, type RequiredDataFromCollectionSlug } from 'payload'
@@ -80,18 +81,38 @@ export async function generateMetadata(): Promise<Metadata> {
   return generateMeta({ doc: page })
 }
 
+const _getCachedHomePage = unstable_cache(
+  async (): Promise<RequiredDataFromCollectionSlug<'pages'> | null> => {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'pages',
+      draft: false,
+      limit: 1,
+      pagination: false,
+      overrideAccess: false,
+      where: { slug: { equals: 'home' } },
+    })
+    return result.docs?.[0] ?? null
+  },
+  ['home-page'],
+  { tags: ['pages'] },
+)
+
+// React cache() deduplicates within a single render (generateMetadata + page).
+// For production requests, delegate to unstable_cache; draft mode always bypasses.
 const queryHomePage = cache(async (): Promise<RequiredDataFromCollectionSlug<'pages'> | null> => {
   const { isEnabled: draft } = await draftMode()
-  const payload = await getPayload({ config: configPromise })
-
-  const result = await payload.find({
-    collection: 'pages',
-    draft,
-    limit: 1,
-    pagination: false,
-    overrideAccess: draft,
-    where: { slug: { equals: 'home' } },
-  })
-
-  return result.docs?.[0] ?? null
+  if (draft) {
+    const payload = await getPayload({ config: configPromise })
+    const result = await payload.find({
+      collection: 'pages',
+      draft: true,
+      limit: 1,
+      pagination: false,
+      overrideAccess: true,
+      where: { slug: { equals: 'home' } },
+    })
+    return result.docs?.[0] ?? null
+  }
+  return _getCachedHomePage()
 })

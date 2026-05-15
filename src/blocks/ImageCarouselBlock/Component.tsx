@@ -1,6 +1,5 @@
-import { getPayload } from 'payload'
-import configPromise from '@payload-config'
 import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
+import { getSliderById } from '@/lib/getSlider'
 import type { Slider } from '@/payload-types'
 
 interface ImageCarouselBlockProps {
@@ -14,8 +13,7 @@ export async function ImageCarouselBlockComponent({ slider }: ImageCarouselBlock
   if (typeof slider === 'object' && slider !== null) {
     sliderDoc = slider
   } else if (typeof slider === 'string' && slider) {
-    const payload = await getPayload({ config: configPromise })
-    sliderDoc = await payload.findByID({ collection: 'sliders', id: slider, depth: 1 })
+    sliderDoc = await getSliderById(Number(slider))
   }
 
   if (!sliderDoc) return null

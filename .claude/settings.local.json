@@ -19,7 +19,10 @@
       "PowerShell(Rename-Item *)",
       "PowerShell(New-Item *)",
       "PowerShell(Copy-Item *)",
-      "PowerShell(Remove-Item *)"
+      "PowerShell(Remove-Item *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\seanj\\\\Local Sites\\\\yugotour2-local\\\\yugotour\\\\src\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)"
     ]
   }
 }

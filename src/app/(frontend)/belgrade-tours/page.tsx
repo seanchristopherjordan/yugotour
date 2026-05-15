@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react'
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-import type { Media, Tour } from '@/payload-types'
+import type { Media } from '@/payload-types'
+import { getCachedCityListPage, getCachedCityTours } from '@/lib/getCityPageData'
 
 import { TourListHeader } from '@/components/TourListHeader'
 import { TourTile } from '@/components/TourTile'
@@ -73,41 +72,12 @@ function FallbackBody() {
 }
 
 export default async function BelgradeToursPage() {
-  const payload = await getPayload({ config: configPromise })
-
-  const [pageResult, toursResult, orderResult, sim] = await Promise.all([
-    payload.find({
-      collection: 'tour-list-pages',
-      where: { city: { equals: 'belgrade' } },
-      limit: 1,
-      depth: 2,
-    }),
-    payload.find({
-      collection: 'tours',
-      where: { city: { equals: 'belgrade' } },
-      limit: 50,
-      depth: 1,
-    }),
-    payload.findGlobal({ slug: 'tour-order', depth: 1 }),
+  const [page, tours, sim] = await Promise.all([
+    getCachedCityListPage('belgrade')(),
+    getCachedCityTours('belgrade')(),
     getSimulatorAssets(),
   ])
   const talesTextureUrl = '/textures/texture-gold.webp'
-
-  const page = pageResult.docs[0] ?? null
-  const allTours = toursResult.docs
-
-  // Order tours according to TourOrder global; unordered tours go last
-  const orderedRefs = (orderResult.belgrade ?? []) as { tour: number | Tour; id?: string }[]
-  const orderedIds = orderedRefs
-    .map(item => (typeof item.tour === 'number' ? item.tour : item.tour?.id))
-    .filter((id): id is number => typeof id === 'number')
-
-  const tours = [
-    ...orderedIds
-      .map(id => allTours.find(t => t.id === id))
-      .filter((t): t is Tour => t !== undefined),
-    ...allTours.filter(t => !orderedIds.includes(t.id)),
-  ]
 
   const headlineBlack = page?.introHeaderBlack || FALLBACK_HEADLINE_BLACK
   const headlineRed   = page?.introHeaderRed   || FALLBACK_HEADLINE_RED
