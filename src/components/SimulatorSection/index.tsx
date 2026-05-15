@@ -160,9 +160,9 @@ export function SimulatorSection({
               </audio>
             )}
 
-            {/* Radio audio — looping background, controlled via ref */}
+            {/* Radio audio — plays once, resets when finished */}
             {radioAudioUrl && (
-              <audio ref={radioRef} loop preload="none">
+              <audio ref={radioRef} preload="none" onEnded={() => setRadioPlaying(false)}>
                 <source src={radioAudioUrl} type="audio/mpeg" />
               </audio>
             )}
