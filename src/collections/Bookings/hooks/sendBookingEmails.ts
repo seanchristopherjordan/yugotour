@@ -51,8 +51,8 @@ export const sendBookingEmails: CollectionAfterChangeHook = async ({ doc, operat
     sendEmail(guestKey, variables, doc.email, guestReplyTo).catch((err) =>
       console.error('[sendBookingEmails] guest confirmation failed:', err),
     ),
-    // Staff notification — to: comes from the template's recipients array
-    sendEmail(staffKey, variables).catch((err) =>
+    // Staff notification — reply-to is the guest so staff can reply directly
+    sendEmail(staffKey, variables, undefined, doc.email).catch((err) =>
       console.error('[sendBookingEmails] staff notification failed:', err),
     ),
   ])
