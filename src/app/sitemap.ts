@@ -1,0 +1,66 @@
+import type { MetadataRoute } from 'next'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
+
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://yugotour.com'
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const payload = await getPayload({ config: configPromise })
+
+  const [toursData, pagesData] = await Promise.all([
+    payload.find({
+      collection: 'tours',
+      draft: false,
+      limit: 1000,
+      pagination: false,
+      select: { slug: true, updatedAt: true },
+    }),
+    payload.find({
+      collection: 'pages',
+      draft: false,
+      limit: 1000,
+      pagination: false,
+      select: { slug: true, updatedAt: true },
+    }),
+  ])
+
+  const tourEntries: MetadataRoute.Sitemap = toursData.docs.map((tour) => ({
+    url: `${BASE_URL}/tours/${tour.slug}`,
+    lastModified: tour.updatedAt ? new Date(tour.updatedAt) : new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }))
+
+  // Filter out the home page slug — it maps to / not /home
+  const pageEntries: MetadataRoute.Sitemap = pagesData.docs
+    .filter((page) => page.slug !== 'home')
+    .map((page) => ({
+      url: `${BASE_URL}/${page.slug}`,
+      lastModified: page.updatedAt ? new Date(page.updatedAt) : new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
+
+  const staticEntries: MetadataRoute.Sitemap = [
+    {
+      url: BASE_URL,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 1.0,
+    },
+    {
+      url: `${BASE_URL}/belgrade-tours`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/sarajevo-tours`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+  ]
+
+  return [...staticEntries, ...tourEntries, ...pageEntries]
+}
