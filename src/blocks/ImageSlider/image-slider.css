@@ -100,7 +100,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.55);
     opacity: 1;
     transition: opacity 500ms ease;
     pointer-events: none;
