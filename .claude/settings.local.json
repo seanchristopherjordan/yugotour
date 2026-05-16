@@ -22,7 +22,13 @@
       "PowerShell(Remove-Item *)",
       "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\seanj\\\\Local Sites\\\\yugotour2-local\\\\yugotour\\\\src\" -Recurse -Directory)",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\seanj\\\\Local Sites\\\\yugotour2-local\\\\yugotour\\\\src\" -Recurse -Filter \"*.tsx\")",
+      "Skill(claude-api)",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\(p.dependencies['@anthropic-ai/sdk'] || p.devDependencies?.['@anthropic-ai/sdk'] || 'not installed'\\)\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\seanj\\\\Local Sites\\\\yugotour2-local\\\\yugotour\\\\src\\\\collections\\\\Media\\\\hooks\")",
+      "Bash(Out-Null)",
+      "Bash(Write-Output \"done\")"
     ]
   }
 }

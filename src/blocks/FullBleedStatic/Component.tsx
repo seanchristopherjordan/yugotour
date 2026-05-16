@@ -31,7 +31,7 @@ export function FullBleedStaticBlock({ image, imageMobile, caption }: FullBleedS
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={desktopUrl}
-          alt={desktopObj?.alt ?? ''}
+          alt={desktopObj?.alt ?? caption ?? ''}
           className="full-bleed-static-img"
           loading="lazy"
           style={{ objectPosition: `${activeFocalX}% ${activeFocalY}%` }}

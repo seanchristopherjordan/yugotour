@@ -57,7 +57,7 @@ export function TextContainerBlock({ content, image, spacing }: TextContainerBlo
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={mediaObj!.url!}
-              alt={mediaObj!.alt ?? ''}
+              alt={mediaObj!.alt ?? image?.caption ?? ''}
               className="text-container-img"
               loading="lazy"
             />
@@ -79,7 +79,7 @@ export function TextContainerBlock({ content, image, spacing }: TextContainerBlo
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={mediaObj!.url!}
-              alt={mediaObj!.alt ?? ''}
+              alt={mediaObj!.alt ?? image?.caption ?? ''}
               className="text-container-img"
               loading="lazy"
             />

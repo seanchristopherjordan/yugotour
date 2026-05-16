@@ -93,14 +93,14 @@ export function TourListHeader({
         <picture>
           <source srcSet={l3m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={l3d} alt="" loading="eager" decoding="async" />
+          <img src={l3d} alt="" aria-hidden="true" loading="eager" decoding="async" />
         </picture>
       </motion.div>
 
       {/* Layer 4 — Deep Background (mobile only) */}
       <motion.div className="header-layer layer-4" style={{ y: l4Y }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={l4m} alt="" loading="eager" decoding="async" />
+        <img src={l4m} alt="" aria-hidden="true" loading="eager" decoding="async" />
       </motion.div>
 
       {/* Layer 2 — Midground */}
@@ -108,7 +108,7 @@ export function TourListHeader({
         <picture>
           <source srcSet={l2m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={l2d} alt="" loading="eager" decoding="async" />
+          <img src={l2d} alt="" aria-hidden="true" loading="eager" decoding="async" />
         </picture>
       </motion.div>
 
@@ -124,7 +124,7 @@ export function TourListHeader({
         <picture>
           <source srcSet={l1m} media="(max-width: 991px)" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={l1d} alt="" loading="eager" decoding="async" />
+          <img src={l1d} alt="" aria-hidden="true" loading="eager" decoding="async" />
         </picture>
       </div>
 

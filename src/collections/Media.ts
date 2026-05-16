@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { generateAltText } from './Media/hooks/generateAltText'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -45,6 +46,7 @@ export const Media: CollectionConfig = {
   ],
   hooks: {
     afterChange: [
+      generateAltText,
       ({ doc, req: { context } }) => {
         if (!context.disableRevalidate) {
           revalidateTag('media', 'page')
