@@ -44,7 +44,7 @@ export default buildConfig({
     components: {
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/BeforeDashboard'],
-      afterNavLinks: ['@/components/BookingsNavFilters'],
+      afterNavLinks: ['@/components/BookingsNavFilters', '@/components/UnreadBadges'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
