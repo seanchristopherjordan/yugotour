@@ -47,6 +47,17 @@ export function SimulatorSection({
     return () => observer.disconnect()
   }, [driveVideoUrl])
 
+  useEffect(() => {
+    const radio = radioRef.current
+    if (!radio) return
+    const handleEnded = () => {
+      setRadioPlaying(false)
+      radio.currentTime = 0
+    }
+    radio.addEventListener('ended', handleEnded)
+    return () => radio.removeEventListener('ended', handleEnded)
+  }, [])
+
   function handleSteeringClick() {
     const horn = hornRef.current
     if (!horn) return
@@ -160,9 +171,9 @@ export function SimulatorSection({
               </audio>
             )}
 
-            {/* Radio audio — plays once, resets when finished */}
+            {/* Radio audio — plays once; ended listener in useEffect resets state */}
             {radioAudioUrl && (
-              <audio ref={radioRef} preload="none" onEnded={() => setRadioPlaying(false)}>
+              <audio ref={radioRef} preload="none">
                 <source src={radioAudioUrl} type="audio/mpeg" />
               </audio>
             )}
