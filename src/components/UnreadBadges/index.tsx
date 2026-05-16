@@ -30,7 +30,7 @@ function applyBadge(collection: string, count: number) {
   if (existing) return
 
   const anchor = document.querySelector<HTMLAnchorElement>(
-    `a[href="/yugo-ulaz/collections/${collection}"]`,
+    `a[href="/yugo-ulaz/collections/${collection}"]:not([data-filter-link])`,
   )
   if (!anchor) return
 

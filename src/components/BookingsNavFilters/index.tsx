@@ -36,6 +36,7 @@ export default function BookingsNavFilters() {
         <a
           key={label}
           href={href}
+          data-filter-link="true"
           style={{
             display: 'block',
             padding: '5px 10px',
