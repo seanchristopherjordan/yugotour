@@ -228,7 +228,6 @@ async function downloadAvatar(
     const media = await payload.create({
       collection: 'media',
       data: { alt: `${name} profile photo` },
-      // @ts-expect-error Payload local API accepts a Buffer-based file object
       file: { data: buffer, mimetype: contentType, name: filename, size: buffer.length },
       overrideAccess: true,
     })
