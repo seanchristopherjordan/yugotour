@@ -71,5 +71,8 @@ export const config = {
     '/phpmyadmin/:path*',
     '/.env',
     '/.git/:path*',
+    // Well-known / security crawler paths with no real content on this site
+    '/.well-known/:path*',
+    '/security.txt',
   ],
 }
