@@ -1,10 +1,15 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // Admin-only endpoint — skip Payload entirely if there's no session cookie
+  if (!request.cookies.get('payload-token')) {
+    return NextResponse.json({ bookings: 0, contacts: 0 })
+  }
+
   try {
     const payload = await getPayload({ config: configPromise })
 

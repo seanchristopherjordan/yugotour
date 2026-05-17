@@ -37,16 +37,46 @@ const API_ALLOWLIST = new Set([
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // /api/* — allow known endpoints, block everything else
   if (pathname.startsWith('/api/')) {
     const firstSegment = pathname.slice(5).split('/')[0]
     if (firstSegment && !API_ALLOWLIST.has(firstSegment)) {
       return new NextResponse('Not Found', { status: 404 })
     }
+
+    // unread-counts is admin-only — return zero counts at the edge for
+    // unauthenticated callers so the Payload function is never invoked.
+    if (pathname === '/api/unread-counts' && !request.cookies.get('payload-token')) {
+      return NextResponse.json({ bookings: 0, contacts: 0 })
+    }
+
+    return NextResponse.next()
   }
 
-  return NextResponse.next()
+  // Everything else matched by the config matchers below is a dead path
+  // from the old WordPress site — kill it at the edge before it wakes Payload.
+  return new NextResponse('Not Found', { status: 404 })
 }
 
 export const config = {
-  matcher: '/api/:path*',
+  matcher: [
+    // Unknown API endpoints
+    '/api/:path*',
+    // Old WordPress URL structures — never exist in this Next.js site
+    '/blog/:path*',
+    '/category/:path*',
+    '/tag/:path*',
+    '/author/:path*',
+    '/feed/:path*',
+    '/wp-content/:path*',
+    '/wp-admin/:path*',
+    '/wp-includes/:path*',
+    '/wp-login.php',
+    '/xmlrpc.php',
+    // Generic scanner bait
+    '/admin/:path*',
+    '/phpmyadmin/:path*',
+    '/.env',
+    '/.git/:path*',
+  ],
 }
