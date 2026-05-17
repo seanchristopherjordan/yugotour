@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import { Bookings } from './collections/Bookings'
 import { Categories } from './collections/Categories'
 import { ContactMessages } from './collections/ContactMessages'
+import { Reviews } from './collections/Reviews'
 import { EmailTemplates } from './collections/EmailTemplates'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
@@ -78,6 +79,8 @@ export default buildConfig({
     Tours, OptionalExtras, TourListPages,
     // Comms
     ContactMessages, Bookings, EmailTemplates,
+    // Reviews
+    Reviews,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [

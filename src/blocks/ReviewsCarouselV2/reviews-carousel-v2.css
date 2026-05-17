@@ -1,0 +1,317 @@
+/* ── Section ── */
+.rcv2-section {
+  padding: 50px 0 64px;
+  text-align: left;
+}
+
+/* ── Header row: title left, Write a Review button right ── */
+.rcv2-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+/* Write a Review button */
+.rcv2-write-btn {
+  display: inline-block;
+  padding: 10px 22px 9px;
+  background-color: #C6363C;
+  color: #FCF9EB;
+  font-family: var(--font-art-grotesk), sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.rcv2-write-btn:hover {
+  background-color: #a52b31;
+  color: #FCF9EB;
+}
+
+/* ── Carousel outer: nav buttons flanking the swiper ── */
+.rcv2-carousel-outer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Nav buttons ── */
+.rcv2-nav {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: rgba(33, 33, 33, 0.75);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 17px;
+  transition: background-color 0.25s ease;
+}
+
+.rcv2-nav:hover {
+  background-color: #C6363C;
+}
+
+/* ── Swiper ── */
+.rcv2-swiper {
+  flex: 1;
+  min-width: 0;
+}
+
+.rcv2-swiper .swiper-wrapper {
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1) !important;
+  align-items: stretch;
+}
+
+/* ── Review card ── */
+.rcv2-slide {
+  height: auto !important;
+}
+
+.rcv2-card {
+  background-color: #FCF9EB;
+  border-radius: 4px;
+  padding: 20px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 210px;
+  box-sizing: border-box;
+}
+
+.rcv2-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* ── Stars ── */
+.rcv2-stars {
+  display: flex;
+  gap: 1px;
+  line-height: 1;
+}
+
+.rcv2-star {
+  font-size: 17px;
+  color: rgba(33, 33, 33, 0.15);
+}
+
+.rcv2-star--filled {
+  color: #D4AF37;
+}
+
+/* ── Date ── */
+.rcv2-card-date {
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 11px;
+  color: rgba(33, 33, 33, 0.45);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin: 0;
+  padding-top: 4px;
+  white-space: nowrap;
+}
+
+/* ── Review text ── */
+.rcv2-card-text {
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 13.5px;
+  color: #212121;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  margin: 0 0 auto;
+  padding-bottom: 14px;
+  flex-grow: 1;
+}
+
+/* ── Read more button ── */
+.rcv2-read-more-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 13.5px;
+  color: #003882;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  display: inline;
+}
+
+.rcv2-read-more-btn:hover {
+  text-decoration: underline;
+}
+
+/* ── Card footer: avatar + name ── */
+.rcv2-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(33, 33, 33, 0.1);
+}
+
+.rcv2-avatar-wrap {
+  flex-shrink: 0;
+}
+
+.rcv2-avatar-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.rcv2-avatar-initial {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #003882;
+  color: #FCF9EB;
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rcv2-reviewer-name {
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #212121;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0;
+}
+
+/* ── Modal ── */
+.rcv2-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(33, 33, 33, 0.65);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.rcv2-modal {
+  position: relative;
+  background-color: #FCF9EB;
+  border-radius: 4px;
+  padding: 32px 32px 28px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.rcv2-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  color: rgba(33, 33, 33, 0.4);
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.rcv2-modal-close:hover {
+  color: #212121;
+}
+
+.rcv2-modal-text {
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 14.5px;
+  color: #212121;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  margin: 14px 0 20px;
+  white-space: pre-wrap;
+}
+
+/* ── Google attribution (TOS requirement) ── */
+.rcv2-attribution {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 18px;
+  opacity: 0.5;
+}
+
+.rcv2-attribution span {
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 10px;
+  color: #212121;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.rcv2-google-g {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ── Empty state ── */
+.rcv2-empty {
+  font-family: var(--font-fakt-pro), sans-serif;
+  color: rgba(33, 33, 33, 0.6);
+  font-size: 14px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ── Desktop: tighter container padding matching the JotForm tales section ── */
+@media (min-width: 992px) {
+  .rcv2-section .container {
+    padding-inline: 5.5rem;
+  }
+}
+
+/* ── Mobile: shrink nav buttons slightly ── */
+@media (max-width: 639px) {
+  .rcv2-nav {
+    width: 40px;
+    height: 40px;
+    background-size: 14px;
+  }
+
+  .rcv2-carousel-outer {
+    gap: 8px;
+  }
+
+  .rcv2-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .rcv2-header .tales-section-title {
+    margin-bottom: 0;
+  }
+}

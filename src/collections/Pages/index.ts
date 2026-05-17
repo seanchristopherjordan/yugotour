@@ -17,6 +17,7 @@ import { FAQBlock } from '../../blocks/FAQBlock/config'
 import { VideoEmbed } from '../../blocks/VideoEmbed/config'
 import { ContactBlock } from '../../blocks/ContactBlock/config'
 import { SimulatorBlock } from '../../blocks/SimulatorBlock/config'
+import { ReviewsCarouselV2 } from '../../blocks/ReviewsCarouselV2/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -98,6 +99,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FormBlock,
                 TvSection,
                 ReviewsSection,
+                ReviewsCarouselV2,
                 SimulatorBlock,
               ],
               required: true,
