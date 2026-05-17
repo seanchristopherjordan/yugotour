@@ -33,33 +33,19 @@ const API_ALLOWLIST = new Set([
   'sync-reviews',
 ])
 
-// Multi-segment paths that have real server-rendered content.
-// Everything else with 2+ segments is a guaranteed 404 — no point waking Payload.
-const VALID_PREFIXES = ['/tours/', '/posts/', '/yugo-ulaz/']
-
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Guard 1: unknown /api/* endpoints
   if (pathname.startsWith('/api/')) {
     const firstSegment = pathname.slice(5).split('/')[0]
     if (firstSegment && !API_ALLOWLIST.has(firstSegment)) {
       return new NextResponse('Not Found', { status: 404 })
     }
-    return NextResponse.next()
-  }
-
-  // Guard 2: multi-segment frontend paths that can't match real content.
-  // Single-segment paths (/belgrade, /sarajevo, etc.) are fine — skip them.
-  const segments = pathname.split('/').filter(Boolean)
-  if (segments.length >= 2 && !VALID_PREFIXES.some((p) => pathname.startsWith(p))) {
-    return new NextResponse('Not Found', { status: 404 })
   }
 
   return NextResponse.next()
 }
 
 export const config = {
-  // Run on everything except Next.js internals and static assets.
-  matcher: ['/((?!_next/static|_next/image|textures/|favicon\\.ico).*)'],
+  matcher: '/api/:path*',
 }
