@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { anyone } from '../../access/anyone'
 import { sendBookingEmails } from './hooks/sendBookingEmails'
-import { markBookingRead } from './hooks/markBookingRead'
 
 export const Bookings: CollectionConfig = {
   slug: 'bookings',
@@ -133,17 +132,8 @@ export const Bookings: CollectionConfig = {
         date: { pickerAppearance: 'dayAndTime' },
       },
     },
-    {
-      name: 'isRead',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: {
-        hidden: true,
-      },
-    },
   ],
   hooks: {
     afterChange: [sendBookingEmails],
-    afterRead: [markBookingRead],
   },
 }

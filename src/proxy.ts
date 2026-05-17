@@ -30,7 +30,6 @@ const API_ALLOWLIST = new Set([
   // Custom app/api/* routes
   'booking',
   'contact',
-  'unread-counts',
   'sync-reviews',
 ])
 
@@ -42,12 +41,6 @@ export function proxy(request: NextRequest) {
     const firstSegment = pathname.slice(5).split('/')[0]
     if (firstSegment && !API_ALLOWLIST.has(firstSegment)) {
       return new NextResponse('Not Found', { status: 404 })
-    }
-
-    // unread-counts is admin-only — return zero counts at the edge for
-    // unauthenticated callers so the Payload function is never invoked.
-    if (pathname === '/api/unread-counts' && !request.cookies.get('payload-token')) {
-      return NextResponse.json({ bookings: 0, contacts: 0 })
     }
 
     return NextResponse.next()

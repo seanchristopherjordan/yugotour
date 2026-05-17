@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '@/access/authenticated'
 import { anyone } from '@/access/anyone'
 import { sendContactNotification } from './hooks/sendContactNotification'
-import { markContactRead } from './hooks/markContactRead'
 
 export const ContactMessages: CollectionConfig = {
   slug: 'contact-messages',
@@ -67,6 +66,5 @@ export const ContactMessages: CollectionConfig = {
   ],
   hooks: {
     afterChange: [sendContactNotification],
-    afterRead: [markContactRead],
   },
 }
