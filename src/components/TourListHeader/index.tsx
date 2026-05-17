@@ -36,7 +36,7 @@ export function TourListHeader({
   const l1m = layer1MobileUrl ?? fallback(city, 'mobile-header-layer-1.webp')
   const l2m = layer2MobileUrl ?? fallback(city, 'mobile-header-layer-2.webp')
   const l3m = layer3MobileUrl ?? fallback(city, 'mobile-header-layer-3.webp')
-  const l4m = layer4MobileUrl ?? fallback(city, 'mobile-header-layer-4.webp')
+  const l4m = layer4MobileUrl ?? null
 
   const { scrollY } = useScroll()
   const isMobileRef = useRef(false)
@@ -97,11 +97,13 @@ export function TourListHeader({
         </picture>
       </motion.div>
 
-      {/* Layer 4 — Deep Background (mobile only) */}
-      <motion.div className="header-layer layer-4" style={{ y: l4Y }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={l4m} alt="" aria-hidden="true" loading="eager" decoding="async" />
-      </motion.div>
+      {/* Layer 4 — Deep Background (mobile only, only rendered when URL is explicitly provided) */}
+      {l4m && (
+        <motion.div className="header-layer layer-4" style={{ y: l4Y }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={l4m} alt="" aria-hidden="true" loading="eager" decoding="async" />
+        </motion.div>
+      )}
 
       {/* Layer 2 — Midground */}
       <motion.div className="header-layer layer-2" style={{ y: l2Y }}>

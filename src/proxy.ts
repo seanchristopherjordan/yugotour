@@ -69,8 +69,13 @@ export const config = {
     // Generic scanner bait
     '/admin/:path*',
     '/phpmyadmin/:path*',
+    '/index.php',
     '/.env',
     '/.git/:path*',
+    // Old WordPress / legacy paths with no content on this site
+    '/career/:path*',
+    // Old iOS icon request
+    '/apple-touch-icon-precomposed.png',
     // Well-known / security crawler paths with no real content on this site
     '/.well-known/:path*',
     '/security.txt',
