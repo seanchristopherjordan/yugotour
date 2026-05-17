@@ -1,5 +1,5 @@
 import configPromise from '@payload-config'
-import { getPayload } from 'payload'
+import { getPayload, type Where } from 'payload'
 import { ReviewsCarouselClient, type ReviewData } from './ReviewsCarouselClient'
 
 const WRITE_REVIEW_URLS: Record<string, string> = {
@@ -20,7 +20,7 @@ export async function ReviewsCarouselV2Block({
 }: ReviewsCarouselV2BlockProps) {
   const payload = await getPayload({ config: configPromise })
 
-  const where: Record<string, unknown> = {}
+  const where: Where = {}
   if (city && city !== 'both') {
     where.city = { equals: city }
   }
