@@ -1,14 +1,8 @@
-import { PayloadRedirects } from '@/components/PayloadRedirects'
+import { notFound } from 'next/navigation'
 
-type Args = {
-  params: Promise<{ slug: string[] }>
-}
-
-// Catch-all handler for multi-segment paths (e.g. /yugotour/sarajevo).
-// Single-segment paths are handled by /[slug]/page.tsx.
-// This only exists to give PayloadRedirects a chance to fire before 404.
-export default async function CatchAllPage({ params: paramsPromise }: Args) {
-  const { slug } = await paramsPromise
-  const url = '/' + slug.join('/')
-  return <PayloadRedirects url={url} />
+// Multi-segment paths have no real content on this site.
+// Returning notFound() here directly avoids loading the Payload bundle
+// (39 MB) just to produce a 404 for bot traffic hitting deep paths.
+export default function CatchAllPage() {
+  notFound()
 }

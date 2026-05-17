@@ -33,9 +33,20 @@ const API_ALLOWLIST = new Set([
   'sync-reviews',
 ])
 
+// File extensions and path prefixes that are never part of a Next.js app.
+// Blocking these at the edge prevents scanner bots from waking Payload at all.
+const BOT_EXTENSION = /\.(php|asp|aspx|jsp|cgi|env|git|sql|bak|sh|bash|py|pl|rb|xml|conf|ini)$/i
+const BOT_PREFIX = /^\/(wp-admin|wp-login|wp-content|wp-includes|phpMyAdmin|\.env|\.git|\.htaccess|\.htpasswd|admin|administrator)/i
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Guard 1: known-bad scanner patterns
+  if (BOT_EXTENSION.test(pathname) || BOT_PREFIX.test(pathname)) {
+    return new NextResponse('Not Found', { status: 404 })
+  }
+
+  // Guard 2: unknown /api/* endpoints
   if (pathname.startsWith('/api/')) {
     const firstSegment = pathname.slice(5).split('/')[0]
     if (firstSegment && !API_ALLOWLIST.has(firstSegment)) {
@@ -47,5 +58,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/api/:path*',
+  matcher: ['/((?!_next/static|_next/image|textures/|favicon\\.ico).*)'],
 }
