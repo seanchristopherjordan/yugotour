@@ -17,7 +17,7 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { getAllToursForBooking } from '@/lib/getAllToursForBooking'
 import { getMediaUrl } from '@/lib/getMediaUrl'
-import { draftMode, cookies } from 'next/headers'
+import { draftMode } from 'next/headers'
 
 import './globals.css'
 import '@/components/BookingModal/booking-modal.css'
@@ -112,8 +112,6 @@ const cooperBoldCondensed = localFont({
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = await draftMode()
-  const cookieStore = await cookies()
-  const isAdmin = cookieStore.has('payload-token')
   const [siteSettings, allTours, bookNowButtonUrl, kolaciUrl, bookingImages] = await Promise.all([
     getCachedGlobal('site-settings', 1)(),
     getAllToursForBooking(),
@@ -214,13 +212,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
         <BookingModalProvider tours={allTours} textureUrl="/textures/texture-blue.webp" images={bookingImages} timeSettings={timeSettings} successContent={successContent}>
           <Providers>
-            {isAdmin && (
-              <AdminBar
-                adminBarProps={{
-                  preview: isEnabled,
-                }}
-              />
-            )}
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
 
             <Header />
             {children}
