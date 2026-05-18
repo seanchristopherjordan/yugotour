@@ -1120,16 +1120,19 @@ export function BookingModal() {
                 <p style={{ color: '#C25E5E' }} className="font-fakt text-sm text-center mt-2">{submitError}</p>
               )}
 
-              <div className="flex justify-center">
-                <Turnstile
-                  ref={turnstileRef}
-                  siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
-                  options={{ theme: 'light', size: 'normal', appearance: 'execute' }}
-                  onSuccess={(token) => setTurnstileToken(token)}
-                  onError={() => setTurnstileToken(null)}
-                  onExpire={() => { setTurnstileToken(null); turnstileRef.current?.reset() }}
-                />
-              </div>
+              {/* Turnstile — only mount when modal is open so the CF script doesn't load on every page */}
+              {isOpen && (
+                <div className="flex justify-center">
+                  <Turnstile
+                    ref={turnstileRef}
+                    siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
+                    options={{ theme: 'light', size: 'normal', appearance: 'execute' }}
+                    onSuccess={(token) => setTurnstileToken(token)}
+                    onError={() => setTurnstileToken(null)}
+                    onExpire={() => { setTurnstileToken(null); turnstileRef.current?.reset() }}
+                  />
+                </div>
+              )}
 
               <button
                 type="button"
