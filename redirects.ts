@@ -56,6 +56,9 @@ export const redirects: NextConfig['redirects'] = async () => {
     ...both('/sutjeska-yugo-tour',                 '/tours/sutjeska-yugotour'),
     ...both('/the-rise-and-fall-of-a-nation-tour', '/tours/rise--fall-of-a-nation-tour'),
 
+    // ── Yugopedia ─────────────────────────────────────────────────────────────
+    ...both('/yugo', '/yugopedia'),
+
     // ── City page redirects ───────────────────────────────────────────────────
     ...both('/yugotour-belgrade', '/belgrade-tours'),
     ...both('/yugotour-sarajevo', '/sarajevo-tours'),

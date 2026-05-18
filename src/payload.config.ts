@@ -64,7 +64,7 @@ export default buildConfig({
     defaultFromName: 'Yugotour',
     apiKey: process.env.YUGOTOUR_RESEND_KEY ?? '',
   }),
-  graphQL: false,
+  graphQL: { disable: true },
   editor: defaultLexical,
   db: postgresAdapter({
     pool: {
