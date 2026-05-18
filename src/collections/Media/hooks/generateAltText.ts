@@ -1,7 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk'
 import type { CollectionAfterChangeHook } from 'payload'
-
-const client = new Anthropic()
 
 export const generateAltText: CollectionAfterChangeHook = async ({ doc, operation, req }) => {
   // Skip if this update was triggered by the hook itself
@@ -14,6 +11,11 @@ export const generateAltText: CollectionAfterChangeHook = async ({ doc, operatio
 
   const mime = doc.mimeType as string | undefined
   if (!mime || !mime.startsWith('image/') || mime === 'image/svg+xml') return doc
+
+  // Lazy-load the SDK — only runs when an image is actually being uploaded,
+  // not on every cold start of every Payload route.
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
 
   try {
     const response = await client.messages.create({
