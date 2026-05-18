@@ -6,7 +6,6 @@ import PageClient from './page.client'
 import './blog-listing.css'
 
 export const dynamic = 'force-static'
-export const revalidate = 600
 
 export default async function PostsPage() {
   const payload = await getPayload({ config: configPromise })
