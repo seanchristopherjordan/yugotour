@@ -79,6 +79,7 @@ export interface Config {
     'contact-messages': ContactMessage;
     bookings: Booking;
     'email-templates': EmailTemplate;
+    reviews: Review;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -103,6 +104,7 @@ export interface Config {
     'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     bookings: BookingsSelect<false> | BookingsSelect<true>;
     'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -555,6 +557,7 @@ export interface Page {
     | FormBlock
     | TvSectionBlock
     | ReviewsSectionBlock
+    | ReviewsCarouselV2Block
     | SimulatorBlock
   )[];
   meta?: {
@@ -958,6 +961,24 @@ export interface ReviewsSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsCarouselV2Block".
+ */
+export interface ReviewsCarouselV2Block {
+  /**
+   * Internal label only (e.g. "Homepage Reviews")
+   */
+  label?: string | null;
+  /**
+   * Which city's reviews to display
+   */
+  city: 'both' | 'belgrade' | 'sarajevo';
+  writeReviewCity: 'belgrade' | 'sarajevo';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'reviewsCarouselV2';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "SimulatorBlock".
  */
 export interface SimulatorBlock {
@@ -1290,6 +1311,32 @@ export interface EmailTemplate {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  city: 'belgrade' | 'sarajevo';
+  reviewerName: string;
+  /**
+   * Profile photo — downloaded from Google during sync
+   */
+  reviewerAvatar?: (number | null) | Media;
+  /**
+   * Source URL from Google — used by sync to detect changes (do not edit manually)
+   */
+  reviewerAvatarUrl?: string | null;
+  rating: number;
+  reviewText: string;
+  publishedAt: string;
+  /**
+   * Auto-populated by sync — do not edit manually
+   */
+  googleReviewId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1525,6 +1572,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'email-templates';
         value: number | EmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1887,6 +1938,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         tvSection?: T | TvSectionBlockSelect<T>;
         reviewsSection?: T | ReviewsSectionBlockSelect<T>;
+        reviewsCarouselV2?: T | ReviewsCarouselV2BlockSelect<T>;
         simulatorBlock?: T | SimulatorBlockSelect<T>;
       };
   meta?:
@@ -2006,6 +2058,17 @@ export interface TvSectionBlockSelect<T extends boolean = true> {
  */
 export interface ReviewsSectionBlockSelect<T extends boolean = true> {
   label?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReviewsCarouselV2Block_select".
+ */
+export interface ReviewsCarouselV2BlockSelect<T extends boolean = true> {
+  label?: T;
+  city?: T;
+  writeReviewCity?: T;
   id?: T;
   blockName?: T;
 }
@@ -2178,6 +2241,22 @@ export interface EmailTemplatesSelect<T extends boolean = true> {
   body?: T;
   logo?: T;
   signature?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  city?: T;
+  reviewerName?: T;
+  reviewerAvatar?: T;
+  reviewerAvatarUrl?: T;
+  rating?: T;
+  reviewText?: T;
+  publishedAt?: T;
+  googleReviewId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
