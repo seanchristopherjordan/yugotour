@@ -74,7 +74,16 @@ export const config = {
     '/phpmyadmin/:path*',
     '/index.php',
     '/.env',
+    '/.env.local',
+    '/.env.development',
+    '/.env.production',
     '/.git/:path*',
+    '/.aws/:path*',
+    '/env',
+    '/config.json',
+    '/js/:path*',
+    '/backend/:path*',
+    '/sitemap.rss',
     // WordPress plugin / theme asset paths
     '/assets/:path*',
     // Old WordPress / legacy paths with no content on this site
