@@ -66,12 +66,16 @@ export const config = {
     '/wp-includes/:path*',
     '/wp-login.php',
     '/xmlrpc.php',
+    // All PHP files (scanners probing for WordPress, file managers, etc.)
+    '/(.*\\.php)',
     // Generic scanner bait
     '/admin/:path*',
     '/phpmyadmin/:path*',
     '/index.php',
     '/.env',
     '/.git/:path*',
+    // WordPress plugin / theme asset paths
+    '/assets/:path*',
     // Old WordPress / legacy paths with no content on this site
     '/career/:path*',
     // Old iOS icon request
@@ -79,5 +83,12 @@ export const config = {
     // Well-known / security crawler paths with no real content on this site
     '/.well-known/:path*',
     '/security.txt',
+    // WordPress SEO plugin sitemaps — real sitemap is /sitemap.xml
+    '/post-sitemap.xml',
+    '/post_tag-sitemap.xml',
+    '/category-sitemap.xml',
+    '/the_grid_sitemap.xml',
+    // Ad network bait — this site does not serve ads
+    '/ads.txt',
   ],
 }
