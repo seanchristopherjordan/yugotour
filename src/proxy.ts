@@ -85,6 +85,18 @@ export const config = {
     '/backend/:path*',
     '/sitemap.rss',
     // WordPress plugin / theme asset paths
+    '/administrator/:path*',
+    '/pma/:path*',
+    '/dashboard/:path*',
+    '/cpanel/:path*',
+    '/actuator/:path*',
+    '/telescope/:path*',
+    '/bull-board/:path*',
+    '/express-status-monitor',
+    '/package.json',
+    '/package-lock.json',
+    '/docker-compose.yml',
+    '/settings.py',
     '/assets/:path*',
     // Old WordPress / legacy paths with no content on this site
     '/career/:path*',
