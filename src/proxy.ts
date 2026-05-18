@@ -66,6 +66,7 @@ export const config = {
     '/wp-includes/:path*',
     '/wp-login.php',
     '/xmlrpc.php',
+    '/wp-json/:path*',
     // All PHP files (scanners probing for WordPress, file managers, etc.)
     '/(.*\\.php)',
     // Generic scanner bait
