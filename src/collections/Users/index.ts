@@ -20,6 +20,24 @@ export const Users: CollectionConfig = {
     maxLoginAttempts: 5,
     lockTime: 600000,
   },
+  hooks: {
+    afterLogin: [
+      ({ req }) => {
+        req.responseHeaders?.set(
+          'Set-Cookie',
+          'payload-admin=1; Path=/; Max-Age=604800; SameSite=Lax',
+        )
+      },
+    ],
+    afterLogout: [
+      ({ req }) => {
+        req.responseHeaders?.set(
+          'Set-Cookie',
+          'payload-admin=; Path=/; Max-Age=0; SameSite=Lax',
+        )
+      },
+    ],
+  },
   fields: [
     {
       name: 'name',
