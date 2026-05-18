@@ -28,6 +28,15 @@ export const redirects: NextConfig['redirects'] = async () => {
   return [
     internetExplorerRedirect,
 
+    // Redirect any request hitting the raw Vercel deployment URL to production.
+    // Bots discover *.vercel.app URLs and hammer them directly, bypassing CDN protection.
+    {
+      source: '/:path*',
+      has: [{ type: 'host' as const, value: '.*\\.vercel\\.app' }],
+      destination: 'https://www.yugotour.com/:path*',
+      permanent: false,
+    },
+
     // ── Page redirects ────────────────────────────────────────────────────────
     ...both('/about',         '/about-us'),
     ...both('/accommodation', 'https://www.yugotour.com'),
