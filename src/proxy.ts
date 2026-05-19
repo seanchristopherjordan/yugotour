@@ -46,6 +46,12 @@ export function proxy(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Old WordPress media uploads are permanently gone — 410 tells crawlers to
+  // drop these URLs from their index rather than keep retrying.
+  if (pathname.startsWith('/wp-content/uploads/')) {
+    return new NextResponse('Gone', { status: 410 })
+  }
+
   // Everything else matched by the config matchers below is a dead path
   // from the old WordPress site — kill it at the edge before it wakes Payload.
   return new NextResponse('Not Found', { status: 404 })

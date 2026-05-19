@@ -2,6 +2,8 @@ import type { MetadataRoute } from 'next'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
+export const revalidate = 86400 // 24 hours — revalidation hooks handle immediate updates
+
 const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://yugotour.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
