@@ -29,13 +29,12 @@ export async function ReviewsCarouselV2Block({
     collection: 'reviews',
     where,
     sort: '-publishedAt',
-    limit: 10,
-    depth: 1, // populate reviewerAvatar → Media so we get the R2 URL
+    limit: 20,
+    depth: 1,
     overrideAccess: true,
   })
 
   const reviews: ReviewData[] = result.docs.map((doc) => {
-    // Extract the R2 URL from the populated Media relation
     const avatarMedia = doc.reviewerAvatar
     let avatarUrl: string | null = null
     if (avatarMedia && typeof avatarMedia === 'object' && 'url' in avatarMedia) {
@@ -53,8 +52,23 @@ export async function ReviewsCarouselV2Block({
     }
   })
 
+  // For both-cities mode, split into city-labelled sections
+  const citySections =
+    !city || city === 'both'
+      ? {
+          belgrade: reviews.filter((r) => r.city === 'belgrade'),
+          sarajevo: reviews.filter((r) => r.city === 'sarajevo'),
+        }
+      : null
+
   const writeReviewUrl =
     WRITE_REVIEW_URLS[writeReviewCity ?? 'belgrade'] ?? WRITE_REVIEW_URLS.belgrade
 
-  return <ReviewsCarouselClient reviews={reviews} writeReviewUrl={writeReviewUrl} />
+  return (
+    <ReviewsCarouselClient
+      reviews={reviews}
+      citySections={citySections}
+      writeReviewUrl={writeReviewUrl}
+    />
+  )
 }

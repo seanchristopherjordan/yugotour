@@ -9,6 +9,22 @@
   margin-bottom: 36px;
 }
 
+/* ── City label (both-cities mode) — matches TalesFromTheRoad homepage style ── */
+.rcv2-city-label {
+  font-family: var(--font-grotesk), sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.5);
+  margin: 0 0 20px;
+}
+
+/* Spacing between the two city sections in both-cities mode */
+.rcv2-city-section + .rcv2-city-section {
+  margin-top: 48px;
+}
+
 /* ── Carousel outer: nav buttons flanking the swiper ── */
 .rcv2-carousel-outer {
   display: flex;
@@ -129,7 +145,7 @@
   font-family: var(--font-fakt-pro), sans-serif;
   font-size: 15px;
   color: #212121;
-  line-height: 1.55;
+  line-height: 1.5;
   letter-spacing: -0.01em;
   margin: 0;
 }
@@ -325,7 +341,7 @@
   }
 }
 
-/* ── Mobile: nav buttons 15% larger than desktop base; body text +0.05em ── */
+/* ── Mobile: nav buttons 15% larger than desktop base; body text +0.05em; wider container ── */
 @media (max-width: 639px) {
   .rcv2-nav {
     width: 39px;
@@ -335,6 +351,10 @@
 
   .rcv2-card-text {
     font-size: 15.8px;
-    line-height: 1.55;
+    line-height: 1.5;
+  }
+
+  .rcv2-section .container {
+    padding-inline: calc(1.07rem - 10px);
   }
 }

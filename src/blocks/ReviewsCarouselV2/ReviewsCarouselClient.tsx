@@ -19,6 +19,7 @@ export interface ReviewData {
 
 interface ReviewsCarouselClientProps {
   reviews: ReviewData[]
+  citySections: { belgrade: ReviewData[]; sarajevo: ReviewData[] } | null
   writeReviewUrl: string
 }
 
@@ -101,6 +102,11 @@ function formatDate(isoString: string): string {
 
 // Show "Read more" button when text exceeds ~6 lines worth of characters
 const READ_MORE_THRESHOLD = 360
+
+// ── City label — matches TalesFromTheRoad homepage style ─────────────────────
+function CityLabel({ city }: { city: 'belgrade' | 'sarajevo' }) {
+  return <h3 className="rcv2-city-label">{city.toUpperCase()}</h3>
+}
 
 // ── Review card ──────────────────────────────────────────────────────────────
 function ReviewCard({
@@ -191,11 +197,60 @@ const PREV_SVG =
 const NEXT_SVG =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23FCF9EB' d='M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32h306.7L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z'/%3E%3C/svg%3E\")"
 
-// ── Main carousel ────────────────────────────────────────────────────────────
-export function ReviewsCarouselClient({ reviews, writeReviewUrl }: ReviewsCarouselClientProps) {
+// ── Single-city carousel strip (owns its own swiper state) ────────────────────
+function CityCarousel({
+  reviews,
+  onReadMore,
+}: {
+  reviews: ReviewData[]
+  onReadMore: (r: ReviewData) => void
+}) {
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
-  const [activeReview, setActiveReview] = useState<ReviewData | null>(null)
   const loop = reviews.length >= 4
+
+  return (
+    <div className="rcv2-carousel-outer">
+      <button
+        className="rcv2-nav rcv2-nav--prev"
+        style={{ backgroundImage: PREV_SVG }}
+        onClick={() => swiper?.slidePrev()}
+        aria-label="Previous review"
+      />
+
+      <Swiper
+        modules={[A11y]}
+        onSwiper={setSwiper}
+        loop={loop}
+        grabCursor
+        spaceBetween={16}
+        breakpoints={{
+          0:    { slidesPerView: 1 },
+          600:  { slidesPerView: 2 },
+          1100: { slidesPerView: 3 },
+          1500: { slidesPerView: 4 },
+        }}
+        className="rcv2-swiper"
+      >
+        {reviews.map((review) => (
+          <SwiperSlide key={review.id} className="rcv2-slide">
+            <ReviewCard review={review} onReadMore={onReadMore} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <button
+        className="rcv2-nav rcv2-nav--next"
+        style={{ backgroundImage: NEXT_SVG }}
+        onClick={() => swiper?.slideNext()}
+        aria-label="Next review"
+      />
+    </div>
+  )
+}
+
+// ── Main carousel ────────────────────────────────────────────────────────────
+export function ReviewsCarouselClient({ reviews, citySections, writeReviewUrl }: ReviewsCarouselClientProps) {
+  const [activeReview, setActiveReview] = useState<ReviewData | null>(null)
 
   const sectionStyle = {
     backgroundImage: "url('/textures/texture-gold.webp')",
@@ -229,43 +284,22 @@ export function ReviewsCarouselClient({ reviews, writeReviewUrl }: ReviewsCarous
           <h2 className="tales-section-title">Tales From the Road</h2>
         </div>
 
-        {/* Carousel: external nav buttons overlapping the tile edges */}
-        <div className="rcv2-carousel-outer">
-          <button
-            className="rcv2-nav rcv2-nav--prev"
-            style={{ backgroundImage: PREV_SVG }}
-            onClick={() => swiper?.slidePrev()}
-            aria-label="Previous review"
-          />
-
-          <Swiper
-            modules={[A11y]}
-            onSwiper={setSwiper}
-            loop={loop}
-            grabCursor
-            spaceBetween={16}
-            breakpoints={{
-              0:    { slidesPerView: 1 },
-              600:  { slidesPerView: 2 },
-              1100: { slidesPerView: 3 },
-              1500: { slidesPerView: 4 },
-            }}
-            className="rcv2-swiper"
-          >
-            {reviews.map((review) => (
-              <SwiperSlide key={review.id} className="rcv2-slide">
-                <ReviewCard review={review} onReadMore={setActiveReview} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          <button
-            className="rcv2-nav rcv2-nav--next"
-            style={{ backgroundImage: NEXT_SVG }}
-            onClick={() => swiper?.slideNext()}
-            aria-label="Next review"
-          />
-        </div>
+        {/* Both-cities mode: BELGRADE + SARAJEVO labelled sections */}
+        {citySections ? (
+          <>
+            <div className="rcv2-city-section">
+              <CityLabel city="belgrade" />
+              <CityCarousel reviews={citySections.belgrade} onReadMore={setActiveReview} />
+            </div>
+            <div className="rcv2-city-section">
+              <CityLabel city="sarajevo" />
+              <CityCarousel reviews={citySections.sarajevo} onReadMore={setActiveReview} />
+            </div>
+          </>
+        ) : (
+          /* Single-city mode */
+          <CityCarousel reviews={reviews} onReadMore={setActiveReview} />
+        )}
 
         {/* Footer row: Google attribution left, Leave a Review button right */}
         <div className="rcv2-footer">
