@@ -64,11 +64,16 @@ export async function ReviewsCarouselV2Block({
   const writeReviewUrl =
     WRITE_REVIEW_URLS[writeReviewCity ?? 'belgrade'] ?? WRITE_REVIEW_URLS.belgrade
 
+  const writeReviewUrls = citySections
+    ? { belgrade: WRITE_REVIEW_URLS.belgrade, sarajevo: WRITE_REVIEW_URLS.sarajevo }
+    : undefined
+
   return (
     <ReviewsCarouselClient
       reviews={reviews}
       citySections={citySections}
       writeReviewUrl={writeReviewUrl}
+      writeReviewUrls={writeReviewUrls}
     />
   )
 }

@@ -21,6 +21,7 @@ interface ReviewsCarouselClientProps {
   reviews: ReviewData[]
   citySections: { belgrade: ReviewData[]; sarajevo: ReviewData[] } | null
   writeReviewUrl: string
+  writeReviewUrls?: { belgrade: string; sarajevo: string }
 }
 
 // ── Google 'G' logo SVG (official brand colours) ────────────────────────────
@@ -249,7 +250,7 @@ function CityCarousel({
 }
 
 // ── Main carousel ────────────────────────────────────────────────────────────
-export function ReviewsCarouselClient({ reviews, citySections, writeReviewUrl }: ReviewsCarouselClientProps) {
+export function ReviewsCarouselClient({ reviews, citySections, writeReviewUrl, writeReviewUrls }: ReviewsCarouselClientProps) {
   const [activeReview, setActiveReview] = useState<ReviewData | null>(null)
 
   const sectionStyle = {
@@ -284,38 +285,68 @@ export function ReviewsCarouselClient({ reviews, citySections, writeReviewUrl }:
           <h2 className="tales-section-title">Tales From the Road</h2>
         </div>
 
-        {/* Both-cities mode: BELGRADE + SARAJEVO labelled sections */}
+        {/* Both-cities mode: BELGRADE + SARAJEVO labelled sections, each with own button */}
         {citySections ? (
           <>
             <div className="rcv2-city-section">
               <CityLabel city="belgrade" />
               <CityCarousel reviews={citySections.belgrade} onReadMore={setActiveReview} />
+              <div className="rcv2-city-footer">
+                <a
+                  href={writeReviewUrls?.belgrade ?? writeReviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rcv2-write-btn"
+                >
+                  LEAVE A REVIEW →
+                </a>
+              </div>
             </div>
             <div className="rcv2-city-section">
               <CityLabel city="sarajevo" />
               <CityCarousel reviews={citySections.sarajevo} onReadMore={setActiveReview} />
+              <div className="rcv2-city-footer">
+                <a
+                  href={writeReviewUrls?.sarajevo ?? writeReviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rcv2-write-btn"
+                >
+                  LEAVE A REVIEW →
+                </a>
+              </div>
+            </div>
+
+            {/* Attribution sits below both city sections */}
+            <div className="rcv2-footer">
+              <div className="rcv2-attribution" aria-label="Powered by Google">
+                <GoogleGLogo />
+                <span>Powered by Google</span>
+              </div>
             </div>
           </>
         ) : (
-          /* Single-city mode */
-          <CityCarousel reviews={reviews} onReadMore={setActiveReview} />
-        )}
+          <>
+            {/* Single-city mode */}
+            <CityCarousel reviews={reviews} onReadMore={setActiveReview} />
 
-        {/* Footer row: Google attribution left, Leave a Review button right */}
-        <div className="rcv2-footer">
-          <div className="rcv2-attribution" aria-label="Powered by Google">
-            <GoogleGLogo />
-            <span>Powered by Google</span>
-          </div>
-          <a
-            href={writeReviewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rcv2-write-btn"
-          >
-            LEAVE A REVIEW →
-          </a>
-        </div>
+            {/* Footer row: Google attribution left, Leave a Review button right */}
+            <div className="rcv2-footer">
+              <div className="rcv2-attribution" aria-label="Powered by Google">
+                <GoogleGLogo />
+                <span>Powered by Google</span>
+              </div>
+              <a
+                href={writeReviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rcv2-write-btn"
+              >
+                LEAVE A REVIEW →
+              </a>
+            </div>
+          </>
+        )}
 
       </div>
 
