@@ -36,7 +36,7 @@ export function TourListHeader({
   const l1m = layer1MobileUrl ?? fallback(city, 'mobile-header-layer-1.webp')
   const l2m = layer2MobileUrl ?? fallback(city, 'mobile-header-layer-2.webp')
   const l3m = layer3MobileUrl ?? fallback(city, 'mobile-header-layer-3.webp')
-  const l4m = layer4MobileUrl ?? null
+  const l4m = layer4MobileUrl ?? (city === 'sarajevo' ? fallback(city, 'mobile-header-layer-4.webp') : null)
 
   const { scrollY } = useScroll()
   const isMobileRef = useRef(false)
