@@ -99,8 +99,8 @@ function formatDate(isoString: string): string {
   }
 }
 
-// Show "Read more" button when text exceeds ~5 lines worth of characters
-const READ_MORE_THRESHOLD = 300
+// Show "Read more" button when text exceeds ~6 lines worth of characters
+const READ_MORE_THRESHOLD = 360
 
 // ── Review card ──────────────────────────────────────────────────────────────
 function ReviewCard({
@@ -149,6 +149,13 @@ function ReviewModal({ review, onClose }: { review: ReviewData; onClose: () => v
     document.addEventListener('keydown', handleKey)
     return () => document.removeEventListener('keydown', handleKey)
   }, [onClose])
+
+  // Lock body scroll while modal is open
+  React.useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prev }
+  }, [])
 
   return (
     <div
@@ -260,8 +267,12 @@ export function ReviewsCarouselClient({ reviews, writeReviewUrl }: ReviewsCarous
           />
         </div>
 
-        {/* Write review button — bottom-right, 20px below carousel */}
+        {/* Footer row: Google attribution left, Leave a Review button right */}
         <div className="rcv2-footer">
+          <div className="rcv2-attribution" aria-label="Powered by Google">
+            <GoogleGLogo />
+            <span>Powered by Google</span>
+          </div>
           <a
             href={writeReviewUrl}
             target="_blank"
@@ -270,12 +281,6 @@ export function ReviewsCarouselClient({ reviews, writeReviewUrl }: ReviewsCarous
           >
             LEAVE A REVIEW →
           </a>
-        </div>
-
-        {/* Google attribution — required by Places API TOS */}
-        <div className="rcv2-attribution" aria-label="Powered by Google">
-          <GoogleGLogo />
-          <span>Powered by Google</span>
         </div>
 
       </div>

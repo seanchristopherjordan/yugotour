@@ -33,8 +33,10 @@
   z-index: 10;
 }
 
-.rcv2-nav:hover {
-  background-color: #C6363C;
+@media (hover: hover) {
+  .rcv2-nav:hover {
+    background-color: #C6363C;
+  }
 }
 
 /* 40% of button width (~14px) overlapping into the tile edge */
@@ -118,10 +120,10 @@
   gap: 6px;
 }
 
-/* ── Review text — CSS 5-line clamp ── */
+/* ── Review text — CSS 6-line clamp ── */
 .rcv2-card-text {
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-family: var(--font-fakt-pro), sans-serif;
@@ -198,10 +200,11 @@
   margin: 0;
 }
 
-/* ── Footer: write-review button — bottom-right, 20px below carousel ── */
+/* ── Footer: attribution left, button right, on the same baseline ── */
 .rcv2-footer {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 20px;
 }
 
@@ -233,7 +236,7 @@
   position: fixed;
   inset: 0;
   background-color: rgba(33, 33, 33, 0.65);
-  z-index: 1000;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -284,7 +287,6 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-top: 18px;
   padding-left: 20px;
   opacity: 0.5;
 }
@@ -323,11 +325,16 @@
   }
 }
 
-/* ── Mobile: nav buttons 15% larger than desktop base ── */
+/* ── Mobile: nav buttons 15% larger than desktop base; body text +0.05em ── */
 @media (max-width: 639px) {
   .rcv2-nav {
     width: 39px;
     height: 39px;
     background-size: 14px;
+  }
+
+  .rcv2-card-text {
+    font-size: 15.8px;
+    line-height: 1.55;
   }
 }
