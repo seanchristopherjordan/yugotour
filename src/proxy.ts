@@ -106,7 +106,7 @@ export const config = {
     '/assets/:path*',
     // Old WordPress / legacy paths with no content on this site
     '/career/:path*',
-    // Old iOS icon request
+    // Old iOS icon request (apple-touch-icon.png is served statically from /public)
     '/apple-touch-icon-precomposed.png',
     // Well-known / security crawler paths with no real content on this site
     '/.well-known/:path*',
