@@ -89,7 +89,7 @@
   pointer-events: none;
 }
 
-/* ── Desktop slide: 3px rounded corners + dim non-active slides ── */
+/* ── Desktop slide: 3px rounded corners + dim + blur non-active slides ── */
 @media (min-width: 992px) {
   .image-slider-slide {
     border-radius: 3px;
@@ -109,5 +109,14 @@
 
   .image-slider-slide.swiper-slide-active::after {
     opacity: 0;
+  }
+
+  /* Blur the image layer on inactive slides (overflow: hidden clips the edges) */
+  .image-slider-slide > div {
+    transition: filter 500ms ease;
+  }
+
+  .image-slider-slide:not(.swiper-slide-active) > div {
+    filter: blur(5px);
   }
 }

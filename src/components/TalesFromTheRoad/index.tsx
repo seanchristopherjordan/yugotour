@@ -53,7 +53,7 @@ function CityWidget({ city, widgetId, showLabel }: CityWidgetProps) {
   return (
     <div>
       {showLabel && (
-        <h3 className="font-grotesk font-medium text-[1.5rem] tracking-[0.6em] uppercase text-black/50 mb-0">
+        <h3 className="font-grotesk font-medium text-[1.5rem] tracking-[0.6em] uppercase text-black/50 mb-0 text-center">
           {city.charAt(0).toUpperCase() + city.slice(1)}
         </h3>
       )}
@@ -68,7 +68,7 @@ export function TalesFromTheRoad({ textureUrl, city }: TalesFromTheRoadProps) {
   return (
     <section
       id="tales-from-the-road"
-      className="reviews-section-outer relative z-[10] py-[40px] text-center"
+      className="reviews-section-outer relative z-[10] pt-[40px] pb-0 text-center"
       style={{
         backgroundImage: textureUrl ? `url('${textureUrl}')` : undefined,
         backgroundRepeat: 'repeat-y',
