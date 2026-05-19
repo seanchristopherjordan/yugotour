@@ -1,67 +1,49 @@
 /* ── Section ── */
 .rcv2-section {
   padding: 50px 0 64px;
-  text-align: left;
 }
 
-/* ── Header row: title left, Write a Review button right ── */
+/* ── Header: title only, centred ── */
 .rcv2-header {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
+  text-align: center;
   margin-bottom: 36px;
-  flex-wrap: wrap;
-}
-
-/* Write a Review button */
-.rcv2-write-btn {
-  display: inline-block;
-  padding: 10px 22px 9px;
-  background-color: #C6363C;
-  color: #FCF9EB;
-  font-family: var(--font-art-grotesk), sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  border-radius: 4px;
-  white-space: nowrap;
-  transition: background-color 0.2s ease;
-  flex-shrink: 0;
-  margin-bottom: 10px;
-}
-
-.rcv2-write-btn:hover {
-  background-color: #a52b31;
-  color: #FCF9EB;
 }
 
 /* ── Carousel outer: nav buttons flanking the swiper ── */
 .rcv2-carousel-outer {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 0;
 }
 
 /* ── Nav buttons ── */
 .rcv2-nav {
   flex-shrink: 0;
-  width: 48px;
-  height: 48px;
+  width: 34px;
+  height: 34px;
   border: none;
   border-radius: 50%;
   cursor: pointer;
   background-color: rgba(33, 33, 33, 0.75);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 17px;
+  background-size: 12px;
   transition: background-color 0.25s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .rcv2-nav:hover {
   background-color: #C6363C;
+}
+
+/* 40% of button width (~14px) overlapping into the tile edge */
+.rcv2-nav--prev {
+  margin-right: -14px;
+}
+
+.rcv2-nav--next {
+  margin-left: -14px;
 }
 
 /* ── Swiper ── */
@@ -82,7 +64,7 @@
 
 .rcv2-card {
   background-color: #FCF9EB;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 20px 20px 18px;
   display: flex;
   flex-direction: column;
@@ -106,7 +88,7 @@
 }
 
 .rcv2-star {
-  font-size: 17px;
+  font-size: 19px;
   color: rgba(33, 33, 33, 0.15);
 }
 
@@ -117,7 +99,7 @@
 /* ── Date ── */
 .rcv2-card-date {
   font-family: var(--font-fakt-pro), sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(33, 33, 33, 0.45);
   letter-spacing: 0.02em;
   line-height: 1;
@@ -126,16 +108,28 @@
   white-space: nowrap;
 }
 
-/* ── Review text ── */
+/* ── Review text body (contains clamped text + Read more) ── */
+.rcv2-card-body {
+  flex-grow: 1;
+  margin: 0 0 auto;
+  padding-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── Review text — CSS 5-line clamp ── */
 .rcv2-card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   font-family: var(--font-fakt-pro), sans-serif;
-  font-size: 13.5px;
+  font-size: 15px;
   color: #212121;
   line-height: 1.55;
   letter-spacing: -0.01em;
-  margin: 0 0 auto;
-  padding-bottom: 14px;
-  flex-grow: 1;
+  margin: 0;
 }
 
 /* ── Read more button ── */
@@ -145,11 +139,12 @@
   padding: 0;
   cursor: pointer;
   font-family: var(--font-fakt-pro), sans-serif;
-  font-size: 13.5px;
-  color: #003882;
+  font-size: 15px;
+  color: #C6363C;
   letter-spacing: -0.01em;
   text-decoration: none;
   display: inline;
+  align-self: flex-start;
 }
 
 .rcv2-read-more-btn:hover {
@@ -195,12 +190,43 @@
 
 .rcv2-reviewer-name {
   font-family: var(--font-fakt-pro), sans-serif;
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 600;
   color: #212121;
   letter-spacing: -0.01em;
   line-height: 1.3;
   margin: 0;
+}
+
+/* ── Footer: write-review button — bottom-right, 20px below carousel ── */
+.rcv2-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+/* ── Write / Leave a Review button ── */
+.rcv2-write-btn {
+  display: inline-block;
+  padding: 10px 22px 9px;
+  background-image: url('/textures/texture-red.webp');
+  background-repeat: repeat;
+  background-color: var(--color-yugo-red, #C6363C);
+  color: #FCF9EB;
+  font-family: var(--font-art-grotesk), sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.rcv2-write-btn:hover {
+  background-color: #a52b31;
+  color: #FCF9EB;
 }
 
 /* ── Modal ── */
@@ -218,7 +244,7 @@
 .rcv2-modal {
   position: relative;
   background-color: #FCF9EB;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 32px 32px 28px;
   max-width: 560px;
   width: 100%;
@@ -246,7 +272,7 @@
 
 .rcv2-modal-text {
   font-family: var(--font-fakt-pro), sans-serif;
-  font-size: 14.5px;
+  font-size: 16px;
   color: #212121;
   line-height: 1.65;
   letter-spacing: -0.01em;
@@ -286,32 +312,22 @@
   padding: 40px 0;
 }
 
-/* ── Desktop: tighter container padding matching the JotForm tales section ── */
+/* ── Desktop: tighter container padding + carousel extends 20px beyond content edge ── */
 @media (min-width: 992px) {
   .rcv2-section .container {
     padding-inline: 5.5rem;
+  }
+
+  .rcv2-carousel-outer {
+    margin-inline: -20px;
   }
 }
 
 /* ── Mobile: shrink nav buttons slightly ── */
 @media (max-width: 639px) {
   .rcv2-nav {
-    width: 40px;
-    height: 40px;
-    background-size: 14px;
-  }
-
-  .rcv2-carousel-outer {
-    gap: 8px;
-  }
-
-  .rcv2-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .rcv2-header .tales-section-title {
-    margin-bottom: 0;
+    width: 28px;
+    height: 28px;
+    background-size: 10px;
   }
 }

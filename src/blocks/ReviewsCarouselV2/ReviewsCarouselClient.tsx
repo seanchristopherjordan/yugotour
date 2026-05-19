@@ -99,7 +99,8 @@ function formatDate(isoString: string): string {
   }
 }
 
-const TRUNCATE_AT = 180
+// Show "Read more" button when text exceeds ~5 lines worth of characters
+const READ_MORE_THRESHOLD = 300
 
 // ── Review card ──────────────────────────────────────────────────────────────
 function ReviewCard({
@@ -109,10 +110,7 @@ function ReviewCard({
   review: ReviewData
   onReadMore: (r: ReviewData) => void
 }) {
-  const needsTruncation = review.reviewText.length > TRUNCATE_AT
-  const displayText = needsTruncation
-    ? review.reviewText.slice(0, TRUNCATE_AT).trimEnd() + '…'
-    : review.reviewText
+  const needsReadMore = review.reviewText.length > READ_MORE_THRESHOLD
 
   return (
     <div className="rcv2-card">
@@ -120,21 +118,18 @@ function ReviewCard({
         <StarRating rating={review.rating} />
         <p className="rcv2-card-date">{formatDate(review.publishedAt)}</p>
       </div>
-      <p className="rcv2-card-text">
-        {displayText}
-        {needsTruncation && (
-          <>
-            {' '}
-            <button
-              className="rcv2-read-more-btn"
-              onClick={() => onReadMore(review)}
-              aria-label={`Read full review by ${review.reviewerName}`}
-            >
-              Read more
-            </button>
-          </>
+      <div className="rcv2-card-body">
+        <p className="rcv2-card-text">{review.reviewText}</p>
+        {needsReadMore && (
+          <button
+            className="rcv2-read-more-btn"
+            onClick={() => onReadMore(review)}
+            aria-label={`Read full review by ${review.reviewerName}`}
+          >
+            Read more
+          </button>
         )}
-      </p>
+      </div>
       <div className="rcv2-card-footer">
         <div className="rcv2-avatar-wrap">
           <Avatar name={review.reviewerName} avatarUrl={review.reviewerAvatarUrl} />
@@ -183,7 +178,7 @@ function ReviewModal({ review, onClose }: { review: ReviewData; onClose: () => v
   )
 }
 
-// Arrow SVGs (inlined to avoid CSS data-URI issues with React inline styles)
+// Arrow SVGs
 const PREV_SVG =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%23FCF9EB' d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H109.2l105.4-105.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z'/%3E%3C/svg%3E\")"
 const NEXT_SVG =
@@ -222,20 +217,12 @@ export function ReviewsCarouselClient({ reviews, writeReviewUrl }: ReviewsCarous
     <section className="rcv2-section reviews-section-outer" style={sectionStyle}>
       <div className="container rcv2-container">
 
-        {/* Section header */}
+        {/* Section header — title only */}
         <div className="rcv2-header">
           <h2 className="tales-section-title">Tales From the Road</h2>
-          <a
-            href={writeReviewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rcv2-write-btn"
-          >
-            Write a Review!
-          </a>
         </div>
 
-        {/* Carousel: external nav buttons flanking the Swiper */}
+        {/* Carousel: external nav buttons overlapping the tile edges */}
         <div className="rcv2-carousel-outer">
           <button
             className="rcv2-nav rcv2-nav--prev"
@@ -251,9 +238,10 @@ export function ReviewsCarouselClient({ reviews, writeReviewUrl }: ReviewsCarous
             grabCursor
             spaceBetween={16}
             breakpoints={{
-              0: { slidesPerView: 1.08 },
-              640: { slidesPerView: 2.1 },
-              1024: { slidesPerView: 3.1 },
+              0:    { slidesPerView: 1 },
+              600:  { slidesPerView: 2 },
+              1100: { slidesPerView: 3 },
+              1500: { slidesPerView: 4 },
             }}
             className="rcv2-swiper"
           >
@@ -270,6 +258,18 @@ export function ReviewsCarouselClient({ reviews, writeReviewUrl }: ReviewsCarous
             onClick={() => swiper?.slideNext()}
             aria-label="Next review"
           />
+        </div>
+
+        {/* Write review button — bottom-right, 20px below carousel */}
+        <div className="rcv2-footer">
+          <a
+            href={writeReviewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rcv2-write-btn"
+          >
+            LEAVE A REVIEW →
+          </a>
         </div>
 
         {/* Google attribution — required by Places API TOS */}
