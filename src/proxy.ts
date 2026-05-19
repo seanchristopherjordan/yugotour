@@ -113,6 +113,7 @@ export const config = {
     '/security.txt',
     // WordPress SEO plugin sitemaps — real sitemap is /sitemap.xml
     '/post-sitemap.xml',
+    '/posts-sitemap.xml',
     '/post_tag-sitemap.xml',
     '/category-sitemap.xml',
     '/the_grid_sitemap.xml',
