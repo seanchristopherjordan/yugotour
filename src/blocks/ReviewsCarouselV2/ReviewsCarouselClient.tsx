@@ -223,7 +223,7 @@ function CityCarousel({
         onSwiper={setSwiper}
         loop={loop}
         grabCursor
-        spaceBetween={16}
+        spaceBetween={26}
         breakpoints={{
           0:    { slidesPerView: 1 },
           600:  { slidesPerView: 2 },
