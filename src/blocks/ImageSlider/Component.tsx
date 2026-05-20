@@ -41,7 +41,7 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
             pagination={{ clickable: true }}
             grabCursor
             className="image-slider-swiper"
-            style={{ height: '87vh' }}
+            style={{ height: '88vh' }}
           >
             {mobileSlides.map((img, i) => (
               <SwiperSlide key={img.id} className="image-slider-slide">
@@ -61,21 +61,20 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
         )}
       </div>
 
-      {/* ── 550px–991px: mobile images, adjacent peek ~8% each side, nav buttons ── */}
+      {/* ── 550px–991px: mobile images, adjacent peek ~8% each side, no nav ── */}
       <div className="hidden min-[550px]:block min-[992px]:hidden">
         {mobileSlides.length > 0 && (
           <Swiper
-            modules={[Navigation, Pagination, A11y]}
+            modules={[Pagination, A11y]}
             slidesPerView={1.3}
             centeredSlides
             spaceBetween={25}
             loop={mobileSlides.length >= 3}
             speed={400}
-            navigation={true}
             pagination={{ clickable: true }}
             grabCursor
             className="image-slider-swiper"
-            style={{ height: '68vh' }}
+            style={{ height: '74vh' }}
           >
             {mobileSlides.map((img, i) => (
               <SwiperSlide key={img.id} className="image-slider-slide">

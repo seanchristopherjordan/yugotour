@@ -117,6 +117,6 @@
 
   .image-slider-slide:not(.swiper-slide-active) > div {
     filter: blur(3px);
-    transform: scale(1.036);
+    transform: scale(1.029);
   }
 }
