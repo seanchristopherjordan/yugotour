@@ -29,8 +29,8 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
     <div className="image-slider-outer">
       {borderBar}
 
-      {/* Mobile slider — visible below 992 px */}
-      <div className="min-[992px]:hidden">
+      {/* ── Below 550px: single slide, tall, no nav ── */}
+      <div className="block min-[550px]:hidden">
         {mobileSlides.length > 0 && (
           <Swiper
             modules={[Pagination, A11y]}
@@ -41,7 +41,7 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
             pagination={{ clickable: true }}
             grabCursor
             className="image-slider-swiper"
-            style={{ height: 'calc(79vh - 50px)' }}
+            style={{ height: '87vh' }}
           >
             {mobileSlides.map((img, i) => (
               <SwiperSlide key={img.id} className="image-slider-slide">
@@ -61,7 +61,41 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
         )}
       </div>
 
-      {/* Desktop slider — visible at 992 px+ */}
+      {/* ── 550px–991px: mobile images, adjacent peek ~8% each side, nav buttons ── */}
+      <div className="hidden min-[550px]:block min-[992px]:hidden">
+        {mobileSlides.length > 0 && (
+          <Swiper
+            modules={[Navigation, Pagination, A11y]}
+            slidesPerView={1.3}
+            centeredSlides
+            spaceBetween={25}
+            loop={mobileSlides.length >= 3}
+            speed={400}
+            navigation={true}
+            pagination={{ clickable: true }}
+            grabCursor
+            className="image-slider-swiper"
+            style={{ height: '68vh' }}
+          >
+            {mobileSlides.map((img, i) => (
+              <SwiperSlide key={img.id} className="image-slider-slide">
+                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                  <Image
+                    src={img.url ?? ''}
+                    alt={img.alt ?? ''}
+                    fill
+                    priority={i === 0}
+                    style={{ objectFit: 'cover' }}
+                    sizes="80vw"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+      </div>
+
+      {/* ── 992px+: desktop images, wider centred peek ── */}
       <div className="hidden min-[992px]:block">
         {desktopSlides.length > 0 && (
           <Swiper
