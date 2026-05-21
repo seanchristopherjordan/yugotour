@@ -1,18 +1,14 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
-import { revalidatePath } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 
 export const revalidateSlider: CollectionAfterChangeHook = ({ doc, req: { payload } }) => {
-  payload.logger.info(`Revalidating all slider pages after slider update: ${doc?.name}`)
-  revalidatePath('/')
-  revalidatePath('/belgrade-tours')
-  revalidatePath('/sarajevo-tours')
+  payload.logger.info(`Revalidating slider cache after update: ${doc?.name}`)
+  revalidateTag('sliders')
   return doc
 }
 
 export const revalidateSliderDelete: CollectionAfterDeleteHook = ({ doc, req: { payload } }) => {
-  payload.logger.info(`Revalidating all slider pages after slider delete: ${doc?.name}`)
-  revalidatePath('/')
-  revalidatePath('/belgrade-tours')
-  revalidatePath('/sarajevo-tours')
+  payload.logger.info(`Revalidating slider cache after delete: ${doc?.name}`)
+  revalidateTag('sliders')
   return doc
 }
