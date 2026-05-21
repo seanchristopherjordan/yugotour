@@ -31,15 +31,16 @@
 
 @media (max-width: 991px) {
   .full-bleed-static {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: unset;
+    height: auto;
   }
 
   .full-bleed-static picture {
-    height: 100%;
+    height: auto;
   }
 
   .full-bleed-static-img {
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    object-fit: unset;
   }
 }
