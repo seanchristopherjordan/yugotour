@@ -181,6 +181,7 @@ async function syncCity(
     await payload.create({
       collection: 'reviews',
       data: {
+        source: 'google',
         city: city as 'belgrade' | 'sarajevo',
         reviewerName: review.authorAttribution?.displayName ?? 'Anonymous',
         ...(avatarMediaId ? { reviewerAvatar: avatarMediaId } : {}),
