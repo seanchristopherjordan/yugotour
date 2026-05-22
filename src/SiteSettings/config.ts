@@ -185,6 +185,15 @@ export const SiteSettings: GlobalConfig = {
               },
             },
             {
+              name: 'defaultOgImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Default Social Share Image',
+              admin: {
+                description: 'Fallback image for social sharing (OpenGraph / Twitter card) when a page has no specific meta image set. Recommended: 1200×630 px.',
+              },
+            },
+            {
               name: 'siteTitle',
               type: 'text',
               label: 'Site Title',

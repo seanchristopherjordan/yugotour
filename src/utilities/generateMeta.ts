@@ -6,24 +6,12 @@ import { mergeOpenGraph } from './mergeOpenGraph'
 import { getServerSideURL } from './getURL'
 import { getCachedGlobal } from './getGlobals'
 
-const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
-  const serverUrl = getServerSideURL()
-
-  let url = serverUrl + '/website-template-OG.webp'
-
-  if (image && typeof image === 'object' && 'url' in image) {
-    const ogUrl = image.sizes?.og?.url
-
-    url = ogUrl ? serverUrl + ogUrl : serverUrl + image.url
-  }
-
-  return url
-}
-
-async function getSiteTitle(): Promise<string> {
-  const settings = await getCachedGlobal('site-settings', 0)()
-  const site = settings.site as Record<string, unknown> | undefined
-  return (site?.siteTitle as string | undefined) ?? 'Yugotour'
+const resolveImageURL = (image?: Media | Config['db']['defaultIDType'] | null): string | null => {
+  if (!image || typeof image !== 'object' || !('url' in image)) return null
+  const raw = image.sizes?.og?.url ?? image.url
+  if (!raw) return null
+  // R2/CDN URLs are already absolute; relative paths need the server origin prepended
+  return raw.startsWith('http') ? raw : getServerSideURL() + raw
 }
 
 export const generateMeta = async (args: {
@@ -31,10 +19,15 @@ export const generateMeta = async (args: {
 }): Promise<Metadata> => {
   const { doc } = args
 
-  const [ogImage, siteName] = await Promise.all([
-    Promise.resolve(getImageURL(doc?.meta?.image)),
-    getSiteTitle(),
-  ])
+  const settings = await getCachedGlobal('site-settings', 1)()
+  const site = settings?.site as Record<string, unknown> | undefined
+  const siteName = (site?.siteTitle as string | undefined) ?? 'Yugotour'
+
+  // Per-page image → site-wide default → static fallback
+  const ogImage =
+    resolveImageURL(doc?.meta?.image as Media | null) ??
+    resolveImageURL(site?.defaultOgImage as Media | null) ??
+    getServerSideURL() + '/website-template-OG.webp'
 
   const title = doc?.meta?.title
     ? `${doc.meta.title} | ${siteName}`
@@ -44,13 +37,7 @@ export const generateMeta = async (args: {
     description: doc?.meta?.description,
     openGraph: mergeOpenGraph({
       description: doc?.meta?.description || '',
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-            },
-          ]
-        : undefined,
+      images: [{ url: ogImage }],
       siteName,
       title,
       url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
