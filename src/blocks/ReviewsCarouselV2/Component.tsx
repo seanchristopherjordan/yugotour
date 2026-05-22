@@ -43,6 +43,7 @@ export async function ReviewsCarouselV2Block({
 
     return {
       id: doc.id as number,
+      source: ((doc.source as string) ?? 'google') as 'google' | 'tripadvisor',
       city: (doc.city as string) as 'belgrade' | 'sarajevo',
       reviewerName: (doc.reviewerName as string) ?? '',
       reviewerAvatarUrl: avatarUrl,

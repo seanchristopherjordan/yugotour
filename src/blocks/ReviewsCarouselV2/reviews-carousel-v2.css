@@ -51,9 +51,15 @@
 }
 
 @media (hover: hover) {
-  .rcv2-nav:hover {
+  .rcv2-nav:hover:not(:disabled) {
     background-color: #C6363C;
   }
+}
+
+.rcv2-nav:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
 }
 
 /* 40% of button width (~14px) overlapping into the tile edge */
@@ -97,6 +103,36 @@
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+
+/* ── TripAdvisor circles ── */
+.rcv2-circles {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 2px;
+}
+
+.rcv2-circle {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid #34E0A1;
+  background-color: transparent;
+  flex-shrink: 0;
+}
+
+.rcv2-circle--filled {
+  background-color: #34E0A1;
+}
+
+/* ── TripAdvisor reviewer credit ── */
+.rcv2-ta-credit {
+  font-family: var(--font-fakt-pro), sans-serif;
+  font-size: 12px;
+  color: rgba(33, 33, 33, 0.7);
+  font-style: italic;
+  line-height: 1.35;
 }
 
 /* ── Stars ── */

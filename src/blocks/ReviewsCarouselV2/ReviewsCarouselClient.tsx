@@ -9,6 +9,7 @@ import 'swiper/css'
 
 export interface ReviewData {
   id: number
+  source: 'google' | 'tripadvisor'
   city: 'belgrade' | 'sarajevo'
   reviewerName: string
   reviewerAvatarUrl: string | null
@@ -67,6 +68,17 @@ function StarRating({ rating }: { rating: number }) {
   )
 }
 
+// ── TripAdvisor circle rating ────────────────────────────────────────────────
+function CircleRating({ rating }: { rating: number }) {
+  return (
+    <div className="rcv2-circles" aria-label={`${rating} out of 5`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <span key={i} className={i < rating ? 'rcv2-circle rcv2-circle--filled' : 'rcv2-circle'} />
+      ))}
+    </div>
+  )
+}
+
 // ── Reviewer avatar ──────────────────────────────────────────────────────────
 function Avatar({ name, avatarUrl }: { name: string; avatarUrl: string | null }) {
   const [imgError, setImgError] = useState(false)
@@ -119,10 +131,12 @@ function ReviewCard({
 }) {
   const needsReadMore = review.reviewText.length > READ_MORE_THRESHOLD
 
+  const isTA = review.source === 'tripadvisor'
+
   return (
     <div className="rcv2-card">
       <div className="rcv2-card-top">
-        <StarRating rating={review.rating} />
+        {isTA ? <CircleRating rating={review.rating} /> : <StarRating rating={review.rating} />}
         <p className="rcv2-card-date">{formatDate(review.publishedAt)}</p>
       </div>
       <div className="rcv2-card-body">
@@ -141,7 +155,11 @@ function ReviewCard({
         <div className="rcv2-avatar-wrap">
           <Avatar name={review.reviewerName} avatarUrl={review.reviewerAvatarUrl} />
         </div>
-        <p className="rcv2-reviewer-name">{review.reviewerName}</p>
+        {isTA ? (
+          <p className="rcv2-ta-credit">Review by {review.reviewerName}, a Tripadvisor traveler</p>
+        ) : (
+          <p className="rcv2-reviewer-name">{review.reviewerName}</p>
+        )}
       </div>
     </div>
   )
@@ -176,14 +194,20 @@ function ReviewModal({ review, onClose }: { review: ReviewData; onClose: () => v
         <button className="rcv2-modal-close" onClick={onClose} aria-label="Close review">
           ✕
         </button>
-        <StarRating rating={review.rating} />
+        {review.source === 'tripadvisor'
+          ? <CircleRating rating={review.rating} />
+          : <StarRating rating={review.rating} />}
         <p className="rcv2-modal-text">{review.reviewText}</p>
         <div className="rcv2-card-footer">
           <div className="rcv2-avatar-wrap">
             <Avatar name={review.reviewerName} avatarUrl={review.reviewerAvatarUrl} />
           </div>
           <div>
-            <p className="rcv2-reviewer-name">{review.reviewerName}</p>
+            {review.source === 'tripadvisor' ? (
+              <p className="rcv2-ta-credit">Review by {review.reviewerName}, a Tripadvisor traveler</p>
+            ) : (
+              <p className="rcv2-reviewer-name">{review.reviewerName}</p>
+            )}
             <p className="rcv2-card-date">{formatDate(review.publishedAt)}</p>
           </div>
         </div>
@@ -207,7 +231,13 @@ function CityCarousel({
   onReadMore: (r: ReviewData) => void
 }) {
   const [swiper, setSwiper] = useState<SwiperType | null>(null)
-  const loop = reviews.length >= 4
+  const [isBeginning, setIsBeginning] = useState(true)
+  const [isEnd, setIsEnd] = useState(false)
+
+  const syncEdges = (s: SwiperType) => {
+    setIsBeginning(s.isBeginning)
+    setIsEnd(s.isEnd)
+  }
 
   return (
     <div className="rcv2-carousel-outer">
@@ -215,13 +245,14 @@ function CityCarousel({
         className="rcv2-nav rcv2-nav--prev"
         style={{ backgroundImage: PREV_SVG }}
         onClick={() => swiper?.slidePrev()}
+        disabled={isBeginning}
         aria-label="Previous review"
       />
 
       <Swiper
         modules={[A11y]}
-        onSwiper={setSwiper}
-        loop={loop}
+        onSwiper={(s) => { setSwiper(s); syncEdges(s) }}
+        loop={false}
         grabCursor
         spaceBetween={26}
         breakpoints={{
@@ -230,6 +261,8 @@ function CityCarousel({
           1100: { slidesPerView: 3 },
           1500: { slidesPerView: 4 },
         }}
+        onSlideChange={syncEdges}
+        onBreakpoint={syncEdges}
         className="rcv2-swiper"
       >
         {reviews.map((review) => (
@@ -243,6 +276,7 @@ function CityCarousel({
         className="rcv2-nav rcv2-nav--next"
         style={{ backgroundImage: NEXT_SVG }}
         onClick={() => swiper?.slideNext()}
+        disabled={isEnd}
         aria-label="Next review"
       />
     </div>

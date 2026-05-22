@@ -17,6 +17,19 @@ export const Reviews: CollectionConfig = {
   },
   fields: [
     {
+      name: 'source',
+      type: 'select',
+      required: true,
+      defaultValue: 'google',
+      options: [
+        { label: 'Google', value: 'google' },
+        { label: 'TripAdvisor', value: 'tripadvisor' },
+      ],
+      admin: {
+        description: 'Platform this review was sourced from',
+      },
+    },
+    {
       name: 'city',
       type: 'select',
       required: true,
