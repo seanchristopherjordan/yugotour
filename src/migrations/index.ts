@@ -8,6 +8,7 @@ import * as migration_20260506_fix_hero_schema from './20260506_fix_hero_schema'
 import * as migration_20260507_202230 from './20260507_202230';
 import * as migration_20260507_optional_extras from './20260507_optional_extras';
 import * as migration_20260508_full_bleed_static_mobile_image from './20260508_full_bleed_static_mobile_image';
+import * as migration_20260522_site_settings_default_og_image from './20260522_site_settings_default_og_image';
 
 export const migrations = [
   {
@@ -59,5 +60,10 @@ export const migrations = [
     up: migration_20260508_full_bleed_static_mobile_image.up,
     down: migration_20260508_full_bleed_static_mobile_image.down,
     name: '20260508_full_bleed_static_mobile_image',
+  },
+  {
+    up: migration_20260522_site_settings_default_og_image.up,
+    down: migration_20260522_site_settings_default_og_image.down,
+    name: '20260522_site_settings_default_og_image',
   },
 ];
