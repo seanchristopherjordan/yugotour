@@ -129,7 +129,7 @@
 /* ── TripAdvisor reviewer credit ── */
 .rcv2-ta-credit {
   font-family: var(--font-fakt-pro), sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   color: rgba(33, 33, 33, 0.7);
   font-style: italic;
   line-height: 1.35;
