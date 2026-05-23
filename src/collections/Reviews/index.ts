@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { anyone } from '../../access/anyone'
 import { revalidateReviews, revalidateReviewsDelete } from './hooks/revalidateReviews'
-import { BoldFeature, FixedToolbarFeature, InlineToolbarFeature, ParagraphFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { BoldFeature, FixedToolbarFeature, InlineToolbarFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const Reviews: CollectionConfig = {
   slug: 'reviews',
@@ -86,8 +86,8 @@ export const Reviews: CollectionConfig = {
       type: 'richText',
       label: 'Review Text',
       editor: lexicalEditor({
-        features: [
-          ParagraphFeature(),
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
           BoldFeature(),
           FixedToolbarFeature(),
           InlineToolbarFeature(),
