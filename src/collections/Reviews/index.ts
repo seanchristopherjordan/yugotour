@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { anyone } from '../../access/anyone'
+import { revalidateReviews, revalidateReviewsDelete } from './hooks/revalidateReviews'
 
 export const Reviews: CollectionConfig = {
   slug: 'reviews',
@@ -14,6 +15,10 @@ export const Reviews: CollectionConfig = {
     delete: authenticated,
     read: anyone,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [revalidateReviews],
+    afterDelete: [revalidateReviewsDelete],
   },
   fields: [
     {

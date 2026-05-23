@@ -114,8 +114,8 @@
 }
 
 .rcv2-circle {
-  width: 11px;
-  height: 11px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   border: 1.5px solid #34E0A1;
   background-color: transparent;
@@ -143,7 +143,7 @@
 }
 
 .rcv2-star {
-  font-size: 19px;
+  font-size: 22px;
   color: rgba(33, 33, 33, 0.15);
 }
 
