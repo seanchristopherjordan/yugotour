@@ -14,6 +14,7 @@ import { EmailTemplates } from './collections/EmailTemplates'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { PostComments } from './collections/PostComments'
 import { Tours } from './collections/Tours'
 import { OptionalExtras } from './collections/OptionalExtras'
 import { TourListPages } from './collections/TourListPages'
@@ -84,6 +85,8 @@ export default buildConfig({
     ContactMessages, Bookings, EmailTemplates,
     // Reviews
     Reviews,
+    // Blog
+    PostComments,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [

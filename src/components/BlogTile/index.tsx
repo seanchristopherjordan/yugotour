@@ -20,9 +20,11 @@ interface BlogTilePost {
 
 interface BlogTileProps {
   post: BlogTilePost
+  basePath?: string
+  commentCount?: number
 }
 
-export function BlogTile({ post }: BlogTileProps) {
+export function BlogTile({ post, basePath = '/posts', commentCount }: BlogTileProps) {
   const { slug, title, publishedAt, categories, heroImage, meta } = post
 
   // Prefer meta.image, fall back to heroImage
@@ -37,7 +39,7 @@ export function BlogTile({ post }: BlogTileProps) {
 
   return (
     <article className="blog-tile">
-      <Link href={`/posts/${slug}`} className="blog-tile-link" tabIndex={-1} aria-hidden>
+      <Link href={`${basePath}/${slug}`} className="blog-tile-link" tabIndex={-1} aria-hidden>
         <div className="blog-tile-image-wrap">
           {imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -57,7 +59,7 @@ export function BlogTile({ post }: BlogTileProps) {
           <p className="blog-tile-category">{resolvedCategories.join(', ')}</p>
         )}
         <h2 className="blog-tile-title">
-          <Link href={`/posts/${slug}`}>{title}</Link>
+          <Link href={`${basePath}/${slug}`}>{title}</Link>
         </h2>
         {publishedAt && (
           <time className="blog-tile-date" dateTime={publishedAt}>
@@ -65,6 +67,9 @@ export function BlogTile({ post }: BlogTileProps) {
           </time>
         )}
         {meta?.description && <p className="blog-tile-excerpt">{meta.description}</p>}
+        {commentCount !== undefined && commentCount > 0 && (
+          <p className="blog-tile-comments">{commentCount} comment{commentCount !== 1 ? 's' : ''}</p>
+        )}
       </div>
     </article>
   )

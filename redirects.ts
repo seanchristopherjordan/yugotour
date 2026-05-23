@@ -41,7 +41,7 @@ export const redirects: NextConfig['redirects'] = async () => {
     ...both('/about',         '/about-us'),
     ...both('/accommodation', 'https://www.yugotour.com'),
     ...both('/dislaimer',     '/terms-of-service'),
-    ...both('/in-the-media',  'https://www.yugotour.com'),
+    // /in-the-media now has its own page
     ...both('/map',           'https://www.yugotour.com'),
 
     // ── Tour slug changes (old WP slugs → new Next.js slugs) ─────────────────
@@ -64,10 +64,9 @@ export const redirects: NextConfig['redirects'] = async () => {
     ...both('/yugotour-sarajevo', '/sarajevo-tours'),
     ...both('/yugotour/sarajevo', '/sarajevo-tours'),
 
-    // ── Blog: specific entry first, then wildcard ─────────────────────────────
-    // /blog alone → posts index; /blog/* → homepage (old WP posts have no equivalent)
-    { source: '/blog',        destination: '/posts',                   permanent: true },
-    { source: '/blog/:path+', destination: 'https://www.yugotour.com', permanent: true },
+    // ── Blog: /blog and /blog/[slug] are now real pages — no redirect needed ───
+    // Redirect the old /posts listing to the canonical /blog
+    ...both('/posts', '/blog'),
 
     // ── Legacy WP section wildcards → homepage ────────────────────────────────
     ...both('/media-clipping', 'https://www.yugotour.com'),

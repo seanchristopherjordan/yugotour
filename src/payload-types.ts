@@ -80,6 +80,7 @@ export interface Config {
     bookings: Booking;
     'email-templates': EmailTemplate;
     reviews: Review;
+    'post-comments': PostComment;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -105,6 +106,7 @@ export interface Config {
     bookings: BookingsSelect<false> | BookingsSelect<true>;
     'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    'post-comments': PostCommentsSelect<false> | PostCommentsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -934,14 +936,6 @@ export interface TvSectionBlock {
    * Paste any YouTube URL — watch URL (youtube.com/watch?v=…) or short URL (youtu.be/…).
    */
   youtubeUrl: string;
-  /**
-   * TV overlay shown on screens narrower than 992 px. Must have a transparent screen area.
-   */
-  mobileImage: number | Media;
-  /**
-   * TV overlay shown on screens 992 px and wider. Must have a transparent screen area.
-   */
-  desktopImage: number | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'tvSection';
@@ -972,7 +966,10 @@ export interface ReviewsCarouselV2Block {
    * Which city's reviews to display
    */
   city: 'both' | 'belgrade' | 'sarajevo';
-  writeReviewCity: 'belgrade' | 'sarajevo';
+  /**
+   * Only applies in single-city mode — both-city mode uses each city's link automatically.
+   */
+  writeReviewCity?: ('belgrade' | 'sarajevo') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'reviewsCarouselV2';
@@ -1315,6 +1312,10 @@ export interface EmailTemplate {
  */
 export interface Review {
   id: number;
+  /**
+   * Platform this review was sourced from
+   */
+  source: 'google' | 'tripadvisor';
   city: 'belgrade' | 'sarajevo';
   reviewerName: string;
   /**
@@ -1326,12 +1327,52 @@ export interface Review {
    */
   reviewerAvatarUrl?: string | null;
   rating: number;
-  reviewText: string;
+  /**
+   * Plain text review body — used for Google reviews.
+   */
+  reviewText?: string | null;
+  /**
+   * Rich text review body — supports bold and line breaks. Used for TripAdvisor reviews.
+   */
+  reviewTextRich?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   publishedAt: string;
   /**
    * Auto-populated by sync — do not edit manually
    */
   googleReviewId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post-comments".
+ */
+export interface PostComment {
+  id: number;
+  post: number | Post;
+  authorName: string;
+  authorEmail?: string | null;
+  content: string;
+  publishedAt?: string | null;
+  /**
+   * ID of parent comment for threading
+   */
+  parentCommentId?: number | null;
+  approved?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1576,6 +1617,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'reviews';
         value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'post-comments';
+        value: number | PostComment;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2047,8 +2092,6 @@ export interface FormBlockSelect<T extends boolean = true> {
 export interface TvSectionBlockSelect<T extends boolean = true> {
   label?: T;
   youtubeUrl?: T;
-  mobileImage?: T;
-  desktopImage?: T;
   id?: T;
   blockName?: T;
 }
@@ -2249,14 +2292,31 @@ export interface EmailTemplatesSelect<T extends boolean = true> {
  * via the `definition` "reviews_select".
  */
 export interface ReviewsSelect<T extends boolean = true> {
+  source?: T;
   city?: T;
   reviewerName?: T;
   reviewerAvatar?: T;
   reviewerAvatarUrl?: T;
   rating?: T;
   reviewText?: T;
+  reviewTextRich?: T;
   publishedAt?: T;
   googleReviewId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post-comments_select".
+ */
+export interface PostCommentsSelect<T extends boolean = true> {
+  post?: T;
+  authorName?: T;
+  authorEmail?: T;
+  content?: T;
+  publishedAt?: T;
+  parentCommentId?: T;
+  approved?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2685,6 +2745,10 @@ export interface SiteSetting {
      */
     heroCoverMobile?: (number | null) | Media;
     /**
+     * Fallback image for social sharing (OpenGraph / Twitter card) when a page has no specific meta image set. Recommended: 1200×630 px.
+     */
+    defaultOgImage?: (number | null) | Media;
+    /**
      * Used in browser tab titles and OpenGraph metadata (e.g. "Tour Name — Yugotour").
      */
     siteTitle?: string | null;
@@ -2854,6 +2918,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         heroVideoMobile?: T;
         heroCoverDesktop?: T;
         heroCoverMobile?: T;
+        defaultOgImage?: T;
         siteTitle?: T;
         siteDescription?: T;
         homepageSlider?: T;
