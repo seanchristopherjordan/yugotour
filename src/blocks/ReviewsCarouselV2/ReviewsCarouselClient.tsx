@@ -22,6 +22,7 @@ export interface ReviewData {
 interface ReviewsCarouselClientProps {
   reviews: ReviewData[]
   citySections: { belgrade: ReviewData[]; sarajevo: ReviewData[] } | null
+  singleCity?: 'belgrade' | 'sarajevo'
   writeReviewUrl: string
   writeReviewUrls?: { belgrade: string; sarajevo: string }
 }
@@ -303,7 +304,7 @@ function CityCarousel({
 }
 
 // ── Main carousel ────────────────────────────────────────────────────────────
-export function ReviewsCarouselClient({ reviews, citySections, writeReviewUrl, writeReviewUrls }: ReviewsCarouselClientProps) {
+export function ReviewsCarouselClient({ reviews, citySections, singleCity, writeReviewUrl, writeReviewUrls }: ReviewsCarouselClientProps) {
   const [activeReview, setActiveReview] = useState<ReviewData | null>(null)
 
   const sectionStyle = {
@@ -381,6 +382,7 @@ export function ReviewsCarouselClient({ reviews, citySections, writeReviewUrl, w
         ) : (
           <>
             {/* Single-city mode */}
+            {singleCity && <CityLabel city={singleCity} />}
             <CityCarousel reviews={reviews} onReadMore={setActiveReview} />
 
             {/* Footer row: Google attribution left, Leave a Review button right */}

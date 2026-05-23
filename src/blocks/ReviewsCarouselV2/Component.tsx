@@ -140,6 +140,7 @@ export async function ReviewsCarouselV2Block({
     <ReviewsCarouselClient
       reviews={reviews}
       citySections={citySections}
+      singleCity={citySections ? undefined : (city as 'belgrade' | 'sarajevo')}
       writeReviewUrl={writeReviewUrl}
       writeReviewUrls={writeReviewUrls}
     />

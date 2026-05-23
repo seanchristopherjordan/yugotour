@@ -40,6 +40,10 @@ export const ReviewsCarouselV2: Block = {
         { label: 'Belgrade Google Maps', value: 'belgrade' },
         { label: 'Sarajevo Google Maps', value: 'sarajevo' },
       ],
+      admin: {
+        condition: (data) => data?.city !== 'both',
+        description: 'Only applies in single-city mode — both-city mode uses each city\'s link automatically.',
+      },
     },
   ],
 }
