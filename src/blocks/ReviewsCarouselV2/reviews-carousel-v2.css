@@ -175,7 +175,13 @@
   gap: 6px;
 }
 
-/* ── Review text — CSS 6-line clamp ── */
+/* ── Review text — CSS 7-line clamp ── */
+/* Rich text variant: p tags get zero margin so leading stays consistent */
+.rcv2-card-text--rich p,
+.rcv2-modal-text--rich p {
+  margin: 0;
+}
+
 .rcv2-card-text {
   display: -webkit-box;
   -webkit-line-clamp: 7;
@@ -396,11 +402,20 @@
   }
 
   .rcv2-card-text {
-    font-size: 15.8px;
+    font-size: 16.5px;
     line-height: 1.5;
+  }
+
+  .rcv2-card-text--rich p {
+    font-size: 16.5px;
   }
 
   .rcv2-section .container {
     padding-inline: calc(1.07rem - 10px);
+  }
+
+  .rcv2-write-btn {
+    margin-top: 5px;
+    margin-right: 15px;
   }
 }

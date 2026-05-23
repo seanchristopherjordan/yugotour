@@ -15,6 +15,54 @@ export interface ReviewsCarouselV2BlockProps {
   writeReviewCity?: 'belgrade' | 'sarajevo' | null
 }
 
+// ── Lexical JSON helpers ─────────────────────────────────────────────────────
+
+function escapeHtml(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+}
+
+type LexicalNode = {
+  type: string
+  text?: string
+  format?: number
+  children?: LexicalNode[]
+}
+
+function serializeNode(node: LexicalNode): string {
+  if (node.type === 'linebreak') return '<br>'
+  if (node.type === 'text') {
+    let t = escapeHtml(node.text ?? '')
+    if ((node.format ?? 0) & 1) t = `<strong>${t}</strong>`
+    if ((node.format ?? 0) & 2) t = `<em>${t}</em>`
+    return t
+  }
+  if (node.type === 'paragraph') {
+    const inner = (node.children ?? []).map(serializeNode).join('')
+    return `<p>${inner}</p>`
+  }
+  return (node.children ?? []).map(serializeNode).join('')
+}
+
+function lexicalToHtml(json: unknown): string {
+  if (!json || typeof json !== 'object') return ''
+  const root = (json as { root?: LexicalNode }).root
+  if (!root?.children) return ''
+  return root.children.map(serializeNode).join('')
+}
+
+function lexicalToPlainText(json: unknown): string {
+  if (!json || typeof json !== 'object') return ''
+  const root = (json as { root?: LexicalNode }).root
+  if (!root?.children) return ''
+  const extractText = (node: LexicalNode): string => {
+    if (node.type === 'text') return node.text ?? ''
+    return (node.children ?? []).map(extractText).join('')
+  }
+  return root.children.map(extractText).join(' ')
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+
 const getCachedReviews = (city: 'both' | 'belgrade' | 'sarajevo') =>
   unstable_cache(
     async (): Promise<ReviewData[]> => {
@@ -41,14 +89,24 @@ const getCachedReviews = (city: 'both' | 'belgrade' | 'sarajevo') =>
           avatarUrl = (avatarMedia as { url?: string | null }).url ?? null
         }
 
+        const source = ((doc.source as string) ?? 'google') as 'google' | 'tripadvisor'
+        const isTA = source === 'tripadvisor'
+
+        const reviewTextRichHtml = isTA ? lexicalToHtml(doc.reviewTextRich) : null
+        // reviewText is used for threshold check on both sources
+        const reviewText = isTA
+          ? lexicalToPlainText(doc.reviewTextRich)
+          : ((doc.reviewText as string) ?? '')
+
         return {
           id: doc.id as number,
-          source: ((doc.source as string) ?? 'google') as 'google' | 'tripadvisor',
+          source,
           city: (doc.city as string) as 'belgrade' | 'sarajevo',
           reviewerName: (doc.reviewerName as string) ?? '',
           reviewerAvatarUrl: avatarUrl,
           rating: (doc.rating as number) ?? 5,
-          reviewText: (doc.reviewText as string) ?? '',
+          reviewText,
+          reviewTextRichHtml,
           publishedAt: (doc.publishedAt as string) ?? '',
         }
       })

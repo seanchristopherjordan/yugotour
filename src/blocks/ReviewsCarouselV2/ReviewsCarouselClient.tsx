@@ -15,6 +15,7 @@ export interface ReviewData {
   reviewerAvatarUrl: string | null
   rating: number
   reviewText: string
+  reviewTextRichHtml: string | null
   publishedAt: string
 }
 
@@ -140,7 +141,14 @@ function ReviewCard({
         <p className="rcv2-card-date">{formatDate(review.publishedAt)}</p>
       </div>
       <div className="rcv2-card-body">
-        <p className="rcv2-card-text">{review.reviewText}</p>
+        {isTA && review.reviewTextRichHtml ? (
+          <div
+            className="rcv2-card-text rcv2-card-text--rich"
+            dangerouslySetInnerHTML={{ __html: review.reviewTextRichHtml }}
+          />
+        ) : (
+          <p className="rcv2-card-text">{review.reviewText}</p>
+        )}
         {needsReadMore && (
           <button
             className="rcv2-read-more-btn"
@@ -197,7 +205,14 @@ function ReviewModal({ review, onClose }: { review: ReviewData; onClose: () => v
         {review.source === 'tripadvisor'
           ? <CircleRating rating={review.rating} />
           : <StarRating rating={review.rating} />}
-        <p className="rcv2-modal-text">{review.reviewText}</p>
+        {review.source === 'tripadvisor' && review.reviewTextRichHtml ? (
+          <div
+            className="rcv2-modal-text rcv2-modal-text--rich"
+            dangerouslySetInnerHTML={{ __html: review.reviewTextRichHtml }}
+          />
+        ) : (
+          <p className="rcv2-modal-text">{review.reviewText}</p>
+        )}
         <div className="rcv2-card-footer">
           <div className="rcv2-avatar-wrap">
             <Avatar name={review.reviewerName} avatarUrl={review.reviewerAvatarUrl} />

@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { authenticated } from '../../access/authenticated'
 import { anyone } from '../../access/anyone'
 import { revalidateReviews, revalidateReviewsDelete } from './hooks/revalidateReviews'
+import { BoldFeature, FixedToolbarFeature, InlineToolbarFeature, ParagraphFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 
 export const Reviews: CollectionConfig = {
   slug: 'reviews',
@@ -75,7 +76,27 @@ export const Reviews: CollectionConfig = {
     {
       name: 'reviewText',
       type: 'textarea',
-      required: true,
+      admin: {
+        description: 'Plain text review body — used for Google reviews.',
+        condition: (data) => !data?.source || data?.source === 'google',
+      },
+    },
+    {
+      name: 'reviewTextRich',
+      type: 'richText',
+      label: 'Review Text',
+      editor: lexicalEditor({
+        features: [
+          ParagraphFeature(),
+          BoldFeature(),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+        ],
+      }),
+      admin: {
+        description: 'Rich text review body — supports bold and line breaks. Used for TripAdvisor reviews.',
+        condition: (data) => data?.source === 'tripadvisor',
+      },
     },
     {
       name: 'publishedAt',
