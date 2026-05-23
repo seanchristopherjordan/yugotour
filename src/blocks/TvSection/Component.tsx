@@ -1,12 +1,12 @@
 import Image from 'next/image'
-import type { Media } from '@/payload-types'
 import { tvConfig } from './tv-config'
+
+const TV_MOBILE_URL  = 'https://media.yugotour-assets.workers.dev/television-mobile.webp'
+const TV_DESKTOP_URL = 'https://media.yugotour-assets.workers.dev/television-desktop.webp'
 
 export interface TvSectionBlockProps {
   blockType: 'tvSection'
   youtubeUrl?: string | null
-  mobileImage?: string | Media | null
-  desktopImage?: string | Media | null
   label?: string | null
 }
 
@@ -28,7 +28,7 @@ function extractYouTubeId(url: string): string | null {
   return null
 }
 
-export function TvSectionBlock({ youtubeUrl, mobileImage, desktopImage }: TvSectionBlockProps) {
+export function TvSectionBlock({ youtubeUrl }: TvSectionBlockProps) {
   const { mobile: mob, desktop: desk, youtubeParams } = tvConfig
 
   const videoId = youtubeUrl ? extractYouTubeId(youtubeUrl) : null
@@ -36,13 +36,8 @@ export function TvSectionBlock({ youtubeUrl, mobileImage, desktopImage }: TvSect
     ? `https://www.youtube.com/embed/${videoId}?${youtubeParams}`
     : null
 
-  const mobileImg = typeof mobileImage !== 'string' && mobileImage ? mobileImage : null
-  const desktopImg = typeof desktopImage !== 'string' && desktopImage ? desktopImage : null
-
   const borderBar = <div style={{ height: '25px', backgroundColor: '#212121' }} />
 
-  // Pass positioning values to CSS via custom properties on the container.
-  // globals.css media queries consume these via var(--tv-*).
   const cssVars = {
     '--tv-mob-top': mob.top,
     '--tv-mob-left': mob.left,
@@ -74,32 +69,28 @@ export function TvSectionBlock({ youtubeUrl, mobileImage, desktopImage }: TvSect
         )}
 
         {/* ── Mobile overlay — hidden at 992 px+ ── */}
-        {mobileImg && (
-          <div className="tv-overlay min-[992px]:hidden">
-            <Image
-              src={mobileImg.url ?? ''}
-              alt={mobileImg.alt ?? 'Vintage television'}
-              width={mobileImg.width ?? 750}
-              height={mobileImg.height ?? 600}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-              loading="lazy"
-            />
-          </div>
-        )}
+        <div className="tv-overlay min-[992px]:hidden">
+          <Image
+            src={TV_MOBILE_URL}
+            alt="Vintage television"
+            width={750}
+            height={600}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+            loading="lazy"
+          />
+        </div>
 
         {/* ── Desktop overlay — hidden below 992 px ── */}
-        {desktopImg && (
-          <div className="tv-overlay hidden min-[992px]:block">
-            <Image
-              src={desktopImg.url ?? ''}
-              alt={desktopImg.alt ?? 'Vintage television'}
-              width={desktopImg.width ?? 1200}
-              height={desktopImg.height ?? 400}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-              loading="lazy"
-            />
-          </div>
-        )}
+        <div className="tv-overlay hidden min-[992px]:block">
+          <Image
+            src={TV_DESKTOP_URL}
+            alt="Vintage television"
+            width={1200}
+            height={400}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+            loading="lazy"
+          />
+        </div>
 
         {/* ── Vintage glass reflection ── */}
         <div className="tv-glass-effect" aria-hidden="true" />
