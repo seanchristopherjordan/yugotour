@@ -6,7 +6,7 @@ import { getCachedCityListPage, getCachedCityTours } from '@/lib/getCityPageData
 import { TourListHeader } from '@/components/TourListHeader'
 import { TourTile } from '@/components/TourTile'
 import { ImageSliderBlock } from '@/blocks/ImageSlider/Component'
-import { TalesFromTheRoad } from '@/components/TalesFromTheRoad'
+import { ReviewsCarouselV2Block } from '@/blocks/ReviewsCarouselV2/Component'
 import { SimulatorSection } from '@/components/SimulatorSection'
 import { getSimulatorAssets } from '@/lib/getSimulatorAssets'
 import RichText from '@/components/RichText'
@@ -77,7 +77,7 @@ export default async function BelgradeToursPage() {
     getCachedCityTours('belgrade')(),
     getSimulatorAssets(),
   ])
-  const talesTextureUrl = '/textures/texture-gold.webp'
+
 
   const headlineBlack = page?.introHeaderBlack || FALLBACK_HEADLINE_BLACK
   const headlineRed   = page?.introHeaderRed   || FALLBACK_HEADLINE_RED
@@ -161,7 +161,7 @@ export default async function BelgradeToursPage() {
       )}
 
       {showTales && (
-        <TalesFromTheRoad textureUrl={talesTextureUrl} city="belgrade" />
+        <ReviewsCarouselV2Block blockType="reviewsCarouselV2" city="belgrade" writeReviewCity="belgrade" />
       )}
 
       {showSim && <SimulatorSection {...sim} />}
