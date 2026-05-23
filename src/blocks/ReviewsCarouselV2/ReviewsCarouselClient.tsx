@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { A11y } from 'swiper/modules'
 import type { Swiper as SwiperType } from 'swiper'
@@ -114,9 +114,6 @@ function formatDate(isoString: string): string {
   }
 }
 
-// Show "Read more" button when text exceeds ~6 lines worth of characters
-const READ_MORE_THRESHOLD = 360
-
 // ── City label — matches TalesFromTheRoad homepage style ─────────────────────
 function CityLabel({ city }: { city: 'belgrade' | 'sarajevo' }) {
   return <h3 className="rcv2-city-label">{city.toUpperCase()}</h3>
@@ -130,9 +127,15 @@ function ReviewCard({
   review: ReviewData
   onReadMore: (r: ReviewData) => void
 }) {
-  const needsReadMore = review.reviewText.length > READ_MORE_THRESHOLD
-
+  const textRef = useRef<HTMLElement | null>(null)
+  const [needsReadMore, setNeedsReadMore] = useState(false)
   const isTA = review.source === 'tripadvisor'
+
+  useEffect(() => {
+    const el = textRef.current
+    if (!el) return
+    setNeedsReadMore(el.scrollHeight > el.clientHeight)
+  }, [])
 
   return (
     <div className="rcv2-card">
@@ -143,11 +146,12 @@ function ReviewCard({
       <div className="rcv2-card-body">
         {isTA && review.reviewTextRichHtml ? (
           <div
+            ref={(el) => { textRef.current = el }}
             className="rcv2-card-text rcv2-card-text--rich"
             dangerouslySetInnerHTML={{ __html: review.reviewTextRichHtml }}
           />
         ) : (
-          <p className="rcv2-card-text">{review.reviewText}</p>
+          <p ref={(el) => { textRef.current = el }} className="rcv2-card-text">{review.reviewText}</p>
         )}
         {needsReadMore && (
           <button
