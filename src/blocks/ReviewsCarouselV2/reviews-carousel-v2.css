@@ -178,7 +178,7 @@
 /* ── Review text — CSS 6-line clamp ── */
 .rcv2-card-text {
   display: -webkit-box;
-  -webkit-line-clamp: 6;
+  -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-family: var(--font-fakt-pro), sans-serif;
