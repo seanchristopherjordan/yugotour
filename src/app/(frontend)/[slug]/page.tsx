@@ -26,10 +26,9 @@ export async function generateStaticParams() {
     },
   })
 
+  const reservedSlugs = new Set(['home', 'blog', 'in-the-media', 'posts'])
   const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
+    ?.filter((doc) => !reservedSlugs.has(doc.slug ?? ''))
     .map(({ slug }) => {
       return { slug }
     })
