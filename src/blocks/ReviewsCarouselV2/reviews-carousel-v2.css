@@ -117,13 +117,13 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  border: 1.5px solid #34E0A1;
+  border: 1.5px solid #47833A;
   background-color: transparent;
   flex-shrink: 0;
 }
 
 .rcv2-circle--filled {
-  background-color: #34E0A1;
+  background-color: #47833A;
 }
 
 /* ── TripAdvisor reviewer credit ── */
