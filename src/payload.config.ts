@@ -76,7 +76,7 @@ export default buildConfig({
   }),
   collections: [
     // Collections
-    Posts, Media, Users, Sliders, Categories,
+    Posts, PostComments, Media, Users, Sliders, Categories,
     // Site
     Pages,
     // Tours
@@ -85,8 +85,6 @@ export default buildConfig({
     ContactMessages, Bookings, EmailTemplates,
     // Reviews
     Reviews,
-    // Blog
-    PostComments,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [

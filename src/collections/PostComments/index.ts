@@ -12,7 +12,7 @@ export const PostComments: CollectionConfig = {
     delete: authenticated,
   },
   admin: {
-    group: 'Blog',
+    group: 'Collections',
     useAsTitle: 'authorName',
     defaultColumns: ['authorName', 'post', 'publishedAt', 'approved'],
   },
