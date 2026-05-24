@@ -94,6 +94,9 @@ export default async function BlogPostPage({ params: paramsPromise }: Args) {
             alt={('alt' in heroImage ? heroImage.alt : null) ?? post.title ?? ''}
             className="blog-post-hero-img"
             loading="eager"
+            style={{
+              objectPosition: `${'focalX' in heroImage && heroImage.focalX != null ? heroImage.focalX : 50}% ${'focalY' in heroImage && heroImage.focalY != null ? heroImage.focalY : 50}%`,
+            }}
           />
         )}
         <div className="blog-post-hero-overlay" />

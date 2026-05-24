@@ -5,7 +5,7 @@ import {
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -50,6 +50,8 @@ export const Media: CollectionConfig = {
       ({ doc, req: { context } }) => {
         if (!context.disableRevalidate) {
           revalidateTag('media', 'page')
+          revalidatePath('/blog', 'layout')
+          revalidatePath('/in-the-media', 'layout')
         }
         return doc
       },
