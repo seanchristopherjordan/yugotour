@@ -3,6 +3,7 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { revalidatePath } from 'next/cache'
+import { verifyTurnstile } from '@/lib/verifyTurnstile'
 
 async function getCategoryId(categorySlug: string) {
   const payload = await getPayload({ config: configPromise })
@@ -79,16 +80,8 @@ export async function submitComment(
   formData: { authorName: string; authorEmail: string; content: string },
   turnstileToken: string,
 ) {
-  const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      secret: process.env.TURNSTILE_SECRET_KEY,
-      response: turnstileToken,
-    }),
-  })
-  const verifyData = await verifyRes.json()
-  if (!verifyData.success) throw new Error('Security check failed. Please try again.')
+  const verified = await verifyTurnstile(turnstileToken)
+  if (!verified) throw new Error('Captcha verification failed. Please try again.')
 
   const payload = await getPayload({ config: configPromise })
 

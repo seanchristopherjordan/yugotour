@@ -287,6 +287,10 @@
   min-height: 9rem;
 }
 
+.comment-form-captcha {
+  margin: 0.4rem 0;
+}
+
 .comment-form-error {
   font-family: var(--font-fakt);
   font-size: 0.85rem;
