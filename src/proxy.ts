@@ -62,7 +62,6 @@ export const config = {
     // Unknown API endpoints
     '/api/:path*',
     // Old WordPress URL structures — never exist in this Next.js site
-    '/blog/:path*',
     '/category/:path*',
     '/tag/:path*',
     '/author/:path*',
