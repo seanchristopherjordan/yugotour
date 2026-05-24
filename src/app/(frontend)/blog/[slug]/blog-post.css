@@ -96,7 +96,7 @@
 .blog-post-richtext {
   font-family: var(--font-fakt);
   font-size: 1rem;
-  line-height: 1.7;
+  line-height: 1.4;
   color: var(--color-yugo-black);
 }
 
@@ -122,10 +122,9 @@
   font-family: var(--font-grotesk);
   font-weight: 500;
   font-size: clamp(1rem, 1.6vw, 1.25rem);
-  color: var(--color-yugo-black);
+  color: var(--color-yugo-blue);
   line-height: 1.35;
   margin: 1.5rem 0 0.6rem;
-  opacity: 0.75;
 }
 
 .blog-post-richtext p {

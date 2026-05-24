@@ -1,7 +1,17 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect, useRef } from 'react'
 import { submitComment } from '../actions'
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (container: HTMLElement, options: Record<string, unknown>) => string
+      remove: (widgetId: string) => void
+      getResponse: (widgetId: string) => string | undefined
+    }
+  }
+}
 
 interface CommentFormProps {
   postId: number
@@ -15,10 +25,55 @@ export function CommentForm({ postId, postSlug }: CommentFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [isPending, startTransition] = useTransition()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const widgetIdRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    const init = () => {
+      if (!containerRef.current || !window.turnstile || widgetIdRef.current) return
+      widgetIdRef.current = window.turnstile.render(containerRef.current, {
+        sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? '',
+        theme: 'light',
+      })
+    }
+
+    if (window.turnstile) {
+      init()
+      return
+    }
+
+    // Script not yet loaded — inject it once
+    if (!document.querySelector('script[data-turnstile]')) {
+      const script = document.createElement('script')
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js'
+      script.async = true
+      script.defer = true
+      script.dataset.turnstile = 'true'
+      script.onload = init
+      document.head.appendChild(script)
+    } else {
+      // Script tag exists but hasn't loaded yet — wait for it
+      const existing = document.querySelector('script[data-turnstile]')!
+      existing.addEventListener('load', init, { once: true })
+    }
+
+    return () => {
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current)
+        widgetIdRef.current = null
+      }
+    }
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!name.trim() || !message.trim()) return
+
+    const token = widgetIdRef.current ? window.turnstile?.getResponse(widgetIdRef.current) : undefined
+    if (!token) {
+      setError('Please complete the security check.')
+      return
+    }
 
     startTransition(async () => {
       try {
@@ -26,10 +81,10 @@ export function CommentForm({ postId, postSlug }: CommentFormProps) {
           authorName: name.trim(),
           authorEmail: email.trim(),
           content: message.trim(),
-        })
+        }, token)
         setSubmitted(true)
-      } catch {
-        setError('Something went wrong. Please try again.')
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
       }
     })
   }
@@ -87,6 +142,7 @@ export function CommentForm({ postId, postSlug }: CommentFormProps) {
           disabled={isPending}
         />
       </div>
+      <div ref={containerRef} />
       {error && <p className="comment-form-error">{error}</p>}
       <button
         type="submit"

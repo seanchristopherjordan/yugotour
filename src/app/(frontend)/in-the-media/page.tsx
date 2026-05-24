@@ -3,7 +3,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { BlogCategoryListing } from '../blog/BlogCategoryListing'
-import { BlogListHeader } from '@/components/BlogListHeader'
+import { PageHeader } from '@/components/PageHeader'
 import PageClient from './page.client'
 import '../posts/blog-listing.css'
 
@@ -24,7 +24,6 @@ export default async function InTheMediaPage() {
   const catId = catResult.docs[0]?.id
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const site = (siteSettings as any)?.site
-  const headerImage = site?.inTheMediaHeaderImage ?? null
 
   const posts = await payload.find({
     collection: 'posts',
@@ -50,10 +49,14 @@ export default async function InTheMediaPage() {
 
   return (
     <div
-      style={{ backgroundImage: "url('/textures/texture-cream.webp')", backgroundRepeat: 'repeat' }}
+      style={{ backgroundImage: "url('/textures/texture-blue.webp')", backgroundRepeat: 'repeat' }}
     >
       <PageClient />
-      <BlogListHeader label="In the Media" backgroundImage={headerImage} />
+      <PageHeader
+        heroHeadline={site?.inTheMediaHeaderHeadline ?? 'In the Media'}
+        heroImage={site?.inTheMediaHeaderImage ?? null}
+        heroImageMobile={site?.inTheMediaHeaderImageMobile ?? null}
+      />
       <BlogCategoryListing
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initialPosts={posts.docs as any}

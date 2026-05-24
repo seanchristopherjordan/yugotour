@@ -3,7 +3,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { getCachedGlobal } from '@/utilities/getGlobals'
 import { BlogCategoryListing } from './BlogCategoryListing'
-import { BlogListHeader } from '@/components/BlogListHeader'
+import { PageHeader } from '@/components/PageHeader'
 import PageClient from './page.client'
 import '../posts/blog-listing.css'
 
@@ -24,7 +24,6 @@ export default async function BlogPage() {
   const catId = catResult.docs[0]?.id
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const site = (siteSettings as any)?.site
-  const headerImage = site?.blogHeaderImage ?? null
 
   const posts = await payload.find({
     collection: 'posts',
@@ -50,10 +49,14 @@ export default async function BlogPage() {
 
   return (
     <div
-      style={{ backgroundImage: "url('/textures/texture-cream.webp')", backgroundRepeat: 'repeat' }}
+      style={{ backgroundImage: "url('/textures/texture-blue.webp')", backgroundRepeat: 'repeat' }}
     >
       <PageClient />
-      <BlogListHeader label="Blog" backgroundImage={headerImage} />
+      <PageHeader
+        heroHeadline={site?.blogHeaderHeadline ?? 'Blog'}
+        heroImage={site?.blogHeaderImage ?? null}
+        heroImageMobile={site?.blogHeaderImageMobile ?? null}
+      />
       <BlogCategoryListing
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initialPosts={posts.docs as any}

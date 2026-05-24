@@ -77,7 +77,19 @@ export async function submitComment(
   postId: number,
   postSlug: string,
   formData: { authorName: string; authorEmail: string; content: string },
+  turnstileToken: string,
 ) {
+  const verifyRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      secret: process.env.TURNSTILE_SECRET_KEY,
+      response: turnstileToken,
+    }),
+  })
+  const verifyData = await verifyRes.json()
+  if (!verifyData.success) throw new Error('Security check failed. Please try again.')
+
   const payload = await getPayload({ config: configPromise })
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

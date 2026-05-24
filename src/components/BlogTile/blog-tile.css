@@ -43,7 +43,7 @@
 
 /* Body */
 .blog-tile-body {
-  padding: 1.2rem 10px 1.5rem;
+  padding: 1.2rem 20px 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -52,13 +52,15 @@
 }
 
 .blog-tile-category {
-  font-family: var(--font-fakt);
-  font-size: 0.756rem;
-  font-weight: 500;
-  color: var(--color-yugo-red);
+  display: inline-block;
+  font-family: var(--font-grotesk);
+  font-weight: 700;
+  font-size: 0.73rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin: 0;
+  color: var(--color-yugo-red);
+  background-color: transparent;
+  margin: 0 0 4px;
 }
 
 .blog-tile-title {
