@@ -13,6 +13,21 @@ import './blog-post.css'
 
 export const revalidate = 3600
 
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://yugotour.com'
+
+function lexicalToText(node: unknown): string {
+  if (!node || typeof node !== 'object') return ''
+  const n = node as Record<string, unknown>
+  if (typeof n.text === 'string') return n.text
+  const children = Array.isArray(n.children)
+    ? n.children
+    : Array.isArray((n.root as Record<string, unknown>)?.children)
+      ? ((n.root as Record<string, unknown>).children as unknown[])
+      : null
+  if (children) return children.map(lexicalToText).join(' ').replace(/\s+/g, ' ').trim()
+  return ''
+}
+
 export async function generateStaticParams() {
   try {
     const payload = await getPayload({ config: configPromise })
@@ -81,8 +96,23 @@ export default async function BlogPostPage({ params: paramsPromise }: Args) {
 
   const backLabel = backPath === '/in-the-media' ? '← In the Media' : '← Blog'
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    ...(post.publishedAt ? { datePublished: post.publishedAt } : {}),
+    ...(post.updatedAt ? { dateModified: post.updatedAt } : {}),
+    ...(heroImage && 'url' in heroImage && heroImage.url ? { image: heroImage.url } : {}),
+    url: `${BASE_URL}/blog/${decodedSlug}`,
+    publisher: { '@type': 'Organization', name: 'YugoTour', url: BASE_URL },
+  }
+
   return (
     <article className="blog-post">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <PayloadRedirects disableNotFound url={url} />
 
       {/* Hero */}
@@ -172,9 +202,36 @@ export default async function BlogPostPage({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const post = await queryPostBySlug({ slug: decodeURIComponent(slug) })
+
+  const title = post?.meta?.title ?? post?.title ?? 'Blog | YugoTour'
+  const description =
+    post?.meta?.description ??
+    (post?.content ? lexicalToText(post.content).slice(0, 155).replace(/\s\S*$/, '…') : undefined)
+
+  const heroImg =
+    post?.heroImage && typeof post.heroImage === 'object' && 'url' in post.heroImage
+      ? (post.heroImage as { url?: string | null; alt?: string | null })
+      : null
+
   return {
-    title: post?.meta?.title ?? post?.title ?? 'Blog | YugoTour',
-    description: post?.meta?.description ?? undefined,
+    title,
+    description,
+    openGraph: {
+      title,
+      description: description ?? undefined,
+      type: 'article',
+      ...(post?.publishedAt ? { publishedTime: post.publishedAt } : {}),
+      ...(post?.updatedAt ? { modifiedTime: post.updatedAt } : {}),
+      ...(heroImg?.url
+        ? { images: [{ url: heroImg.url, alt: heroImg.alt ?? title }] }
+        : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: description ?? undefined,
+      ...(heroImg?.url ? { images: [heroImg.url] } : {}),
+    },
   }
 }
 

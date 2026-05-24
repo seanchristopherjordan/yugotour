@@ -37,9 +37,9 @@ const MAIN_LINKS = [
 ]
 
 const SECONDARY_LINKS = [
-  // { label: 'Blog', href: '/blog' },       // TEMP HIDDEN
+  { label: 'Blog', href: '/blog' },
   { label: 'FAQs', href: '/faqs' },
-  // { label: 'Media', href: '/media' },     // TEMP HIDDEN
+  { label: 'Media', href: '/in-the-media' },
 ]
 
 export function MegaMenu({ isOpen, onClose, textureUrl, images, socialLinks }: MegaMenuProps) {

@@ -68,7 +68,7 @@ export function TalesFromTheRoad({ textureUrl, city }: TalesFromTheRoadProps) {
   return (
     <section
       id="tales-from-the-road"
-      className="reviews-section-outer relative z-[10] pt-[40px] pb-0 text-center"
+      className="reviews-section-outer relative z-[10] pt-[40px] pb-[30px] text-center"
       style={{
         backgroundImage: textureUrl ? `url('${textureUrl}')` : undefined,
         backgroundRepeat: 'repeat-y',

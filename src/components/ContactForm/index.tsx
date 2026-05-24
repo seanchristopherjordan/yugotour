@@ -9,7 +9,7 @@ const initialState: ContactFormState = { status: 'idle' }
 
 export function ContactForm() {
   const [state, action, isPending] = useActionState(submitContact, initialState)
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ''
+  const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ?? ''
 
   if (state.status === 'success') {
     return (

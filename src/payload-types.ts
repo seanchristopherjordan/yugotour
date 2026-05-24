@@ -2764,6 +2764,30 @@ export interface SiteSetting {
      * The video that plays inside the vintage TV on the homepage.
      */
     youtubeVideoUrl?: string | null;
+    /**
+     * Displayed in all-caps Tungsten Compressed across the header.
+     */
+    blogHeaderHeadline?: string | null;
+    /**
+     * Full-bleed desktop background. Landscape recommended.
+     */
+    blogHeaderImage?: (number | null) | Media;
+    /**
+     * Portrait crop for mobile devices.
+     */
+    blogHeaderImageMobile?: (number | null) | Media;
+    /**
+     * Displayed in all-caps Tungsten Compressed across the header.
+     */
+    inTheMediaHeaderHeadline?: string | null;
+    /**
+     * Full-bleed desktop background. Landscape recommended.
+     */
+    inTheMediaHeaderImage?: (number | null) | Media;
+    /**
+     * Portrait crop for mobile devices.
+     */
+    inTheMediaHeaderImageMobile?: (number | null) | Media;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -2923,6 +2947,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         siteDescription?: T;
         homepageSlider?: T;
         youtubeVideoUrl?: T;
+        blogHeaderHeadline?: T;
+        blogHeaderImage?: T;
+        blogHeaderImageMobile?: T;
+        inTheMediaHeaderHeadline?: T;
+        inTheMediaHeaderImage?: T;
+        inTheMediaHeaderImageMobile?: T;
       };
   updatedAt?: T;
   createdAt?: T;

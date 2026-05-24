@@ -10,8 +10,8 @@ const NAV_LINKS = [
   { label: 'About Us', href: '/about-us' },
   { label: 'Yugopedia', href: '/yugopedia' },
   { label: 'FAQs', href: '/faqs' },
-  // { label: 'Blog', href: '/blog' },           // TEMP HIDDEN
-  // { label: 'Media', href: '/media' },         // TEMP HIDDEN
+  { label: 'Blog', href: '/blog' },
+  { label: 'Media', href: '/in-the-media' },
 ]
 
 const FINE_PRINT_LINKS = [

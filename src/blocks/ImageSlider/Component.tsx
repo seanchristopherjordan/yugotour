@@ -41,7 +41,7 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
             pagination={{ clickable: true }}
             grabCursor
             className="image-slider-swiper"
-            style={{ height: '85vh' }}
+            style={{ height: '82vh' }}
           >
             {mobileSlides.map((img, i) => (
               <SwiperSlide key={img.id} className="image-slider-slide">
@@ -74,7 +74,7 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
             pagination={{ clickable: true }}
             grabCursor
             className="image-slider-swiper"
-            style={{ height: '74vh' }}
+            style={{ height: '71vh' }}
           >
             {mobileSlides.map((img, i) => (
               <SwiperSlide key={img.id} className="image-slider-slide">

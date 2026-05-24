@@ -9,7 +9,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://yugotour.com'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayload({ config: configPromise })
 
-  const [toursData, pagesData] = await Promise.all([
+  const [toursData, pagesData, postsData] = await Promise.all([
     payload.find({
       collection: 'tours',
       draft: false,
@@ -22,6 +22,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       draft: false,
       limit: 1000,
       pagination: false,
+      select: { slug: true, updatedAt: true },
+    }),
+    payload.find({
+      collection: 'posts',
+      draft: false,
+      limit: 1000,
+      pagination: false,
+      overrideAccess: true,
+      where: { _status: { equals: 'published' } },
       select: { slug: true, updatedAt: true },
     }),
   ])
@@ -43,6 +52,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }))
 
+  const postEntries: MetadataRoute.Sitemap = postsData.docs
+    .filter((post) => Boolean(post.slug))
+    .map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    }))
+
   const staticEntries: MetadataRoute.Sitemap = [
     {
       url: BASE_URL,
@@ -62,7 +80,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/in-the-media`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
   ]
 
-  return [...staticEntries, ...tourEntries, ...pageEntries]
+  return [...staticEntries, ...tourEntries, ...pageEntries, ...postEntries]
 }

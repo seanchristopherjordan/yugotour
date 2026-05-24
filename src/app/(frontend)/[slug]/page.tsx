@@ -66,7 +66,7 @@ export default async function Page({ params: paramsPromise }: Args) {
   const { hero, layout } = page
   const isPageHero = (hero as { type?: string })?.type === 'pageHero'
 
-  const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection', 'fullBleedParallax', 'fullBleedStatic', 'imageCarousel', 'simulatorBlock'])
+  const fullBleedTypes = new Set(['imageSlider', 'tvSection', 'reviewsSection', 'reviewsCarouselV2', 'fullBleedParallax', 'fullBleedStatic', 'imageCarousel', 'simulatorBlock'])
   const lastBlock = layout?.[layout.length - 1] as { blockType?: string } | undefined
   const endsWithFullBleed = fullBleedTypes.has(lastBlock?.blockType ?? '')
 

@@ -17,7 +17,7 @@ export function CommentForm({ postId, postSlug }: CommentFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
   const [isPending, startTransition] = useTransition()
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? ''
+  const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY ?? ''
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()

@@ -75,6 +75,7 @@
 .rcv2-swiper {
   flex: 1;
   min-width: 0;
+  padding-bottom: 0 !important;
 }
 
 .rcv2-swiper .swiper-wrapper {

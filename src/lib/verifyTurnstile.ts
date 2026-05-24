@@ -1,5 +1,5 @@
 export async function verifyTurnstile(token: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY
+  const secret = process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY
   if (!secret) {
     console.warn('[verifyTurnstile] TURNSTILE_SECRET_KEY not set — skipping verification')
     return true
