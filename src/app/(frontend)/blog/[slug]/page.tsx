@@ -7,6 +7,7 @@ import Link from 'next/link'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import RichText from '@/components/RichText'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { formatDateTime } from '@/utilities/formatDateTime'
 import { CommentForm } from './CommentForm'
 import './blog-post.css'
@@ -159,6 +160,13 @@ export default async function BlogPostPage({ params: paramsPromise }: Args) {
           />
         )}
       </div>
+
+      {/* Layout blocks (VideoEmbed, ImageCarousel, etc.) */}
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      {Array.isArray((post as any).layout) && (post as any).layout.length > 0 && (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        <RenderBlocks blocks={(post as any).layout} />
+      )}
 
       {/* Comments */}
       <div className="blog-post-comments container">

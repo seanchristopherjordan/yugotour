@@ -10,31 +10,27 @@ interface CookieBannerProps {
 }
 
 export function CookieBanner({ kolaciUrl }: CookieBannerProps) {
-  const [visible, setVisible] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [leaving, setLeaving] = useState(false)
 
   useEffect(() => {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      setVisible(true)
-    }
+    if (localStorage.getItem(STORAGE_KEY)) return
+    const t = setTimeout(() => setMounted(true), 2000)
+    return () => clearTimeout(t)
   }, [])
 
-  if (!visible) return null
-
-  function accept() {
-    localStorage.setItem(STORAGE_KEY, '1')
-    setVisible(false)
+  function dismiss(value: '1' | '0') {
+    localStorage.setItem(STORAGE_KEY, value)
+    setLeaving(true)
+    setTimeout(() => setMounted(false), 480)
   }
 
-  function reject() {
-    localStorage.setItem(STORAGE_KEY, '0')
-    setVisible(false)
-  }
+  if (!mounted) return null
 
   return (
-    <div className="cookie-wrapper">
+    <div className={`cookie-wrapper${leaving ? ' cookie-wrapper--out' : ''}`}>
       <div className="cookie-card">
 
-        {/* Kolaci image — left column, clips at card border-radius via overflow:hidden */}
         {kolaciUrl && (
           <div className="cookie-image">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -42,13 +38,12 @@ export function CookieBanner({ kolaciUrl }: CookieBannerProps) {
           </div>
         )}
 
-        {/* Content */}
         <div className="cookie-content">
           <p className="cookie-heading">This site uses keksići.</p>
 
           <div className="cookie-buttons">
-            <button className="cookie-btn" onClick={reject}>Reject</button>
-            <button className="cookie-btn" onClick={accept}>Accept</button>
+            <button className="cookie-btn" onClick={() => dismiss('0')}>Reject</button>
+            <button className="cookie-btn" onClick={() => dismiss('1')}>Accept</button>
           </div>
         </div>
 
