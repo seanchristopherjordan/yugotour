@@ -68,6 +68,9 @@ export const redirects: NextConfig['redirects'] = async () => {
     // Redirect the old /posts listing to the canonical /blog
     ...both('/posts', '/blog'),
 
+    // ── Legacy WP media assets ────────────────────────────────────────────────
+    { source: '/wp-content/yugoslavia.jpg', destination: '/blog/yugoslavia-intro', permanent: true },
+
     // ── Legacy WP section wildcards → homepage ────────────────────────────────
     ...both('/media-clipping', 'https://www.yugotour.com'),
     { source: '/media-clipping/:path+', destination: 'https://www.yugotour.com', permanent: true },
