@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: 'FAQs', href: '/faqs' },
   { label: 'Blog', href: '/blog' },
   { label: 'Media', href: '/in-the-media' },
+  { label: 'Jobs', href: '/jobs' },
 ]
 
 const FINE_PRINT_LINKS = [
