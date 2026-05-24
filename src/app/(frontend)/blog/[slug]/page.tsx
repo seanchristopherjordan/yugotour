@@ -183,9 +183,11 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'posts',
     draft,
     limit: 1,
-    overrideAccess: draft,
+    overrideAccess: true,
     pagination: false,
-    where: { slug: { equals: slug } },
+    where: draft
+      ? { slug: { equals: slug } }
+      : { and: [{ slug: { equals: slug } }, { _status: { equals: 'published' } }] },
   })
 
   return result.docs?.[0] || null

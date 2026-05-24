@@ -230,6 +230,24 @@ export const SiteSettings: GlobalConfig = {
                 description: 'The video that plays inside the vintage TV on the homepage.',
               },
             },
+            {
+              name: 'blogHeaderImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Blog Listing — Header Background Image',
+              admin: {
+                description: 'Full-bleed background for the /blog listing page header.',
+              },
+            },
+            {
+              name: 'inTheMediaHeaderImage',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'In the Media Listing — Header Background Image',
+              admin: {
+                description: 'Full-bleed background for the /in-the-media listing page header.',
+              },
+            },
           ],
         },
       ],

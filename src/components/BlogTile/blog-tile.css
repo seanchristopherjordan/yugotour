@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   background-color: var(--color-yugo-cream);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Image area */
@@ -9,19 +12,22 @@
   aspect-ratio: 3 / 2;
   overflow: hidden;
   background-color: var(--color-yugo-black);
+  position: relative;
 }
 
-.blog-tile-image {
+/* Higher specificity than img[loading="lazy"] in lazy-fade.css (0,2,0 vs 0,1,1) */
+.blog-tile-image-wrap .blog-tile-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 350ms ease, filter 350ms ease;
+  transition: transform 400ms ease-out, opacity 700ms ease;
 }
 
-.blog-tile:hover .blog-tile-image {
-  transform: scale(1.03);
-  filter: brightness(1.06);
+@media (min-width: 992px) {
+  .blog-tile:hover .blog-tile-image-wrap .blog-tile-image {
+    transform: scale(1.05);
+  }
 }
 
 .blog-tile-image-placeholder {
@@ -37,16 +43,17 @@
 
 /* Body */
 .blog-tile-body {
-  padding: 1.2rem 0 1.5rem;
+  padding: 1.2rem 10px 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   flex: 1;
+  background-color: var(--color-yugo-cream);
 }
 
 .blog-tile-category {
   font-family: var(--font-fakt);
-  font-size: 0.72rem;
+  font-size: 0.756rem;
   font-weight: 500;
   color: var(--color-yugo-red);
   text-transform: uppercase;
@@ -58,10 +65,9 @@
   font-family: var(--font-grotesk);
   font-weight: 600;
   color: var(--color-yugo-blue);
-  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-size: clamp(1.155rem, 1.89vw, 1.575rem);
   line-height: 1.2;
   margin: 0;
-  /* Two-line clamp */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -79,7 +85,7 @@
 
 .blog-tile-date {
   font-family: var(--font-fakt);
-  font-size: 0.78rem;
+  font-size: 0.819rem;
   color: var(--color-yugo-black);
   opacity: 0.5;
   display: block;
@@ -88,7 +94,7 @@
 
 .blog-tile-comments {
   font-family: var(--font-fakt);
-  font-size: 0.72rem;
+  font-size: 0.756rem;
   color: var(--color-yugo-blue);
   opacity: 0.55;
   margin: 0.15rem 0 0;
@@ -97,7 +103,7 @@
 
 .blog-tile-excerpt {
   font-family: var(--font-fakt);
-  font-size: 0.92rem;
+  font-size: 0.966rem;
   line-height: 1.45;
   color: var(--color-yugo-black);
   margin: 0.25rem 0 0;

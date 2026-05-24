@@ -1,7 +1,9 @@
 import type { Metadata } from 'next/types'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
+import { getCachedGlobal } from '@/utilities/getGlobals'
 import { BlogCategoryListing } from '../blog/BlogCategoryListing'
+import { BlogListHeader } from '@/components/BlogListHeader'
 import PageClient from './page.client'
 import '../posts/blog-listing.css'
 
@@ -10,12 +12,19 @@ export const revalidate = 3600
 export default async function InTheMediaPage() {
   const payload = await getPayload({ config: configPromise })
 
-  const { docs: catDocs } = await payload.find({
-    collection: 'categories',
-    where: { slug: { equals: 'in-the-media' } },
-    limit: 1,
-  })
-  const catId = catDocs[0]?.id
+  const [catResult, siteSettings] = await Promise.all([
+    payload.find({
+      collection: 'categories',
+      where: { slug: { equals: 'in-the-media' } },
+      limit: 1,
+    }),
+    getCachedGlobal('site-settings', 2)(),
+  ])
+
+  const catId = catResult.docs[0]?.id
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const site = (siteSettings as any)?.site
+  const headerImage = site?.inTheMediaHeaderImage ?? null
 
   const posts = await payload.find({
     collection: 'posts',
@@ -40,13 +49,11 @@ export default async function InTheMediaPage() {
   const commentCounts = await getCommentCounts(payload, posts.docs.map((p) => p.id))
 
   return (
-    <div>
+    <div
+      style={{ backgroundImage: "url('/textures/texture-cream.webp')", backgroundRepeat: 'repeat' }}
+    >
       <PageClient />
-      <div className="blog-header-band">
-        <div className="container">
-          <h1 className="blog-header-title">IN THE MEDIA</h1>
-        </div>
-      </div>
+      <BlogListHeader label="In the Media" backgroundImage={headerImage} />
       <BlogCategoryListing
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         initialPosts={posts.docs as any}

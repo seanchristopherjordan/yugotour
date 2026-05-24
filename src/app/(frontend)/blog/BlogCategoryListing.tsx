@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect, useRef } from 'react'
 import { BlogTile } from '@/components/BlogTile'
 import { fetchMoreCategoryPosts } from './actions'
 import '../posts/blog-listing.css'
@@ -40,8 +40,27 @@ export function BlogCategoryListing({
   const [nextPage, setNextPage] = useState<number | null>(initialNextPage)
   const [commentCounts, setCommentCounts] = useState(initialCommentCounts)
   const [isPending, startTransition] = useTransition()
+  const sentinelRef = useRef<HTMLDivElement>(null)
 
-  const handleShowMore = () => {
+  useEffect(() => {
+    const sentinel = sentinelRef.current
+    if (!sentinel || !hasMore) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting && !isPending) {
+          loadMore()
+        }
+      },
+      { rootMargin: '300px' },
+    )
+
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasMore, isPending, nextPage])
+
+  const loadMore = () => {
     if (!nextPage) return
     startTransition(async () => {
       const result = await fetchMoreCategoryPosts(nextPage, categorySlug)
@@ -67,16 +86,7 @@ export function BlogCategoryListing({
       </div>
 
       {hasMore && (
-        <div className="blog-show-more container">
-          <button
-            onClick={handleShowMore}
-            disabled={isPending}
-            className="blog-show-more-btn btn-spring-hover"
-            type="button"
-          >
-            {isPending ? 'Loading…' : 'Show More'}
-          </button>
-        </div>
+        <div ref={sentinelRef} className="blog-lazy-sentinel" aria-hidden="true" />
       )}
     </>
   )

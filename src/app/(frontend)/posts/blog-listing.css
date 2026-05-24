@@ -1,22 +1,3 @@
-/* Blog landing header */
-.blog-header-band {
-  background-color: var(--color-yugo-cream);
-  padding-top: 3rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--color-yugo-blue);
-}
-
-.blog-header-title {
-  font-family: var(--font-tungsten);
-  font-weight: 700;
-  font-size: clamp(5rem, 10vw, 9rem);
-  color: var(--color-yugo-blue);
-  text-transform: uppercase;
-  line-height: 0.85;
-  letter-spacing: 0.018em;
-  margin: 0;
-}
-
 /* Tile grid */
 .blog-grid {
   display: grid;
@@ -33,32 +14,8 @@
   }
 }
 
-/* Show more */
-.blog-show-more {
-  padding-bottom: 4rem;
-  display: flex;
-  justify-content: center;
-}
-
-.blog-show-more-btn {
-  font-family: var(--font-grotesk);
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-yugo-cream);
-  background-color: var(--color-yugo-blue);
-  border: none;
-  padding: 0.85rem 2.8rem;
-  cursor: pointer;
-}
-
-.blog-show-more-btn:hover {
-  filter: brightness(1.12);
-}
-
-.blog-show-more-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
+/* Lazy-load sentinel — sits below the grid, triggers next page when scrolled into view */
+.blog-lazy-sentinel {
+  height: 1px;
+  margin-bottom: 4rem;
 }
