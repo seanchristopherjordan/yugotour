@@ -93,6 +93,12 @@
   max-width: 52rem;
 }
 
+/* Layout blocks (VideoEmbed, etc.) — same reading width as body */
+.blog-post-layout {
+  max-width: 52rem;
+  padding-bottom: 3rem;
+}
+
 .blog-post-richtext {
   font-family: var(--font-fakt);
   font-size: 1rem;

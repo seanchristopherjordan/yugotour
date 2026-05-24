@@ -2,7 +2,7 @@ import './video-embed.css'
 
 function extractYouTubeId(url: string): string | null {
   const match = url.match(
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?]+)/,
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([^&\s?]+)/,
   )
   return match?.[1] ?? null
 }
@@ -28,7 +28,8 @@ export function VideoEmbedBlock({ youtubeUrl, position = 'full', caption }: Vide
         <iframe
           src={`https://www.youtube.com/embed/${videoId}`}
           title="Embedded video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
           className="video-embed-iframe"
         />

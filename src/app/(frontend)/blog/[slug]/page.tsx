@@ -164,8 +164,10 @@ export default async function BlogPostPage({ params: paramsPromise }: Args) {
       {/* Layout blocks (VideoEmbed, ImageCarousel, etc.) */}
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       {Array.isArray((post as any).layout) && (post as any).layout.length > 0 && (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        <RenderBlocks blocks={(post as any).layout} />
+        <div className="blog-post-layout container">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <RenderBlocks blocks={(post as any).layout} />
+        </div>
       )}
 
       {/* Comments */}
