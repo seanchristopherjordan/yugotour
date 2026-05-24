@@ -71,6 +71,9 @@ export const redirects: NextConfig['redirects'] = async () => {
     // ── Legacy WP media assets ────────────────────────────────────────────────
     { source: '/wp-content/yugoslavia.jpg', destination: '/blog/yugoslavia-intro', permanent: true },
 
+    // ── /booking → homepage with modal auto-open ──────────────────────────────
+    ...both('/booking', '/?open=booking'),
+
     // ── Legacy WP section wildcards → homepage ────────────────────────────────
     ...both('/media-clipping', 'https://www.yugotour.com'),
     { source: '/media-clipping/:path+', destination: 'https://www.yugotour.com', permanent: true },

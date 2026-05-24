@@ -1,6 +1,6 @@
 'use client'
 
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
 
@@ -105,6 +105,12 @@ export function BookingModalProvider({
   }, [])
 
   const close = useCallback(() => setIsOpen(false), [])
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('open') === 'booking') {
+      open()
+    }
+  }, [open])
 
   return (
     <BookingModalContext.Provider value={{ isOpen, open, close, tours, initialOpts, textureUrl, images, timeSettings, successContent }}>

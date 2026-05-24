@@ -12,10 +12,12 @@ export const generateAltText: CollectionAfterChangeHook = async ({ doc, operatio
   const mime = doc.mimeType as string | undefined
   if (!mime || !mime.startsWith('image/') || mime === 'image/svg+xml') return doc
 
+  if (!process.env.ANTHROPIC_API_KEY) return doc
+
   // Lazy-load the SDK — only runs when an image is actually being uploaded,
   // not on every cold start of every Payload route.
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
-  const client = new Anthropic()
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
   try {
     const response = await client.messages.create({
