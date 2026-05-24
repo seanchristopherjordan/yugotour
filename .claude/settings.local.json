@@ -45,7 +45,11 @@
       "Bash(Select-String \"post\")",
       "Bash(npx next *)",
       "Bash(Get-ChildItem -Recurse -Path \"C:\\\\Users\\\\seanj\\\\Local Sites\\\\yugotour2-local\\\\yugotour\\\\src\\\\app\" -Filter \"page.tsx\")",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(find src *)",
+      "Bash(ls middleware*)",
+      "Bash(ls src/middleware*)",
+      "Bash(Get-ChildItem -Recurse -Name \"middleware*\")"
     ]
   }
 }
