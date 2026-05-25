@@ -40,6 +40,7 @@ import '@/components/CookieBanner/cookie-banner.css'
 import { getServerSideURL } from '@/utilities/getURL'
 import { CookieBanner } from '@/components/CookieBanner/CookieBanner'
 import Script from 'next/script'
+import { GoogleTagManager } from '@next/third-parties/google'
 
 const faktPro = localFont({
   src: [
@@ -187,13 +188,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </>
         )}
       </head>
-      <Script id="gtm" strategy="afterInteractive">{`
-        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-TGJ448VB');
-      `}</Script>
+      <GoogleTagManager gtmId="GTM-TGJ448VB" />
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-1F5QQJVZ8S"
         strategy="afterInteractive"
@@ -207,14 +202,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         `}
       </Script>
       <body suppressHydrationWarning>
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-TGJ448VB"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
         <ContactModalProvider
           textureUrl="/textures/texture-blue.webp"
           images={{
