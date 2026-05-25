@@ -7,6 +7,7 @@ const API_ALLOWLIST = new Set([
   // Payload collections
   'pages',
   'posts',
+  'post-comments',
   'media',
   'users',
   'sliders',
