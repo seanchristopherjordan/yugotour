@@ -16,8 +16,9 @@ const resolveImageURL = (image?: Media | Config['db']['defaultIDType'] | null): 
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
+  canonicalUrl?: string
 }): Promise<Metadata> => {
-  const { doc } = args
+  const { doc, canonicalUrl } = args
 
   const settings = await getCachedGlobal('site-settings', 1)()
   const site = settings?.site as Record<string, unknown> | undefined
@@ -35,6 +36,7 @@ export const generateMeta = async (args: {
 
   return {
     description: doc?.meta?.description,
+    ...(canonicalUrl ? { alternates: { canonical: canonicalUrl } } : {}),
     openGraph: mergeOpenGraph({
       description: doc?.meta?.description || '',
       images: [{ url: ogImage }],

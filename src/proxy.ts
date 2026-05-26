@@ -53,6 +53,11 @@ export function proxy(request: NextRequest) {
     return new NextResponse('Gone', { status: 410 })
   }
 
+  // WP category archive → canonical section page
+  if (pathname === '/category/media-clipping' || pathname === '/category/media-clipping/') {
+    return NextResponse.redirect(new URL('/in-the-media', request.url), 301)
+  }
+
   // Everything else matched by the config matchers below is a dead path
   // from the old WordPress site — kill it at the edge before it wakes Payload.
   return new NextResponse('Not Found', { status: 404 })

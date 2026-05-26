@@ -89,15 +89,14 @@ export default async function Page({ params: paramsPromise }: Args) {
   )
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://www.yugotour.com'
+
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = 'home' } = await paramsPromise
-  // Decode to support slugs with special characters
   const decodedSlug = decodeURIComponent(slug)
-  const page = await queryPageBySlug({
-    slug: decodedSlug,
-  })
-
-  return generateMeta({ doc: page })
+  const page = await queryPageBySlug({ slug: decodedSlug })
+  const canonicalUrl = decodedSlug === 'home' ? `${BASE_URL}/` : `${BASE_URL}/${decodedSlug}`
+  return generateMeta({ doc: page, canonicalUrl })
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {

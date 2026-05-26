@@ -223,9 +223,11 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
       ? (post.heroImage as { url?: string | null; alt?: string | null })
       : null
 
+  const decodedSlug = decodeURIComponent(slug)
   return {
     title,
     description,
+    alternates: { canonical: `${BASE_URL}/blog/${decodedSlug}` },
     openGraph: {
       title,
       description: description ?? undefined,

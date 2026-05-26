@@ -309,6 +309,8 @@ export default async function TourPage({ params: paramsPromise }: Args) {
   )
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://www.yugotour.com'
+
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { slug = '' } = await paramsPromise
   const tour = await queryTourBySlug({ slug })
@@ -316,6 +318,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   return {
     title: tour.title,
     description: tour.lede ?? undefined,
+    alternates: { canonical: `${BASE_URL}/tours/${slug}` },
     openGraph: {
       title: `${tour.title} — Yugotour`,
       description: tour.lede ?? undefined,

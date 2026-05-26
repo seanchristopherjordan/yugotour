@@ -76,9 +76,11 @@ export default async function HomePage() {
   )
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://www.yugotour.com'
+
 export async function generateMetadata(): Promise<Metadata> {
   const page = await queryHomePage()
-  return generateMeta({ doc: page })
+  return generateMeta({ doc: page, canonicalUrl: `${BASE_URL}/` })
 }
 
 const _getCachedHomePage = unstable_cache(

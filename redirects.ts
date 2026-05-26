@@ -77,5 +77,8 @@ export const redirects: NextConfig['redirects'] = async () => {
     // ── Legacy WP section wildcards → homepage ────────────────────────────────
     ...both('/media-clipping', 'https://www.yugotour.com'),
     { source: '/media-clipping/:path+', destination: 'https://www.yugotour.com', permanent: true },
+
+    // ── Legacy WP feed / post URLs → homepage ─────────────────────────────────
+    { source: '/airbnb-genex-tower/:path*', destination: 'https://www.yugotour.com', permanent: true },
   ]
 }

@@ -94,6 +94,11 @@ async function getCommentCounts(payload: any, postIds: (number | string)[]) {
   }
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://www.yugotour.com'
+
 export function generateMetadata(): Metadata {
-  return { title: 'Blog | YugoTour' }
+  return {
+    title: 'Blog | YugoTour',
+    alternates: { canonical: `${BASE_URL}/blog` },
+  }
 }
