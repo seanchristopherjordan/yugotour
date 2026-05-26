@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       sender_name: trimmedName,
       sender_email: trimmedEmail,
       message: trimmedMessage,
-    })
+    }, undefined, trimmedEmail)
     console.log('[contact] notification email sent successfully')
 
     return NextResponse.json({ success: true })
