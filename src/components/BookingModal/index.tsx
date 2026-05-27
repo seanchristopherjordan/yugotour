@@ -156,6 +156,7 @@ function isFormValid(state: FormState, tourSelected: boolean): boolean {
   if (!state.city || !tourSelected) return false
   if (!state.name.trim()) return false
   if (!emailRegex.test(state.email)) return false
+  if (!state.phone.trim()) return false
   if (!state.date.trim()) return false
   if (!state.startTime.trim()) return false
   return true
@@ -592,6 +593,7 @@ export function BookingModal() {
     const errors = new Set<string>()
     if (!formState.name.trim()) errors.add('name')
     if (!emailRegex.test(formState.email)) errors.add('email')
+    if (!formState.phone.trim()) errors.add('phone')
     if (!formState.date.trim()) errors.add('date')
     if (!formState.startTime.trim()) errors.add('startTime')
     if (errors.size > 0) {
@@ -1024,9 +1026,10 @@ export function BookingModal() {
                     <InputField
                       imgSrc={images.iconPhone}
                       type="tel"
-                      placeholder="Phone (recommended)"
+                      placeholder="Phone"
                       value={formState.phone}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'phone', value: v })}
+                      error={fieldErrors.has('phone')}
+                      onChange={(v) => { clearError('phone'); dispatch({ type: 'SET_FIELD', field: 'phone', value: v }) }}
                     />
                   </div>
                   {/* Sarajevo: Date / Pick-up Spot / Start Time on row 2 */}
@@ -1078,9 +1081,10 @@ export function BookingModal() {
                     <InputField
                       imgSrc={images.iconPhone}
                       type="tel"
-                      placeholder="Phone (recommended)"
+                      placeholder="Phone"
                       value={formState.phone}
-                      onChange={(v) => dispatch({ type: 'SET_FIELD', field: 'phone', value: v })}
+                      error={fieldErrors.has('phone')}
+                      onChange={(v) => { clearError('phone'); dispatch({ type: 'SET_FIELD', field: 'phone', value: v }) }}
                     />
                     <DateInputField
                       imgSrc={images.iconDate}
