@@ -22,15 +22,19 @@ function mediaUrl(field: number | Media | null | undefined): string | null {
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const tours = await payload.find({
-    collection: 'tours',
-    draft: false,
-    limit: 1000,
-    pagination: false,
-    select: { slug: true },
-  })
-  return tours.docs.map(({ slug }) => ({ slug: slug ?? '' })).filter((p) => p.slug)
+  try {
+    const payload = await getPayload({ config: configPromise })
+    const tours = await payload.find({
+      collection: 'tours',
+      draft: false,
+      limit: 1000,
+      pagination: false,
+      select: { slug: true },
+    })
+    return tours.docs.map(({ slug }) => ({ slug: slug ?? '' })).filter((p) => p.slug)
+  } catch {
+    return []
+  }
 }
 
 type Args = { params: Promise<{ slug?: string }> }
