@@ -70,10 +70,11 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
-      max: 3,
-      idleTimeoutMillis: 5000,
-      connectionTimeoutMillis: 10000,
+      max: 1,
+      idleTimeoutMillis: 10000,
+      connectionTimeoutMillis: 30000,
       allowExitOnIdle: true,
+      ssl: { rejectUnauthorized: false },
     },
   }),
   collections: [
