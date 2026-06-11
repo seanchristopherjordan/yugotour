@@ -70,8 +70,8 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
-      max: 1,
-      idleTimeoutMillis: 10000,
+      max: 3,
+      idleTimeoutMillis: 5000,
       connectionTimeoutMillis: 10000,
       allowExitOnIdle: true,
     },
@@ -128,11 +128,7 @@ export default buildConfig({
   ],
   
   onInit: async (payload) => {
-    try {
-      await seedEmailTemplates(payload)
-    } catch (err) {
-      payload.logger.warn('seedEmailTemplates skipped (DB unavailable at init)')
-    }
+    await seedEmailTemplates(payload)
   },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
