@@ -72,7 +72,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
       max: 1,
       idleTimeoutMillis: 10000,
-      connectionTimeoutMillis: 30000,
+      connectionTimeoutMillis: 8000,
       allowExitOnIdle: true,
       ssl: { rejectUnauthorized: false },
     },
@@ -129,7 +129,11 @@ export default buildConfig({
   ],
   
   onInit: async (payload) => {
-    await seedEmailTemplates(payload)
+    try {
+      await seedEmailTemplates(payload)
+    } catch (err) {
+      payload.logger.warn('seedEmailTemplates skipped (DB unavailable at init)')
+    }
   },
   secret: process.env.PAYLOAD_SECRET,
   sharp,
