@@ -56,6 +56,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     size: sizeFromProps,
     src: srcFromProps,
     loading: loadingFromProps,
+    payloadSize = 'xlarge',
   } = props
 
   let width: number | undefined
@@ -71,8 +72,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     alt = altFromResource || ''
 
     const cacheTag = resource.updatedAt
-
-    src = getMediaUrl(url, cacheTag)
+    const sizedUrl = resource.sizes?.[payloadSize]?.url
+    src = getMediaUrl(sizedUrl ?? url, cacheTag)
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)
@@ -94,11 +95,11 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         placeholder="blur"
         blurDataURL={placeholderBlur}
         priority={priority}
-        quality={100}
         loading={loading}
         sizes={sizes}
         src={src}
         width={!fill ? width : undefined}
+        unoptimized
       />
     </picture>
   )

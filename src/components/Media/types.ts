@@ -3,6 +3,8 @@ import type { ElementType, Ref } from 'react'
 
 import type { Media as MediaType } from '@/payload-types'
 
+export type PayloadImageSize = 'thumbnail' | 'square' | 'small' | 'medium' | 'large' | 'xlarge' | 'og'
+
 export interface Props {
   alt?: string
   className?: string
@@ -13,6 +15,7 @@ export interface Props {
   onClick?: () => void
   onLoad?: () => void
   loading?: 'lazy' | 'eager' // for NextImage only
+  payloadSize?: PayloadImageSize // which pre-generated Payload variant to serve
   priority?: boolean // for NextImage only
   ref?: Ref<HTMLImageElement | HTMLVideoElement | null>
   resource?: MediaType | string | number | null // for Payload media

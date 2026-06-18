@@ -77,6 +77,7 @@ export function TvSectionBlock({ youtubeUrl }: TvSectionBlockProps) {
             height={600}
             style={{ width: '100%', height: 'auto', display: 'block' }}
             loading="lazy"
+            unoptimized
           />
         </div>
 
@@ -89,6 +90,7 @@ export function TvSectionBlock({ youtubeUrl }: TvSectionBlockProps) {
             height={400}
             style={{ width: '100%', height: 'auto', display: 'block' }}
             loading="lazy"
+            unoptimized
           />
         </div>
 

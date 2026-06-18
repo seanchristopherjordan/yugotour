@@ -1,18 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import type { Tour } from '@/payload-types'
+import type { Tour, Media } from '@/payload-types'
 
 interface TourTileProps {
   tour: Tour
 }
 
-function resolveUrl(field: number | { url?: string | null } | null | undefined): string | null {
-  if (!field || typeof field === 'number') return null
-  return field.url ?? null
-}
-
 export function TourTile({ tour }: TourTileProps) {
-  const thumbnailUrl = resolveUrl(tour.thumbnail)
+  const thumbnail = typeof tour.thumbnail === 'object' && tour.thumbnail !== null
+    ? tour.thumbnail as Media
+    : null
+  const thumbnailUrl = thumbnail?.sizes?.medium?.url ?? thumbnail?.url ?? null
   const href = `/tours/${tour.slug}`
 
   // Build info-bar details line
@@ -35,7 +33,7 @@ export function TourTile({ tour }: TourTileProps) {
               fill
               className="tile-bg-img"
               style={{ objectFit: 'cover', objectPosition: 'center' }}
-              sizes="(min-width: 992px) 50vw, 100vw"
+              unoptimized
             />
           ) : (
             <div className="tile-bg-img" style={{ backgroundColor: '#212121' }} />
