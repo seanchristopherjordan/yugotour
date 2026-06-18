@@ -47,12 +47,12 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
               <SwiperSlide key={img.id} className="image-slider-slide">
                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                   <Image
-                    src={img.url ?? ''}
+                    src={img.sizes?.large?.url ?? img.url ?? ''}
                     alt={img.alt ?? ''}
                     fill
                     priority={i === 0}
                     style={{ objectFit: 'cover' }}
-                    sizes="100vw"
+                    unoptimized
                   />
                 </div>
               </SwiperSlide>
@@ -80,12 +80,12 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
               <SwiperSlide key={img.id} className="image-slider-slide">
                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                   <Image
-                    src={img.url ?? ''}
+                    src={img.sizes?.large?.url ?? img.url ?? ''}
                     alt={img.alt ?? ''}
                     fill
                     priority={i === 0}
                     style={{ objectFit: 'cover' }}
-                    sizes="80vw"
+                    unoptimized
                   />
                 </div>
               </SwiperSlide>
@@ -114,12 +114,12 @@ export function ImageSliderBlock({ mobileImages, desktopImages }: ImageSliderBlo
               <SwiperSlide key={img.id} className="image-slider-slide">
                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                   <Image
-                    src={img.url ?? ''}
+                    src={img.sizes?.xlarge?.url ?? img.url ?? ''}
                     alt={img.alt ?? ''}
                     fill
                     priority={i === 0}
                     style={{ objectFit: 'cover' }}
-                    sizes="(min-width: 992px) 85vw, 100vw"
+                    unoptimized
                   />
                 </div>
               </SwiperSlide>
