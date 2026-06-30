@@ -6,6 +6,27 @@ import { Turnstile } from '@marsidev/react-turnstile'
 import type { TurnstileInstance } from '@marsidev/react-turnstile'
 import { useBookingModal } from '@/providers/BookingModal'
 import type { BookingTour } from '@/lib/getAllToursForBooking'
+import { getCountries, getCountryCallingCode } from 'react-phone-number-input'
+import type { Country } from 'react-phone-number-input'
+import flagComponents from 'react-phone-number-input/flags'
+import enCountryLabels from 'react-phone-number-input/locale/en.json'
+
+// ─── Country code data (built once at module load) ─────────────────────────────
+
+const FLAGS = flagComponents as Record<string, React.FC<{ title?: string }>>
+const COUNTRY_LABELS = enCountryLabels as unknown as Record<string, string>
+
+type CountryOption = { iso2: Country; name: string; dial: string }
+
+// All ISO countries, alphabetised by English name, each with its +dial code.
+const COUNTRY_OPTIONS: CountryOption[] = getCountries()
+  .map((iso2) => ({ iso2, name: COUNTRY_LABELS[iso2] ?? iso2, dial: getCountryCallingCode(iso2) }))
+  .sort((a, b) => a.name.localeCompare(b.name))
+
+// Sensible default country per tour city (falls back to Serbia).
+function defaultCountryForCity(city: 'belgrade' | 'sarajevo' | null): Country {
+  return city === 'sarajevo' ? 'BA' : 'RS'
+}
 
 // ─── Pricing helpers ──────────────────────────────────────────────────────────
 
@@ -100,6 +121,7 @@ interface FormState {
   name: string
   email: string
   phone: string
+  phoneCountry: Country
   date: string
   startTime: string
   pickupSpot: string
@@ -109,7 +131,7 @@ interface FormState {
 const defaultForm: FormState = {
   city: null, selectedTourDocId: null, guests: 2, selectedExtras: [],
   airportDirection: 'pickup', flightTime: '', name: '', email: '',
-  phone: '', date: '', startTime: '', pickupSpot: '', comments: '',
+  phone: '', phoneCountry: 'RS', date: '', startTime: '', pickupSpot: '', comments: '',
 }
 
 type FormAction =
@@ -119,13 +141,14 @@ type FormAction =
   | { type: 'TOGGLE_EXTRA'; title: string }
   | { type: 'SET_AIRPORT_DIR'; dir: 'pickup' | 'dropoff' }
   | { type: 'SET_FLIGHT_TIME'; time: string }
+  | { type: 'SET_PHONE_COUNTRY'; country: Country }
   | { type: 'SET_FIELD'; field: keyof FormState; value: string }
   | { type: 'RESET'; init: Partial<FormState> }
 
 function formReducer(state: FormState, action: FormAction): FormState {
   switch (action.type) {
     case 'SET_CITY':
-      return { ...state, city: action.city, selectedTourDocId: null, selectedExtras: [], airportDirection: 'pickup', flightTime: '', pickupSpot: '' }
+      return { ...state, city: action.city, phoneCountry: defaultCountryForCity(action.city), selectedTourDocId: null, selectedExtras: [], airportDirection: 'pickup', flightTime: '', pickupSpot: '' }
     case 'SET_TOUR':
       return { ...state, selectedTourDocId: action.tourDocId, selectedExtras: [], airportDirection: 'pickup', flightTime: '' }
     case 'SET_GUESTS':
@@ -142,8 +165,14 @@ function formReducer(state: FormState, action: FormAction): FormState {
     }
     case 'SET_AIRPORT_DIR': return { ...state, airportDirection: action.dir }
     case 'SET_FLIGHT_TIME': return { ...state, flightTime: action.time }
+    case 'SET_PHONE_COUNTRY': return { ...state, phoneCountry: action.country }
     case 'SET_FIELD': return { ...state, [action.field]: action.value }
-    case 'RESET': return { ...defaultForm, guests: 2, ...action.init }
+    case 'RESET': {
+      const next: FormState = { ...defaultForm, guests: 2, ...action.init }
+      // Match the dial code to the pre-selected city unless the caller set one explicitly
+      if (action.init.phoneCountry === undefined) next.phoneCountry = defaultCountryForCity(next.city)
+      return next
+    }
     default: return state
   }
 }
@@ -422,6 +451,170 @@ function InputField({
   )
 }
 
+// Small flag rendered at a fixed 22×15 box (the SVGs have no intrinsic size)
+function CountryFlag({ iso2, name }: { iso2: Country; name: string }) {
+  const Flag = FLAGS[iso2]
+  return (
+    <span className="block w-[22px] h-[15px] flex-shrink-0 overflow-hidden rounded-[2px] [&>svg]:block [&>svg]:w-full [&>svg]:h-full">
+      {Flag ? <Flag title={name} /> : null}
+    </span>
+  )
+}
+
+// Phone field with an inline country-code selector (flag + dial code) on the left.
+// Lives inside the same bordered row as the other inputs so the column geometry
+// is unchanged; the dropdown lists every country alphabetically with its flag.
+function PhoneInputField({
+  placeholder,
+  value,
+  onChange,
+  country,
+  onCountryChange,
+  error,
+}: {
+  placeholder: string
+  value: string
+  onChange: (v: string) => void
+  country: Country
+  onCountryChange: (c: Country) => void
+  error?: boolean
+}) {
+  const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const rootRef = useRef<HTMLDivElement>(null)
+  const searchRef = useRef<HTMLInputElement>(null)
+  const phoneRef = useRef<HTMLInputElement>(null)
+
+  const selected =
+    COUNTRY_OPTIONS.find((c) => c.iso2 === country) ??
+    COUNTRY_OPTIONS.find((c) => c.iso2 === 'RS') ??
+    COUNTRY_OPTIONS[0]
+
+  // Close on outside click while the dropdown is open
+  useEffect(() => {
+    if (!open) return
+    function onDocMouseDown(e: MouseEvent) {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', onDocMouseDown)
+    return () => document.removeEventListener('mousedown', onDocMouseDown)
+  }, [open])
+
+  // Reset + focus the search box each time the dropdown opens
+  useEffect(() => {
+    if (!open) return
+    setQuery('')
+    const t = setTimeout(() => searchRef.current?.focus(), 0)
+    return () => clearTimeout(t)
+  }, [open])
+
+  const q = query.trim().toLowerCase()
+  const qDigits = query.replace(/\D/g, '')
+  const filtered = q
+    ? COUNTRY_OPTIONS.filter(
+        (c) => c.name.toLowerCase().includes(q) || (qDigits && c.dial.includes(qDigits)),
+      )
+    : COUNTRY_OPTIONS
+
+  function pick(c: CountryOption) {
+    onCountryChange(c.iso2)
+    setOpen(false)
+    setTimeout(() => phoneRef.current?.focus(), 0)
+  }
+
+  return (
+    <div
+      ref={rootRef}
+      className={`${INPUT_ROW} relative`}
+      style={error ? { boxShadow: '0 0 0 3px #C25E5E' } : undefined}
+    >
+      {/* Country-code trigger */}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={`Country code: ${selected.name} +${selected.dial}`}
+        className="flex items-center gap-[6px] flex-shrink-0 bg-transparent border-none p-0 cursor-pointer outline-none"
+      >
+        <CountryFlag iso2={selected.iso2} name={selected.name} />
+        <span className="font-fakt text-[0.93rem] text-[#212121] leading-none" style={{ paddingTop: '1px' }}>
+          +{selected.dial}
+        </span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+          className={`text-[#a08060] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        >
+          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
+      </button>
+
+      {/* Divider between selector and number */}
+      <span className="block w-px h-[20px] bg-[#c9b898] flex-shrink-0" aria-hidden="true" />
+
+      {/* Phone number */}
+      <input
+        ref={phoneRef}
+        type="tel"
+        inputMode="tel"
+        className="flex-1 border-none bg-transparent font-fakt text-[0.93rem] text-[#212121] outline-none min-w-0 placeholder:text-[#b09070] [color-scheme:light]"
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ paddingTop: '2px' }}
+      />
+
+      {/* Dropdown */}
+      {open && (
+        <div
+          role="listbox"
+          aria-label="Select country code"
+          className="absolute left-0 top-[calc(100%+6px)] z-[20] w-full min-w-[250px] max-h-[280px] flex flex-col overflow-hidden bg-[#fcf9ea] border border-[#c9b898] rounded-[5px] shadow-[0_8px_24px_rgba(0,0,0,0.22)]"
+          onKeyDown={(e) => { if (e.key === 'Escape') { e.stopPropagation(); setOpen(false); phoneRef.current?.focus() } }}
+        >
+          <div className="flex-shrink-0 p-[8px] border-b border-[#e3d8bd]">
+            <input
+              ref={searchRef}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search countries"
+              className="w-full bg-white border border-[#c9b898] rounded-[4px] px-[9px] py-[6px] font-fakt text-[0.86rem] text-[#212121] outline-none transition-colors duration-200 focus:border-[#C25E5E] placeholder:text-[#b09070]"
+            />
+          </div>
+          <ul className="list-none m-0 p-0 overflow-y-auto">
+            {filtered.length === 0 && (
+              <li className="px-[12px] py-[10px] font-fakt text-[0.86rem] text-[#b09070]">No matches</li>
+            )}
+            {filtered.map((c) => {
+              const isSel = c.iso2 === selected.iso2
+              return (
+                <li key={c.iso2}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={isSel}
+                    onClick={() => pick(c)}
+                    className={`flex items-center gap-[9px] w-full text-left px-[12px] py-[7px] border-none cursor-pointer transition-colors duration-100 hover:bg-[#efe6cd] ${isSel ? 'bg-[#efe6cd]' : 'bg-transparent'}`}
+                  >
+                    <CountryFlag iso2={c.iso2} name={c.name} />
+                    <span className="flex-1 font-fakt text-[0.88rem] text-[#212121] leading-tight truncate">{c.name}</span>
+                    <span className="font-fakt text-[0.86rem] text-[#887060] flex-shrink-0">+{c.dial}</span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 function hasUserInput(state: FormState): boolean {
@@ -546,11 +739,14 @@ export function BookingModal() {
         const extra = selectedTour.extras.find((e) => e.title === title)
         return { title, price: extra ? calcExtraPrice(extra, guestCount) : 0 }
       })
+      // Prepend the selected country dial code to the entered number
+      const dial = getCountryCallingCode(formState.phoneCountry)
+      const fullPhone = formState.phone.trim() ? `+${dial} ${formState.phone.trim()}` : ''
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formState.name, email: formState.email, phone: formState.phone,
+          name: formState.name, email: formState.email, phone: fullPhone,
           city: formState.city, tourTitle: selectedTour.title, tourId: selectedTour.tourId,
           guests: formState.guests, totalPrice,
           date: formState.date, startTime: formState.startTime,
@@ -1023,11 +1219,11 @@ export function BookingModal() {
                       error={fieldErrors.has('email')}
                       onChange={(v) => { clearError('email'); dispatch({ type: 'SET_FIELD', field: 'email', value: v }) }}
                     />
-                    <InputField
-                      imgSrc={images.iconPhone}
-                      type="tel"
+                    <PhoneInputField
                       placeholder="Phone"
                       value={formState.phone}
+                      country={formState.phoneCountry}
+                      onCountryChange={(c) => { clearError('phone'); dispatch({ type: 'SET_PHONE_COUNTRY', country: c }) }}
                       error={fieldErrors.has('phone')}
                       onChange={(v) => { clearError('phone'); dispatch({ type: 'SET_FIELD', field: 'phone', value: v }) }}
                     />
@@ -1078,11 +1274,11 @@ export function BookingModal() {
                   </div>
                   {/* Belgrade: Phone / Date / Start Time on row 2 */}
                   <div className="grid grid-cols-1 min-[600px]:grid-cols-3 gap-4 mb-4">
-                    <InputField
-                      imgSrc={images.iconPhone}
-                      type="tel"
+                    <PhoneInputField
                       placeholder="Phone"
                       value={formState.phone}
+                      country={formState.phoneCountry}
+                      onCountryChange={(c) => { clearError('phone'); dispatch({ type: 'SET_PHONE_COUNTRY', country: c }) }}
                       error={fieldErrors.has('phone')}
                       onChange={(v) => { clearError('phone'); dispatch({ type: 'SET_FIELD', field: 'phone', value: v }) }}
                     />
